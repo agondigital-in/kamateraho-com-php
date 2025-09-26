@@ -1,18 +1,9 @@
 <?php
-// Start session at the very beginning to prevent header errors
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 $page_title = "Upload Offer";
 include '../config/db.php';
-include '../config/app.php'; // Include app configuration
-include 'includes/admin_layout.php'; // Include layout early to handle auth
 
-// Handle form submission
+// Handle form submission BEFORE including the layout
 $message = '';
-$error = '';
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category_id = $_POST['category_id'];
     $title = $_POST['title'];
@@ -25,88 +16,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
-        $upload_dir = '../' . OFFER_IMAGES_UPLOAD_PATH . '/';
-        
-        // Ensure directory exists with proper permissions
+        $upload_dir = '../uploads/';
         if (!is_dir($upload_dir)) {
-            if (!mkdir($upload_dir, 0755, true)) {
-                $error = "Failed to create upload directory: $upload_dir";
-            }
+            mkdir($upload_dir, 0777, true);
         }
         
-        // Check if directory is writable
-        if (!is_writable($upload_dir)) {
-            $error = "Upload directory is not writable. Please check permissions. Directory: $upload_dir";
-            // Add detailed debug information
-            $error .= "<br>Debug info:<br>";
-            $error .= "is_dir: " . (is_dir($upload_dir) ? 'true' : 'false') . "<br>";
-            $error .= "Real path: " . realpath($upload_dir) . "<br>";
-            $error .= "Permissions: " . substr(sprintf('%o', fileperms($upload_dir)), -4) . "<br>";
-            $error .= "Web server user: " . get_current_user() . "<br>";
-        }
+        $files = $_FILES['images'];
+        $file_count = count($files['name']);
         
-        if (empty($error)) {
-            $files = $_FILES['images'];
-            $file_count = count($files['name']);
-            
-            for ($i = 0; $i < $file_count; $i++) {
-                if ($files['error'][$i] === UPLOAD_ERR_OK) {
-                    $file_name = time() . '_' . $i . '_' . basename($files['name'][$i]);
-                    $target_file = $upload_dir . $file_name;
-                    
-                    // Allow certain file formats
-                    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-                    $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
-                    
-                    if (in_array($imageFileType, $allowed_types)) {
-                        // Debug information
-                        error_log("Attempting to move file from: " . $files['tmp_name'][$i] . " to: " . $target_file);
-                        
-                        if (move_uploaded_file($files['tmp_name'][$i], $target_file)) {
-                            $uploaded_images[] = OFFER_IMAGES_UPLOAD_PATH . '/' . $file_name;
-                        } else {
-                            $error = "Error uploading image. Check directory permissions.";
-                            // Log detailed error information
-                            error_log("Failed to move uploaded file. Upload errors: " . print_r($files, true));
-                            
-                            // Add more detailed error information
-                            $error .= "<br>Debug info:<br>";
-                            $error .= "Source file: " . $files['tmp_name'][$i] . "<br>";
-                            $error .= "Destination: " . $target_file . "<br>";
-                            $error .= "Destination writable: " . (is_writable($upload_dir) ? 'true' : 'false') . "<br>";
-                            $error .= "Upload error code: " . $files['error'][$i] . "<br>";
-                            if (file_exists($files['tmp_name'][$i])) {
-                                $error .= "Source file exists: true<br>";
-                                $error .= "Source file size: " . filesize($files['tmp_name'][$i]) . " bytes<br>";
-                            } else {
-                                $error .= "Source file exists: false<br>";
-                            }
-                            break; // Stop processing more files if one fails
-                        }
+        for ($i = 0; $i < $file_count; $i++) {
+            if ($files['error'][$i] === UPLOAD_ERR_OK) {
+                $file_name = time() . '_' . $i . '_' . basename($files['name'][$i]);
+                $target_file = $upload_dir . $file_name;
+                
+                // Allow certain file formats
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+                
+                if (in_array($imageFileType, $allowed_types)) {
+                    if (move_uploaded_file($files['tmp_name'][$i], $target_file)) {
+                        $uploaded_images[] = 'uploads/' . $file_name;
                     }
-                } else {
-                    $upload_errors = [
-                        UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-                        UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive in the HTML form',
-                        UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded',
-                        UPLOAD_ERR_NO_FILE => 'No file was uploaded',
-                        UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder',
-                        UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
-                        UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload'
-                    ];
-                    
-                    if (isset($upload_errors[$files['error'][$i]])) {
-                        $error = "Upload error: " . $upload_errors[$files['error'][$i]];
-                    } else {
-                        $error = "Upload error code: " . $files['error'][$i];
-                    }
-                    break; // Stop processing more files if one fails
                 }
             }
         }
     }
     
-    if (empty($error) && !empty($category_id) && !empty($title) && !empty($price) && !empty($uploaded_images)) {
+    if (!isset($error) && !empty($category_id) && !empty($title) && !empty($price) && !empty($uploaded_images)) {
         try {
             // Insert the main offer
             $stmt = $pdo->prepare("INSERT INTO offers (category_id, title, description, price, image, redirect_url) VALUES (?, ?, ?, ?, ?, ?)");
@@ -127,15 +63,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;
         } catch(PDOException $e) {
             $error = "Error uploading offer: " . $e->getMessage();
-            // Delete uploaded files if database insert fails
-            foreach ($uploaded_images as $image_path) {
-                $full_path = '../' . $image_path;
-                if (file_exists($full_path)) {
-                    unlink($full_path);
-                }
-            }
         }
-    } elseif (empty($error)) {
+    } elseif (!isset($error)) {
         if (empty($uploaded_images)) {
             $error = "At least one image is required!";
         } else {
@@ -152,6 +81,8 @@ try {
     $error = "Error fetching categories: " . $e->getMessage();
     $categories = [];
 }
+
+include 'includes/admin_layout.php'; // This includes auth check
 ?>
 
 <div class="container-fluid">
@@ -164,7 +95,7 @@ try {
         </div>
     <?php endif; ?>
     
-    <?php if (!empty($error)): ?>
+    <?php if (isset($error)): ?>
         <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <?php echo $error; ?>
             <button type="button" class="btn-close" data-bs-dismiss="alert"></button>

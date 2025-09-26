@@ -1,15 +1,8 @@
 <?php
-// Start session at the very beginning
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
 $page_title = "Manage Credit Cards";
 include '../config/db.php';
-include '../config/app.php'; // Include app configuration
-include 'includes/admin_layout.php';
 
-// Handle form submission
+// Handle form submission BEFORE including the layout
 $success = '';
 $error = '';
 
@@ -21,87 +14,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Handle file upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = '../' . CREDIT_CARDS_UPLOAD_PATH . '/';
-            
-            // Ensure directory exists with proper permissions
+            $upload_dir = '../uploads/credit_cards/';
             if (!is_dir($upload_dir)) {
-                if (!mkdir($upload_dir, 0755, true)) {
-                    $error = "Failed to create upload directory: $upload_dir";
-                }
+                mkdir($upload_dir, 0777, true);
             }
             
-            // Check if directory is writable
-            if (!is_writable($upload_dir)) {
-                $error = "Upload directory is not writable. Please check permissions. Directory: $upload_dir";
-                // Add detailed debug information
-                $error .= "<br>Debug info:<br>";
-                $error .= "is_dir: " . (is_dir($upload_dir) ? 'true' : 'false') . "<br>";
-                $error .= "Real path: " . realpath($upload_dir) . "<br>";
-                $error .= "Permissions: " . substr(sprintf('%o', fileperms($upload_dir)), -4) . "<br>";
-                $error .= "Web server user: " . get_current_user() . "<br>";
-            }
+            $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $filename = uniqid() . '.' . $file_extension;
+            $upload_path = $upload_dir . $filename;
             
-            if (empty($error)) {
-                $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-                $filename = uniqid() . '.' . $file_extension;
-                $upload_path = $upload_dir . $filename;
-                
-                // Debug information
-                error_log("Attempting to move file from: " . $_FILES['image']['tmp_name'] . " to: " . $upload_path);
-                
-                if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
-                    $image_path = CREDIT_CARDS_UPLOAD_PATH . '/' . $filename;
-                    
-                    try {
-                        $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
-                        $stmt->execute([$title, $image_path, $link, $is_active]);
-                        header("Location: manage_credit_cards.php?success=" . urlencode("Credit card added successfully!"));
-                        exit;
-                    } catch(PDOException $e) {
-                        $error = "Error adding credit card: " . $e->getMessage();
-                        // Delete the uploaded file if database insert fails
-                        if (file_exists($upload_path)) {
-                            unlink($upload_path);
-                        }
-                    }
-                } else {
-                    $error = "Error uploading image. Check directory permissions.";
-                    // Log detailed error information
-                    error_log("Failed to move uploaded file. Upload errors: " . print_r($_FILES['image'], true));
-                    
-                    // Add more detailed error information
-                    $error .= "<br>Debug info:<br>";
-                    $error .= "Source file: " . $_FILES['image']['tmp_name'] . "<br>";
-                    $error .= "Destination: " . $upload_path . "<br>";
-                    $error .= "Destination writable: " . (is_writable($upload_dir) ? 'true' : 'false') . "<br>";
-                    $error .= "Upload error code: " . $_FILES['image']['error'] . "<br>";
-                    if (file_exists($_FILES['image']['tmp_name'])) {
-                        $error .= "Source file exists: true<br>";
-                        $error .= "Source file size: " . filesize($_FILES['image']['tmp_name']) . " bytes<br>";
-                    } else {
-                        $error .= "Source file exists: false<br>";
-                    }
+            if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
+              
+                  $image_path = 'uploads/credit_cards/' . $filename;
+                try {
+                    $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
+                    $stmt->execute([$title, $image_path, $link, $is_active]);
+                    header("Location: manage_credit_cards.php?success=" . urlencode("Credit card added successfully!"));
+                    exit;
+                } catch(PDOException $e) {
+                    $error = "Error adding credit card: " . $e->getMessage();
                 }
+            } else {
+                $error = "Error uploading image.";
             }
         } else {
             $error = "Please select an image.";
-            if (isset($_FILES['image'])) {
-                $upload_errors = [
-                    UPLOAD_ERR_INI_SIZE => 'The uploaded file exceeds the upload_max_filesize directive in php.ini',
-                    UPLOAD_ERR_FORM_SIZE => 'The uploaded file exceeds the MAX_FILE_SIZE directive in the HTML form',
-                    UPLOAD_ERR_PARTIAL => 'The uploaded file was only partially uploaded',
-                    UPLOAD_ERR_NO_FILE => 'No file was uploaded',
-                    UPLOAD_ERR_NO_TMP_DIR => 'Missing a temporary folder',
-                    UPLOAD_ERR_CANT_WRITE => 'Failed to write file to disk',
-                    UPLOAD_ERR_EXTENSION => 'A PHP extension stopped the file upload'
-                ];
-                
-                if (isset($upload_errors[$_FILES['image']['error']])) {
-                    $error .= " Upload error: " . $upload_errors[$_FILES['image']['error']];
-                } else {
-                    $error .= " Upload error code: " . $_FILES['image']['error'];
-                }
-            }
         }
     } elseif (isset($_POST['delete_card'])) {
         $id = $_POST['id'];
@@ -146,6 +83,8 @@ if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
 
+include 'includes/admin_layout.php';
+
 // Fetch all credit cards
 try {
     $stmt = $pdo->query("SELECT * FROM credit_cards ORDER BY created_at DESC");
@@ -164,7 +103,7 @@ try {
     <?php endif; ?>
     
     <?php if (!empty($error)): ?>
-        <div class="alert alert-danger"><?php echo $error; ?></div>
+        <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
     
     <!-- Add Credit Card Form -->
