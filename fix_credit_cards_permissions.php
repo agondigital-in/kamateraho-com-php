@@ -1,135 +1,97 @@
 <?php
-echo "<h1>Fixing Credit Cards Directory Permissions</h1>";
+/**
+ * Fix permissions for credit cards upload directory
+ * This script ensures proper permissions for file uploads in both local and Coolify environments
+ */
 
+// Include app configuration
+include 'config/app.php';
+
+// Get the base path (parent directory of this script)
 $base_path = __DIR__;
 $credit_cards_dir = $base_path . '/uploads/credit_cards';
 
-echo "<p>Processing directory: uploads/credit_cards</p>";
-echo "<p>Full path: $credit_cards_dir</p>";
+echo "<h2>Fixing Credit Cards Upload Permissions</h2>\n";
+echo "<p>Processing directory: uploads/credit_cards</p>\n";
+echo "<p>Full path: $credit_cards_dir</p>\n";
 
-// Check if directory exists
+// Create directory if it doesn't exist
 if (!is_dir($credit_cards_dir)) {
-    echo "<p>Creating directory: uploads/credit_cards</p>";
-    if (mkdir($credit_cards_dir, 0777, true)) {
-        echo "<p style='color: green;'>Successfully created directory</p>";
+    echo "<p>Creating directory: uploads/credit_cards</p>\n";
+    if (mkdir($credit_cards_dir, 0755, true)) {
+        echo "<p style='color: green;'>Directory created successfully.</p>\n";
     } else {
-        echo "<p style='color: red;'>Failed to create directory</p>";
-        exit;
+        echo "<p style='color: red;'>Failed to create directory.</p>\n";
+        exit(1);
     }
 } else {
-    echo "<p style='color: blue;'>Directory already exists</p>";
+    echo "<p>Directory already exists.</p>\n";
 }
 
-// Set very permissive permissions
-echo "<p>Setting very permissive permissions (0777)</p>";
-if (chmod($credit_cards_dir, 0777)) {
-    echo "<p style='color: green;'>Successfully set permissions</p>";
+// Set proper permissions
+echo "<p>Setting permissions to 0755...</p>\n";
+if (chmod($credit_cards_dir, 0755)) {
+    echo "<p style='color: green;'>Permissions set successfully.</p>\n";
 } else {
-    echo "<p style='color: orange;'>Note: Could not change permissions (this might be OK on some systems)</p>";
+    echo "<p style='color: orange;'>Failed to set permissions with chmod (this is normal on Windows).</p>\n";
 }
 
-// Try system-specific commands
-if (strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN') {
-    // Unix/Linux commands
-    echo "<p>Running Unix/Linux commands...</p>";
-    
+// Try to set permissions with different methods based on OS
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    echo "<p>Windows detected. Trying Windows-specific permission fixes...</p>\n";
+    // On Windows, we'll try to use icacls command
     $commands = [
-        "chmod 777 \"$credit_cards_dir\"",
-        "chmod -R 777 \"$credit_cards_dir\"",
-        "chown -R www-data:www-data \"$credit_cards_dir\"",
-        "chown -R " . (function_exists('posix_getuid') ? posix_getuid() : get_current_user()) . " \"$credit_cards_dir\""
+        "icacls \"$credit_cards_dir\" /grant Users:(OI)(CI)F",
+        "icacls \"$credit_cards_dir\" /grant Everyone:(OI)(CI)F"
     ];
     
     foreach ($commands as $command) {
-        echo "<p>Running: $command</p>";
+        echo "<p>Running: $command</p>\n";
         $output = [];
         $return_var = 0;
         exec($command, $output, $return_var);
-        
-        echo "<pre>";
-        foreach ($output as $line) {
-            echo htmlspecialchars($line) . "\n";
+        if ($return_var === 0) {
+            echo "<p style='color: green;'>Command executed successfully.</p>\n";
+        } else {
+            echo "<p style='color: orange;'>Command failed with return code: $return_var</p>\n";
         }
-        echo "</pre>";
-        echo "<p>Return code: $return_var</p>";
+        foreach ($output as $line) {
+            echo "<p>$line</p>\n";
+        }
     }
 } else {
-    // Windows commands
-    echo "<p>Running Windows commands...</p>";
-    
+    echo "<p>Unix/Linux detected. Trying additional permission fixes...</p>\n";
+    // On Unix/Linux systems, try to set permissions recursively
     $commands = [
-        "icacls \"$credit_cards_dir\" /grant Everyone:(OI)(CI)F /T",
-        "icacls \"$credit_cards_dir\" /grant Users:(OI)(CI)F /T",
-        "icacls \"$credit_cards_dir\" /grant \"Authenticated Users\":(OI)(CI)F /T",
-        "icacls \"$credit_cards_dir\" /grant \"IIS_IUSRS\":(OI)(CI)F /T"
+        "chmod -R 755 \"$credit_cards_dir\"",
+        "chown -R www-data:www-data \"$credit_cards_dir\" 2>/dev/null || echo 'chown failed (might not be root)'"
     ];
     
     foreach ($commands as $command) {
-        echo "<p>Running: $command</p>";
+        echo "<p>Running: $command</p>\n";
         $output = [];
         $return_var = 0;
         exec($command, $output, $return_var);
-        
-        echo "<pre>";
-        foreach ($output as $line) {
-            echo htmlspecialchars($line) . "\n";
+        if ($return_var === 0) {
+            echo "<p style='color: green;'>Command executed successfully.</p>\n";
+        } else {
+            echo "<p style='color: orange;'>Command failed with return code: $return_var</p>\n";
         }
-        echo "</pre>";
-        echo "<p>Return code: $return_var</p>";
+        foreach ($output as $line) {
+            echo "<p>$line</p>\n";
+        }
     }
 }
 
 // Check if directory is writable
-echo "<h3>Testing Permissions</h3>";
+echo "<p>Checking if directory is writable...</p>\n";
 if (is_writable($credit_cards_dir)) {
-    echo "<p style='color: green; font-weight: bold;'>Directory is writable!</p>";
-    
-    // Create a test file
-    $test_file = $credit_cards_dir . '/permission_test.txt';
-    $test_content = "Permission test successful!\nTime: " . date('Y-m-d H:i:s');
-    
-    if (file_put_contents($test_file, $test_content)) {
-        echo "<p style='color: green;'>Successfully created test file</p>";
-        
-        // Read it back to verify
-        if (file_get_contents($test_file) === $test_content) {
-            echo "<p style='color: green;'>Successfully read test file</p>";
-        } else {
-            echo "<p style='color: red;'>Failed to read test file</p>";
-        }
-        
-        // Delete test file
-        if (unlink($test_file)) {
-            echo "<p style='color: green;'>Successfully deleted test file</p>";
-        } else {
-            echo "<p style='color: orange;'>Could not delete test file (not critical)</p>";
-        }
-    } else {
-        echo "<p style='color: red;'>Failed to create test file</p>";
-    }
+    echo "<p style='color: green;'>Directory is writable. Uploads should work correctly.</p>\n";
 } else {
-    echo "<p style='color: red; font-weight: bold;'>Directory is still NOT writable!</p>";
-    
-    // Show detailed information
-    echo "<h3>Debug Information</h3>";
-    echo "<p>Real path: " . realpath($credit_cards_dir) . "</p>";
-    echo "<p>Permissions: " . substr(sprintf('%o', fileperms($credit_cards_dir)), -4) . "</p>";
-    echo "<p>Web server user: " . get_current_user() . "</p>";
-    
-    if (function_exists('posix_getpwuid') && function_exists('fileowner')) {
-        $owner = posix_getpwuid(fileowner($credit_cards_dir));
-        echo "<p>Directory owner: " . ($owner ? $owner['name'] : 'Unknown') . "</p>";
-    }
+    echo "<p style='color: red;'>Directory is not writable. Please check permissions manually.</p>\n";
+    echo "<p>Try running this script as administrator (Windows) or with sudo (Linux).</p>\n";
 }
 
-echo "<h3>Next Steps</h3>";
-echo "<ol>";
-echo "<li>If this didn't work, try running this script as Administrator/root</li>";
-echo "<li>In Docker environments, you may need to adjust the container's user permissions</li>";
-echo "<li>Check if SELinux or AppArmor is blocking access (Linux systems)</li>";
-echo "<li>Ensure your web server process has write access to this directory</li>";
-echo "</ol>";
-
-echo "<p><a href='admin/manage_credit_cards.php'>Try uploading again</a></p>";
-echo "<p><a href='index.php'>Back to Homepage</a></p>";
+echo "<h3>Done!</h3>\n";
+echo "<p><a href='admin/manage_credit_cards.php'>Go to Credit Cards Management</a></p>\n";
 ?>

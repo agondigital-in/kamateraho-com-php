@@ -1,6 +1,7 @@
 <?php
 $page_title = "Manage Credit Cards";
 include '../config/db.php';
+include '../config/app.php'; 
 
 // Handle form submission BEFORE including the layout
 $success = '';
@@ -14,28 +15,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Handle file upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = '../uploads/credit_cards/';
+            // Use the proper upload directory function from app config
+            $upload_dir = upload_dir('credit_cards') . '/'; // This gets the full server path to uploads/credit_cards directory
+            
+            // Ensure directory exists with proper permissions
             if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
+                if (!mkdir($upload_dir, 0755, true)) {
+                    $error = "Failed to create upload directory. Please check permissions.";
+                }
             }
             
-            $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            $filename = uniqid() . '.' . $file_extension;
-            $upload_path = $upload_dir . $filename;
-            
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
-              
-                  $image_path = 'uploads/credit_cards/' . $filename;
-                try {
-                    $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
-                    $stmt->execute([$title, $image_path, $link, $is_active]);
-                    header("Location: manage_credit_cards.php?success=" . urlencode("Credit card added successfully!"));
-                    exit;
-                } catch(PDOException $e) {
-                    $error = "Error adding credit card: " . $e->getMessage();
+            // Continue only if no error occurred
+            if (empty($error)) {
+                $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                $filename = uniqid() . '.' . $file_extension;
+                $upload_path = $upload_dir . $filename;
+                
+                // Check if file is a valid image
+                $image_info = getimagesize($_FILES['image']['tmp_name']);
+                if ($image_info !== false) {
+                    if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
+                        // Store relative path for database storage using UPLOAD_PATH constant
+                        $image_path = UPLOAD_PATH . '/credit_cards/' . $filename;
+                        try {
+                            $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
+                            $stmt->execute([$title, $image_path, $link, $is_active]);
+                            header("Location: manage_credit_cards.php?success=" . urlencode("Credit card added successfully!"));
+                            exit;
+                        } catch(PDOException $e) {
+                            // Delete uploaded file if database operation fails
+                            if (file_exists($upload_path)) {
+                                unlink($upload_path);
+                            }
+                            $error = "Error adding credit card: " . $e->getMessage();
+                        }
+                    } else {
+                        $error = "Error uploading image. Please check directory permissions.";
+                    }
+                } else {
+                    $error = "Invalid image file. Please upload a valid image.";
                 }
-            } else {
-                $error = "Error uploading image.";
             }
         } else {
             $error = "Please select an image.";
@@ -49,7 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $card = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($card) {
-                // Delete the image file
+                // Delete the image file using the proper path
                 $image_path = '../' . $card['image'];
                 if (file_exists($image_path)) {
                     unlink($image_path);
