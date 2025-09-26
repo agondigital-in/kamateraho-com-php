@@ -107,6 +107,18 @@
                                 $pdo->exec($sql);
                                 echo "<div class='alert alert-success'>Withdraw requests table created successfully</div>";
                                 
+                                // Create offer_images table
+                                $sql = "CREATE TABLE IF NOT EXISTS offer_images (
+                                    id INT(11) AUTO_INCREMENT PRIMARY KEY,
+                                    offer_id INT(11) NOT NULL,
+                                    image_path VARCHAR(255) NOT NULL,
+                                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                                    FOREIGN KEY (offer_id) REFERENCES offers(id) ON DELETE CASCADE,
+                                    INDEX idx_offer_images_offer_id (offer_id)
+                                )";
+                                $pdo->exec($sql);
+                                echo "<div class='alert alert-success'>Offer images table created successfully</div>";
+                                
                                 echo "<div class='alert alert-success'>
                                         <h4>All tables created successfully!</h4>
                                         <p>You can now <a href='register.php' class='alert-link'>register</a> a new account or <a href='login.php' class='alert-link'>login</a> if you already have an account.</p>

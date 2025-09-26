@@ -115,6 +115,8 @@ kmt/
 3. `users` - Store user information
 4. `wallet_history` - Track wallet transactions
 5. `withdraw_requests` - Track withdrawal requests
+6. `offer_images` - Store multiple images for each offer
+7. `credit_cards` - Store credit card images and links
 
 ## Technologies Used
 - PHP 7+

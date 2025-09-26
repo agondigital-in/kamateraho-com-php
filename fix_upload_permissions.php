@@ -3,8 +3,7 @@ echo "<h1>Fixing Upload Directory Permissions</h1>";
 
 // Define directories that need write permissions
 $directories = [
-    'uploads',
-    'uploads/credit_cards'
+    'uploads'
 ];
 
 $base_path = __DIR__;
@@ -85,7 +84,7 @@ foreach ($directories as $dir) {
 
 // Create a test file to verify writing works
 echo "<h3>Testing file creation</h3>";
-$test_file = $base_path . '/uploads/credit_cards/test_permissions.txt';
+$test_file = $base_path . '/uploads/test_permissions.txt';
 $test_content = "This is a test file to verify write permissions.\nCreated on: " . date('Y-m-d H:i:s');
 
 if (file_put_contents($test_file, $test_content)) {
@@ -108,6 +107,6 @@ echo "<li>In XAMPP, the Apache service typically runs under the 'SYSTEM' account
 echo "<li>You might need to manually grant 'Full Control' to the 'SYSTEM' account for the uploads directories</li>";
 echo "</ol>";
 
-echo "<p><a href='admin/manage_credit_cards.php'>Try uploading again</a></p>";
+echo "<p><a href='admin/upload_offer.php'>Try uploading again</a></p>";
 echo "<p><a href='index.php'>Back to Homepage</a></p>";
 ?>
