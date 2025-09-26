@@ -20,7 +20,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Handle file upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = '../uploads/credit_cards/';
+            $upload_dir = '/uploads/credit_cards/';
             
             // Ensure directory exists with proper permissions
             if (!is_dir($upload_dir)) {
