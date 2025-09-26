@@ -20,8 +20,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             // Ensure directory exists with proper permissions
             if (!is_dir($upload_dir)) {
+                // Try to create directory with proper permissions
                 if (!mkdir($upload_dir, 0755, true)) {
                     $error = "Failed to create upload directory. Please check permissions.";
+                }
+            }
+            
+            // If directory exists but is not writable, try to fix permissions
+            if (empty($error) && !is_writable($upload_dir)) {
+                // Try to change permissions
+                @chmod($upload_dir, 0755);
+                // Check again
+                if (!is_writable($upload_dir)) {
+                    $error = "Upload directory is not writable. Please check permissions.";
                 }
             }
             
@@ -34,13 +45,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Check if file is a valid image
                 $image_info = getimagesize($_FILES['image']['tmp_name']);
                 if ($image_info !== false) {
-                    if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
+                    // Buffer output to prevent headers already sent error
+                    ob_start();
+                    $upload_result = move_uploaded_file($_FILES['image']['tmp_name'], $upload_path);
+                    $upload_output = ob_get_clean();
+                    
+                    if ($upload_result) {
                         // Store relative path for database storage using UPLOAD_PATH constant
                         $image_path = UPLOAD_PATH . '/credit_cards/' . $filename;
                         try {
                             $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
                             $stmt->execute([$title, $image_path, $link, $is_active]);
-                            header("Location: manage_credit_cards.php?success=" . urlencode("Credit card added successfully!"));
+                            
+                            // Use JavaScript redirect to avoid headers already sent error
+                            echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card added successfully!") . "';</script>";
                             exit;
                         } catch(PDOException $e) {
                             // Delete uploaded file if database operation fails
@@ -51,6 +69,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                     } else {
                         $error = "Error uploading image. Please check directory permissions.";
+                        // Log the actual error for debugging
+                        if (!empty($upload_output)) {
+                            error_log("Upload error output: " . $upload_output);
+                        }
+                        error_log("Failed to move uploaded file to: " . $upload_path);
                     }
                 } else {
                     $error = "Invalid image file. Please upload a valid image.";
@@ -77,7 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Delete from database
                 $stmt = $pdo->prepare("DELETE FROM credit_cards WHERE id = ?");
                 $stmt->execute([$id]);
-                header("Location: manage_credit_cards.php?success=" . urlencode("Credit card deleted successfully!"));
+                
+                // Use JavaScript redirect to avoid headers already sent error
+                echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card deleted successfully!") . "';</script>";
                 exit;
             }
         } catch(PDOException $e) {
@@ -89,7 +114,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $stmt = $pdo->prepare("UPDATE credit_cards SET is_active = ? WHERE id = ?");
             $stmt->execute([$is_active, $id]);
-            header("Location: manage_credit_cards.php?success=" . urlencode("Credit card status updated successfully!"));
+            
+            // Use JavaScript redirect to avoid headers already sent error
+            echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card status updated successfully!") . "';</script>";
             exit;
         } catch(PDOException $e) {
             $error = "Error updating credit card status: " . $e->getMessage();

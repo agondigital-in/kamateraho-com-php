@@ -52,12 +52,26 @@ function upload_path($subfolder = '') {
     return UPLOAD_PATH;
 }
 
-// Function to get full upload directory path
+// Function to get full upload directory path with permission handling
 function upload_dir($subfolder = '') {
     $base_dir = __DIR__ . '/../' . UPLOAD_PATH;
     if ($subfolder) {
-        return $base_dir . '/' . ltrim($subfolder, '/');
+        $full_path = $base_dir . '/' . ltrim($subfolder, '/');
+    } else {
+        $full_path = $base_dir;
     }
-    return $base_dir;
+    
+    // Ensure directory exists with proper permissions
+    if (!is_dir($full_path)) {
+        // Try to create directory with more permissive permissions for container environments
+        @mkdir($full_path, 0775, true);
+    }
+    
+    // Try to ensure directory is writable
+    if (is_dir($full_path) && !is_writable($full_path)) {
+        @chmod($full_path, 0775);
+    }
+    
+    return $full_path;
 }
 ?>
