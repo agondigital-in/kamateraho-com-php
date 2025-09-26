@@ -8,6 +8,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (empty($email) || empty($password)) {
         $error = "All fields are required!";
+    } elseif ($pdo === null) {
+        $error = "Database connection failed. Please contact the administrator.";
     } else {
         try {
             $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
