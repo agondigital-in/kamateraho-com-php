@@ -13,7 +13,7 @@ if (!isset($_ENV['APP_URL'])) {
 define('BASE_URL', rtrim($_ENV['APP_URL'] ?? 'http://localhost', '/'));
 
 // Define upload paths
-define('UPLOAD_PATH', 'uploads');
+define('UPLOAD_PATH', 'uploadsuuuu');
 define('CREDIT_CARDS_UPLOAD_PATH', 'uploads/credit_cards');
 define('OFFER_IMAGES_UPLOAD_PATH', 'uploads'); // Offers are stored in the main uploads folder
 

@@ -1,6 +1,7 @@
 <?php
 $page_title = "Upload Offer";
 include '../config/db.php';
+include '../config/app.php'; // Include app config to access UPLOAD_PATH
 
 // Handle form submission BEFORE including the layout
 $message = '';
@@ -16,7 +17,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
-        $upload_dir = '../uploads/';
+        // Use the proper upload directory function from app config
+        $upload_dir = upload_dir() . '/'; // This gets the full server path to uploads directory
         if (!is_dir($upload_dir)) {
             mkdir($upload_dir, 0777, true);
         }
@@ -35,7 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 if (in_array($imageFileType, $allowed_types)) {
                     if (move_uploaded_file($files['tmp_name'][$i], $target_file)) {
-                        $uploaded_images[] = 'uploads/' . $file_name;
+                        // Store relative path for database storage
+                        $uploaded_images[] = UPLOAD_PATH . '/' . $file_name;
                     }
                 }
             }
