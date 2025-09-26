@@ -52,9 +52,29 @@ function upload_path($subfolder = '') {
     return UPLOAD_PATH;
 }
 
-// Function to get full upload directory path with permission handling
+// Function to get full upload directory path with enhanced permission handling for containerized environments
 function upload_dir($subfolder = '') {
-    $base_dir = __DIR__ . '/../' . UPLOAD_PATH;
+    // Try multiple possible base paths (for different environments)
+    $possible_paths = [
+        __DIR__ . '/../' . UPLOAD_PATH,           // Standard path
+        '/app/' . UPLOAD_PATH,                    // Common container path
+        __DIR__ . '/../../' . UPLOAD_PATH,        // If in a subdirectory
+        getcwd() . '/' . UPLOAD_PATH              // Current working directory
+    ];
+    
+    $base_dir = null;
+    foreach ($possible_paths as $path) {
+        if (is_dir($path) || is_writable(dirname($path))) {
+            $base_dir = $path;
+            break;
+        }
+    }
+    
+    // If no existing path found, use the standard one
+    if ($base_dir === null) {
+        $base_dir = __DIR__ . '/../' . UPLOAD_PATH;
+    }
+    
     if ($subfolder) {
         $full_path = $base_dir . '/' . ltrim($subfolder, '/');
     } else {
