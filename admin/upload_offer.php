@@ -5,6 +5,8 @@ include '../config/app.php'; // Include app config to access UPLOAD_PATH
 
 // Handle form submission BEFORE including the layout
 $message = '';
+$error = ''; // Initialize error variable
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category_id = $_POST['category_id'];
     $title = $_POST['title'];
@@ -19,33 +21,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_FILES['images'])) {
         // Use the proper upload directory function from app config
         $upload_dir = upload_dir() . '/'; // This gets the full server path to uploads directory
+        
+        // Ensure directory exists with proper permissions
         if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
+            // Try to create directory with proper permissions
+            if (!mkdir($upload_dir, 0755, true)) {
+                $error = "Failed to create upload directory. Please check permissions.";
+            }
         }
         
-        $files = $_FILES['images'];
-        $file_count = count($files['name']);
+        // If directory exists but is not writable, try to fix permissions
+        if (empty($error) && !is_writable($upload_dir)) {
+            // Try to change permissions
+            @chmod($upload_dir, 0755);
+            // Check again
+            if (!is_writable($upload_dir)) {
+                $error = "Upload directory is not writable. Please check permissions.";
+            }
+        }
         
-        for ($i = 0; $i < $file_count; $i++) {
-            if ($files['error'][$i] === UPLOAD_ERR_OK) {
-                $file_name = time() . '_' . $i . '_' . basename($files['name'][$i]);
-                $target_file = $upload_dir . $file_name;
-                
-                // Allow certain file formats
-                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-                $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
-                
-                if (in_array($imageFileType, $allowed_types)) {
-                    if (move_uploaded_file($files['tmp_name'][$i], $target_file)) {
-                        // Store relative path for database storage
-                        $uploaded_images[] = UPLOAD_PATH . '/' . $file_name;
+        // Continue only if no error occurred
+        if (empty($error)) {
+            $files = $_FILES['images'];
+            $file_count = count($files['name']);
+            
+            for ($i = 0; $i < $file_count; $i++) {
+                if ($files['error'][$i] === UPLOAD_ERR_OK) {
+                    $file_name = time() . '_' . $i . '_' . basename($files['name'][$i]);
+                    $target_file = $upload_dir . $file_name;
+                    
+                    // Allow certain file formats
+                    $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                    $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+                    
+                    if (in_array($imageFileType, $allowed_types)) {
+                        // Buffer output to prevent headers already sent error
+                        ob_start();
+                        $upload_result = move_uploaded_file($files['tmp_name'][$i], $target_file);
+                        $upload_output = ob_get_clean();
+                        
+                        if ($upload_result) {
+                            // Store relative path for database storage
+                            $uploaded_images[] = UPLOAD_PATH . '/' . $file_name;
+                        } else {
+                            $error = "Error uploading image. Please check directory permissions.";
+                            // Log the actual error for debugging
+                            if (!empty($upload_output)) {
+                                error_log("Upload error output: " . $upload_output);
+                            }
+                            error_log("Failed to move uploaded file to: " . $target_file);
+                        }
                     }
                 }
             }
         }
     }
     
-    if (!isset($error) && !empty($category_id) && !empty($title) && !empty($price) && !empty($uploaded_images)) {
+    if (empty($error) && !empty($category_id) && !empty($title) && !empty($price) && !empty($uploaded_images)) {
         try {
             // Insert the main offer
             $stmt = $pdo->prepare("INSERT INTO offers (category_id, title, description, price, image, redirect_url) VALUES (?, ?, ?, ?, ?, ?)");
@@ -62,12 +94,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([$offer_id, $image_path]);
             }
             
-            header("Location: upload_offer.php?message=" . urlencode("Offer uploaded successfully with " . count($uploaded_images) . " images!"));
+            // Use JavaScript redirect to avoid headers already sent error
+            echo "<script>window.location.href = 'upload_offer.php?message=" . urlencode("Offer uploaded successfully with " . count($uploaded_images) . " images!") . "';</script>";
             exit;
         } catch(PDOException $e) {
+            // Delete uploaded files if database operation fails
+            foreach ($uploaded_images as $image_path) {
+                $full_path = __DIR__ . '/../' . $image_path;
+                if (file_exists($full_path)) {
+                    unlink($full_path);
+                }
+            }
             $error = "Error uploading offer: " . $e->getMessage();
         }
-    } elseif (!isset($error)) {
+    } elseif (empty($error)) {
         if (empty($uploaded_images)) {
             $error = "At least one image is required!";
         } else {

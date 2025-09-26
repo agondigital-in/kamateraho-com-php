@@ -20,8 +20,8 @@ WORKDIR /var/www/html
 # Copy application files
 COPY . /var/www/html/
 
-# Set proper permissions for upload directories
-RUN mkdir -p /var/www/html/uploads/credit_cards /var/www/html/uploads/offers \
+# Set proper permissions for all upload directories
+RUN mkdir -p /var/www/html/uploads /var/www/html/uploads/credit_cards /var/www/html/uploads/offers \
     && chmod -R 775 /var/www/html/uploads \
     && chown -R www-data:www-data /var/www/html/uploads
 
