@@ -20,12 +20,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
         $upload_dir = '../uploads/offers/credit_card/';
-        
+        $parent_dir = dirname($upload_dir);
+
+        // Ensure parent directory exists and is writable
+        if (!is_dir($parent_dir)) {
+            die('Parent directory does not exist: ' . $parent_dir);
+        }
+        if (!is_writable($parent_dir)) {
+            die('Parent directory is not writable: ' . $parent_dir . '. Please check permissions.');
+        }
+
         // Ensure the directory exists
         if (!is_dir($upload_dir)) {
-            mkdir($upload_dir, 0777, true);
+            if (!mkdir($upload_dir, 0777, true)) {
+                die('Failed to create upload directory: ' . $upload_dir . '. Please check permissions.');
+            }
         }
-        
+
         // Check if directory is writable
         if (!is_writable($upload_dir)) {
             die('Upload directory is not writable. Please check permissions.');
