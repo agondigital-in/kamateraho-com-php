@@ -46,19 +46,20 @@ A CashKaro.com-like cashback website built with PHP and MySQL.
 
 1. Place all files in your web server directory (e.g., `htdocs/kmt` for XAMPP)
 2. Copy `.env.example` to `.env` and configure your environment variables
-3. Run `create_db.php` to create the database and tables
-4. Access the application through your web browser
+3. Test the database connection with `test_remote_db.php`
+4. If the connection fails, verify your remote database settings
+5. Access the application through your web browser
 
 ## Environment Configuration
 
 The application uses environment variables for configuration. Copy `.env.example` to `.env` and modify the values as needed.
 
 Key environment variables:
-- `DB_HOST` - Database host (default: localhost)
-- `DB_PORT` - Database port (default: 3306)
+- `DB_HOST` - Database host (remote server IP)
+- `DB_PORT` - Database port (default: 3307)
 - `DB_DATABASE` - Database name (default: kamateraho)
 - `DB_USERNAME` - Database username (default: root)
-- `DB_PASSWORD` - Database password (default: empty)
+- `DB_PASSWORD` - Database password (complex password provided)
 
 ## Admin Access
 - Admin Login: `admin/login.php`
