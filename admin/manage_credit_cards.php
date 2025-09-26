@@ -6,6 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $page_title = "Manage Credit Cards";
 include '../config/db.php';
+include '../config/app.php'; // Include app configuration
 include 'includes/admin_layout.php';
 
 // Handle form submission
@@ -20,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Handle file upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            $upload_dir = '../uploads/credit_cards/';
+            $upload_dir = '../' . CREDIT_CARDS_UPLOAD_PATH . '/';
             
             // Ensure directory exists with proper permissions
             if (!is_dir($upload_dir)) {
@@ -49,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 error_log("Attempting to move file from: " . $_FILES['image']['tmp_name'] . " to: " . $upload_path);
                 
                 if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
-                    $image_path = 'uploads/credit_cards/' . $filename;
+                    $image_path = CREDIT_CARDS_UPLOAD_PATH . '/' . $filename;
                     
                     try {
                         $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");

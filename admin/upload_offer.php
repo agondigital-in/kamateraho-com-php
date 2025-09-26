@@ -6,6 +6,7 @@ if (session_status() == PHP_SESSION_NONE) {
 
 $page_title = "Upload Offer";
 include '../config/db.php';
+include '../config/app.php'; // Include app configuration
 include 'includes/admin_layout.php'; // Include layout early to handle auth
 
 // Handle form submission
@@ -24,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
-        $upload_dir = '../uploads/';
+        $upload_dir = '../' . OFFER_IMAGES_UPLOAD_PATH . '/';
         
         // Ensure directory exists with proper permissions
         if (!is_dir($upload_dir)) {
@@ -62,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         error_log("Attempting to move file from: " . $files['tmp_name'][$i] . " to: " . $target_file);
                         
                         if (move_uploaded_file($files['tmp_name'][$i], $target_file)) {
-                            $uploaded_images[] = 'uploads/' . $file_name;
+                            $uploaded_images[] = OFFER_IMAGES_UPLOAD_PATH . '/' . $file_name;
                         } else {
                             $error = "Error uploading image. Check directory permissions.";
                             // Log detailed error information
