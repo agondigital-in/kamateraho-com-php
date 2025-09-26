@@ -1,0 +1,75 @@
+/* Additional Admin Styles */
+
+/* Sidebar active link */
+.sidebar .nav-link.active {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+/* Card hover effect */
+.card {
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Stats card */
+.stats-card {
+    border-left: 4px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Table styles */
+.table th {
+    font-weight: 600;
+    color: #495057;
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+}
+
+/* Badge styles */
+.badge {
+    padding: 6px 10px;
+    font-weight: 500;
+}
+
+/* Button styles */
+.btn {
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 500;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.875rem;
+}
+
+/* Form styles */
+.form-control, .form-select {
+    border-radius: 6px;
+    padding: 10px 12px;
+}
+
+/* Alert styles */
+.alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+    }
+    
+    .table-responsive .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+}

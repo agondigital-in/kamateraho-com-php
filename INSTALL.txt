@@ -1,0 +1,60 @@
+KamateRaho Installation Guide
+============================
+
+1. Prerequisites:
+   - XAMPP or any PHP/MySQL server environment
+   - PHP 7.0 or higher
+   - MySQL 5.6 or higher
+
+2. Installation Steps:
+   a. Copy all files to your web server directory
+      (e.g., C:\xampp\htdocs\kmt for XAMPP)
+   
+   b. Start Apache and MySQL services in XAMPP Control Panel
+   
+   c. Open your browser and go to:
+      http://localhost/kmt/
+   
+   d. You'll see a message to initialize the database
+      Click on "Initialize Database" or go to:
+      http://localhost/kmt/init.php
+   
+   e. After initialization, you can access:
+      - User frontend: http://localhost/kmt/
+      - Admin panel: http://localhost/kmt/admin/login.php
+        (Default credentials: admin / admin123)
+      - User registration: http://localhost/kmt/register.php
+
+3. Default Admin Credentials:
+   Username: admin
+   Password: admin123
+
+4. First-time User Setup:
+   a. Register a new user account at:
+      http://localhost/kmt/register.php
+   
+   b. Login with your credentials at:
+      http://localhost/kmt/login.php
+
+5. Admin Functions:
+   - Add categories
+   - Manage categories
+   - Upload offers
+   - Approve wallet transactions
+   - Process withdrawal requests
+
+6. User Features:
+   - Browse categories
+   - View offers
+   - Wallet system with cashback
+   - Withdrawal requests
+
+7. File Uploads:
+   - Offer images are stored in the "uploads" folder
+   - Withdrawal screenshots are stored in the "uploads" folder
+   - These folders are created automatically when needed
+
+8. Troubleshooting:
+   - If you get database errors, make sure MySQL is running
+   - If images don't display, check folder permissions
+   - For login issues, verify your database connection in config/db.php

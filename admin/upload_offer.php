@@ -1,0 +1,157 @@
+<?php
+$page_title = "Upload Offer";
+include '../config/db.php';
+
+// Handle form submission BEFORE including the layout
+$message = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $category_id = $_POST['category_id'];
+    $title = $_POST['title'];
+    $description = $_POST['description'];
+    $price = $_POST['price'];
+    $redirect_url = $_POST['redirect_url'];
+    
+    // Handle file uploads
+    $uploaded_images = [];
+    
+    // Process multiple image uploads
+    if (isset($_FILES['images'])) {
+        $upload_dir = '../uploads/';
+        if (!is_dir($upload_dir)) {
+            mkdir($upload_dir, 0777, true);
+        }
+        
+        $files = $_FILES['images'];
+        $file_count = count($files['name']);
+        
+        for ($i = 0; $i < $file_count; $i++) {
+            if ($files['error'][$i] === UPLOAD_ERR_OK) {
+                $file_name = time() . '_' . $i . '_' . basename($files['name'][$i]);
+                $target_file = $upload_dir . $file_name;
+                
+                // Allow certain file formats
+                $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+                $allowed_types = ['jpg', 'jpeg', 'png', 'gif'];
+                
+                if (in_array($imageFileType, $allowed_types)) {
+                    if (move_uploaded_file($files['tmp_name'][$i], $target_file)) {
+                        $uploaded_images[] = 'uploads/' . $file_name;
+                    }
+                }
+            }
+        }
+    }
+    
+    if (!isset($error) && !empty($category_id) && !empty($title) && !empty($price) && !empty($uploaded_images)) {
+        try {
+            // Insert the main offer
+            $stmt = $pdo->prepare("INSERT INTO offers (category_id, title, description, price, image, redirect_url) VALUES (?, ?, ?, ?, ?, ?)");
+            // Use the first image as the main image
+            $main_image = $uploaded_images[0];
+            $stmt->execute([$category_id, $title, $description, $price, $main_image, $redirect_url]);
+            
+            // Get the ID of the inserted offer
+            $offer_id = $pdo->lastInsertId();
+            
+            // Insert all images into the offer_images table
+            foreach ($uploaded_images as $image_path) {
+                $stmt = $pdo->prepare("INSERT INTO offer_images (offer_id, image_path) VALUES (?, ?)");
+                $stmt->execute([$offer_id, $image_path]);
+            }
+            
+            header("Location: upload_offer.php?message=" . urlencode("Offer uploaded successfully with " . count($uploaded_images) . " images!"));
+            exit;
+        } catch(PDOException $e) {
+            $error = "Error uploading offer: " . $e->getMessage();
+        }
+    } elseif (!isset($error)) {
+        if (empty($uploaded_images)) {
+            $error = "At least one image is required!";
+        } else {
+            $error = "Category, Title, and Price are required!";
+        }
+    }
+}
+
+// Fetch categories for the dropdown
+try {
+    $stmt = $pdo->query("SELECT id, name FROM categories ORDER BY name");
+    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $error = "Error fetching categories: " . $e->getMessage();
+    $categories = [];
+}
+
+include 'includes/admin_layout.php'; // This includes auth check
+?>
+
+<div class="container-fluid">
+    <h2>Upload New Offer</h2>
+    
+    <?php if (isset($_GET['message'])): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?php echo htmlspecialchars($_GET['message']); ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
+    
+    <?php if (isset($error)): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?php echo $error; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    <?php endif; ?>
+    
+    <div class="card">
+        <div class="card-header">
+            <h5>Offer Details</h5>
+        </div>
+        <div class="card-body">
+            <form method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="category_id" class="form-label">Select Category</label>
+                    <select class="form-select" id="category_id" name="category_id" required>
+                        <option value="">Choose a category</option>
+                        <?php foreach ($categories as $category): ?>
+                            <option value="<?php echo $category['id']; ?>">
+                                <?php echo htmlspecialchars($category['name']); ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="description" class="form-label">Description</label>
+                    <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price (₹)</label>
+                    <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="redirect_url" class="form-label">Redirect URL</label>
+                    <input type="url" class="form-control" id="redirect_url" name="redirect_url" placeholder="https://example.com">
+                    <div class="form-text">Enter the URL where users will be redirected when they click on this offer.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="images" class="form-label">Upload Images</label>
+                    <input type="file" class="form-control" id="images" name="images[]" accept="image/*" multiple required>
+                    <div class="form-text">You can select multiple images. Hold Ctrl (or Cmd on Mac) to select multiple files.</div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Save Offer</button>
+                <a href="../index.php" class="btn btn-secondary">View User Dashboard</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+<?php include 'includes/admin_footer.php'; ?>

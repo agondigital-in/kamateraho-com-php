@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Redirect trailing slash
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+# Handle PHP files without extension
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^([^\.]+)$ $1.php [NC,L]
