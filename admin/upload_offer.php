@@ -19,25 +19,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
-        // Use the proper upload directory function from app config
-        $upload_dir = upload_dir() . '/'; // This gets the full server path to uploads directory
+        // Update the upload directory path
+        $upload_dir = '../uploads/offers/credit_card/';
         
-        // Ensure directory exists with proper permissions
+        // Ensure the directory exists
         if (!is_dir($upload_dir)) {
-            // Try to create directory with proper permissions
-            if (!mkdir($upload_dir, 0755, true)) {
-                $error = "Failed to create upload directory. Please check permissions.";
-            }
+            mkdir($upload_dir, 0777, true);
         }
         
-        // If directory exists but is not writable, try to fix permissions
-        if (empty($error) && !is_writable($upload_dir)) {
-            // Try to change permissions
-            @chmod($upload_dir, 0755);
-            // Check again
-            if (!is_writable($upload_dir)) {
-                $error = "Upload directory is not writable. Please check permissions.";
-            }
+        // Check if directory is writable
+        if (!is_writable($upload_dir)) {
+            die('Upload directory is not writable. Please check permissions.');
         }
         
         // Continue only if no error occurred
