@@ -69,6 +69,9 @@
                                     id INT(11) AUTO_INCREMENT PRIMARY KEY,
                                     name VARCHAR(255) NOT NULL,
                                     email VARCHAR(255) UNIQUE NOT NULL,
+                                    phone VARCHAR(20),
+                                    city VARCHAR(100),
+                                    state VARCHAR(100),
                                     password VARCHAR(255) NOT NULL,
                                     wallet_balance DECIMAL(10, 2) DEFAULT 0.00,
                                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP

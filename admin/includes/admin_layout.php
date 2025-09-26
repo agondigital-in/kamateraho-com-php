@@ -1,5 +1,5 @@
 <?php
-// Start session if not already started
+// Start session if not already started - this should be at the very top
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }

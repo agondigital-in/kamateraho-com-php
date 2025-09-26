@@ -1,8 +1,14 @@
 <?php
+// Start session at the very beginning
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 $page_title = "Manage Credit Cards";
 include '../config/db.php';
+include 'includes/admin_layout.php';
 
-// Handle form submission BEFORE including the layout
+// Handle form submission
 $success = '';
 $error = '';
 
@@ -15,30 +21,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Handle file upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
             $upload_dir = '../uploads/credit_cards/';
+            
+            // Ensure directory exists with proper permissions
             if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
+                if (!mkdir($upload_dir, 0755, true)) {
+                    $error = "Failed to create upload directory.";
+                }
             }
             
-            $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
-            $filename = uniqid() . '.' . $file_extension;
-            $upload_path = $upload_dir . $filename;
+            // Check if directory is writable
+            if (!is_writable($upload_dir)) {
+                $error = "Upload directory is not writable. Please check permissions.";
+            }
             
-            if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
-                $image_path = 'uploads/credit_cards/' . $filename;
+            if (empty($error)) {
+                $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+                $filename = uniqid() . '.' . $file_extension;
+                $upload_path = $upload_dir . $filename;
                 
-                try {
-                    $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
-                    $stmt->execute([$title, $image_path, $link, $is_active]);
-                    header("Location: manage_credit_cards.php?success=" . urlencode("Credit card added successfully!"));
-                    exit;
-                } catch(PDOException $e) {
-                    $error = "Error adding credit card: " . $e->getMessage();
+                // Debug information
+                error_log("Attempting to move file from: " . $_FILES['image']['tmp_name'] . " to: " . $upload_path);
+                
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $upload_path)) {
+                    $image_path = 'uploads/credit_cards/' . $filename;
+                    
+                    try {
+                        $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
+                        $stmt->execute([$title, $image_path, $link, $is_active]);
+                        header("Location: manage_credit_cards.php?success=" . urlencode("Credit card added successfully!"));
+                        exit;
+                    } catch(PDOException $e) {
+                        $error = "Error adding credit card: " . $e->getMessage();
+                        // Delete the uploaded file if database insert fails
+                        if (file_exists($upload_path)) {
+                            unlink($upload_path);
+                        }
+                    }
+                } else {
+                    $error = "Error uploading image. Check directory permissions.";
+                    // Log detailed error information
+                    error_log("Failed to move uploaded file. Upload errors: " . print_r($_FILES['image'], true));
                 }
-            } else {
-                $error = "Error uploading image.";
             }
         } else {
             $error = "Please select an image.";
+            if (isset($_FILES['image'])) {
+                $error .= " Upload error code: " . $_FILES['image']['error'];
+            }
         }
     } elseif (isset($_POST['delete_card'])) {
         $id = $_POST['id'];
@@ -82,8 +111,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
-
-include 'includes/admin_layout.php';
 
 // Fetch all credit cards
 try {

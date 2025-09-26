@@ -47,8 +47,9 @@ A CashKaro.com-like cashback website built with PHP and MySQL.
 1. Place all files in your web server directory (e.g., `htdocs/kmt` for XAMPP)
 2. Copy `.env.example` to `.env` and configure your environment variables
 3. Test the database connection with `test_remote_db.php`
-4. If the connection fails, verify your remote database settings
-5. Access the application through your web browser
+4. If the connection succeeds but registration fails, run `apply_database_updates.php` to update the database schema
+5. Run `fix_permissions.php` to ensure upload directories have correct permissions
+6. Access the application through your web browser
 
 ## Environment Configuration
 
