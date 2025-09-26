@@ -48,8 +48,16 @@ A CashKaro.com-like cashback website built with PHP and MySQL.
 2. Copy `.env.example` to `.env` and configure your environment variables
 3. Test the database connection with `test_remote_db.php`
 4. If the connection succeeds but registration fails, run `apply_database_updates.php` to update the database schema
-5. Run `fix_permissions.php` to ensure upload directories have correct permissions
+5. Run `fix_permissions.php` or `fix_permissions.bat` (as Administrator) to ensure upload directories have correct permissions
 6. Access the application through your web browser
+
+## Fixing Upload Permission Issues
+
+If you encounter "Upload directory is not writable" errors:
+
+1. Run `fix_upload_permissions.php` through your web browser to diagnose the issue
+2. On Windows with XAMPP, run `fix_permissions.bat` as Administrator
+3. Ensure the Apache service has write permissions to the `uploads` and `uploads/credit_cards` directories
 
 ## Environment Configuration
 
@@ -63,17 +71,18 @@ Key environment variables:
 - `DB_PASSWORD` - Database password (complex password provided)
 
 ## Admin Access
-- Admin Login: `admin/login.php`
+- Admin Login: `https://kamateraho1.agondev.space/admin/login.php`
 - Default credentials: `admin` / `admin123`
 
 ## User Access
-- User Registration: `register.php`
-- User Login: `login.php`
+- User Registration: `https://kamateraho1.agondev.space/register.php`
+- User Login: `https://kamateraho1.agondev.space/login.php`
 
 ## File Structure
 ```
 kmt/
 ├── config/
+│   ├── app.php         # Application configuration
 │   ├── db.php          # Database connection
 │   └── env.php         # Environment loader
 ├── create_db.php       # Database and table creation

@@ -8,7 +8,7 @@ The project now has two distinct entry points:
 ## User Flow
 
 ### 1. Public Access
-- Users can access `http://localhost/kmt/kamate%20raho/index.php` without logging in
+- Users can access `https://kamateraho1.agondev.space/kamate%20raho/index.php` without logging in
 - This page provides information about the service and links to authentication
 
 ### 2. Authentication Process
@@ -17,7 +17,7 @@ The project now has two distinct entry points:
 - After successful login, users are redirected to the main application page
 
 ### 3. Main Application Access
-- `http://localhost/kmt/index.php` requires authentication
+- `https://kamateraho1.agondev.space/index.php` requires authentication
 - Unauthenticated users are automatically redirected to the login page
 - Authenticated users can access all application features
 
@@ -55,7 +55,7 @@ The project now has two distinct entry points:
 ## Testing the Flow
 
 1. **Access Public Landing Page**
-   - Visit `http://localhost/kmt/kamate%20raho/index.php`
+   - Visit `https://kamateraho1.agondev.space/kamate%20raho/index.php`
    - Should load without requiring login
 
 2. **Register New User**
@@ -66,10 +66,10 @@ The project now has two distinct entry points:
 3. **Login**
    - Click "Login" from the public landing page or after registration
    - Enter credentials
-   - Should be redirected to `http://localhost/kmt/index.php`
+   - Should be redirected to `https://kamateraho1.agondev.space/index.php`
 
 4. **Access Main Application**
-   - Visit `http://localhost/kmt/index.php` directly
+   - Visit `https://kamateraho1.agondev.space/index.php` directly
    - If not logged in, should be redirected to login page
    - If logged in, should see the main application page
 
