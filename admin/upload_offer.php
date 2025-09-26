@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
-        // Update the upload directory path
         $upload_dir = '../uploads/offers/credit_card/';
         
         // Ensure the directory exists
@@ -54,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         if ($upload_result) {
                             // Store relative path for database storage
-                            $uploaded_images[] = UPLOAD_PATH . '/' . $file_name;
+                            $uploaded_images[] = 'uploads/offers/credit_card/' . $file_name;
                         } else {
                             $error = "Error uploading image. Please check directory permissions.";
                             // Log the actual error for debugging
