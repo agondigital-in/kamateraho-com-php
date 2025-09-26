@@ -45,10 +45,9 @@ A CashKaro.com-like cashback website built with PHP and MySQL.
 ## Installation
 
 1. Place all files in your web server directory (e.g., `htdocs/kmt` for XAMPP)
-2. Create a MySQL database named `kamateraho`
-3. Copy `.env.example` to `.env` and configure your environment variables
-4. Run `config/create_db.php` to create tables
-5. Access the application through your web browser
+2. Copy `.env.example` to `.env` and configure your environment variables
+3. Run `create_db.php` to create the database and tables
+4. Access the application through your web browser
 
 ## Environment Configuration
 
@@ -74,8 +73,9 @@ Key environment variables:
 kmt/
 ├── config/
 │   ├── db.php          # Database connection
-│   ├── env.php         # Environment loader
-│   └── create_db.php   # Database setup
+│   └── env.php         # Environment loader
+├── create_db.php       # Database and table creation
+└── test_db.php         # Database connection test
 ├── admin/
 │   ├── login.php       # Admin login
 │   ├── index.php       # Admin dashboard

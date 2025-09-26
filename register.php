@@ -19,6 +19,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Password must be at least 6 characters long!";
     } elseif ($pdo === null) {
         $error = "Database connection failed. Please contact the administrator.";
+        // Add detailed error information for debugging (remove in production)
+        if (isset($db_error)) {
+            $error .= " Error details: " . $db_error;
+        }
     } else {
         try {
             // Check if email already exists

@@ -1,24 +1,20 @@
 <?php
-// Initialize the database and tables
-echo "<h1>KamateRaho Database Initialization</h1>";
-
 // Load environment variables
 require_once __DIR__ . '/config/env.php';
 
-// Database configuration
 $servername = $_ENV['DB_HOST'] ?? 'localhost';
 $username = $_ENV['DB_USERNAME'] ?? 'root';
 $password = $_ENV['DB_PASSWORD'] ?? '';
-$dbname = $_ENV['DB_DATABASE'] ?? 'kamateraho';
 
 try {
-    // Connect to MySQL
+    // Connect to MySQL server without specifying a database
     $pdo = new PDO("mysql:host=$servername", $username, $password);
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
     // Create database
-    $pdo->exec("CREATE DATABASE IF NOT EXISTS $dbname");
-    echo "<p>✓ Database '$dbname' created or already exists</p>";
+    $dbname = $_ENV['DB_DATABASE'] ?? 'kamateraho';
+    $pdo->exec("CREATE DATABASE IF NOT EXISTS `$dbname`");
+    echo "<p>Database '$dbname' created or already exists.</p>";
     
     // Connect to the specific database
     $pdo = new PDO("mysql:host=$servername;dbname=$dbname", $username, $password);
@@ -31,7 +27,7 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
     $pdo->exec($sql);
-    echo "<p>✓ Categories table created successfully</p>";
+    echo "<p>Categories table created successfully</p>";
     
     // Create offers table
     $sql = "CREATE TABLE IF NOT EXISTS offers (
@@ -45,7 +41,7 @@ try {
         FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
     )";
     $pdo->exec($sql);
-    echo "<p>✓ Offers table created successfully</p>";
+    echo "<p>Offers table created successfully</p>";
     
     // Create users table
     $sql = "CREATE TABLE IF NOT EXISTS users (
@@ -57,7 +53,7 @@ try {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";
     $pdo->exec($sql);
-    echo "<p>✓ Users table created successfully</p>";
+    echo "<p>Users table created successfully</p>";
     
     // Create wallet_history table
     $sql = "CREATE TABLE IF NOT EXISTS wallet_history (
@@ -71,7 +67,7 @@ try {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )";
     $pdo->exec($sql);
-    echo "<p>✓ Wallet history table created successfully</p>";
+    echo "<p>Wallet history table created successfully</p>";
     
     // Create withdraw_requests table
     $sql = "CREATE TABLE IF NOT EXISTS withdraw_requests (
@@ -85,20 +81,12 @@ try {
         FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     )";
     $pdo->exec($sql);
-    echo "<p>✓ Withdraw requests table created successfully</p>";
+    echo "<p>Withdraw requests table created successfully</p>";
     
-    echo "<h3 class='text-success'>Database initialization completed successfully!</h3>";
-    echo "<p><a href='index.php' class='btn btn-primary'>Go to Homepage</a></p>";
+    echo "<h3 style='color: green;'>All tables created successfully!</h3>";
+    echo "<p><a href='index.php'>Go to Homepage</a></p>";
     
 } catch(PDOException $e) {
-    echo "<p class='text-danger'>Error: " . $e->getMessage() . "</p>";
+    echo "<p style='color: red;'>Error: " . $e->getMessage() . "</p>";
 }
-
-echo "<hr>";
-echo "<p><strong>Next steps:</strong></p>";
-echo "<ol>";
-echo "<li>Visit <a href='admin/login.php'>Admin Panel</a> (Default credentials: admin / admin123)</li>";
-echo "<li>Visit <a href='register.php'>Register</a> to create a user account</li>";
-echo "</ol>";
-echo "<p><strong>Note:</strong> If you encounter database connection errors, try running <a href='create_db.php'>create_db.php</a> to ensure the database and tables are properly created.</p>";
 ?>

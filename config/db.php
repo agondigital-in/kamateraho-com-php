@@ -12,6 +12,8 @@ try {
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch(PDOException $e) {
     // If database doesn't exist, we'll handle it in the calling script
+    // Store the error for debugging
+    $db_error = $e->getMessage();
     $pdo = null;
 }
 ?>
