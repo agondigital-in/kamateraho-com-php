@@ -13,7 +13,7 @@ function normalize_image($path) {
     // Remove leading ../ if present from legacy stored paths
     $path = preg_replace('#^\.\./#', '', $path);
     // Ensure no leading slash issues
-    $path = ltrim($path, '/');
+    $path = ltrim($path, '/');  
     // Build absolute URL
     return url($path);
 }

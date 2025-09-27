@@ -96,7 +96,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch(PDOException $e) {
             // Delete uploaded files if database operation fails
             foreach ($uploaded_images as $image_path) {
-                $full_path = __DIR__ . '/../../' . $image_path;
+                $full_path = __DIR__ . '../../uploads/' . $image_path;
                 if (file_exists($full_path)) {
                     unlink($full_path);
                 }
