@@ -16,7 +16,7 @@ $imagepath = $_ENV['IMG_PATH'] ?? '';
 // Define upload paths
 define('UPLOAD_PATH', 'uploads');
 define('CREDIT_CARDS_UPLOAD_PATH', 'uploads/credit_cards');
-define('OFFER_IMAGES_UPLOAD_PATH', 'uploads'); // Offers are stored in the main uploads folder
+define('OFFER_IMAGES_UPLOAD_PATH', 'uploads/offers'); // Offers are stored in the offers subfolder
 
 // Function to generate full URLs
 function url($path = '') {

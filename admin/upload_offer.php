@@ -6,6 +6,8 @@ include '../config/app.php'; // Include app config to access UPLOAD_PATH
 // Handle form submission BEFORE including the layout
 $message = '';
 $error = ''; // Initialize error variable
+// Start output buffering early to prevent any PHP warnings/notices from breaking headers
+ob_start();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $category_id = $_POST['category_id'];
@@ -19,12 +21,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
-        $upload_dir = '../../uploads/offers/';
+        // Use helper to resolve a safe, absolute filesystem path for the offers upload directory
+        $upload_dir = rtrim(upload_dir('offers'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
         // Ensure the directory exists
         if (!is_dir($upload_dir)) {
-            if (!mkdir($upload_dir, 0777, true)) {
-                $error = 'Failed to create upload directory: ' . $upload_dir . '. Please check folder permissions on your server. You may need to manually create this folder and set permissions to 0777 or 0755. <br><br>You can also try running the <a href="../fix_upload_permissions.php" target="_blank">permission fix script</a> to automatically resolve this issue.';
+            if (!@mkdir($upload_dir, 0777, true)) {
+                $error = 'Failed to create upload directory: ' . htmlspecialchars($upload_dir) . '. Please check folder permissions on your server. You may need to manually create this folder and set permissions to 0777 or 0755. <br><br>You can also try running the <a href="../fix_upload_permissions.php" target="_blank">permission fix script</a> to automatically resolve this issue.';
             }
         }
 
@@ -54,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $upload_output = ob_get_clean();
                         
                         if ($upload_result) {
-                            // Store relative path for database storage
+                            // Store relative path for database storage (used by the app to reference images)
                             $uploaded_images[] = '../uploads/offers/' . $file_name;
                         } else {
                             $error = "Error uploading image. Please check directory permissions.";
