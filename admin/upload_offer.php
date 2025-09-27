@@ -22,10 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
         // Use helper to resolve a safe, absolute filesystem path for the offers upload directory
-        $upload_dir = __DIR__ . '/../uploads/offers/';
-
-        mkdir -p uploads/offers
-chmod -R 777 uploads
+        $upload_dir = rtrim(upload_dir('offers'), DIRECTORY_SEPARATOR) . DIRECTORY_SEPARATOR;
 
         // Ensure the directory exists
         if (!is_dir($upload_dir)) {
