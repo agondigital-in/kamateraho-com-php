@@ -57,8 +57,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         $upload_output = ob_get_clean();
                         
                         if ($upload_result) {
-                            // Store relative path for database storage (used by the app to reference images)
-                            $uploaded_images[] = '../uploads/offers/' . $file_name;
+                            // Store web-relative path for database storage so it works across frontend pages
+                            $uploaded_images[] = 'uploads/offers/' . $file_name;
                         } else {
                             $error = "Error uploading image. Please check directory permissions.";
                             // Log the actual error for debugging

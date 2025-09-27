@@ -3,6 +3,21 @@ session_start();
 include 'config/db.php';
 include 'config/app.php';
 
+// Normalize image path to an absolute URL using BASE_URL
+function normalize_image($path) {
+    if (!$path) return '';
+    // If already absolute URL, return as-is
+    if (preg_match('/^https?:\/\//i', $path)) {
+        return $path;
+    }
+    // Remove leading ../ if present from legacy stored paths
+    $path = preg_replace('#^\.\./#', '', $path);
+    // Ensure no leading slash issues
+    $path = ltrim($path, '/');
+    // Build absolute URL
+    return url($path);
+}
+
 // Check if user is logged in, if not redirect to login page
 if (!isset($_SESSION['user_id'])) {
     header("Location: login.php");
@@ -246,7 +261,7 @@ if ($pdo) {
                         <?php foreach ($credit_cards as $card): ?>
                             <div class="col-md-3">
                                 <div class="card border-0 shadow-sm h-100">
-                                    <img src="<?php echo htmlspecialchars($card['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 180px; object-fit: cover;">
+                                    <img src="<?php echo htmlspecialchars(normalize_image($card['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
                                         <!-- Product Title -->
                                         <h5 class="card-title text-center mb-1" style="font-size: 0.9rem;"><?php echo htmlspecialchars($card['title']); ?></h5>
@@ -283,7 +298,7 @@ if ($pdo) {
                             <div class="col-md-3">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars($offer['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
+                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <?php else: ?>
                                         <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-image fa-3x text-muted"></i>
@@ -325,7 +340,7 @@ if ($pdo) {
                             <div class="col-md-3">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars($offer['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
+                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <?php else: ?>
                                         <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-image fa-3x text-muted"></i>
@@ -367,7 +382,7 @@ if ($pdo) {
                             <div class="col-md-3">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars($offer['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
+                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <?php else: ?>
                                         <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-image fa-3x text-muted"></i>
