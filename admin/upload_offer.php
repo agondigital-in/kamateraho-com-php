@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
-        $upload_dir = '../uploads/offers/';
+        $upload_dir = '../../uploads/offers/';
 
         // Ensure the directory exists
         if (!is_dir($upload_dir)) {
@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         
                         if ($upload_result) {
                             // Store relative path for database storage
-                            $uploaded_images[] = 'uploads/offers/' . $file_name;
+                            $uploaded_images[] = '../uploads/offers/' . $file_name;
                         } else {
                             $error = "Error uploading image. Please check directory permissions.";
                             // Log the actual error for debugging
@@ -93,7 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch(PDOException $e) {
             // Delete uploaded files if database operation fails
             foreach ($uploaded_images as $image_path) {
-                $full_path = __DIR__ . '/../' . $image_path;
+                $full_path = __DIR__ . '/../../' . $image_path;
                 if (file_exists($full_path)) {
                     unlink($full_path);
                 }
