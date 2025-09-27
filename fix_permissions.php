@@ -4,13 +4,14 @@ echo "<h1>Fixing Directory Permissions</h1>";
 // Define directories that need write permissions
 $directories = [
     'uploads',
-    'uploads/credit_cards'
+    'uploads/credit_cards',
+    'uploads/offers'
 ];
 
 $base_path = __DIR__;
 
 foreach ($directories as $dir) {
-    $full_path = $base_path . '/' . $dir;
+    $full_path = $base_path . DIRECTORY_SEPARATOR . $dir;
     
     if (!is_dir($full_path)) {
         echo "<p>Creating directory: $dir</p>";
