@@ -54,44 +54,56 @@ function upload_path($subfolder = '') {
 
 // Function to get full upload directory path with enhanced permission handling for containerized environments
 function upload_dir($subfolder = '') {
-    // Try multiple possible base paths (for different environments)
-    $possible_paths = [
-        __DIR__ . '/../' . UPLOAD_PATH,           // Standard path
-        '/app/' . UPLOAD_PATH,                    // Common container path
-        __DIR__ . '/../../' . UPLOAD_PATH,        // If in a subdirectory
-        getcwd() . '/' . UPLOAD_PATH              // Current working directory
-    ];
-    
+    // Optional environment override (absolute path). Useful in containers/hosting.
+    $env_base = $_ENV['UPLOAD_BASE_DIR'] ?? $_SERVER['UPLOAD_BASE_DIR'] ?? '';
+
+    // Candidate base directories to try (in order)
+    $possible_bases = [];
+    if (!empty($env_base)) {
+        $possible_bases[] = rtrim($env_base, '/\\') . '/' . UPLOAD_PATH;
+    }
+    $possible_bases[] = __DIR__ . '/../' . UPLOAD_PATH;     // Project root uploads/
+    $possible_bases[] = __DIR__ . '/../../' . UPLOAD_PATH;  // If running from a nested context
+    $possible_bases[] = getcwd() . '/' . UPLOAD_PATH;       // Current working directory
+
+    // Avoid hard-coding non-writable container paths by default; only use /app if explicitly writable
+    $possible_bases[] = '/app/' . UPLOAD_PATH;              // Container path (try only if writable)
+
     $base_dir = null;
-    foreach ($possible_paths as $path) {
-        if (is_dir($path) || is_writable(dirname($path))) {
-            $base_dir = $path;
+    foreach ($possible_bases as $base) {
+        // Try to create the base if it doesn't exist
+        if (!is_dir($base)) {
+            @mkdir($base, 0775, true);
+        }
+        // Accept only if directory exists and is writable
+        if (is_dir($base) && is_writable($base)) {
+            $base_dir = $base;
             break;
         }
     }
-    
-    // If no existing path found, use the standard one
+
+    // Final fallback: system temp directory
     if ($base_dir === null) {
-        $base_dir = __DIR__ . '/../' . UPLOAD_PATH;
+        $base_dir = rtrim(sys_get_temp_dir(), '/\\') . '/' . UPLOAD_PATH;
+        if (!is_dir($base_dir)) {
+            @mkdir($base_dir, 0775, true);
+        }
     }
-    
+
+    // Append subfolder if provided
+    $full_path = $base_dir;
     if ($subfolder) {
-        $full_path = $base_dir . '/' . ltrim($subfolder, '/');
-    } else {
-        $full_path = $base_dir;
+        $full_path .= '/' . ltrim($subfolder, '/');
     }
-    
-    // Ensure directory exists with proper permissions
+
+    // Ensure final directory exists and is writable
     if (!is_dir($full_path)) {
-        // Try to create directory with more permissive permissions for container environments
         @mkdir($full_path, 0775, true);
     }
-    
-    // Try to ensure directory is writable
     if (is_dir($full_path) && !is_writable($full_path)) {
         @chmod($full_path, 0775);
     }
-    
+
     return $full_path;
 }
 ?>
