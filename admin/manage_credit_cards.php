@@ -15,53 +15,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Handle file upload
         if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
-            // Use the proper upload directory function from app config
-            $upload_dir = upload_dir('credit_cards') . '/'; // This gets the full server path to uploads/credit_cards directory
-            
+            // Set upload directory outside admin
+            $upload_dir = '../uploads/credit_cards/';
+
             // Ensure directory exists with proper permissions
             if (!is_dir($upload_dir)) {
-                // Try to create directory with proper permissions
                 if (!mkdir($upload_dir, 0755, true)) {
                     $error = "Failed to create upload directory. Please check permissions.";
                 }
             }
-            
+
             // If directory exists but is not writable, try to fix permissions
             if (empty($error) && !is_writable($upload_dir)) {
-                // Try to change permissions
                 @chmod($upload_dir, 0755);
-                // Check again
                 if (!is_writable($upload_dir)) {
-                    $error = "Upload directory is not writable. Please check permissions.";
+                    $error = "Upload directory is not writable (" . $upload_dir . "). Please check permissions.";
                 }
             }
-            
+
             // Continue only if no error occurred
             if (empty($error)) {
                 $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
                 $filename = uniqid() . '.' . $file_extension;
                 $upload_path = $upload_dir . $filename;
-                
+
                 // Check if file is a valid image
                 $image_info = getimagesize($_FILES['image']['tmp_name']);
                 if ($image_info !== false) {
-                    // Buffer output to prevent headers already sent error
                     ob_start();
                     $upload_result = move_uploaded_file($_FILES['image']['tmp_name'], $upload_path);
                     $upload_output = ob_get_clean();
-                    
+
                     if ($upload_result) {
-                        // Store relative path for database storage using UPLOAD_PATH constant
-                        $image_path = UPLOAD_PATH . '/credit_cards/' . $filename;
+                        // Store relative path for database storage
+                        $image_path = 'uploads/credit_cards/' . $filename;
                         try {
                             $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
                             $stmt->execute([$title, $image_path, $link, $is_active]);
-                            
-                            // Use JavaScript redirect to avoid headers already sent error
                             echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card added successfully!") . "';</script>";
                             exit;
                         } catch(PDOException $e) {
-                            // Delete uploaded file if database operation fails
                             if (file_exists($upload_path)) {
                                 unlink($upload_path);
                             }
@@ -69,7 +62,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         }
                     } else {
                         $error = "Error uploading image. Please check directory permissions.";
-                        // Log the actual error for debugging
                         if (!empty($upload_output)) {
                             error_log("Upload error output: " . $upload_output);
                         }
