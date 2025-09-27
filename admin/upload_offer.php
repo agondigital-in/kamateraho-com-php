@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     // Process multiple image uploads
     if (isset($_FILES['images'])) {
-        $upload_dir = '../uploads/credit_card/';
+        $upload_dir = '../uploads/offers/credit_card/';
         $parent_dir = dirname($upload_dir);
 
         // Ensure parent directory exists and is writable

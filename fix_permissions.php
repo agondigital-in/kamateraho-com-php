@@ -3,7 +3,7 @@ echo "<h1>Fixing Directory Permissions</h1>";
 
 // Define directories that need write permissions
 $directories = [
-    'uploads/',
+    'uploads',
     'uploads/credit_cards'
 ];
 
