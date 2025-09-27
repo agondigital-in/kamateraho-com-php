@@ -1,10 +1,10 @@
 .env
 
 # Ignore everything in uploads
-uploads/**
+# uploads/**
 
 # Allow folders inside uploads
-!uploads/**/
+# !uploads/**/
 
 # Allow only .gitkeep files inside uploads
-!uploads/**/*.gitkeep
+# !uploads/**/*.gitkeep
