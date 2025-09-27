@@ -24,13 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Ensure the directory exists
         if (!is_dir($upload_dir)) {
             if (!mkdir($upload_dir, 0777, true)) {
-                die('Failed to create upload directory: ' . $upload_dir . '. Please check folder permissions on your server. You may need to manually create this folder and set permissions to 0777 or 0755.');
+                $error = 'Failed to create upload directory: ' . $upload_dir . '. Please check folder permissions on your server. You may need to manually create this folder and set permissions to 0777 or 0755. <br><br>You can also try running the <a href="../fix_upload_permissions.php" target="_blank">permission fix script</a> to automatically resolve this issue.';
             }
         }
 
         // Check if directory is writable
-        if (!is_writable($upload_dir)) {
-            die('Upload directory is not writable. Please check permissions.');
+        if (empty($error) && !is_writable($upload_dir)) {
+            $error = 'Upload directory is not writable. Please check permissions. <br><br>You can try running the <a href="../fix_upload_permissions.php" target="_blank">permission fix script</a> to automatically resolve this issue.';
         }
         
         // Continue only if no error occurred

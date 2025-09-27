@@ -4,7 +4,8 @@ echo "<h1>Fixing Upload Directory Permissions</h1>";
 // Define directories that need write permissions
 $directories = [
     'uploads',
-    'uploads/credit_cards'
+    'uploads/credit_cards',
+    'uploads/offers'
 ];
 
 $base_path = __DIR__;
@@ -158,6 +159,20 @@ if (file_put_contents($test_file, $test_content)) {
         }
     } else {
         echo "<p style='color: red;'>Failed to create test file in credit_cards directory</p>";
+    }
+    
+    // Also test the offers directory
+    $test_file3 = $base_path . '/uploads/offers/test_permissions.txt';
+    if (file_put_contents($test_file3, $test_content)) {
+        echo "<p style='color: green;'>Successfully created test file in offers directory</p>";
+        // Clean up test file
+        if (unlink($test_file3)) {
+            echo "<p style='color: green;'>Successfully cleaned up test file from offers directory</p>";
+        } else {
+            echo "<p style='color: orange;'>Could not clean up test file from offers directory (not critical)</p>";
+        }
+    } else {
+        echo "<p style='color: red;'>Failed to create test file in offers directory</p>";
     }
 } else {
     echo "<p style='color: red;'>Failed to create test file. This confirms the permission issue.</p>";
