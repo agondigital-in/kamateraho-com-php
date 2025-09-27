@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Ensure the directory exists
         if (!is_dir($upload_dir)) {
             if (!mkdir($upload_dir, 0777, true)) {
-                die('Failed to create upload directory: ' . $upload_dir . '. Please check permissions.');
+                die('Failed to create upload directory: ' . $upload_dir . '. Please check folder permissions on your server. You may need to manually create this folder and set permissions to 0777 or 0755.');
             }
         }
 
