@@ -40,9 +40,10 @@ chmod -R 775 /var/www/html/uploads\n\
 apache2-foreground' > /usr/local/bin/docker-entrypoint.sh \
     && chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Configure Apache
+# Configure Apache for port 3003
 RUN { \
-    echo '<VirtualHost *:80>'; \
+    echo 'Listen 3003'; \
+    echo '<VirtualHost *:3003>'; \
     echo '    ServerAdmin webmaster@localhost'; \
     echo '    DocumentRoot /var/www/html'; \
     echo '    DirectoryIndex index.php index.html'; \
@@ -54,10 +55,11 @@ RUN { \
     echo '    ErrorLog ${APACHE_LOG_DIR}/error.log'; \
     echo '    CustomLog ${APACHE_LOG_DIR}/access.log combined'; \
     echo '</VirtualHost>'; \
-} > /etc/apache2/sites-available/000-default.conf
+} > /etc/apache2/sites-available/000-default.conf \
+    && echo 'Listen 3003' > /etc/apache2/ports.conf
 
-# Expose port 80
-EXPOSE 80
+# Expose port 3003
+EXPOSE 3003
 
 # Set the entrypoint to our verification script
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
