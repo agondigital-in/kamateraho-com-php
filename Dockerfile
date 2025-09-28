@@ -1,35 +1,63 @@
-# Dockerfile for KamateRaho application
-# This ensures proper permissions for file uploads in containerized environments
-
-FROM php:8.1-apache
+# Use PHP 8.2 with Apache as base image
+FROM php:8.2-apache
 
 # Install required PHP extensions
-RUN docker-php-ext-install pdo pdo_mysql mysqli
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Install additional tools
-RUN apt-get update && apt-get install -y \
-    libpng-dev \
-    libjpeg-dev \
-    libfreetype6-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd
+# Enable Apache rewrite module
+RUN a2enmod rewrite
 
-# Set working directory
+# Set the working directory
 WORKDIR /var/www/html
 
 # Copy application files
 COPY . /var/www/html/
 
-# Set proper permissions for all upload directories
-RUN mkdir -p /var/www/html/uploads /var/www/html/uploads/credit_cards /var/www/html/uploads/offers \
+# Create uploads directory and set permissions for Coolify
+RUN mkdir -p /var/www/html/uploads/credit_cards /var/www/html/uploads/offers \
+    && chown -R www-data:www-data /var/www/html \
     && chmod -R 775 /var/www/html/uploads \
     && chown -R www-data:www-data /var/www/html/uploads
 
-# Make sure the web server can write to the application directory
-RUN chown -R www-data:www-data /var/www/html
+# Configure PHP upload settings
+RUN { \
+    echo 'upload_max_filesize = 64M'; \
+    echo 'post_max_size = 64M'; \
+    echo 'memory_limit = 128M'; \
+    echo 'max_execution_time = 300'; \
+} > /usr/local/etc/php/conf.d/uploads.ini
 
-# Expose port
+# Create a verification script for Coolify deployment
+RUN echo '#!/bin/bash\n\
+if [ ! -d "/var/www/html/uploads/credit_cards" ]; then\n\
+    mkdir -p /var/www/html/uploads/credit_cards\n\
+fi\n\
+if [ ! -d "/var/www/html/uploads/offers" ]; then\n\
+    mkdir -p /var/www/html/uploads/offers\n\
+fi\n\
+chown -R www-data:www-data /var/www/html/uploads\n\
+chmod -R 775 /var/www/html/uploads\n\
+apache2-foreground' > /usr/local/bin/docker-entrypoint.sh \
+    && chmod +x /usr/local/bin/docker-entrypoint.sh
+
+# Configure Apache
+RUN { \
+    echo '<VirtualHost *:80>'; \
+    echo '    ServerAdmin webmaster@localhost'; \
+    echo '    DocumentRoot /var/www/html'; \
+    echo '    DirectoryIndex index.php index.html'; \
+    echo '    <Directory /var/www/html>'; \
+    echo '        Options Indexes FollowSymLinks'; \
+    echo '        AllowOverride All'; \
+    echo '        Require all granted'; \
+    echo '    </Directory>'; \
+    echo '    ErrorLog ${APACHE_LOG_DIR}/error.log'; \
+    echo '    CustomLog ${APACHE_LOG_DIR}/access.log combined'; \
+    echo '</VirtualHost>'; \
+} > /etc/apache2/sites-available/000-default.conf
+
+# Expose port 80
 EXPOSE 80
 
-# Use the default Apache command
-CMD ["apache2-foreground"]
+# Set the entrypoint to our verification script
+ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
