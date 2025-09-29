@@ -291,10 +291,7 @@
                 <h3>10. Governing Law</h3>
                 <p>These Terms and Conditions are governed by and construed in accordance with the laws of India, without regard to its conflict of law principles.</p>
                 
-                <h3>11. Contact Information</h3>
-                <p>If you have any questions about these Terms and Conditions, please contact us at:</p>
-                <p>Email: support@kamateraho.com<br>
-                Address: KamateRaho Pvt. Ltd., 123 Business Street, Mumbai, Maharashtra 400001, India</p>
+               
             </div>
         </div>
     </div>
@@ -305,9 +302,8 @@
             <div class="footer-single-item">
                 <h3>Navigate</h3>
                 <ul class="footer-links">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="/">Home</a></li>
+                
                     <li><a href="privacy-policy.php">Privacy Policy</a></li>
                     <li><a href="terms-conditions.php">Terms & Conditions</a></li>
                 </ul>
