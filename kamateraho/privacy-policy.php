@@ -277,7 +277,7 @@
     <div class="container mt-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="index.php">Home</a></li>
+                <li class="breadcrumb-item"><a href="/">Home</a></li>
                 <li class="breadcrumb-item active" aria-current="page">Privacy Policy</li>
             </ol>
         </nav>
@@ -350,10 +350,7 @@
                 <h3>10. Changes to This Privacy Policy</h3>
                 <p>We may update our Privacy Policy from time to time. We will notify you of any changes by posting the new policy on this page and updating the "Last updated" date.</p>
                 
-                <h3>11. Contact Us</h3>
-                <p>If you have any questions about this Privacy Policy, please contact us at:</p>
-                <p>Email: privacy@kamateraho.com<br>
-                Address: KamateRaho Pvt. Ltd., 123 Business Street, Mumbai, Maharashtra 400001, India</p>
+                
             </div>
         </div>
     </div>
