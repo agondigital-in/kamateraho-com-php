@@ -288,11 +288,7 @@ if ($pdo) {
                     <a href="category.php?id=8" class="text-decoration-none"></a>
                 </div>
                 
-                <?php if (empty($kotak_offers)): ?>
-                    <div class="alert alert-info">
-                       
-                    </div>
-                <?php else: ?>
+               
                     <div class="row g-4">
                         <?php foreach ($kotak_offers as $offer): ?>
                             <div class="col-md-3">
@@ -330,11 +326,7 @@ if ($pdo) {
                     <a href="category.php?id=9" class="text-decoration-none"></a>
                 </div>
                 
-                <?php if (empty($icici_offers)): ?>
-                    <div class="alert alert-info">
-                 
-                    </div>
-                <?php else: ?>
+               
                     <div class="row g-4">
                         <?php foreach ($icici_offers as $offer): ?>
                             <div class="col-md-3">
