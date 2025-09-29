@@ -27,6 +27,14 @@ try {
     $pending_withdraw_requests = [];
 }
 
+// Fetch pending contact messages
+try {
+    $stmt = $pdo->query("SELECT COUNT(*) as pending_messages FROM contact_messages WHERE status = 'pending'");
+    $pending_messages_count = $stmt->fetch(PDO::FETCH_ASSOC)['pending_messages'] ?? 0;
+} catch(PDOException $e) {
+    $pending_messages_count = 0;
+}
+
 // Calculate total wallet balance across all users
 try {
     $stmt = $pdo->query("SELECT SUM(wallet_balance) as total_balance FROM users");
@@ -202,6 +210,24 @@ Yearly Data: " . json_encode($yearly_data) . "
                             <div class="label">Total Offers</div>
                         </div>
                         <i class="bi bi-gift fs-1"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Add a new row for pending messages -->
+    <div class="row mb-4">
+        <div class="col-md-12">
+            <div class="card stats-card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="number"><?php echo $pending_messages_count; ?></div>
+                            <div class="label">Pending Messages</div>
+                        </div>
+                        <i class="bi bi-envelope fs-1"></i>
+                        <a href="contact_messages.php" class="btn btn-light">View Messages</a>
                     </div>
                 </div>
             </div>

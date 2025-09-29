@@ -267,6 +267,11 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-graph-up"></i> Wallet Status
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'contact_messages.php') ? 'active' : ''; ?>" href="contact_messages.php">
+                        <i class="bi bi-envelope"></i> Contact Messages
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
@@ -292,3 +297,6 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
 
         <!-- Content -->
         <div class="content">
+```
+
+```

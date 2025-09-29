@@ -9,9 +9,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = $_POST['subject'];
     $message = $_POST['message'];
     
-    // In a real application, you would send an email or save to database
-    // For now, we'll just show a success message
-    $success = "Thank you for your message! We'll get back to you soon.";
+    // Save to database
+    if ($pdo) {
+        try {
+            $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
+            $stmt->execute([$name, $email, $subject, $message]);
+            $success = "Thank you for your message! We'll get back to you soon.";
+        } catch (PDOException $e) {
+            $error = "Sorry, there was an error sending your message. Please try again.";
+        }
+    } else {
+        $error = "Database connection failed. Please try again later.";
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -39,6 +48,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <?php if (isset($success)): ?>
                     <div class="alert alert-success"><?php echo $success; ?></div>
+                <?php endif; ?>
+                
+                <?php if (isset($error)): ?>
+                    <div class="alert alert-danger"><?php echo $error; ?></div>
                 <?php endif; ?>
                 
                 <form method="POST">
