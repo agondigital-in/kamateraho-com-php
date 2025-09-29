@@ -1231,7 +1231,7 @@
 <body>
     <header>
         <div class="logo">
-            <img src="kamateraho/img/logo.png" alt="KamateRaho Logo" style="height: 65px; width: 300px;">
+            <img src="kamateraho/img/logo.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
         </div>
         
         <div class="menu-toggle" id="menuToggle">
