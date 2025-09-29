@@ -57,11 +57,9 @@
             align-items: center;
         }
 
-        .logo h1 {
-            color: #1a2a6c;
-            font-size: 1.8rem;
-            font-weight: 700;
-            margin: 0;
+        .logo img {
+            height: 50px;
+            width: auto;
             animation: pulse 2s infinite;
         }
 
@@ -1233,7 +1231,7 @@
 <body>
     <header>
         <div class="logo">
-            <h1>Kamate<span>Raho</span></h1>
+            <img src="img/logo.png" alt="KamateRaho Logo" style="height: 50px; width: auto;">
         </div>
         
         <div class="menu-toggle" id="menuToggle">
@@ -1246,9 +1244,9 @@
             <ul id="navMenu">
                 <li><a href="#">Home</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#testimonial-container">Testimonials</a></li>
                 <li><a href="#withdrawal-info">Withdrawals</a></li>
-                <li><a href="#offers">Offers</a></li>
+                <li><a href="#blog">Blog</a></li>
                 <li><a href="../register.php">Register</a></li>
                 <li><a href="../login.php">Login</a></li>
             </ul>
@@ -1654,7 +1652,7 @@ function showSlides(n) {
             </div>
             <div style="flex: 1; min-width: 300px; text-align: center;">
                 <div style="background: white; border-radius: 15px; padding: 15px;  display: inline-block; animation: float 3s ease-in-out infinite;">
-                    <img src="img/brandIcons.gif" alt="Payment Success" style="max-width: 100%; height: auto; border-radius: 10px;">
+                    <img src="kamateraho/img/brandIcons.gif" alt="Payment Success" style="max-width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
         </div>
@@ -1887,10 +1885,8 @@ function showSlides(n) {
                 <h3>Navigate</h3>
                 <ul class="footer-links">
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="#">About Us</a></li>
-                    <li><a href="#">Contact Us</a></li>
-                    <li><a href="#">Privacy Policy</a></li>
-                    <li><a href="#">Terms & Conditions</a></li>
+                    <li><a href="privacy-policy.php">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.php">Terms & Conditions</a></li>
                 </ul>
             </div>
             
@@ -1964,6 +1960,9 @@ function showSlides(n) {
             const nav = document.querySelector('nav ul');
             nav.classList.toggle('active');
         }
+        
+        // Update the year in footer
+        document.querySelector('.footer-bottom p').innerHTML = '© ' + new Date().getFullYear() + ' KamateRaho.com. All rights reserved.';
     </script>
 </body>
 </html>
