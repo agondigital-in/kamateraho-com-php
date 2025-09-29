@@ -54,7 +54,7 @@ if (isset($_SESSION['user_id']) && $pdo) {
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <a class="nav-link" href="referral_history.php">Refer a Friend & Earn</a>
                     <?php else: ?>
-                        <a class="nav-link" href="register.php">Refer a Friend & Earn</a>
+                        <a class="nav-link" href="register.php">Refer Friend & Earn</a>
                     <?php endif; ?>
                 </li>
             </ul>
