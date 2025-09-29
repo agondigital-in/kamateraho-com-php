@@ -20,6 +20,7 @@ erDiagram
         varchar email
         varchar password
         decimal wallet_balance
+        varchar referral_code
         timestamp created_at
     }
     
@@ -69,6 +70,7 @@ Stores user account information.
 - **email**: User's email address (unique)
 - **password**: Hashed password
 - **wallet_balance**: Current wallet balance
+- **referral_code**: Referral code for tracking referrals
 - **created_at**: Timestamp when user registered
 
 ### offers

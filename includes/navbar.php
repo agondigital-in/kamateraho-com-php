@@ -51,7 +51,11 @@ if (isset($_SESSION['user_id']) && $pdo) {
                     <a class="nav-link" href="user_messages.php">messages</a>
                 </li>
                   <li class="nav-item">
-                    <a class="nav-link" href=" ">Refer a Friend & Earn</a>
+                    <?php if (isset($_SESSION['user_id'])): ?>
+                        <a class="nav-link" href="referral_history.php">Refer a Friend & Earn</a>
+                    <?php else: ?>
+                        <a class="nav-link" href="register.php">Refer a Friend & Earn</a>
+                    <?php endif; ?>
                 </li>
             </ul>
             

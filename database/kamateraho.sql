@@ -1,6 +1,6 @@
 -- KamateRaho Database Schema
--- Version: 1.0
--- Date: 2025-09-24
+-- Version: 1.1
+-- Date: 2025-09-29
 
 -- Create database
 CREATE DATABASE IF NOT EXISTS kamateraho;
@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS users (
     state VARCHAR(100),
     password VARCHAR(255) NOT NULL,
     wallet_balance DECIMAL(10, 2) DEFAULT 0.00,
+    referral_code VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -88,6 +89,7 @@ CREATE TABLE IF NOT EXISTS offer_images (
 -- Indexes for better performance
 CREATE INDEX idx_categories_name ON categories(name);
 CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_users_referral_code ON users(referral_code);
 CREATE INDEX idx_offers_category ON offers(category_id);
 CREATE INDEX idx_wallet_user ON wallet_history(user_id);
 CREATE INDEX idx_wallet_status ON wallet_history(status);

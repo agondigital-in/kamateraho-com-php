@@ -1,6 +1,23 @@
 <?php
 include 'config/db.php';
 
+// Check for referral code in URL
+$referrer_id = null;
+if (isset($_GET['ref']) && is_numeric($_GET['ref'])) {
+    $referrer_id = intval($_GET['ref']);
+    
+    // Validate that the referrer exists
+    try {
+        $stmt = $pdo->prepare("SELECT id FROM users WHERE id = ?");
+        $stmt->execute([$referrer_id]);
+        if (!$stmt->fetch()) {
+            $referrer_id = null; // Invalid referrer
+        }
+    } catch (PDOException $e) {
+        $referrer_id = null; // Error checking referrer
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $email = $_POST['email'];
@@ -9,6 +26,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $state = $_POST['state'];
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm_password'];
+    
+    // Get referrer ID from form if not in URL
+    if (!$referrer_id && isset($_POST['referrer_id']) && is_numeric($_POST['referrer_id'])) {
+        $temp_referrer_id = intval($_POST['referrer_id']);
+        // Validate that the referrer exists
+        try {
+            $stmt = $pdo->prepare("SELECT id FROM users WHERE id = ?");
+            $stmt->execute([$temp_referrer_id]);
+            if ($stmt->fetch()) {
+                $referrer_id = $temp_referrer_id;
+            }
+        } catch (PDOException $e) {
+            // Invalid referrer
+        }
+    }
     
     // Validation
     if (empty($name) || empty($email) || empty($phone) || empty($city) || empty($state) || empty($password) || empty($confirm_password)) {
@@ -31,6 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->fetch()) {
                 $error = "Email already registered!";
             } else {
+                // Begin transaction
+                $pdo->beginTransaction();
+                
                 // Hash password and insert user
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
                 $stmt = $pdo->prepare("INSERT INTO users (name, email, phone, city, state, password, wallet_balance) VALUES (?, ?, ?, ?, ?, ?, 50.00)");
@@ -43,11 +78,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, 50.00, 'credit', 'approved', 'Welcome Bonus')");
                 $stmt->execute([$user_id]);
                 
+                // Handle referral bonus if applicable
+                if ($referrer_id) {
+                    // Credit referrer's wallet with ₹3
+                    $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance + 3.00 WHERE id = ?");
+                    $stmt->execute([$referrer_id]);
+                    
+                    // Add referral bonus to referrer's wallet history
+                    $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, 3.00, 'credit', 'approved', 'Referral Bonus for user ID: " . $user_id . "')");
+                    $stmt->execute([$referrer_id]);
+                    
+                    // Add referral bonus to new user's wallet (optional)
+                    // Uncomment the following lines if you want to give a bonus to the new user too
+                    /*
+                    $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance + 3.00 WHERE id = ?");
+                    $stmt->execute([$user_id]);
+                    
+                    $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, 3.00, 'credit', 'approved', 'Referral Bonus Received')");
+                    $stmt->execute([$user_id]);
+                    */
+                }
+                
+                // Commit transaction
+                $pdo->commit();
+                
                 $success = "Registration successful! You've received ₹50 welcome bonus.";
                 // Redirect to login after 3 seconds
                 header("refresh:3;url=login.php");
             }
         } catch(PDOException $e) {
+            // Rollback transaction on error
+            if ($pdo->inTransaction()) {
+                $pdo->rollback();
+            }
             $error = "Registration failed: " . $e->getMessage();
         }
     }
@@ -418,6 +481,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <input type="text" class="form-control" id="state" name="state" placeholder="Enter your state" required>
                         </div>
                     </div>
+                    
+                    <?php if ($referrer_id): ?>
+                        <div class="form-group">
+                            <label>Referred By</label>
+                            <div class="input-icon">
+                                <i class="fas fa-users"></i>
+                                <input type="text" class="form-control" value="User ID: <?php echo $referrer_id; ?>" disabled>
+                                <input type="hidden" name="referrer_id" value="<?php echo $referrer_id; ?>">
+                            </div>
+                        </div>
+                    <?php endif; ?>
                     
                     <div class="form-group">
                         <label for="password">Password</label>
