@@ -1884,9 +1884,9 @@ function showSlides(n) {
             <div class="footer-single-item">
                 <h3>Navigate</h3>
                 <ul class="footer-links">
-                    <li><a href="index.php">Home</a></li>
-                    <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                    <li><a href="terms-conditions.php">Terms & Conditions</a></li>
+                    <li><a href="kamateraho/index.php">Home</a></li>
+                    <li><a href="kamateraho/privacy-policy.php">Privacy Policy</a></li>
+                    <li><a href="kamateraho/terms-conditions.php">Terms & Conditions</a></li>
                 </ul>
             </div>
             
