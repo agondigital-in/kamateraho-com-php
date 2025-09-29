@@ -1457,13 +1457,13 @@ img {vertical-align: middle;}
 
 <div class="mySlides fade">
  
-  <img src="img/Red and White Money YouTube Thumbnail (1).png" alt="Slide 2">
+  <img src="kamateraho/img/Red and White Money YouTube Thumbnail (1).png" alt="Slide 2">
   <!-- <div class="text">Complete Simple Tasks</div> -->
 </div>
 
 <div class="mySlides fade">
   
-  <img src="img/G old and Black Modern How to Earn Money Online YouTube Thumbnail.png" alt="Slide 3">
+  <img src="kamateraho/img/G old and Black Modern How to Earn Money Online YouTube Thumbnail.png" alt="Slide 3">
   <!-- <div class="text">Get Paid Instantly</div> -->
 </div>
 
