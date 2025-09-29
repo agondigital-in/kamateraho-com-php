@@ -1244,9 +1244,9 @@
         
         <nav>
             <ul id="navMenu">
-                <li><a href="index.php">Home</a></li>
-                <li><a href="index.php#how-it-works">How It Works</a></li>
-                <li><a href="index.php#testimonials">Testimonials</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
                 <li><a href="#withdrawal-info">Withdrawals</a></li>
                 <li><a href="#offers">Offers</a></li>
                 <li><a href="../register.php">Register</a></li>
@@ -1451,7 +1451,7 @@ img {vertical-align: middle;}
 
 <div class="mySlides fade active">
  
-  <img src="img/Brown Yellow Make Money Youtube Thumbnail.png" alt="Slide 1">
+  <img src="kamateraho/img/Brown Yellow Make Money Youtube Thumbnail.png" alt="Slide 1">
   <!-- <div class="text">Earn cash from Home</div> -->
 </div>
 
