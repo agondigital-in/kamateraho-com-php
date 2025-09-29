@@ -2,7 +2,7 @@
 
 ## Project Structure
 The project now has two distinct entry points:
-1. `kmt/kamate raho/index.php` - Public landing page (no authentication required)
+1. `kmt/kamateraho/index.php` - Public landing page (no authentication required)
 2. `kmt/index.php` - Main application page (requires authentication)
 
 ## User Flow
@@ -38,7 +38,7 @@ The project now has two distinct entry points:
    - After successful registration, redirects to `login.php` after 3 seconds
    - All other functionality remains unchanged
 
-4. **`kmt/kamate raho/index.php`**
+4. **`kmt/kamateraho/index.php`**
    - Navigation menu links updated to point to authentication pages:
      - Register link: `../register.php`
      - Login link: `../login.php`

@@ -1,7 +1,41 @@
 <?php
+session_start();
 $page_title = "Upload Offer";
 include '../config/db.php';
 include '../config/app.php'; // Include app config to access UPLOAD_PATH
+
+// Check if main admin is logged in
+$isAdmin = false;
+$isSubAdmin = false;
+$subAdminId = null;
+
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in']) {
+    $isAdmin = true;
+} elseif (isset($_SESSION['sub_admin_logged_in']) && $_SESSION['sub_admin_logged_in']) {
+    $isSubAdmin = true;
+    $subAdminId = $_SESSION['sub_admin_id'];
+    
+    // Check if sub-admin has permission for uploading offers
+    try {
+        $stmt = $pdo->prepare("SELECT allowed FROM sub_admin_permissions WHERE sub_admin_id = ? AND permission = 'upload_offer'");
+        $stmt->execute([$subAdminId]);
+        $permission = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$permission || !$permission['allowed']) {
+            // Redirect to sub-admin dashboard if no permission
+            header("Location: subadmin_dashboard.php");
+            exit;
+        }
+    } catch (PDOException $e) {
+        // Redirect on error
+        header("Location: subadmin_dashboard.php");
+        exit;
+    }
+} else {
+    // Redirect to login if not logged in
+    header("Location: login.php");
+    exit;
+}
 
 // Handle form submission BEFORE including the layout
 $message = '';
@@ -90,13 +124,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt->execute([$offer_id, $image_path]);
             }
             
+            // Log activity for sub-admin
+            if ($isSubAdmin) {
+                try {
+                    $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                    $activityStmt->execute([$subAdminId, 'upload_offer', 'Uploaded offer: ' . $title]);
+                } catch (PDOException $e) {
+                    // Silently fail on activity logging
+                }
+            }
+            
             // Use JavaScript redirect to avoid headers already sent error
             echo "<script>window.location.href = 'upload_offer.php?message=" . urlencode("Offer uploaded successfully with " . count($uploaded_images) . " images!") . "';</script>";
             exit;
         } catch(PDOException $e) {
             // Delete uploaded files if database operation fails
             foreach ($uploaded_images as $image_path) {
-                $full_path = __DIR__ . '../../uploads/' . $image_path;
+                $full_path = __DIR__ . '/../' . $image_path;
                 if (file_exists($full_path)) {
                     unlink($full_path);
                 }
@@ -121,10 +165,22 @@ try {
     $categories = [];
 }
 
-include 'includes/admin_layout.php'; // This includes auth check
+// Include admin layout only for main admin
+if ($isAdmin) {
+    include 'includes/admin_layout.php';
+}
+
+// For sub-admin, use the new sidebar layout
+if ($isSubAdmin) {
+    include 'subadmin_header.php';
+}
 ?>
 
+<?php if ($isAdmin): ?>
 <div class="container-fluid">
+<?php else: ?>
+<!-- Content is already started in subadmin_header.php -->
+<?php endif; ?>
     <h2>Upload New Offer</h2>
     
     <?php if (isset($_GET['message'])): ?>
@@ -187,10 +243,14 @@ include 'includes/admin_layout.php'; // This includes auth check
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Save Offer</button>
+                <?php if ($isAdmin): ?>
                 <a href="../index.php" class="btn btn-secondary">View User Dashboard</a>
+                <?php endif; ?>
             </form>
         </div>
     </div>
+<?php if ($isAdmin): ?>
 </div>
-
-<?php include 'includes/admin_footer.php'; ?>
+<?php else: ?>
+<?php include 'subadmin_footer.php'; ?>
+<?php endif; ?>

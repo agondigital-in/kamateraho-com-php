@@ -1,7 +1,45 @@
 <?php
+session_start();
 $page_title = "Contact Messages";
 include '../config/db.php';
-include 'includes/admin_layout.php'; // Use the proper admin layout instead of auth.php
+
+// Check if main admin is logged in
+$isAdmin = false;
+$isSubAdmin = false;
+$subAdminId = null;
+
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in']) {
+    $isAdmin = true;
+} elseif (isset($_SESSION['sub_admin_logged_in']) && $_SESSION['sub_admin_logged_in']) {
+    $isSubAdmin = true;
+    $subAdminId = $_SESSION['sub_admin_id'];
+    
+    // Check if sub-admin has permission for contact messages
+    try {
+        $stmt = $pdo->prepare("SELECT allowed FROM sub_admin_permissions WHERE sub_admin_id = ? AND permission = 'contact_messages'");
+        $stmt->execute([$subAdminId]);
+        $permission = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$permission || !$permission['allowed']) {
+            // Redirect to sub-admin dashboard if no permission
+            header("Location: subadmin_dashboard.php");
+            exit;
+        }
+    } catch (PDOException $e) {
+        // Redirect on error
+        header("Location: subadmin_dashboard.php");
+        exit;
+    }
+} else {
+    // Redirect to login if not logged in
+    header("Location: login.php");
+    exit;
+}
+
+// Include admin layout only for main admin
+if ($isAdmin) {
+    include 'includes/admin_layout.php';
+}
 
 // Handle reply submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_message'])) {
@@ -12,6 +50,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_message'])) {
         try {
             $stmt = $pdo->prepare("UPDATE contact_messages SET reply = ?, status = 'replied', replied_at = NOW() WHERE id = ?");
             $stmt->execute([$reply, $message_id]);
+            
+            // Log activity for sub-admin
+            if ($isSubAdmin) {
+                try {
+                    $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                    $activityStmt->execute([$subAdminId, 'contact_reply', 'Replied to contact message ID: ' . $message_id]);
+                } catch (PDOException $e) {
+                    // Silently fail on activity logging
+                }
+            }
+            
             $success = "Reply sent successfully!";
         } catch (PDOException $e) {
             $error = "Error sending reply: " . $e->getMessage();
@@ -31,9 +80,18 @@ if ($pdo) {
         $error = "Error fetching messages: " . $e->getMessage();
     }
 }
+
+// For sub-admin, use the new sidebar layout
+if ($isSubAdmin) {
+    include 'subadmin_header.php';
+}
 ?>
 
+<?php if ($isAdmin): ?>
 <div class="container-fluid">
+<?php else: ?>
+<!-- Content is already started in subadmin_header.php -->
+<?php endif; ?>
     <h2>Contact Messages</h2>
     
     <?php if (isset($success)): ?>
@@ -86,4 +144,8 @@ if ($pdo) {
             </div>
         <?php endforeach; ?>
     <?php endif; ?>
+<?php if ($isAdmin): ?>
 </div>
+<?php else: ?>
+<?php include 'subadmin_footer.php'; ?>
+<?php endif; ?>

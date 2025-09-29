@@ -50,6 +50,9 @@ if (isset($_SESSION['user_id']) && $pdo) {
                 <li class="nav-item">
                     <a class="nav-link" href="user_messages.php">messages</a>
                 </li>
+                  <li class="nav-item">
+                    <a class="nav-link" href=" ">Refer a Friend & Earn</a>
+                </li>
             </ul>
             
             <div class="d-flex align-items-center">

@@ -3,7 +3,7 @@
 ## Overview
 The project structure has been modified to create two distinct entry points:
 1. `kmt/index.php` - Main application page (requires authentication)
-2. `kamate raho/index.php` - Public landing page (no authentication required)
+2. `kamateraho/index.php` - Public landing page (no authentication required)
 
 ## Changes Made
 
@@ -12,7 +12,7 @@ The project structure has been modified to create two distinct entry points:
 - Users not logged in are redirected to the login page
 - Preserved all existing functionality for authenticated users
 
-### 2. Updated `kamate raho/index.php`
+### 2. Updated `kamateraho/index.php`
 - Updated navigation links to point to the correct login/register pages
 - Updated hero section buttons to link to the main registration page
 - Updated withdrawal section button to link to registration
@@ -24,7 +24,7 @@ The project structure has been modified to create two distinct entry points:
 
 ### 4. Navigation Consistency
 - All protected pages now redirect to `index.php` when user is not authenticated
-- Public landing page (`kamate raho/index.php`) provides clear paths to login/registration
+- Public landing page (`kamateraho/index.php`) provides clear paths to login/registration
 
 ## File Structure
 ```
@@ -36,12 +36,12 @@ kmt/
 ├── profile.php               # User profile
 ├── withdraw.php              # Withdrawal system
 ├── logout.php                # Logout functionality
-└── kamate raho/
+└── kamateraho/
     └── index.php             # Public landing page (no login required)
 ```
 
 ## User Flow
-1. Visitors access `kamate raho/index.php` as the public landing page
+1. Visitors access `kamateraho/index.php` as the public landing page
 2. They can navigate to login or register through the navigation or buttons
 3. After authentication, they are directed to `kmt/index.php`
 4. All protected pages check for authentication and redirect to `index.php` if not logged in

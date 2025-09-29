@@ -1,6 +1,26 @@
 <?php
 $page_title = "Manage Categories";
 include '../config/db.php';
+include 'subadmin_auth.php'; // Sub-admin authentication check
+
+// Check permissions for sub-admin
+if ($isSubAdmin) {
+    try {
+        $stmt = $pdo->prepare("SELECT allowed FROM sub_admin_permissions WHERE sub_admin_id = ? AND permission = 'all_categories'");
+        $stmt->execute([$subAdminId]);
+        $permission = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$permission || !$permission['allowed']) {
+            // Redirect to sub-admin dashboard if no permission
+            header("Location: subadmin_dashboard.php");
+            exit;
+        }
+    } catch (PDOException $e) {
+        // Redirect on error
+        header("Location: subadmin_dashboard.php");
+        exit;
+    }
+}
 
 // Handle category deletion - THIS MUST BE BEFORE INCLUDING THE LAYOUT
 if (isset($_GET['delete_id'])) {
@@ -8,29 +28,48 @@ if (isset($_GET['delete_id'])) {
     try {
         $stmt = $pdo->prepare("DELETE FROM categories WHERE id = ?");
         $stmt->execute([$delete_id]);
-        header("Location: manage_categories.php?message=" . urlencode("Category deleted successfully!"));
+        
+        // Log activity for sub-admin
+        if ($isSubAdmin) {
+            try {
+                $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                $activityStmt->execute([$subAdminId, 'delete_category', 'Deleted category ID: ' . $delete_id]);
+            } catch (PDOException $e) {
+                // Silently fail on activity logging
+            }
+        }
+        
+        if ($isAdmin) {
+            header("Location: manage_categories.php?message=" . urlencode("Category deleted successfully!"));
+        } else {
+            header("Location: manage_categories.php?message=" . urlencode("Category deleted successfully!"));
+        }
         exit;
     } catch(PDOException $e) {
         $error = "Error deleting category: " . $e->getMessage();
     }
 }
 
-include 'includes/admin_layout.php'; // This includes auth check
-
-// Fetch all categories
-try {
-    $stmt = $pdo->query("SELECT * FROM categories ORDER BY created_at DESC");
-    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $error = "Error fetching categories: " . $e->getMessage();
-    $categories = [];
+// Include appropriate layout based on user type
+if ($isAdmin) {
+    include 'includes/admin_layout.php';
+} else {
+    include 'subadmin_header.php';
 }
 ?>
 
+<?php if ($isAdmin): ?>
 <div class="container-fluid">
+<?php else: ?>
+<!-- Content is already started in subadmin_header.php -->
+<?php endif; ?>
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>Manage Categories</h2>
+        <?php if ($isAdmin): ?>
         <a href="add_category.php" class="btn btn-primary">Add New Category</a>
+        <?php else: ?>
+        <a href="add_category.php" class="btn btn-primary">Add New Category</a>
+        <?php endif; ?>
     </div>
     
     <?php if (isset($_GET['message'])): ?>
@@ -80,6 +119,8 @@ try {
             </div>
         </div>
     <?php endif; ?>
+<?php if ($isAdmin): ?>
 </div>
-
-<?php include 'includes/admin_footer.php'; ?>
+<?php else: ?>
+<?php include 'subadmin_footer.php'; ?>
+<?php endif; ?>

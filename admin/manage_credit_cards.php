@@ -1,7 +1,41 @@
 <?php
+session_start();
 $page_title = "Manage Credit Cards";
 include '../config/db.php';
 include '../config/app.php'; 
+
+// Check if main admin is logged in
+$isAdmin = false;
+$isSubAdmin = false;
+$subAdminId = null;
+
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in']) {
+    $isAdmin = true;
+} elseif (isset($_SESSION['sub_admin_logged_in']) && $_SESSION['sub_admin_logged_in']) {
+    $isSubAdmin = true;
+    $subAdminId = $_SESSION['sub_admin_id'];
+    
+    // Check if sub-admin has permission for managing credit cards
+    try {
+        $stmt = $pdo->prepare("SELECT allowed FROM sub_admin_permissions WHERE sub_admin_id = ? AND permission = 'manage_credit_cards'");
+        $stmt->execute([$subAdminId]);
+        $permission = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$permission || !$permission['allowed']) {
+            // Redirect to sub-admin dashboard if no permission
+            header("Location: subadmin_dashboard.php");
+            exit;
+        }
+    } catch (PDOException $e) {
+        // Redirect on error
+        header("Location: subadmin_dashboard.php");
+        exit;
+    }
+} else {
+    // Redirect to login if not logged in
+    header("Location: login.php");
+    exit;
+}
 
 // Handle form submission BEFORE including the layout
 $success = '';
@@ -52,6 +86,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         try {
                             $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
                             $stmt->execute([$title, $image_path, $link, $is_active]);
+                            
+                            // Log activity for sub-admin
+                            if ($isSubAdmin) {
+                                try {
+                                    $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                                    $activityStmt->execute([$subAdminId, 'add_credit_card', 'Added credit card: ' . $title]);
+                                } catch (PDOException $e) {
+                                    // Silently fail on activity logging
+                                }
+                            }
+                            
                             echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card added successfully!") . "';</script>";
                             exit;
                         } catch(PDOException $e) {
@@ -93,6 +138,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $stmt = $pdo->prepare("DELETE FROM credit_cards WHERE id = ?");
                 $stmt->execute([$id]);
                 
+                // Log activity for sub-admin
+                if ($isSubAdmin) {
+                    try {
+                        $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                        $activityStmt->execute([$subAdminId, 'delete_credit_card', 'Deleted credit card ID: ' . $id]);
+                    } catch (PDOException $e) {
+                        // Silently fail on activity logging
+                    }
+                }
+                
                 // Use JavaScript redirect to avoid headers already sent error
                 echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card deleted successfully!") . "';</script>";
                 exit;
@@ -106,6 +161,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $stmt = $pdo->prepare("UPDATE credit_cards SET is_active = ? WHERE id = ?");
             $stmt->execute([$is_active, $id]);
+            
+            // Log activity for sub-admin
+            if ($isSubAdmin) {
+                try {
+                    $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                    $activityStmt->execute([$subAdminId, 'toggle_credit_card', 'Toggled credit card ID: ' . $id . ' to ' . ($is_active ? 'active' : 'inactive')]);
+                } catch (PDOException $e) {
+                    // Silently fail on activity logging
+                }
+            }
             
             // Use JavaScript redirect to avoid headers already sent error
             echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card status updated successfully!") . "';</script>";
@@ -121,7 +186,10 @@ if (isset($_GET['success'])) {
     $success = $_GET['success'];
 }
 
-include 'includes/admin_layout.php';
+// Include admin layout only for main admin
+if ($isAdmin) {
+    include 'includes/admin_layout.php';
+}
 
 // Fetch all credit cards
 try {
@@ -131,9 +199,18 @@ try {
     $error = "Error fetching credit cards: " . $e->getMessage();
     $credit_cards = [];
 }
+
+// For sub-admin, use the new sidebar layout
+if ($isSubAdmin) {
+    include 'subadmin_header.php';
+}
 ?>
 
+<?php if ($isAdmin): ?>
 <div class="container-fluid">
+<?php else: ?>
+<!-- Content is already started in subadmin_header.php -->
+<?php endif; ?>
     <h2 class="mb-4">Manage Credit Cards</h2>
     
     <?php if (!empty($success)): ?>
@@ -200,7 +277,6 @@ try {
                                 <th>Title</th>
                                 <th>Link</th>
                                 <th>Status</th>
-                                <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -208,11 +284,19 @@ try {
                             <?php foreach ($credit_cards as $card): ?>
                                 <tr>
                                     <td>
-                                        <img src="../<?php echo htmlspecialchars($card['image']); ?>" alt="<?php echo htmlspecialchars($card['title']); ?>" style="width: 100px; height: auto;">
+                                        <?php if (!empty($card['image'])): ?>
+                                            <img src="../<?php echo htmlspecialchars($card['image']); ?>" alt="<?php echo htmlspecialchars($card['title']); ?>" style="width: 100px; height: auto;">
+                                        <?php else: ?>
+                                            <span class="text-muted">No image</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td><?php echo htmlspecialchars($card['title']); ?></td>
                                     <td>
-                                        <a href="<?php echo htmlspecialchars($card['link']); ?>" target="_blank">View Link</a>
+                                        <?php if (!empty($card['link'])): ?>
+                                            <a href="<?php echo htmlspecialchars($card['link']); ?>" target="_blank">View Link</a>
+                                        <?php else: ?>
+                                            <span class="text-muted">No link</span>
+                                        <?php endif; ?>
                                     </td>
                                     <td>
                                         <?php if ($card['is_active']): ?>
@@ -221,21 +305,17 @@ try {
                                             <span class="badge bg-secondary">Inactive</span>
                                         <?php endif; ?>
                                     </td>
-                                    <td><?php echo date('d M Y', strtotime($card['created_at'])); ?></td>
                                     <td>
                                         <form method="POST" class="d-inline">
                                             <input type="hidden" name="id" value="<?php echo $card['id']; ?>">
                                             <input type="hidden" name="is_active" value="<?php echo $card['is_active'] ? 0 : 1; ?>">
-                                            <button type="submit" name="toggle_active" class="btn btn-sm btn-outline-primary">
+                                            <button type="submit" name="toggle_active" class="btn btn-sm btn-<?php echo $card['is_active'] ? 'warning' : 'success'; ?>">
                                                 <?php echo $card['is_active'] ? 'Deactivate' : 'Activate'; ?>
                                             </button>
                                         </form>
-                                        
-                                        <form method="POST" class="d-inline">
+                                        <form method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this credit card?');">
                                             <input type="hidden" name="id" value="<?php echo $card['id']; ?>">
-                                            <button type="submit" name="delete_card" class="btn btn-sm btn-outline-danger" onclick="return confirm('Are you sure you want to delete this credit card?')">
-                                                Delete
-                                            </button>
+                                            <button type="submit" name="delete_card" class="btn btn-sm btn-danger">Delete</button>
                                         </form>
                                     </td>
                                 </tr>
@@ -246,6 +326,8 @@ try {
             <?php endif; ?>
         </div>
     </div>
+<?php if ($isAdmin): ?>
 </div>
-
-<?php include 'includes/admin_footer.php'; ?>
+<?php else: ?>
+<?php include 'subadmin_footer.php'; ?>
+<?php endif; ?>

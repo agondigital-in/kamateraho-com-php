@@ -1,17 +1,40 @@
 <?php
-include '../config/db.php';
-include 'auth.php'; // Admin authentication check
+// Include subadmin authentication instead of regular auth
+include 'subadmin_auth.php'; // Sub-admin authentication check
 
 // Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+// Check permissions for sub-admin
+if ($isSubAdmin) {
+    try {
+        $stmt = $pdo->prepare("SELECT allowed FROM sub_admin_permissions WHERE sub_admin_id = ? AND permission = 'pending_withdraw_requests'");
+        $stmt->execute([$subAdminId]);
+        $permission = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if (!$permission || !$permission['allowed']) {
+            // Redirect to sub-admin dashboard if no permission
+            header("Location: subadmin_dashboard.php");
+            exit;
+        }
+    } catch (PDOException $e) {
+        // Redirect on error
+        header("Location: subadmin_dashboard.php");
+        exit;
+    }
+}
 
 // Get parameters
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $action = isset($_GET['action']) ? $_GET['action'] : '';
 
 if ($id <= 0 || !in_array($action, ['approve', 'reject'])) {
-    header('Location: index.php');
+    if ($isAdmin) {
+        header('Location: index.php');
+    } else {
+        header('Location: subadmin_dashboard.php');
+    }
     exit;
 }
 
@@ -63,6 +86,16 @@ try {
                     error_log("User's new wallet balance: " . $new_balance);
                     error_log("Expected balance: " . ($current_balance + $request['amount']));
                     
+                    // Log activity for sub-admin
+                    if ($isSubAdmin) {
+                        try {
+                            $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                            $activityStmt->execute([$subAdminId, 'approve_withdraw', 'Approved withdraw request ID: ' . $id . ' for amount: ₹' . $request['amount']]);
+                        } catch (PDOException $e) {
+                            // Silently fail on activity logging
+                        }
+                    }
+                    
                     // Commit transaction
                     $pdo->commit();
                     $message = "Purchase/Application request approved successfully! Amount (₹" . number_format($request['amount'], 2) . ") added to user's wallet. New balance: ₹" . number_format($new_balance, 2);
@@ -94,6 +127,16 @@ try {
                     error_log("User's new wallet balance: " . $new_balance);
                     error_log("Expected balance: " . ($current_balance - $request['amount']));
                     
+                    // Log activity for sub-admin
+                    if ($isSubAdmin) {
+                        try {
+                            $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                            $activityStmt->execute([$subAdminId, 'approve_withdraw', 'Approved withdraw request ID: ' . $id . ' for amount: ₹' . $request['amount']]);
+                        } catch (PDOException $e) {
+                            // Silently fail on activity logging
+                        }
+                    }
+                    
                     // Commit transaction
                     $pdo->commit();
                     $message = "Withdraw request approved successfully! Amount (₹" . number_format($request['amount'], 2) . ") deducted from user's wallet. New balance: ₹" . number_format($new_balance, 2);
@@ -111,6 +154,23 @@ try {
         // Reject - only update the status, no wallet changes needed
         $stmt = $pdo->prepare("UPDATE withdraw_requests SET status = 'rejected' WHERE id = ?");
         $stmt->execute([$id]);
+        
+        // Log activity for sub-admin
+        if ($isSubAdmin) {
+            try {
+                $activityStmt = $pdo->prepare("SELECT * FROM withdraw_requests WHERE id = ?");
+                $activityStmt->execute([$id]);
+                $request = $activityStmt->fetch(PDO::FETCH_ASSOC);
+                
+                if ($request) {
+                    $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                    $activityStmt->execute([$subAdminId, 'reject_withdraw', 'Rejected withdraw request ID: ' . $id . ' for amount: ₹' . $request['amount']]);
+                }
+            } catch (PDOException $e) {
+                // Silently fail on activity logging
+            }
+        }
+        
         $message = "Request rejected!";
     }
 } catch(PDOException $e) {
@@ -129,8 +189,13 @@ try {
     $error = "Error processing request: " . $e->getMessage();
 }
 
-// Redirect back to admin dashboard
-$redirect_url = 'index.php';
+// Redirect back to appropriate dashboard
+if ($isAdmin) {
+    $redirect_url = 'index.php';
+} else {
+    $redirect_url = 'subadmin_dashboard.php';
+}
+
 if (isset($error)) {
     $redirect_url .= '?error=' . urlencode($error);
 } elseif (isset($message)) {

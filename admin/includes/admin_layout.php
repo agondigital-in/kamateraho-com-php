@@ -272,6 +272,11 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-envelope"></i> Contact Messages
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_subadmins.php') ? 'active' : ''; ?>" href="manage_subadmins.php">
+                        <i class="bi bi-people"></i> Manage Sub-Admins
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

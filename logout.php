@@ -1,6 +1,6 @@
 <?php
 session_start();
 session_destroy();
-header("Location: kamate raho/index.php");
+header("Location: kamateraho/index.php");
 exit;
 ?>
