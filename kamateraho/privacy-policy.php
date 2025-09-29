@@ -218,7 +218,7 @@
     <!-- Header -->
       <header>
         <div class="logo">
-            <img src="kamateraho/img/logo.png" alt="KamateRaho Logo" style="height: 50px; width: auto;">
+            <img src="img/logo.png" alt="KamateRaho Logo" style="height: 50px; width: auto;">
         </div>
         
         <div class="menu-toggle" id="menuToggle">
