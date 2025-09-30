@@ -102,6 +102,24 @@
             list-style: none;
         }
 
+        /* Ensure menu is visible on desktop */
+        @media (min-width: 769px) {
+            nav ul {
+                display: flex !important;
+            }
+        }
+
+        /* Hide mobile menu by default */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+        }
+
         nav ul li {
             margin-left: 25px;
         }
@@ -185,10 +203,12 @@
                 box-shadow: -5px 0 15px rgba(0,0,0,0.1);
                 margin: 0;
                 border-left: 1px solid #d1d1d1;
+                display: none; /* Hide by default on mobile */
             }
 
             nav ul.active {
                 right: 0;
+                display: flex !important; /* Show when active */
             }
 
             nav ul li {
@@ -1259,33 +1279,35 @@
             const menuToggle = document.getElementById('menuToggle');
             const navMenu = document.getElementById('navMenu');
             
-            menuToggle.addEventListener('click', function() {
-                navMenu.classList.toggle('active');
-                
-                // Animate hamburger icon
-                const spans = menuToggle.querySelectorAll('span');
-                if (navMenu.classList.contains('active')) {
-                    spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                    spans[1].style.opacity = '0';
-                    spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                } else {
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
-                }
-            });
-            
-            // Close menu when clicking on a link
-            const navLinks = document.querySelectorAll('nav ul li a');
-            navLinks.forEach(link => {
-                link.addEventListener('click', function() {
-                    navMenu.classList.remove('active');
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    
+                    // Animate hamburger icon
                     const spans = menuToggle.querySelectorAll('span');
-                    spans[0].style.transform = 'none';
-                    spans[1].style.opacity = '1';
-                    spans[2].style.transform = 'none';
+                    if (navMenu.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
                 });
-            });
+                
+                // Close menu when clicking on a link
+                const navLinks = document.querySelectorAll('nav ul li a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        const spans = menuToggle.querySelectorAll('span');
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    });
+                });
+            }
         });
     </script>
     
