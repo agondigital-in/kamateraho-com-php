@@ -114,6 +114,7 @@
             transition: all 0.3s ease;
             padding: 8px 12px;
             border-radius: 20px;
+            white-space: nowrap;
         }
 
         nav ul li a:hover {
@@ -1565,7 +1566,7 @@ No skills needed – start earning today.</p>
                 <i class="fas fa-users" style="color: white; font-size: 2rem;"></i>
             </div>
             <h3>Referral Bonuses</h3>
-            <p>Invite friends and earn ₹3 for every successful referral. Share more, refer more, and increase your online earnings instantly!</p>
+            <p>Invite friends and earn ₹5 for every successful referral. Share more, refer more, and increase your online earnings instantly!</p>
             <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
     </section>
