@@ -1699,7 +1699,7 @@ No skills needed – start earning today.</p>
                 <p>Register now and get ₹50 instantly in your wallet. No hidden charges, no minimum withdrawal – start earning immediately!</p>
                 <div style="text-align: center;">
                     <div style="display: inline-block; background: #e74c3c; color: white; padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 600; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);">
-                        ₹30 Bonus
+                        ₹50 Bonus
                     </div>
                 </div>
             </div>
@@ -1915,7 +1915,7 @@ No skills needed – start earning today.</p>
         </div>
         
         <div class="footer-bottom">
-            <p>© 2023 KamateRaho.com. All rights reserved.</p>
+            <p>© 2025 KamateRaho.com. All rights reserved.</p>
         </div>
     </footer>
 

@@ -365,7 +365,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>© 2023 KamateRaho.com. All rights reserved.</p>
+            <p>© 2025 KamateRaho.com. All rights reserved.</p>
         </div>
     </footer>
     
