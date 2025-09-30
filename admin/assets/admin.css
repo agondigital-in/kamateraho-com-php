@@ -9,11 +9,36 @@
 /* Card hover effect */
 .card {
     transition: all 0.3s ease;
+    margin-bottom: 20px;
 }
 
 .card:hover {
     transform: translateY(-3px);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.card-body {
+    padding: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .card {
+        margin-bottom: 15px;
+    }
+    
+    .card-body {
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        margin-bottom: 10px;
+    }
+    
+    .card-body {
+        padding: 0.75rem;
+    }
 }
 
 /* Stats card */
@@ -29,6 +54,48 @@
 
 .table-hover tbody tr:hover {
     background-color: rgba(0, 0, 0, 0.02);
+}
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.table {
+    margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.875rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .table th, .table td {
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .table-responsive {
+        font-size: 0.75rem;
+    }
+    
+    .table th, .table td {
+        padding: 0.4rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .table-responsive {
+        font-size: 0.7rem;
+    }
+    
+    .table th, .table td {
+        padding: 0.3rem;
+    }
 }
 
 /* Badge styles */
@@ -49,10 +116,91 @@
     font-size: 0.875rem;
 }
 
+.btn-lg {
+    padding: 10px 20px;
+    font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+    .btn {
+        padding: 6px 14px;
+        font-size: 0.875rem;
+    }
+    
+    .btn-sm {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .btn-lg {
+        padding: 8px 16px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .btn {
+        padding: 5px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .btn-sm {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
+    
+    .btn-lg {
+        padding: 7px 14px;
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .btn {
+        padding: 4px 10px;
+        font-size: 0.75rem;
+    }
+    
+    .btn-sm {
+        padding: 2px 5px;
+        font-size: 0.65rem;
+    }
+    
+    .btn-lg {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+    }
+}
+
 /* Form styles */
 .form-control, .form-select {
     border-radius: 6px;
     padding: 10px 12px;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 576px) {
+    .form-control, .form-select {
+        padding: 8px 10px;
+        font-size: 0.875rem;
+    }
+    
+    .form-group {
+        margin-bottom: 0.75rem;
+    }
+    
+    .form-label {
+        font-size: 0.875rem;
+        margin-bottom: 0.25rem;
+    }
 }
 
 /* Alert styles */
@@ -63,13 +211,145 @@
 }
 
 /* Responsive adjustments */
+@media (max-width: 992px) {
+    .container-fluid {
+        padding: 0 10px;
+    }
+    
+    .row {
+        margin: 0 -10px;
+    }
+    
+    .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, 
+    .col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12 {
+        padding: 0 10px;
+    }
+    
+    /* Stack columns on tablet */
+    .col-md-3 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .col-md-4 {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+    
+    .col-md-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Stack all columns on mobile */
+    .col-md-3, .col-md-4, .col-md-6, .col-md-12 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+    
+    .col-sm-6 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+}
+
 @media (max-width: 768px) {
     .table-responsive {
         font-size: 0.875rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .table-responsive .btn-sm {
         padding: 4px 8px;
         font-size: 0.75rem;
+    }
+    
+    .stats-card .number {
+        font-size: 1.5rem;
+    }
+    
+    .stats-card .label {
+        font-size: 0.8rem;
+    }
+    
+    .card-header {
+        padding: 12px 15px;
+        font-size: 1rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .container-fluid {
+        padding: 0 5px;
+    }
+    
+    .content {
+        padding: 10px 5px;
+    }
+    
+    .card {
+        margin-bottom: 10px;
+    }
+    
+    .stats-card .number {
+        font-size: 1.25rem;
+    }
+    
+    .stats-card .label {
+        font-size: 0.75rem;
+    }
+    
+    .table-responsive {
+        font-size: 0.75rem;
+    }
+    
+    .table-responsive .btn-sm {
+        padding: 3px 6px;
+        font-size: 0.7rem;
+    }
+    
+    .form-control, .form-select {
+        padding: 8px 10px;
+        font-size: 0.875rem;
+    }
+    
+    .btn {
+        padding: 6px 12px;
+        font-size: 0.875rem;
+    }
+    
+    h2 {
+        font-size: 1.25rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .table-responsive {
+        font-size: 0.7rem;
+    }
+    
+    .table-responsive .btn-sm {
+        padding: 2px 5px;
+        font-size: 0.65rem;
+    }
+    
+    .stats-card .number {
+        font-size: 1rem;
+    }
+    
+    .stats-card .label {
+        font-size: 0.7rem;
+    }
+    
+    .card-header {
+        padding: 10px 12px;
+        font-size: 0.9rem;
     }
 }

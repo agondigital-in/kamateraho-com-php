@@ -68,6 +68,7 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
             transition: all 0.3s;
             z-index: 1000;
             box-shadow: 3px 0 10px rgba(0, 0, 0, 0.1);
+            overflow-y: auto;
         }
         
         .sidebar .logo {
@@ -97,11 +98,17 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
             transition: all 0.3s;
             display: flex;
             align-items: center;
+            text-decoration: none;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .sidebar .nav-link i {
             margin-right: 10px;
             font-size: 1.1rem;
+            min-width: 20px;
+            text-align: center;
         }
         
         .sidebar .nav-link:hover, 
@@ -131,7 +138,62 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
             z-index: 999;
             display: flex;
             align-items: center;
-            padding: 0 20px;
+            padding: 0 15px;
+        }
+        
+        .header .toggle-btn {
+            margin-right: 10px;
+        }
+        
+        .header .profile {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            min-width: 0; /* Allow flex shrinking */
+        }
+        
+        .header .profile img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-right: 10px;
+        }
+        
+        .header .profile div {
+            min-width: 0; /* Allow flex shrinking */
+        }
+        
+        .header .profile div div {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 150px;
+        }
+        
+        @media (max-width: 576px) {
+            .header .profile div div {
+                max-width: 100px;
+                font-size: 0.85rem;
+            }
+            
+            .header .profile small {
+                font-size: 0.7rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .header .profile div div {
+                display: none;
+            }
+            
+            .header .profile small {
+                display: none;
+            }
+            
+            .header .profile img {
+                margin-right: 0;
+            }
         }
         
         .header .toggle-btn {
@@ -159,6 +221,17 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
         .content {
             margin-top: var(--header-height);
             padding: 20px;
+        }
+        
+        /* Ensure content area takes full height */
+        .main-content {
+            min-height: 100vh;
+        }
+        
+        /* Scrollable content area */
+        .content {
+            overflow-y: auto;
+            max-height: calc(100vh - var(--header-height));
         }
         
         /* Card Styles */
@@ -198,8 +271,63 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
             opacity: 0.9;
         }
         
-        /* Responsive */
         @media (max-width: 768px) {
+            .stats-card .number {
+                font-size: 1.75rem;
+            }
+            
+            .stats-card .label {
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .stats-card .number {
+                font-size: 1.5rem;
+            }
+            
+            .stats-card .label {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .stats-card .number {
+                font-size: 1.25rem;
+            }
+            
+            .stats-card .label {
+                font-size: 0.75rem;
+            }
+        }
+        
+        /* Sidebar Backdrop */
+        .sidebar-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+        
+        .sidebar-backdrop.active {
+            display: block;
+        }
+        
+        /* Prevent body scroll when sidebar is open */
+        body.sidebar-open {
+            overflow: hidden;
+        }
+        
+        /* Responsive */
+        @media (max-width: 992px) {
+            :root {
+                --sidebar-width: 220px;
+            }
+            
             .sidebar {
                 transform: translateX(-100%);
             }
@@ -214,6 +342,79 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
             
             .header {
                 left: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            :root {
+                --sidebar-width: 200px;
+                --header-height: 50px;
+            }
+            
+            .sidebar .logo h4 {
+                font-size: 1rem;
+            }
+            
+            .sidebar .nav-link {
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .header .profile img {
+                width: 35px;
+                height: 35px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            :root {
+                --sidebar-width: 180px;
+            }
+            
+            .sidebar .logo {
+                padding: 0 15px;
+            }
+            
+            .sidebar .nav-link {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            
+            .sidebar .nav-link i {
+                margin-right: 5px;
+                font-size: 1rem;
+            }
+            
+            .content {
+                padding: 15px;
+            }
+            
+            .card {
+                margin-bottom: 15px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            :root {
+                --sidebar-width: 160px;
+            }
+            
+            .sidebar .logo h4 {
+                font-size: 0.9rem;
+            }
+            
+            .sidebar .nav-link span {
+                display: none;
+            }
+            
+            .sidebar .nav-link i {
+                margin-right: 0;
+                font-size: 1.2rem;
+            }
+            
+            .sidebar .nav-link {
+                justify-content: center;
+                padding: 12px;
             }
         }
     </style>
@@ -280,6 +481,9 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
             </ul>
         </div>
     </div>
+    
+    <!-- Sidebar Backdrop (for mobile) -->
+    <div class="sidebar-backdrop"></div>
 
     <!-- Main Content -->
     <div class="main-content">
