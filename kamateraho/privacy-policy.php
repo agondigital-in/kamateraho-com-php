@@ -356,26 +356,25 @@
     </div>
     
     <!-- Footer -->
-    <footer>
+ <footer>
         <div class="footer-single-line">
             <div class="footer-single-item">
                 <h3>Navigate</h3>
                 <ul class="footer-links">
                     <li><a href="/">Home</a></li>
-               
-                    <li><a href="privacy-policy.php">Privacy Policy</a></li>
-                    <li><a href="terms-conditions.php">Terms & Conditions</a></li>
+                    <li><a href="kamateraho/privacy-policy.php">Privacy Policy</a></li>
+                    <li><a href="kamateraho/terms-conditions.php">Terms & Conditions</a></li>
                 </ul>
             </div>
             
             <div class="footer-single-item">
                 <h3>Who we are?</h3>
-                <p>KamateRaho.com is the latest and exclusive website for earning pocket cash. KamateRaho.com supports Paytm, PhonePay and GooglePay and other online payment methods.</p>
+                <p>KamateRaho.com is your exclusive site to earn pocket cash online. Instant payouts supported via Paytm, PhonePe, Google Pay, and more.</p>
             </div>
             
             <div class="footer-single-item">
                 <h3>How it Works?</h3>
-                <p>To get free paytm amount user must participate in the offers listed on offer page with genuine information and send the redeem request once we review your request your amount will be transfered in your paytm wallet.</p>
+                <p>Participate in offers on our page with genuine details and send a redeem request. Once approved, your Paytm amount will be transferred instantly.</p>
             </div>
             
             <div class="footer-single-item">
@@ -391,7 +390,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>© 2025 KamateRaho.com. All rights reserved.</p>
+            <p>© 2023 KamateRaho.com. All rights reserved.</p>
         </div>
     </footer>
     

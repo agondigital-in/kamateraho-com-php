@@ -1546,7 +1546,8 @@ function showSlides(n) {
                 <i class="fas fa-home" style="color: white; font-size: 2rem;"></i>
             </div>
             <h3>Earn from Home</h3>
-            <p>Work from anywhere at any time. No special skills required - just your smartphone and internet connection.</p>
+            <p>Work from anywhere, anytime with just your phone and internet.
+No skills needed – start earning today.</p>
             <div style="background: linear-gradient(to right, #1a2a6c, #f7b733); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
         
@@ -1555,7 +1556,7 @@ function showSlides(n) {
                 <i class="fas fa-bolt" style="color: white; font-size: 2rem;"></i>
             </div>
             <h3>Instant Payments</h3>
-            <p>Get your earnings directly in your Paytm, PhonePe, or Google Pay wallet within 24-48 hours of approval.</p>
+            <p>Earn money online anytime, anywhere with just your smartphone and internet. Get fast payments in Paytm, PhonePe, or Google Pay within 24–48 hours.</p>
             <div style="background: linear-gradient(to right, #3498db, #8e44ad); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
         
@@ -1564,7 +1565,7 @@ function showSlides(n) {
                 <i class="fas fa-users" style="color: white; font-size: 2rem;"></i>
             </div>
             <h3>Referral Bonuses</h3>
-            <p>Invite friends and earn Rs. 3.00 for each successful referral. The more you share, the more you earn!</p>
+            <p>Invite friends and earn ₹3 for every successful referral. Share more, refer more, and increase your online earnings instantly!</p>
             <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
     </section>
@@ -1573,7 +1574,7 @@ function showSlides(n) {
     <section class="steps" id="how-it-works">
         <div class="container">
             <h2>How It Works</h2>
-            <p>Follow these simple steps to start earning cash with KamateRaho.com</p>
+           
         </div>
         
         <div style="padding: 2rem 5%; max-width: 1200px; margin: 0 auto;">
@@ -1646,8 +1647,8 @@ function showSlides(n) {
      <section class="paid-amount">
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; text-align: left; max-width: 1200px; margin: 0 auto; padding: 2rem;">
             <div style="flex: 1; min-width: 300px;">
-                <h2 style="font-size: 2.2rem; margin-bottom: 1rem; animation: pulse 2s infinite;">Already Paid ₹17,68,087 to KamateRaho Users!</h2>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 90%;">Join our community of earners and start making cash today. We've already paid out over ₹17 lakhs to our users!</p>
+                <h2 style="font-size: 2.2rem; margin-bottom: 1rem; animation: pulse 2s infinite;">₹17,68,087 already paid to KamateRaho users. Start earning today!</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 90%;">Join our community and start earning cash today. Over ₹17 lakhs already paid to our users!</p>
                 <a href="register.php" class="btn-primary" style="animation: bounce 2s infinite;">Create Your FREE Account Now</a>
             </div>
             <div style="flex: 1; min-width: 300px; text-align: center;">
@@ -1676,7 +1677,7 @@ function showSlides(n) {
                     <h3>How Withdrawals Work</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #3498db, #8e44ad); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Minimum withdrawal amount is ₹200.00. After verification (within 12 hours), cash will be transferred directly to your bank account via UPI.</p>
+                <p>Withdraw a minimum of ₹200. After verification within 12 hours, your cash is transferred instantly via UPI to your bank account.</p>
                 <div style="text-align: center;">
                     <div style="display: inline-flex; align-items: center; gap: 0.5rem; color: #3498db; font-weight: 500;">
                         <span>Fast Processing</span>
@@ -1694,7 +1695,7 @@ function showSlides(n) {
                     <h3>Registration Bonus</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Register and get ₹30 instantly in your wallet now! No hidden charges, no minimum withdrawal limit. Start earning immediately after registration.</p>
+                <p>Register now and get ₹50 instantly in your wallet. No hidden charges, no minimum withdrawal – start earning immediately!</p>
                 <div style="text-align: center;">
                     <div style="display: inline-block; background: #e74c3c; color: white; padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 600; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);">
                         ₹30 Bonus
@@ -1711,7 +1712,7 @@ function showSlides(n) {
                     <h3>Payment Methods</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #27ae60, #2ecc71); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>We support instant transfers to your bank account via UPI ID or QR code scanning. Withdrawals are processed within 24 hours .</p>
+                <p>Get instant transfers to your bank via UPI ID or QR code. Withdrawals are processed within 24 hours.</p>
                 <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
                     <div style="width: 50px; height: 50px; background: #27ae60; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
                         <i class="fas fa-qrcode"></i>
@@ -1777,22 +1778,22 @@ function showSlides(n) {
     <script>
         const testimonials = [
             {
-                quote: "I was impressed by the food — every dish is bursting with flavor! And I could really tell that they use high-quality ingredients. The staff was friendly and attentive, going the extra mile. I'll definitely be back for more!",
-                name: "Tamar Mendelson",
-                designation: "Restaurant Critic",
-                src: "https://images.unsplash.com/photo-1512316609839-ce289d3eba0a?q=80&w=1368&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+                quote: "KamateRaho ने मुझे घर बैठे पैसे कमाने का सबसे आसान तरीका दिया! सच में जल्दी और भरोसेमंद।",
+                name: "Mohan Kumar",
+               
+                src: "https://media.istockphoto.com/id/1093206918/photo/portrait-indian-man-standing-at-his-house-in-village.jpg?s=612x612&w=0&k=20&c=UnoX47wcHldmeF_RN7FZ9dcJZ6oSAHM74xkLxJejJBs=",
             },
             {
-                quote: "This place exceeded all expectations! The atmosphere is inviting, and the staff truly goes above and beyond to ensure a fantastic visit. I'll definitely keep returning for more exceptional dining experience.",
-                name: "Joe Charlescraft",
-                designation: "Frequent Visitor",
-                src: "https://images.unsplash.com/photo-1628749528992-f5702133b686?q=80&w=1368&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D",
+                quote: "Instant payouts और आसान process – मैं हर महीने अच्छा खासा कमा रहा हूँ। Highly recommend!",
+                name: "Apurna davi",
+            
+                src: "https://t3.ftcdn.net/jpg/06/40/35/92/360_F_640359293_69cyaWBCZ2qDfxaCOjHZZA5mQB82e7eK.jpg",
             },
             {
-                quote: "Shining Yam is a hidden gem! From the moment I walked in, I knew I was in for a treat. The impeccable service and overall attention to detail created a memorable experience. I highly recommend it!",
-                name: "Martina Edelweist",
-                designation: "Satisfied Customer",
-                src: "https://images.unsplash.com/photo-1524267213992-b76e8577d046?q=80&w=1368&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fA%3D%3D",
+                quote: "Referral और tasks के जरिए कमाई करना इतना आसान कभी नहीं था। KamateRaho ने सच में मदद की!",
+                name: "Ram Kumar",
+              
+                src: "https://as1.ftcdn.net/jpg/04/77/80/58/1000_F_477805833_bx7BuNnQpsZAxVpDaQhQ1QwB1SvoHXdR.jpg",
             },
         ];
 
@@ -1892,12 +1893,12 @@ function showSlides(n) {
             
             <div class="footer-single-item">
                 <h3>Who we are?</h3>
-                <p>KamateRaho.com is the latest and exclusive website for earning pocket cash. KamateRaho.com supports Paytm, PhonePay and GooglePay and other online payment methods.</p>
+                <p>KamateRaho.com is your exclusive site to earn pocket cash online. Instant payouts supported via Paytm, PhonePe, Google Pay, and more.</p>
             </div>
             
             <div class="footer-single-item">
                 <h3>How it Works?</h3>
-                <p>To get free paytm amount user must participate in the offers listed on offer page with genuine information and send the redeem request once we review your request your amount will be transfered in your paytm wallet.</p>
+                <p>Participate in offers on our page with genuine details and send a redeem request. Once approved, your Paytm amount will be transferred instantly.</p>
             </div>
             
             <div class="footer-single-item">
