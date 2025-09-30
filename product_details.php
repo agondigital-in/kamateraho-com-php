@@ -278,28 +278,38 @@ if (isset($_POST['apply_now'])) {
             margin: 1.5rem 0;
         }
         
+        .how-to-get-box {
+            background: linear-gradient(135deg, #fdfefe 0%, #f8f9fa 100%);
+            border-radius: 8px;
+            padding: 1.5rem;
+            border: 1px solid #e0e0e0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        /* New styles for application process */
         .process-steps {
             display: flex;
             flex-wrap: wrap;
             margin: 2rem 0;
+            gap: 1rem;
         }
         
         .step {
             flex: 1;
             min-width: 200px;
             text-align: center;
-            padding: 1rem;
+            padding: 1.5rem;
             position: relative;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid #eee;
         }
         
-        .step:not(:last-child):after {
-            content: "";
-            position: absolute;
-            top: 25px;
-            right: 0;
-            width: 50%;
-            height: 2px;
-            background: var(--secondary-color);
+        .step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
         }
         
         .step-number {
@@ -314,6 +324,18 @@ if (isset($_POST['apply_now'])) {
             font-weight: bold;
             margin: 0 auto 1rem;
             font-size: 1.2rem;
+        }
+        
+        .step h5 {
+            color: var(--dark-color);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+        
+        .step p {
+            color: #666;
+            font-size: 0.9rem;
+            line-height: 1.5;
         }
         
         .testimonial-card {
@@ -354,39 +376,6 @@ if (isset($_POST['apply_now'])) {
             border-left: 4px solid var(--secondary-color);
             border-radius: 0 4px 4px 0;
             margin-top: 0.5rem;
-        }
-        
-        .how-to-get-box {
-            background: linear-gradient(135deg, #fdfefe 0%, #f8f9fa 100%);
-            border-radius: 8px;
-            padding: 1.5rem;
-            border: 1px solid #e0e0e0;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-        }
-        
-        /* New styles for application process in one line */
-        .process-line {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            margin: 2rem 0;
-            padding: 1rem;
-            background: var(--light-color);
-            border-radius: 8px;
-        }
-        
-        .process-item {
-            display: flex;
-            align-items: center;
-            margin: 0.5rem;
-        }
-        
-        .process-item .step-number {
-            width: 30px;
-            height: 30px;
-            font-size: 0.9rem;
-            margin-right: 0.5rem;
         }
     </style>
 </head>
@@ -481,13 +470,9 @@ if (isset($_POST['apply_now'])) {
                                 <p><?php echo nl2br(htmlspecialchars($item['description'])); ?></p>
                             </div>
                             
-                            <ul class="feature-list mt-3">
-                                <li><i class="fas fa-check-circle"></i> Instant approval process</li>
-                                <li><i class="fas fa-check-circle"></i> Competitive interest rates</li>
-                                <li><i class="fas fa-check-circle"></i> No hidden charges</li>
-                                <li><i class="fas fa-check-circle"></i> 24/7 customer support</li>
-                                <li><i class="fas fa-check-circle"></i> Flexible repayment options</li>
-                            </ul>
+                            <div class="info-box mt-3">
+                                <p class="mb-0"><strong>Note:</strong> Once verified with Advertiser, you will receive the payment in 12-24 hours.</p>
+                            </div>
                             
                           
                             
@@ -508,12 +493,34 @@ if (isset($_POST['apply_now'])) {
                 </div>
             </div>
             
-            <div class="product-card p-4 mt-4">
-                <div class="info-box">
-                    <h5><i class="fas fa-info-circle me-2"></i>Note</h5>
-                    <p class="mb-0">Once verified with Advertiser, you will receive the payment in 12-24 hours.</p>
+            <div class="product-card p-4">
+                <h4 class="mb-3">Application Process</h4>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h5>Apply Online</h5>
+                        <p>Submit your application with basic details</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h5>Documentation</h5>
+                        <p>Submit KYC Documents</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h5>Verify Your Details</h5>
+                        <p>Our team will review and confirm your application</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h5>Confirmation</h5>
+                        <p>You will receive a confirmation email/SMS after successful registration.</p>
+                    </div>
                 </div>
-                
+            </div>
+            
+       
+            <div class="product-card p-4 mt-4">
                 <h3 class="section-title">Frequently Asked Questions</h3>
                 
                 <div class="faq-item">

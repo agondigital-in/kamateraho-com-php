@@ -178,10 +178,6 @@ try {
                             <?php endif; ?>
                             <div class="card-body d-flex flex-column">
                                 <h5 class="card-title"><?php echo htmlspecialchars($offer['title']); ?></h5>
-                                <p class="card-text flex-grow-1">
-                                    <?php echo htmlspecialchars(substr($offer['description'], 0, 100)); ?>
-                                    <?php if (strlen($offer['description']) > 100): ?>...<?php endif; ?>
-                                </p>
                                 <div class="mt-auto">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
                                         <div class="price-tag">₹<?php echo number_format($offer['price'], 2); ?></div>
