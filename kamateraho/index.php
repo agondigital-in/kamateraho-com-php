@@ -1788,7 +1788,7 @@ No skills needed – start earning today.</p>
                 quote: "Instant payouts और आसान process – मैं हर महीने अच्छा खासा कमा रहा हूँ। Highly recommend!",
                 name: "Apurna davi",
             
-                src: "https://t3.ftcdn.net/jpg/06/40/35/92/360_F_640359293_69cyaWBCZ2qDfxaCOjHZZA5mQB82e7eK.jpg",
+                src: "https://www.shutterstock.com/image-photo/indian-rural-women-using-phone-260nw-2559920823.jpg",
             },
             {
                 quote: "Referral और tasks के जरिए कमाई करना इतना आसान कभी नहीं था। KamateRaho ने सच में मदद की!",
