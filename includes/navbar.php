@@ -40,7 +40,7 @@ if (isset($_SESSION['user_id']) && $pdo) {
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav me-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" href="index.php">OFFER</a>
+                    <a class="nav-link active" href="index.php">Offers</a>
                 </li>
                 
                 <li class="nav-item">
@@ -48,11 +48,11 @@ if (isset($_SESSION['user_id']) && $pdo) {
                 </li>
                    
                 <li class="nav-item">
-                    <a class="nav-link" href="user_messages.php">messages</a>
+                    <a class="nav-link" href="user_messages.php">Messages</a>
                 </li>
                   <li class="nav-item">
                     <?php if (isset($_SESSION['user_id'])): ?>
-                        <a class="nav-link" href="referral_history.php">Refer a Friend & Earn</a>
+                        <a class="nav-link" href="referral_history.php">Refer Friend & Earn</a>
                     <?php else: ?>
                         <a class="nav-link" href="register.php">Refer Friend & Earn</a>
                     <?php endif; ?>
