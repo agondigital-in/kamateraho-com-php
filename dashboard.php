@@ -47,18 +47,35 @@ try {
     $withdraw_requests = [];
 }
 
-// Fetch revenue data (simplified for demonstration)
+// Fetch revenue data (user-specific)
 $today_revenue = 0.00;
 $week_revenue = 0.00;
 $month_revenue = 0.00;
 $total_revenue = 0.00;
 
-// In a real application, you would calculate these values from your database
-// For now, we'll use placeholder values
-$today_revenue = 1250.75;
-$week_revenue = 8450.50;
-$month_revenue = 32650.25;
-$total_revenue = 125680.90;
+try {
+    // Today's revenue (approved credits)
+    $stmt = $pdo->prepare("SELECT SUM(amount) as total FROM wallet_history WHERE user_id = ? AND type = 'credit' AND status = 'approved' AND DATE(created_at) = CURDATE()");
+    $stmt->execute([$user_id]);
+    $today_revenue = $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0.00;
+    
+    // This week's revenue
+    $stmt = $pdo->prepare("SELECT SUM(amount) as total FROM wallet_history WHERE user_id = ? AND type = 'credit' AND status = 'approved' AND YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1)");
+    $stmt->execute([$user_id]);
+    $week_revenue = $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0.00;
+    
+    // This month's revenue
+    $stmt = $pdo->prepare("SELECT SUM(amount) as total FROM wallet_history WHERE user_id = ? AND type = 'credit' AND status = 'approved' AND YEAR(created_at) = YEAR(CURDATE()) AND MONTH(created_at) = MONTH(CURDATE())");
+    $stmt->execute([$user_id]);
+    $month_revenue = $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0.00;
+    
+    // Total revenue
+    $stmt = $pdo->prepare("SELECT SUM(amount) as total FROM wallet_history WHERE user_id = ? AND type = 'credit' AND status = 'approved'");
+    $stmt->execute([$user_id]);
+    $total_revenue = $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0.00;
+} catch(PDOException $e) {
+    $error = "Error calculating revenue: " . $e->getMessage();
+}
 ?>
 
 <!DOCTYPE html>
