@@ -508,30 +508,12 @@ if (isset($_POST['apply_now'])) {
                 </div>
             </div>
             
-            <div class="product-card p-4">
-                <h4 class="mb-3">Application Process</h4>
-                <div class="process-line">
-                    <div class="process-item">
-                        <div class="step-number">1</div>
-                        <div>Apply Online - Submit your application with basic details</div>
-                    </div>
-                    <div class="process-item">
-                        <div class="step-number">2</div>
-                        <div>Documentation - Upload required documents</div>
-                    </div>
-                    <div class="process-item">
-                        <div class="step-number">3</div>
-                        <div>Approval - Get instant approval decision</div>
-                    </div>
-                    <div class="process-item">
-                        <div class="step-number">4</div>
-                        <div>Disbursement - Funds transferred to your account</div>
-                    </div>
-                </div>
-            </div>
-            
-       
             <div class="product-card p-4 mt-4">
+                <div class="info-box">
+                    <h5><i class="fas fa-info-circle me-2"></i>Note</h5>
+                    <p class="mb-0">Once verified with Advertiser, you will receive the payment in 12-24 hours.</p>
+                </div>
+                
                 <h3 class="section-title">Frequently Asked Questions</h3>
                 
                 <div class="faq-item">
