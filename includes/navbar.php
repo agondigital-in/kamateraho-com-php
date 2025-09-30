@@ -30,7 +30,7 @@ if (isset($_SESSION['user_id']) && $pdo) {
 <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
     <div class="container">
         <a class="navbar-brand fw-bold" href="index.php">
-            <i class="fas fa-piggy-bank me-2"></i>KamateRaho
+            <img src="kamateraho/img/logo.png" alt="KamateRaho Logo" style="height: 50px; width: auto;">
         </a>
         
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
