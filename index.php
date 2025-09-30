@@ -490,9 +490,7 @@ if ($pdo) {
                 </div>
                 
                 <?php if (empty($bajaj_offers)): ?>
-                    <div class="alert alert-info">
-                        <p>No offers available in this category at the moment. Please check back later.</p>
-                    </div>
+                   
                 <?php else: ?>
                     <div class="row g-4">
                         <?php foreach ($bajaj_offers as $offer): ?>
