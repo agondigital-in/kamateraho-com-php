@@ -50,6 +50,15 @@ if (isset($_GET['delete_id'])) {
     }
 }
 
+// Fetch all categories - THIS WAS MISSING
+try {
+    $stmt = $pdo->query("SELECT * FROM categories ORDER BY created_at DESC");
+    $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch(PDOException $e) {
+    $error = "Error fetching categories: " . $e->getMessage();
+    $categories = [];
+}
+
 // Include appropriate layout based on user type
 if ($isAdmin) {
     include 'includes/admin_layout.php';
@@ -94,6 +103,8 @@ if ($isAdmin) {
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
+                                <th>Price</th>
+                                <th>Logo</th>
                                 <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
@@ -103,8 +114,17 @@ if ($isAdmin) {
                                 <tr>
                                     <td><?php echo htmlspecialchars($category['id']); ?></td>
                                     <td><?php echo htmlspecialchars($category['name']); ?></td>
+                                    <td><?php echo !empty($category['price']) ? '₹' . number_format($category['price'], 2) : 'N/A'; ?></td>
+                                    <td>
+                                        <?php if (!empty($category['photo'])): ?>
+                                            <img src="../<?php echo htmlspecialchars($category['photo']); ?>" alt="Photo" style="width: 50px; height: 50px; object-fit: cover;">
+                                        <?php else: ?>
+                                            No Photo
+                                        <?php endif; ?>
+                                    </td>
                                     <td><?php echo date('d M Y', strtotime($category['created_at'])); ?></td>
                                     <td>
+                                        <a href="edit_category.php?id=<?php echo $category['id']; ?>" class="btn btn-primary btn-sm">✏️ Edit</a>
                                         <a href="?delete_id=<?php echo $category['id']; ?>" 
                                            class="btn btn-danger btn-sm" 
                                            onclick="return confirm('Are you sure you want to delete this category? This will also delete all offers in this category.')">

@@ -106,6 +106,18 @@ if ($pdo) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
+    <style>
+        .btn-earn-money {
+            border: 2px solid #0d6efd !important; /* Blue border */
+            background: linear-gradient(135deg, #4361ee, #3a0ca3) !important; /* Matching gradient */
+            color: white !important;
+        }
+        
+        .btn-earn-money:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3) !important;
+        }
+    </style>
 </head>
 
 <body>
@@ -205,10 +217,12 @@ if ($pdo) {
                             // Create category items array
                             $category_items = [];
                             foreach (array_slice($categories, 0, 12) as $category): 
-                                $image_url = isset($category_images[$category['id']]) ? $category_images[$category['id']] : "https://asset20.ckassets.com/wp-content/uploads/2023/02/Others-1.png";
+                                // Use category photo if available, otherwise use default image
+                                $image_url = !empty($category['photo']) ? htmlspecialchars($category['photo']) : (isset($category_images[$category['id']]) ? $category_images[$category['id']] : "https://asset20.ckassets.com/wp-content/uploads/2023/02/Others-1.png");
                                 $category_items[] = [
                                     'id' => $category['id'],
                                     'name' => $category['name'],
+                                    'price' => $category['price'],
                                     'image_url' => $image_url
                                 ];
                             endforeach;
@@ -228,7 +242,14 @@ if ($pdo) {
                                                 </div>
                                             </div>
                                             <div class="card-body">
-                                                <!-- Category title below image -->
+                                                <!-- Price below image -->
+                                                <?php if (!empty($category['price'])): ?>
+                                                    <div class="price-tag mt-2" style="font-weight: 700; color: #28a745; font-size: 1.1rem;">
+                                                        ₹<?php echo number_format($category['price'], 2); ?>
+                                                    </div>
+                                                <?php endif; ?>
+                                                
+                                                <!-- Category title below price -->
                                                 <h6 class="card-title mt-2 mb-0 text-center" style="font-weight: 600; color: #1a2a6c;">
                                                     <?php echo htmlspecialchars($category['name']); ?>
                                                 </h6>
@@ -246,7 +267,109 @@ if ($pdo) {
             <!-- Trending Promotion Tasks -->
             <div class="text-start mb-4">
                 <h2 class="text-primary">Trending Promotion Tasks</h2>
+                <!-- Filter and Sort Options -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <form method="GET" class="d-flex gap-2">
+                        <select name="sort" class="form-select form-select-sm" onchange="this.form.submit()">
+                            <option value="price_desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'price_desc') ? 'selected' : ''; ?>>Price: High to Low</option>
+                            <option value="price_asc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'price_asc') ? 'selected' : ''; ?>>Price: Low to High</option>
+                            <option value="newest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'newest') ? 'selected' : ''; ?>>Newest First</option>
+                            <option value="oldest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'oldest') ? 'selected' : ''; ?>>Oldest First</option>
+                        </select>
+                    </form>
+                </div>
             </div>
+            
+            <!-- Display uploaded offers in Trending Promotion Tasks section -->
+            <?php
+            // Fetch all offers for display in Trending Promotion Tasks with sorting
+            try {
+                // Default sort order is price high to low
+                $sort_order = "price DESC";
+                if (isset($_GET['sort'])) {
+                    switch ($_GET['sort']) {
+                        case 'price_asc':
+                            $sort_order = "price ASC";
+                            break;
+                        case 'newest':
+                            $sort_order = "created_at DESC";
+                            break;
+                        case 'oldest':
+                            $sort_order = "created_at ASC";
+                            break;
+                        case 'price_desc':
+                        default:
+                            $sort_order = "price DESC";
+                            break;
+                    }
+                }
+                
+                $stmt = $pdo->query("SELECT * FROM offers ORDER BY " . $sort_order);
+                $all_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch(PDOException $e) {
+                $all_offers = [];
+            }
+            ?>
+            
+            <?php if (empty($all_offers)): ?>
+                <div class="alert alert-info text-center">
+                    No offers available yet. Please check back later.
+                </div>
+            <?php else: ?>
+                <div class="row g-4">
+                    <?php foreach (array_slice($all_offers, 0, 12) as $offer): ?>
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm h-100">
+                                <?php 
+                                // Determine image source (using same approach as product_details.php)
+                                $image_src = '';
+                                if (!empty($offer['image'])) {
+                                    // Check if it's an absolute URL
+                                    if (preg_match('/^https?:\/\//i', $offer['image'])) {
+                                        $image_src = $offer['image'];
+                                    } 
+                                    // For local files, use the direct path
+                                    else {
+                                        $image_src = htmlspecialchars($offer['image']);
+                                    }
+                                }
+                                
+                                // Display image or fallback
+                                if (!empty($image_src)): ?>
+                                    <img src="<?php echo $image_src; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
+                                <?php else: ?>
+                                    <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                                        <i class="fas fa-image fa-3x text-muted"></i>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="card-body d-flex flex-column">
+                                    <!-- Amount/Price below image -->
+                                    <?php if (!empty($offer['price'])): ?>
+                                        <div class="price-tag mb-2" style="font-weight: 700; color: #28a745; font-size: 1.1rem;">
+                                            ₹<?php echo number_format($offer['price'], 2); ?>
+                                        </div>
+                                    <?php endif; ?>
+                                    
+                                    <!-- Title below amount -->
+                                    <h5 class="card-title text-center mb-3" style="font-size: 0.9rem;">
+                                        <?php echo htmlspecialchars($offer['title']); ?>
+                                    </h5>
+                                    
+                                    <!-- Two buttons below title -->
+                                    <div class="d-flex gap-2 mt-auto">
+                                        <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-money flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
+                                        <button class="btn btn-outline-primary copy-link-btn flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;"
+                                                data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($offer['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
+                                                <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
+                                            <?php echo isset($_SESSION['user_id']) ? 'Refer & Earn' : 'Login to Copy'; ?>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
             
             <!-- Best Life Insurance Free Credit Cards -->
             <section class="mb-5">

@@ -246,6 +246,7 @@ if ($isSubAdmin) {
                 <?php if ($isAdmin): ?>
                 <a href="../index.php" class="btn btn-secondary">View User Dashboard</a>
                 <?php endif; ?>
+                <a href="manage_offers.php" class="btn btn-info">Manage All Offers</a>
             </form>
         </div>
     </div>

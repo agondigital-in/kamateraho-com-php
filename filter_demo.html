@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trending Promotion Tasks - Filter Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container mt-4">
+        <!-- Trending Promotion Tasks -->
+        <div class="text-start mb-4">
+            <h2 class="text-primary">Trending Promotion Tasks</h2>
+            <!-- Filter and Sort Options -->
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <form method="GET" class="d-flex gap-2">
+                    <select name="sort" class="form-select form-select-sm" style="width: auto;">
+                        <option value="price_desc" selected>Price: High to Low</option>
+                        <option value="price_asc">Price: Low to High</option>
+                        <option value="newest">Newest First</option>
+                        <option value="oldest">Oldest First</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary btn-sm">Apply</button>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Sample Offers Display -->
+        <div class="row g-4">
+            <!-- Offer 1 -->
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="price-tag mb-2" style="font-weight: 700; color: #28a745; font-size: 1.1rem;">
+                            ₹199.99
+                        </div>
+                        <h5 class="card-title text-center mb-3" style="font-size: 0.9rem;">
+                            Sample Offer 4
+                        </h5>
+                        <div class="d-flex gap-2 mt-auto">
+                            <a href="#" class="btn btn-primary flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
+                            <button class="btn btn-outline-primary flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">
+                                Refer & Earn
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Offer 2 -->
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="price-tag mb-2" style="font-weight: 700; color: #28a745; font-size: 1.1rem;">
+                            ₹149.99
+                        </div>
+                        <h5 class="card-title text-center mb-3" style="font-size: 0.9rem;">
+                            Sample Offer 2
+                        </h5>
+                        <div class="d-flex gap-2 mt-auto">
+                            <a href="#" class="btn btn-primary flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
+                            <button class="btn btn-outline-primary flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">
+                                Refer & Earn
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Offer 3 -->
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="price-tag mb-2" style="font-weight: 700; color: #28a745; font-size: 1.1rem;">
+                            ₹99.99
+                        </div>
+                        <h5 class="card-title text-center mb-3" style="font-size: 0.9rem;">
+                            Sample Offer 1
+                        </h5>
+                        <div class="d-flex gap-2 mt-auto">
+                            <a href="#" class="btn btn-primary flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
+                            <button class="btn btn-outline-primary flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">
+                                Refer & Earn
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Offer 4 -->
+            <div class="col-md-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
+                        <i class="fas fa-image fa-3x text-muted"></i>
+                    </div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="price-tag mb-2" style="font-weight: 700; color: #28a745; font-size: 1.1rem;">
+                            ₹79.99
+                        </div>
+                        <h5 class="card-title text-center mb-3" style="font-size: 0.9rem;">
+                            Sample Offer 3
+                        </h5>
+                        <div class="d-flex gap-2 mt-auto">
+                            <a href="#" class="btn btn-primary flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
+                            <button class="btn btn-outline-primary flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">
+                                Refer & Earn
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

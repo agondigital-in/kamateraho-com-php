@@ -81,29 +81,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="col-lg-4">
                 <div class="card">
-                    <div class="card-header">
-                        <h5>Contact Information</h5>
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Address:</strong><br>
-                        KamateRaho Pvt. Ltd.<br>
-                        123 Business Street<br>
-                        Mumbai, Maharashtra 400001<br>
-                        India</p>
-                        
-                        <p><strong>Email:</strong><br>
-                        support@kamateraho.com<br>
-                        admin@kamateraho.com</p>
-                        
-                        <p><strong>Phone:</strong><br>
-                        +91 98765 43210<br>
-                        +91 98765 43211</p>
-                        
-                        <p><strong>Business Hours:</strong><br>
-                        Monday - Friday: 9:00 AM - 6:00 PM<br>
-                        Saturday: 10:00 AM - 4:00 PM<br>
-                        Sunday: Closed</p>
-                    </div>
+                   
                 </div>
                 
                 <div class="card mt-4">

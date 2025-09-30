@@ -238,6 +238,13 @@ if (isset($_GET['sub_admin_id'])) {
                                         Pending Wallet Approvals
                                     </label>
                                 </div>
+                                
+                                <div class="form-check mb-3">
+                                    <input class="form-check-input" type="checkbox" name="permissions[]" value="manage_offers" id="manage_offers" <?php echo isset($sub_admin_permissions['manage_offers']) && $sub_admin_permissions['manage_offers'] ? 'checked' : ''; ?>>
+                                    <label class="form-check-label" for="manage_offers">
+                                        Manage Offers
+                                    </label>
+                                </div>
                             </div>
                             
                             <div class="col-md-6">

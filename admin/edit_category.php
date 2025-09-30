@@ -1,5 +1,5 @@
 <?php
-$page_title = "Add Category";
+$page_title = "Edit Category";
 include '../config/db.php';
 include 'subadmin_auth.php'; // Sub-admin authentication check
 
@@ -22,11 +22,29 @@ if ($isSubAdmin) {
     }
 }
 
+// Get category ID from URL
+$category_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
+
+// Fetch category details
+try {
+    $stmt = $pdo->prepare("SELECT * FROM categories WHERE id = ?");
+    $stmt->execute([$category_id]);
+    $category = $stmt->fetch(PDO::FETCH_ASSOC);
+    
+    if (!$category) {
+        header("Location: manage_categories.php?error=" . urlencode("Category not found!"));
+        exit;
+    }
+} catch(PDOException $e) {
+    header("Location: manage_categories.php?error=" . urlencode("Error fetching category: " . $e->getMessage()));
+    exit;
+}
+
 // Handle form submission BEFORE including the layout
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $name = $_POST['name'];
     $price = !empty($_POST['price']) ? $_POST['price'] : null;
-    $photo = null;
+    $photo = $category['photo']; // Keep existing photo by default
     
     // Handle file upload
     if (isset($_FILES['photo']) && $_FILES['photo']['error'] === UPLOAD_ERR_OK) {
@@ -44,6 +62,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         if (in_array($imageFileType, $allowedTypes)) {
             if (move_uploaded_file($_FILES['photo']['tmp_name'], $uploadFile)) {
+                // Delete old photo if it exists
+                if (!empty($category['photo']) && file_exists('../' . $category['photo'])) {
+                    unlink('../' . $category['photo']);
+                }
                 $photo = 'uploads/categories/' . $fileName;
             } else {
                 $error = "Error uploading photo file.";
@@ -55,27 +77,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (!empty($name) && !isset($error)) {
         try {
-            $stmt = $pdo->prepare("INSERT INTO categories (name, price, photo) VALUES (?, ?, ?)");
-            $stmt->execute([$name, $price, $photo]);
+            $stmt = $pdo->prepare("UPDATE categories SET name = ?, price = ?, photo = ? WHERE id = ?");
+            $stmt->execute([$name, $price, $photo, $category_id]);
             
             // Log activity for sub-admin
             if ($isSubAdmin) {
                 try {
                     $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
-                    $activityStmt->execute([$subAdminId, 'add_category', 'Added category: ' . $name]);
+                    $activityStmt->execute([$subAdminId, 'edit_category', 'Edited category: ' . $name]);
                 } catch (PDOException $e) {
                     // Silently fail on activity logging
                 }
             }
             
             if ($isAdmin) {
-                header("Location: manage_categories.php?message=" . urlencode("Category added successfully!"));
+                header("Location: manage_categories.php?message=" . urlencode("Category updated successfully!"));
             } else {
-                header("Location: manage_categories.php?message=" . urlencode("Category added successfully!"));
+                header("Location: manage_categories.php?message=" . urlencode("Category updated successfully!"));
             }
             exit;
         } catch(PDOException $e) {
-            $error = "Error adding category: " . $e->getMessage();
+            $error = "Error updating category: " . $e->getMessage();
         }
     } else if (!isset($error)) {
         $error = "Category name is required!";
@@ -95,7 +117,7 @@ if ($isAdmin) {
 <?php else: ?>
 <!-- Content is already started in subadmin_header.php -->
 <?php endif; ?>
-    <h2>Add New Category</h2>
+    <h2>Edit Category</h2>
     
     <?php if (isset($error)): ?>
         <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
@@ -109,29 +131,34 @@ if ($isAdmin) {
             <form method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="form-label">Category Name</label>
-                    <input type="text" class="form-control" id="name" name="name" required>
+                    <input type="text" class="form-control" id="name" name="name" value="<?php echo htmlspecialchars($category['name']); ?>" required>
                     <div class="form-text">Example: Amazon - Top Deals, Best Cards for Shopping</div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="price" class="form-label">Price (Optional)</label>
-                    <input type="number" class="form-control" id="price" name="price" step="0.01" min="0">
+                    <input type="number" class="form-control" id="price" name="price" step="0.01" min="0" value="<?php echo htmlspecialchars($category['price'] ?? ''); ?>">
                     <div class="form-text">Enter the price for this category if applicable</div>
                 </div>
                 
                 <div class="mb-3">
                     <label for="photo" class="form-label">Category Photo (Optional)</label>
                     <input type="file" class="form-control" id="photo" name="photo" accept="image/*">
-                    <div class="form-text">Upload a photo image for this category (JPG, PNG, GIF)</div>
+                    <?php if (!empty($category['photo'])): ?>
+                        <div class="mt-2">
+                            <p>Current Photo:</p>
+                            <img src="../<?php echo htmlspecialchars($category['photo']); ?>" alt="Current Photo" style="width: 100px; height: 100px; object-fit: cover;">
+                        </div>
+                    <?php endif; ?>
+                    <div class="form-text">Upload a new photo image for this category (JPG, PNG, GIF)</div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Save Category</button>
+                <button type="submit" class="btn btn-primary">Update Category</button>
                 <?php if ($isAdmin): ?>
                 <a href="manage_categories.php" class="btn btn-secondary">Manage Categories</a>
                 <?php else: ?>
                 <a href="manage_categories.php" class="btn btn-secondary">Manage Categories</a>
                 <?php endif; ?>
-                <a href="manage_categories.php" class="btn btn-info">View All Categories</a>
             </form>
         </div>
     </div>

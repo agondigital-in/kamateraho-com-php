@@ -1565,8 +1565,8 @@ No skills needed – start earning today.</p>
             <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #e74c3c, #e67e22); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2);">
                 <i class="fas fa-users" style="color: white; font-size: 2rem;"></i>
             </div>
-            <h3>Referral Bonuses</h3>
-            <p>Invite friends and earn ₹5 for every successful referral. Share more, refer more, and increase your online earnings instantly!</p>
+            <h3>Referral Bonus</h3>
+            <p>Invite friends and earn ₹3 for every successful referral. Share more, refer more, and increase your online earnings instantly!</p>
             <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
     </section>

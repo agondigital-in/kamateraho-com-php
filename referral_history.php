@@ -162,7 +162,7 @@ $wallet_history = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     <div class="row align-items-center">
                         <div class="col-md-8">
                             <h2>Welcome, <?php echo htmlspecialchars($user['name']); ?>!</h2>
-                            <p class="mb-0">Share your referral link and earn ₹3 for each friend who joins</p>
+                            <p class="mb-0">Share your referral link and earn ₹3 for each friend who join</p>
                         </div>
                         <div class="col-md-4 text-md-end">
                             <h3>Current Balance</h3>
