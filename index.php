@@ -304,7 +304,7 @@ if ($pdo) {
                     }
                 }
                 
-                $stmt = $pdo->query("SELECT * FROM offers ORDER BY " . $sort_order);
+                $stmt = $pdo->query("SELECT * FROM offers WHERE is_active = 1 ORDER BY " . $sort_order);
                 $all_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
             } catch(PDOException $e) {
                 $all_offers = [];
