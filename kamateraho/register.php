@@ -595,9 +595,9 @@ if (isset($_SESSION['user_id'])) {
                 <h3>Stay Connected</h3>
                 <p>Connect with us on social media for updates and offers.</p>
                 <div class="footer-social">
-                    <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="https://www.facebook.com/share/17JFgQNHrS/?mibextid=wwXIfr" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="https://www.instagram.com/_kamate_raho?igsh=d2hsYmo2NXFvOGRi" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
                     <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
                 </div>
                 <p style="margin-top: 0.8rem;">​karo</p>
