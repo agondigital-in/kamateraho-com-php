@@ -135,17 +135,17 @@ if ($pdo) {
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/Desktop Banner-1758558959.png" class="card-img-top" alt="Banner 1">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1">
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/Desktop Banner-1758559004.png" class="card-img-top" alt="Banner 2">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2">
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/myntradesktopbanner-1758612029.png" class="card-img-top" alt="Banner 3">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3">
                                         </div>
                                     </div>
                                 </div>
@@ -154,17 +154,17 @@ if ($pdo) {
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/Desktop Banner-1758545418.png" class="card-img-top" alt="Banner 4">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4">
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/amazon_desktopbanner-1758698242.png" class="card-img-top" alt="Banner 5">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5">
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://asset22.ckassets.com/resources/image/staticpage_images/Desktop Banner-1756785978.png" class="card-img-top" alt="Banner 6">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6">
                                         </div>
                                     </div>
                                 </div>
