@@ -112,12 +112,12 @@ if (isset($_POST['apply_now'])) {
         }
     }
     
-    // Redirect to the item's redirect URL with user ID parameter
+    // Redirect to the item's redirect URL with only p_id=user_id parameter
     $redirect_url = $item['redirect_url'];
     if (!empty($redirect_url)) {
-        // Add user ID parameter to the redirect URL    
+        // Add p_id=user_id parameter to the redirect URL
         $separator = (strpos($redirect_url, '?') !== false) ? '&' : '?';
-        $redirect_url .= $separator . 'user_id=' . $user_id;
+        $redirect_url .= $separator . 'p_id=' . $user_id;
         header("Location: " . $redirect_url);
         exit;
     } else {
@@ -127,6 +127,10 @@ if (isset($_POST['apply_now'])) {
         exit;
     }
 }
+
+// Assuming you have variables $user_id and $p_id available
+$p_id = $id; // Assuming $id is the product ID
+$apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
 ?>
 <!DOCTYPE html>
 <html lang="en">
