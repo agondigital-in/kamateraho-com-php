@@ -1,6 +1,6 @@
 -- KamateRaho Database Schema
--- Version: 1.1
--- Date: 2025-09-29
+-- Version: 1.2
+-- Date: 2025-10-01
 
 -- Create database
 CREATE DATABASE IF NOT EXISTS kamateraho;
@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS offers (
     price DECIMAL(10, 2) NOT NULL,
     image VARCHAR(255),
     redirect_url VARCHAR(500),
+    is_active BOOLEAN DEFAULT TRUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE CASCADE
 );

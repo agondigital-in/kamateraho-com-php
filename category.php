@@ -70,7 +70,7 @@ try {
 
 // Fetch offers for this category
 try {
-    $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = ? ORDER BY created_at DESC");
+    $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = ? AND is_active = 1 ORDER BY created_at DESC");
     $stmt->execute([$category_id]);
     $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {

@@ -51,7 +51,7 @@ if ($pdo) {
         $kotak_category = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($kotak_category) {
-            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 8 ORDER BY created_at DESC LIMIT 4");
+            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 8 AND is_active = 1 ORDER BY created_at DESC LIMIT 4");
             $stmt->execute();
             $kotak_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
@@ -64,7 +64,7 @@ if ($pdo) {
         $icici_category = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($icici_category) {
-            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 9 ORDER BY created_at DESC LIMIT 4");
+            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 9 AND is_active = 1 ORDER BY created_at DESC LIMIT 4");
             $stmt->execute();
             $icici_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {
@@ -77,7 +77,7 @@ if ($pdo) {
         $bajaj_category = $stmt->fetch(PDO::FETCH_ASSOC);
         
         if ($bajaj_category) {
-            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 10 ORDER BY created_at DESC LIMIT 4");
+            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 10 AND is_active = 1 ORDER BY created_at DESC LIMIT 4");
             $stmt->execute();
             $bajaj_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
         } else {

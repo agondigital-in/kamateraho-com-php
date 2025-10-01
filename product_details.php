@@ -51,7 +51,7 @@ if ($type === 'card') {
 } else {
     // Fetch offer details (default)
     try {
-        $stmt = $pdo->prepare("SELECT o.*, c.name as category_name FROM offers o JOIN categories c ON o.category_id = c.id WHERE o.id = ?");
+        $stmt = $pdo->prepare("SELECT o.*, c.name as category_name FROM offers o JOIN categories c ON o.category_id = c.id WHERE o.id = ? AND o.is_active = 1");
         $stmt->execute([$id]);
         $item = $stmt->fetch(PDO::FETCH_ASSOC);
         

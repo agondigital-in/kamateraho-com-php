@@ -83,17 +83,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $description = $_POST['description'];
     $price = $_POST['price'];
     $redirect_url = $_POST['redirect_url'];
+    $is_active = isset($_POST['is_active']) ? 1 : 0;
     
     try {
+        // Handle image upload if a new image is provided
+        $image_path = $offer['image']; // Keep existing image by default
+        
+        if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
+            $upload_dir = '../uploads/offers/';
+            if (!is_dir($upload_dir)) {
+                mkdir($upload_dir, 0755, true);
+            }
+            
+            $file_extension = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+            $file_name = uniqid() . '.' . $file_extension;
+            $target_file = $upload_dir . $file_name;
+            
+            // Check if file is an actual image
+            $check = getimagesize($_FILES['image']['tmp_name']);
+            if ($check !== false) {
+                if (move_uploaded_file($_FILES['image']['tmp_name'], $target_file)) {
+                    $image_path = 'uploads/offers/' . $file_name;
+                } else {
+                    throw new Exception("Sorry, there was an error uploading your file.");
+                }
+            } else {
+                throw new Exception("File is not an image.");
+            }
+        }
+        
         // Update the offer
-        $stmt = $pdo->prepare("UPDATE offers SET category_id = ?, title = ?, description = ?, price = ?, redirect_url = ? WHERE id = ?");
-        $stmt->execute([$category_id, $title, $description, $price, $redirect_url, $offer_id]);
+        $stmt = $pdo->prepare("UPDATE offers SET category_id = ?, title = ?, description = ?, price = ?, redirect_url = ?, image = ?, is_active = ? WHERE id = ?");
+        $stmt->execute([$category_id, $title, $description, $price, $redirect_url, $image_path, $is_active, $offer_id]);
         
         $_SESSION['message'] = "Offer updated successfully!";
         header("Location: edit_offer.php?id=" . $offer_id);
         exit;
     } catch(PDOException $e) {
         $error = "Error updating offer: " . $e->getMessage();
+    } catch(Exception $e) {
+        $error = "Error uploading image: " . $e->getMessage();
     }
 }
 
@@ -134,7 +163,7 @@ if ($isSubAdmin) {
             <h5>Offer Details</h5>
         </div>
         <div class="card-body">
-            <form method="POST">
+            <form method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="category_id" class="form-label">Select Category</label>
                     <select class="form-select" id="category_id" name="category_id" required>
@@ -166,6 +195,23 @@ if ($isSubAdmin) {
                     <label for="redirect_url" class="form-label">Redirect URL</label>
                     <input type="url" class="form-control" id="redirect_url" name="redirect_url" value="<?php echo htmlspecialchars($offer['redirect_url']); ?>" placeholder="https://example.com">
                     <div class="form-text">Enter the URL where users will be redirected when they click on this offer.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="is_active" class="form-label">Status</label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="is_active" name="is_active" value="1" <?php echo $offer['is_active'] ? 'checked' : ''; ?>>
+                        <label class="form-check-label" for="is_active">
+                            Active
+                        </label>
+                    </div>
+                    <div class="form-text">If unchecked, this offer will not be visible to users.</div>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="image" class="form-label">Image</label>
+                    <input type="file" class="form-control" id="image" name="image" accept="image/*">
+                    <div class="form-text">Leave blank to keep the current image. Upload a new image to replace it.</div>
                 </div>
                 
                 <div class="mb-3">

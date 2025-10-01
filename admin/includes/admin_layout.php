@@ -417,6 +417,55 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                 padding: 12px;
             }
         }
+        
+        /* Text Slider Styles */
+        .slider-text {
+            animation: slide-left 10s linear infinite;
+            padding-left: 100%;
+        }
+
+        @keyframes slide-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .text-truncate-slider:hover .slider-text {
+            animation-play-state: running;
+        }
+
+        .text-truncate-slider .slider-text {
+            animation-play-state: paused;
+        }
+
+        @media (max-width: 768px) {
+            .text-truncate-slider {
+                max-width: 150px;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .text-truncate-slider {
+                max-width: 100px;
+            }
+            
+            .slider-text {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .text-truncate-slider {
+                max-width: 80px;
+            }
+            
+            .slider-text {
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -430,52 +479,57 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
             <ul class="nav flex-column">
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>" href="index.php">
-                        <i class="bi bi-speedometer2"></i> Dashboard
+                        <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'add_category.php') ? 'active' : ''; ?>" href="add_category.php">
-                        <i class="bi bi-plus-circle"></i> Add Category
+                        <i class="bi bi-plus-circle"></i> <span>Add Category</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_categories.php') ? 'active' : ''; ?>" href="manage_categories.php">
-                        <i class="bi bi-list"></i> Manage Categories
+                        <i class="bi bi-list"></i> <span>Manage Categories</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'upload_offer.php') ? 'active' : ''; ?>" href="upload_offer.php">
-                        <i class="bi bi-upload"></i> Upload Offer
+                        <i class="bi bi-upload"></i> <span>Upload Offer</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_credit_cards.php') ? 'active' : ''; ?>" href="manage_credit_cards.php">
-                        <i class="bi bi-credit-card"></i> Manage Credit Cards
+                        <i class="bi bi-credit-card"></i> <span>Manage Credit Cards</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'wallet_management.php') ? 'active' : ''; ?>" href="wallet_management.php">
-                        <i class="bi bi-wallet2"></i> Wallet Management
+                        <i class="bi bi-wallet2"></i> <span>Wallet Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'verify_wallet_deduction.php') ? 'active' : ''; ?>" href="verify_wallet_deduction.php">
-                        <i class="bi bi-cash-stack"></i> Verify Wallet Deduction
+                        <i class="bi bi-cash-stack"></i> <span>Verify Wallet Deduction</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'check_wallet_status.php') ? 'active' : ''; ?>" href="check_wallet_status.php">
-                        <i class="bi bi-graph-up"></i> Wallet Status
+                        <i class="bi bi-graph-up"></i> <span>Wallet Status</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'contact_messages.php') ? 'active' : ''; ?>" href="contact_messages.php">
-                        <i class="bi bi-envelope"></i> Contact Messages
+                        <i class="bi bi-envelope"></i> <span>Contact Messages</span>
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_subadmins.php') ? 'active' : ''; ?>" href="manage_subadmins.php">
-                        <i class="bi bi-people"></i> Manage Sub-Admins
+                        <i class="bi bi-people"></i> <span>Manage Sub-Admins</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'pending_withdraw_requests.php') ? 'active' : ''; ?>" href="pending_withdraw_requests.php">
+                        <i class="bi bi-cash-stack"></i> <span>Pending Withdraw Requests</span>
                     </a>
                 </li>
             </ul>
@@ -506,6 +560,21 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
 
         <!-- Content -->
         <div class="content">
-```
-
-```
+        <script>
+        // Pause animation when mouse leaves
+        document.addEventListener('DOMContentLoaded', function() {
+            const sliders = document.querySelectorAll('.text-truncate-slider');
+            
+            sliders.forEach(slider => {
+                const textElement = slider.querySelector('.slider-text');
+                
+                slider.addEventListener('mouseenter', function() {
+                    textElement.style.animationPlayState = 'running';
+                });
+                
+                slider.addEventListener('mouseleave', function() {
+                    textElement.style.animationPlayState = 'paused';
+                });
+            });
+        });
+        </script>

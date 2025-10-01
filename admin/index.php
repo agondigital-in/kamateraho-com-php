@@ -3,21 +3,9 @@ $page_title = "Dashboard";
 include '../config/db.php';
 include 'includes/admin_layout.php'; // This includes auth check
 
-// Fetch pending wallet history
-try {
-    $stmt = $pdo->query("SELECT wh.*, u.name, u.email FROM wallet_history wh 
-                         JOIN users u ON wh.user_id = u.id 
-                         WHERE wh.status = 'pending' 
-                         ORDER BY wh.created_at DESC");
-    $pending_wallet_history = $stmt->fetchAll(PDO::FETCH_ASSOC);
-} catch(PDOException $e) {
-    $error = "Error fetching pending wallet history: " . $e->getMessage();
-    $pending_wallet_history = [];
-}
-
 // Fetch pending withdraw requests
 try {
-    $stmt = $pdo->query("SELECT wr.*, u.name, u.email FROM withdraw_requests wr 
+    $stmt = $pdo->query("SELECT wr.*, u.name, u.email, u.id as user_id FROM withdraw_requests wr 
                          JOIN users u ON wr.user_id = u.id 
                          WHERE wr.status = 'pending' 
                          ORDER BY wr.created_at DESC");
@@ -162,8 +150,8 @@ Yearly Data: " . json_encode($yearly_data) . "
     
     <!-- Stats Cards -->
     <div class="row mb-4">
-        <div class="col-md-3">
-            <div class="card stats-card">
+        <div class="col-xl-3 col-md-6 col-sm-12 mb-3">
+            <div class="card stats-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -175,8 +163,8 @@ Yearly Data: " . json_encode($yearly_data) . "
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card stats-card">
+        <div class="col-xl-3 col-md-6 col-sm-12 mb-3">
+            <div class="card stats-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -188,8 +176,8 @@ Yearly Data: " . json_encode($yearly_data) . "
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card stats-card">
+        <div class="col-xl-3 col-md-6 col-sm-12 mb-3">
+            <div class="card stats-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -201,8 +189,8 @@ Yearly Data: " . json_encode($yearly_data) . "
                 </div>
             </div>
         </div>
-        <div class="col-md-3">
-            <div class="card stats-card">
+        <div class="col-xl-3 col-md-6 col-sm-12 mb-3">
+            <div class="card stats-card h-100">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
                         <div>
@@ -218,7 +206,7 @@ Yearly Data: " . json_encode($yearly_data) . "
     
     <!-- Add a new row for pending messages -->
     <div class="row mb-4">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="card stats-card">
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
@@ -236,7 +224,7 @@ Yearly Data: " . json_encode($yearly_data) . "
     
     <!-- Revenue Charts -->
     <div class="row mb-4">
-        <div class="col-md-12">
+        <div class="col-12">
             <div class="card">
                 <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>Revenue Overview</h5>
@@ -273,63 +261,23 @@ Yearly Data: " . json_encode($yearly_data) . "
     </div>
     
     <div class="row">
-        <!-- Pending Wallet Approvals -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
-                    <h5>Pending Wallet Approvals</h5>
-                </div>
-                <div class="card-body">
-                    <?php if (empty($pending_wallet_history)): ?>
-                        <p>No pending wallet approvals.</p>
-                    <?php else: ?>
-                        <div class="table-responsive">
-                            <table class="table">
-                                <thead>
-                                    <tr>
-                                        <th>User</th>
-                                        <th>Description</th>
-                                        <th>Amount</th>
-                                        <th>Actions</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php foreach ($pending_wallet_history as $history): ?>
-                                        <tr>
-                                            <td><?php echo htmlspecialchars($history['name']); ?></td>
-                                            <td><?php echo htmlspecialchars($history['description']); ?></td>
-                                            <td>₹<?php echo number_format($history['amount'], 2); ?></td>
-                                            <td>
-                                                <a href="approve_wallet.php?id=<?php echo $history['id']; ?>&action=approve" 
-                                                   class="btn btn-success btn-sm">Approve</a>
-                                                <a href="approve_wallet.php?id=<?php echo $history['id']; ?>&action=reject" 
-                                                   class="btn btn-danger btn-sm">Reject</a>
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </tbody>
-                            </table>
-                        </div>
-                    <?php endif; ?>
-                </div>
-            </div>
-        </div>
-        
         <!-- Pending Withdraw Requests -->
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">
+        <div class="col-lg-12 col-12 mb-4">
+            <div class="card h-100">
+                <div class="card-header d-flex justify-content-between align-items-center">
                     <h5>Pending Withdraw Requests</h5>
+                    <a href="pending_withdraw_requests.php" class="btn btn-sm btn-outline-primary">View All</a>
                 </div>
                 <div class="card-body">
                     <?php if (empty($pending_withdraw_requests)): ?>
                         <p>No pending withdraw requests.</p>
                     <?php else: ?>
                         <div class="table-responsive">
-                            <table class="table">
+                            <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>User</th>
+                                        <th>User ID</th>
+                                        <th>Email</th>
                                         <th>Amount</th>
                                         <th>Type</th>
                                         <th>Details</th>
@@ -339,7 +287,8 @@ Yearly Data: " . json_encode($yearly_data) . "
                                 <tbody>
                                     <?php foreach ($pending_withdraw_requests as $request): ?>
                                         <tr>
-                                            <td><?php echo htmlspecialchars($request['name']); ?></td>
+                                            <td><?php echo htmlspecialchars($request['user_id']); ?></td>
+                                            <td><?php echo htmlspecialchars($request['email']); ?></td>
                                             <td>₹<?php echo number_format($request['amount'], 2); ?></td>
                                             <td>
                                                 <?php if (strpos($request['upi_id'], 'purchase@') === 0): ?>
@@ -350,18 +299,29 @@ Yearly Data: " . json_encode($yearly_data) . "
                                             </td>
                                             <td>
                                                 <?php if (!empty($request['offer_title'])): ?>
-                                                    <strong><?php echo htmlspecialchars($request['offer_title']); ?></strong><br>
-                                                    <?php echo htmlspecialchars(substr($request['offer_description'], 0, 50)); ?>
-                                                    <?php if (strlen($request['offer_description']) > 50): ?>...<?php endif; ?>
+                                                    <div>
+                                                        <strong><?php echo htmlspecialchars($request['offer_title']); ?></strong><br>
+                                                        <div class="text-truncate-slider" style="max-width: 200px; overflow: hidden; position: relative;">
+                                                            <div class="slider-text" style="white-space: nowrap; display: inline-block;">
+                                                                <?php echo htmlspecialchars($request['offer_description']); ?>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 <?php else: ?>
-                                                    <?php echo htmlspecialchars($request['upi_id']); ?>
+                                                    <div class="text-truncate-slider" style="max-width: 200px; overflow: hidden; position: relative;">
+                                                        <div class="slider-text" style="white-space: nowrap; display: inline-block;">
+                                                            <?php echo htmlspecialchars($request['upi_id']); ?>
+                                                        </div>
+                                                    </div>
                                                 <?php endif; ?>
                                             </td>
                                             <td>
-                                                <a href="approve_withdraw.php?id=<?php echo $request['id']; ?>&action=approve" 
-                                                   class="btn btn-success btn-sm">Approve</a>
-                                                <a href="approve_withdraw.php?id=<?php echo $request['id']; ?>&action=reject" 
-                                                   class="btn btn-danger btn-sm">Reject</a>
+                                                <div class="btn-group btn-group-sm" role="group">
+                                                    <a href="approve_withdraw.php?id=<?php echo $request['id']; ?>&action=approve" 
+                                                       class="btn btn-success">Approve</a>
+                                                    <a href="approve_withdraw.php?id=<?php echo $request['id']; ?>&action=reject" 
+                                                       class="btn btn-danger">Reject</a>
+                                                </div>
                                             </td>
                                         </tr>
                                     <?php endforeach; ?>

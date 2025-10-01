@@ -67,6 +67,23 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete' && isset($_GET['id']))
     }
 }
 
+// Handle activate/deactivate request
+if (isset($_GET['action']) && in_array($_GET['action'], ['activate', 'deactivate']) && isset($_GET['id'])) {
+    $offer_id = $_GET['id'];
+    $is_active = ($_GET['action'] == 'activate') ? 1 : 0;
+    
+    try {
+        $stmt = $pdo->prepare("UPDATE offers SET is_active = ? WHERE id = ?");
+        $stmt->execute([$is_active, $offer_id]);
+        
+        $_SESSION['message'] = "Offer " . ($_GET['action'] == 'activate' ? 'activated' : 'deactivated') . " successfully!";
+        header("Location: manage_offers.php");
+        exit;
+    } catch(PDOException $e) {
+        $_SESSION['error'] = "Error updating offer status: " . $e->getMessage();
+    }
+}
+
 // Fetch all offers with category names
 try {
     $stmt = $pdo->query("
@@ -134,6 +151,7 @@ if ($isSubAdmin) {
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Price (₹)</th>
+                                <th>Status</th>
                                 <th>Created At</th>
                                 <th>Actions</th>
                             </tr>
@@ -163,8 +181,20 @@ if ($isSubAdmin) {
                                 <td><?php echo htmlspecialchars($offer['title']); ?></td>
                                 <td><?php echo htmlspecialchars($offer['category_name'] ?? 'N/A'); ?></td>
                                 <td>₹<?php echo number_format($offer['price'], 2); ?></td>
+                                <td>
+                                    <?php if ($offer['is_active']): ?>
+                                        <span class="badge bg-success">Active</span>
+                                    <?php else: ?>
+                                        <span class="badge bg-secondary">Inactive</span>
+                                    <?php endif; ?>
+                                </td>
                                 <td><?php echo date('M j, Y', strtotime($offer['created_at'])); ?></td>
                                 <td>
+                                    <?php if ($offer['is_active']): ?>
+                                        <a href="manage_offers.php?action=deactivate&id=<?php echo $offer['id']; ?>" class="btn btn-sm btn-warning">Deactivate</a>
+                                    <?php else: ?>
+                                        <a href="manage_offers.php?action=activate&id=<?php echo $offer['id']; ?>" class="btn btn-sm btn-success">Activate</a>
+                                    <?php endif; ?>
                                     <a href="edit_offer.php?id=<?php echo $offer['id']; ?>" class="btn btn-sm btn-primary">Edit</a>
                                     <a href="manage_offers.php?action=delete&id=<?php echo $offer['id']; ?>" 
                                        class="btn btn-sm btn-danger" 
