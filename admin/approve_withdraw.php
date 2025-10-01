@@ -53,9 +53,13 @@ try {
             error_log("Processing withdrawal approval for request ID: " . $id);
             error_log("User ID: " . $request['user_id'] . ", Amount: " . $request['amount']);
             
-            // Update withdraw request status
+            // Update withdraw request status to approved
             $stmt = $pdo->prepare("UPDATE withdraw_requests SET status = 'approved' WHERE id = ?");
             $stmt->execute([$id]);
+            
+            // Update wallet history status to approved
+            $stmt = $pdo->prepare("UPDATE wallet_history SET status = 'approved' WHERE user_id = ? AND amount = ? AND type = 'debit' AND status = 'pending' AND description = 'Withdrawal request submitted'");
+            $stmt->execute([$request['user_id'], $request['amount']]);
             
             // Check if this is a purchase (identified by UPI ID starting with "purchase@")
             if (strpos($request['upi_id'], 'purchase@') === 0) {
@@ -105,73 +109,76 @@ try {
                     $error = "Failed to add amount to user's wallet.";
                 }
             } else {
-                // This is a regular withdrawal, so deduct amount from user's wallet
-                // Get user's current wallet balance before deduction
-                $stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
-                $stmt->execute([$request['user_id']]);
-                $current_balance = $stmt->fetchColumn();
-                
-                error_log("User's current wallet balance: " . $current_balance);
-                
-                // Deduct amount from user's wallet balance
-                $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance - ? WHERE id = ?");
-                $stmt->execute([$request['amount'], $request['user_id']]);
-                
-                // Check if the update was successful
-                if ($stmt->rowCount() > 0) {
-                    // Get user's new wallet balance after deduction
-                    $stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
-                    $stmt->execute([$request['user_id']]);
-                    $new_balance = $stmt->fetchColumn();
-                    
-                    error_log("User's new wallet balance: " . $new_balance);
-                    error_log("Expected balance: " . ($current_balance - $request['amount']));
-                    
-                    // Log activity for sub-admin
-                    if ($isSubAdmin) {
-                        try {
-                            $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
-                            $activityStmt->execute([$subAdminId, 'approve_withdraw', 'Approved withdraw request ID: ' . $id . ' for amount: ₹' . $request['amount']]);
-                        } catch (PDOException $e) {
-                            // Silently fail on activity logging
-                        }
+                // This is a regular withdrawal that was already processed
+                // Log activity for sub-admin
+                if ($isSubAdmin) {
+                    try {
+                        $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                        $activityStmt->execute([$subAdminId, 'approve_withdraw', 'Approved withdraw request ID: ' . $id . ' for amount: ₹' . $request['amount']]);
+                    } catch (PDOException $e) {
+                        // Silently fail on activity logging
                     }
-                    
-                    // Commit transaction
-                    $pdo->commit();
-                    $message = "Withdraw request approved successfully! Amount (₹" . number_format($request['amount'], 2) . ") deducted from user's wallet. New balance: ₹" . number_format($new_balance, 2);
-                } else {
-                    // Rollback transaction if wallet update failed
-                    $pdo->rollback();
-                    $error = "Failed to deduct amount from user's wallet.";
                 }
+                
+                // Commit transaction
+                $pdo->commit();
+                $message = "Withdraw request approved successfully! The amount was already deducted from the user's wallet when the request was submitted.";
             }
         } else {
             $pdo->rollback();
             $error = "Withdraw request not found.";
         }
     } else {
-        // Reject - only update the status, no wallet changes needed
-        $stmt = $pdo->prepare("UPDATE withdraw_requests SET status = 'rejected' WHERE id = ?");
+        // Reject - refund the money to user's wallet
+        // Begin transaction
+        $pdo->beginTransaction();
+        
+        // Get withdraw request record
+        $stmt = $pdo->prepare("SELECT * FROM withdraw_requests WHERE id = ?");
         $stmt->execute([$id]);
+        $request = $stmt->fetch(PDO::FETCH_ASSOC);
         
-        // Log activity for sub-admin
-        if ($isSubAdmin) {
-            try {
-                $activityStmt = $pdo->prepare("SELECT * FROM withdraw_requests WHERE id = ?");
-                $activityStmt->execute([$id]);
-                $request = $activityStmt->fetch(PDO::FETCH_ASSOC);
-                
-                if ($request) {
-                    $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
-                    $activityStmt->execute([$subAdminId, 'reject_withdraw', 'Rejected withdraw request ID: ' . $id . ' for amount: ₹' . $request['amount']]);
+        if ($request) {
+            // Update withdraw request status to rejected
+            $stmt = $pdo->prepare("UPDATE withdraw_requests SET status = 'rejected' WHERE id = ?");
+            $stmt->execute([$id]);
+            
+            // Update wallet history status to rejected
+            $stmt = $pdo->prepare("UPDATE wallet_history SET status = 'rejected' WHERE user_id = ? AND amount = ? AND type = 'debit' AND status = 'pending' AND description = 'Withdrawal request submitted'");
+            $stmt->execute([$request['user_id'], $request['amount']]);
+            
+            // Refund the amount to user's wallet
+            $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?");
+            $stmt->execute([$request['amount'], $request['user_id']]);
+            
+            // Add entry to wallet history for refund
+            $description = "Withdrawal request rejected - amount refunded";
+            $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, ?, 'credit', 'approved', ?)");
+            $stmt->execute([$request['user_id'], $request['amount'], $description]);
+            
+            // Log activity for sub-admin
+            if ($isSubAdmin) {
+                try {
+                    $activityStmt = $pdo->prepare("SELECT * FROM withdraw_requests WHERE id = ?");
+                    $activityStmt->execute([$id]);
+                    $request = $activityStmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    if ($request) {
+                        $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                        $activityStmt->execute([$subAdminId, 'reject_withdraw', 'Rejected withdraw request ID: ' . $id . ' for amount: ₹' . $request['amount']]);
+                    }
+                } catch (PDOException $e) {
+                    // Silently fail on activity logging
                 }
-            } catch (PDOException $e) {
-                // Silently fail on activity logging
             }
+            
+            // Commit transaction
+            $pdo->commit();
+            $message = "Request rejected! The amount has been refunded to the user's wallet.";
+        } else {
+            $pdo->rollback();
+            $error = "Withdraw request not found.";
         }
-        
-        $message = "Request rejected!";
     }
 } catch(PDOException $e) {
     // Rollback transaction on error

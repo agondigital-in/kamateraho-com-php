@@ -61,13 +61,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
             
             if (!isset($error)) {
-                // Insert withdraw request
+                // Begin transaction
+                $pdo->beginTransaction();
+                
+                // Deduct amount from user's wallet immediately
+                $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance - ? WHERE id = ?");
+                $stmt->execute([$amount, $user_id]);
+                
+                // Insert withdraw request with 'pending' status
                 $stmt = $pdo->prepare("INSERT INTO withdraw_requests (user_id, amount, upi_id, screenshot) VALUES (?, ?, ?, ?)");
                 $stmt->execute([$user_id, $amount, $upi_id, $screenshot]);
                 
-                $success = "Withdraw request submitted successfully! It will be processed within 24-48 hours.";
+                // Add entry to wallet history
+                $description = "Withdrawal request submitted";
+                $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, ?, 'debit', 'pending', ?)");
+                $stmt->execute([$user_id, $amount, $description]);
+                
+                // Commit transaction
+                $pdo->commit();
+                
+                // Redirect to dashboard with success message
+                header("Location: dashboard.php?withdraw_success=1");
+                exit;
             }
         } catch(PDOException $e) {
+            // Rollback transaction on error
+            if ($pdo->inTransaction()) {
+                $pdo->rollback();
+            }
             $error = "Error submitting withdraw request: " . $e->getMessage();
         }
     }
@@ -188,7 +209,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <li>Enter the amount you want to withdraw (minimum ₹200)</li>
                             <li>Provide your valid UPI ID</li>
                             <li>Upload Qr Code (Optional) (optional)</li>
-                            <li>Submit your request and wait for approval (24-48 hours)</li>
+                            <li>Submit your request - <strong>Amount will be deducted immediately from your wallet</strong></li>
+                            <li>If approved, your withdrawal will be processed within 24-48 hours</li>
+                            <li>If rejected, the amount will be refunded to your wallet</li>
                             <li>Check your wallet history for status updates</li>
                         </ol>
                     </div>

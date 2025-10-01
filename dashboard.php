@@ -364,6 +364,13 @@ try {
             </div>
         <?php endif; ?>
         
+        <?php if (isset($_GET['withdraw_success'])): ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>Withdraw request submitted successfully! The amount has been deducted from your wallet and will be processed within 24-48 hours.
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
         <!-- Stats Section -->
         <div class="row">
             <div class="col-md-4">
