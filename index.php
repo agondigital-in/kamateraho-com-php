@@ -117,13 +117,180 @@ if ($pdo) {
             transform: translateY(-2px) !important;
             box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3) !important;
         }
+        
+        /* Referral Modal Styles */
+        .referral-modal .modal-content {
+            border-radius: 15px;
+            border: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
+        .referral-header {
+            background: linear-gradient(135deg, #1a2a6c, #f7b733);
+            color: white;
+            border-radius: 15px 15px 0 0 !important;
+            padding: 20px;
+        }
+        
+        .referral-link-box {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 20px 0;
+            border: 1px dashed #1a2a6c;
+        }
+        
+        .referral-link {
+            word-break: break-all;
+            font-family: monospace;
+            color: #1a2a6c;
+            font-weight: 500;
+        }
+        
+        .copy-btn {
+            background: linear-gradient(135deg, #1a2a6c, #f7b733);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.3);
+        }
+        
+        .copy-btn.copied {
+            background: linear-gradient(135deg, #28a745, #20c997);
+        }
+        
+        .social-share {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .social-btn:hover {
+            transform: translateY(-3px);
+        }
+        
+        .whatsapp { background: #25D366; }
+        .facebook { background: #4267B2; }
+        .twitter { background: #1DA1F2; }
+        .telegram { background: #0088cc; }
+        
+        /* Responsive improvements for mobile */
+        @media (max-width: 768px) {
+            .category-card-wrapper {
+                width: 120px;
+                margin-right: 10px;
+            }
+            
+            .category-card .rounded-circle {
+                width: 90px !important;
+                height: 90px !important;
+            }
+            
+            .offer-card-col {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            
+            .filter-sort-container {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .filter-sort-container .form-select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .offer-card-col {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .category-card-wrapper {
+                width: 100px;
+                margin-right: 8px;
+            }
+            
+            .category-card .rounded-circle {
+                width: 80px !important;
+                height: 80px !important;
+            }
+            
+            .btn-earn-money, .btn-outline-primary {
+                font-size: 0.75rem !important;
+                padding: 0.25rem 0.4rem !important;
+            }
+        }
     </style>
 </head>
 
 <body>
     <?php include 'includes/navbar.php'; ?>
-   
     
+    <!-- Referral Modal -->
+    <div class="modal fade referral-modal" id="referralModal" tabindex="-1" aria-labelledby="referralModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header referral-header">
+                    <h5 class="modal-title" id="referralModalLabel">Refer & Earn</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Share your referral link with friends and earn ₹3 for each successful referral!</p>
+                    
+                    <div class="referral-link-box">
+                        <?php
+                        $base_url = "https://kamateraho.com/";
+                        $referral_link = $base_url . "register.php?ref=" . $_SESSION['user_id'];
+                        ?>
+                        <div class="referral-link" id="referralLink"><?php echo $referral_link; ?></div>
+                    </div>
+                    
+                    <button class="copy-btn" id="copyReferralBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Referral Link
+                    </button>
+                    
+                    <div class="social-share">
+                        <a href="https://api.whatsapp.com/send?text=Join KamateRaho and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text=Join KamateRaho and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://t.me/share/url?url=<?php echo urlencode($referral_link); ?>&text=Join KamateRaho and earn money from home!" target="_blank" class="social-btn telegram">
+                            <i class="fab fa-telegram-plane"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
     <!-- Banner Section -->
     <div class="banner-section py-4 bg-light">
         <div class="container">
@@ -268,8 +435,8 @@ if ($pdo) {
             <div class="text-start mb-4">
                 <h2 class="text-primary">Trending Promotion Tasks</h2>
                 <!-- Filter and Sort Options -->
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <form method="GET" class="d-flex gap-2">
+                <div class="d-flex justify-content-between align-items-center mb-3 filter-sort-container">
+                    <form method="GET" class="d-flex gap-2 w-100">
                         <select name="sort" class="form-select form-select-sm" onchange="this.form.submit()">
                             <option value="price_desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'price_desc') ? 'selected' : ''; ?>>Price: High to Low</option>
                             <option value="price_asc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'price_asc') ? 'selected' : ''; ?>>Price: Low to High</option>
@@ -316,9 +483,9 @@ if ($pdo) {
                     No offers available yet. Please check back later.
                 </div>
             <?php else: ?>
-                <div class="row g-4">
+                <div class="row g-3">
                     <?php foreach (array_slice($all_offers, 0, 12) as $offer): ?>
-                        <div class="col-md-3">
+                        <div class="col-md-3 col-sm-6 offer-card-col">
                             <div class="card border-0 shadow-sm h-100">
                                 <?php 
                                 // Determine image source (using same approach as product_details.php)
@@ -378,9 +545,9 @@ if ($pdo) {
                 <?php if (empty($credit_cards)): ?>
                    
                 <?php else: ?>
-                    <div class="row g-4">
+                    <div class="row g-3">
                         <?php foreach ($credit_cards as $card): ?>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
                                     <img src="<?php echo htmlspecialchars(normalize_image($card['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
@@ -412,9 +579,9 @@ if ($pdo) {
                 <?php if (empty($kotak_offers)): ?>
                    
                 <?php else: ?>
-                    <div class="row g-4">
+                    <div class="row g-3">
                         <?php foreach ($kotak_offers as $offer): ?>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
                                         <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
@@ -452,9 +619,9 @@ if ($pdo) {
                 <?php if (empty($icici_offers)): ?>
                   
                 <?php else: ?>
-                    <div class="row g-4">
+                    <div class="row g-3">
                         <?php foreach ($icici_offers as $offer): ?>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
                                         <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
@@ -492,9 +659,9 @@ if ($pdo) {
                 <?php if (empty($bajaj_offers)): ?>
                    
                 <?php else: ?>
-                    <div class="row g-4">
+                    <div class="row g-3">
                         <?php foreach ($bajaj_offers as $offer): ?>
-                            <div class="col-md-3">
+                            <div class="col-md-3 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
                                         <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
@@ -535,32 +702,9 @@ if ($pdo) {
     
     <!-- Custom JavaScript -->
     <script>
-        // Typing effect for hero section
+        // Referral Modal functionality
         document.addEventListener('DOMContentLoaded', function() {
-            const texts = ["Earn from Home", "Get Instant Payments", "Join Thousands of Users"];
-            let count = 0;
-            let index = 0;
-            let currentText = '';
-            let letter = '';
-            
-            (function type() {
-                if (count === texts.length) {
-                    count = 0;
-                }
-                currentText = texts[count];
-                letter = currentText.slice(0, ++index);
-                
-                document.getElementById('typing').textContent = letter;
-                if (letter.length === currentText.length) {
-                    count++;
-                    index = 0;
-                    setTimeout(type, 2000); // Wait 2 seconds before next text
-                } else {
-                    setTimeout(type, 100); // Typing speed
-                }
-            }());
-            
-            // Copy link functionality
+            // Copy link functionality for existing buttons
             document.querySelectorAll('.copy-link-btn').forEach(button => {
                 button.addEventListener('click', function() {
                     const link = this.getAttribute('data-link');
@@ -585,6 +729,33 @@ if ($pdo) {
                     }
                 });
             });
+            
+            // Referral Modal functionality
+            const copyReferralBtn = document.getElementById('copyReferralBtn');
+            const referralLink = document.getElementById('referralLink');
+            
+            if (copyReferralBtn && referralLink) {
+                copyReferralBtn.addEventListener('click', function() {
+                    navigator.clipboard.writeText(referralLink.innerText).then(() => {
+                        // Show success feedback
+                        const originalText = this.innerHTML;
+                        this.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                        this.classList.add('copied');
+                        
+                        // Show success message
+                        alert('Referral link copied to clipboard!');
+                        
+                        // Reset button after 2 seconds
+                        setTimeout(() => {
+                            this.innerHTML = originalText;
+                            this.classList.remove('copied');
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy: ', err);
+                        alert('Failed to copy link. Please try again.');
+                    });
+                });
+            }
         });
     </script>
     

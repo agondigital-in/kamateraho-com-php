@@ -82,7 +82,7 @@ if (isset($_POST['apply_now'])) {
             // For offers, use the price; for cards, we'll need to determine the amount
             $amount = ($type === 'offer' && isset($item['price'])) ? $item['price'] : 0;
             
-            // Special handling for credit cards - we might want to set a default amount or get it from somewhere
+            // Special handling for credit cards - we'll use a default amount or get it from somewhere
             if ($type === 'card') {
                 // For credit cards, we'll use a default amount or prompt for it
                 $amount = 10000; // Default amount for credit card applications
@@ -196,9 +196,10 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
         }
         
         .product-image {
-            height: 400px;
-            object-fit: cover;
             width: 100%;
+            height: auto;
+            max-height: 400px;
+            object-fit: cover;
         }
         
         .thumbnail-container {
@@ -206,6 +207,7 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             flex-wrap: wrap;
             gap: 10px;
             margin-top: 15px;
+            justify-content: center;
         }
         
         .thumbnail {
@@ -380,6 +382,53 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             border-left: 4px solid var(--secondary-color);
             border-radius: 0 4px 4px 0;
             margin-top: 0.5rem;
+            display: none;
+        }
+        
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .header {
+                padding: 1.5rem 0;
+                margin-bottom: 1.5rem;
+            }
+            
+            .product-image {
+                max-height: 300px;
+            }
+            
+            .thumbnail {
+                width: 60px;
+                height: 60px;
+            }
+            
+            .step {
+                min-width: 100%;
+                margin-bottom: 1rem;
+            }
+            
+            .process-steps {
+                gap: 0.5rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .product-image {
+                max-height: 250px;
+            }
+            
+            .thumbnail {
+                width: 50px;
+                height: 50px;
+            }
+            
+            .price-tag {
+                font-size: 1rem;
+                padding: 0.4rem 0.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.25rem;
+            }
         }
     </style>
 </head>
@@ -430,22 +479,14 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                                  class="product-image" 
                                  alt="<?php echo htmlspecialchars($item['title']); ?>">
                         <?php else: ?>
-                            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 400px;">
+                            <div class="bg-light d-flex align-items-center justify-content-center" style="height: 300px;">
                                 <i class="fas fa-image fa-5x text-muted"></i>
                             </div>
                         <?php endif; ?>
                         
                         <?php if (!empty($additional_images)): ?>
                             <div class="thumbnail-container">
-                                <!-- Main image thumbnail -->
-                                <?php if (!empty($item['image'])): ?>
-                                    <img src="<?php echo htmlspecialchars($item['image']); ?>" 
-                                         class="thumbnail active" 
-                                         alt="<?php echo htmlspecialchars($item['title']); ?>"
-                                         onclick="changeImage('<?php echo htmlspecialchars($item['image']); ?>')">
-                                <?php endif; ?>
-                                
-                                <!-- Additional images thumbnails -->
+                                <!-- Additional images thumbnails (excluding main image) -->
                                 <?php foreach ($additional_images as $image_path): ?>
                                     <img src="<?php echo htmlspecialchars($image_path); ?>" 
                                          class="thumbnail" 
@@ -477,8 +518,6 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                             <div class="info-box mt-3">
                                 <p class="mb-0"><strong>Note:</strong> Once verified with Advertiser, you will receive the payment in 12-24 hours.</p>
                             </div>
-                            
-                          
                             
                             <div class="mt-4">
                                 <form method="POST">
@@ -523,7 +562,6 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                 </div>
             </div>
             
-       
             <div class="product-card p-4 mt-4">
                 <h3 class="section-title">Frequently Asked Questions</h3>
                 
@@ -544,25 +582,9 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                         <p>The approval process typically takes 24-48 hours. You will receive a notification once your application is reviewed. For pre-approved customers, the process can be instant.</p>
                     </div>
                 </div>
-                
-                <script>
-                function changeImage(imagePath) {
-                    // Change the main image
-                    document.getElementById('mainImage').src = imagePath;
-                    
-                    // Update active thumbnail
-                    const thumbnails = document.querySelectorAll('.thumbnail');
-                    thumbnails.forEach(thumb => {
-                        thumb.classList.remove('active');
-                        if (thumb.src.includes(imagePath)) {
-                            thumb.classList.add('active');
-                        }
-                    });
-                }
-                </script>
-                
-                <?php include 'includes/footer.php'; ?>
             </div>
+            
+            <?php include 'includes/footer.php'; ?>
         <?php endif; ?>
     </div>
     
@@ -585,6 +607,20 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                 }
             });
         });
+        
+        function changeImage(imagePath) {
+            // Change the main image
+            document.getElementById('mainImage').src = imagePath;
+            
+            // Update active thumbnail
+            const thumbnails = document.querySelectorAll('.thumbnail');
+            thumbnails.forEach(thumb => {
+                thumb.classList.remove('active');
+            });
+            
+            // Add active class to clicked thumbnail
+            event.target.classList.add('active');
+        }
     </script>
 </body>
 </html>
