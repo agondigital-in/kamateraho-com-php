@@ -194,6 +194,29 @@ if ($pdo) {
         .twitter { background: #1DA1F2; }
         .telegram { background: #0088cc; }
         
+        /* Responsive improvements for Trending Promotion Tasks */
+        .offer-card-col {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .offer-card-col .card {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .offer-card-col .card-img-top {
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .offer-card-col .card-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        
         /* Responsive improvements for mobile */
         @media (max-width: 768px) {
             .category-card-wrapper {
@@ -220,6 +243,11 @@ if ($pdo) {
                 width: 100%;
                 margin-bottom: 10px;
             }
+            
+            /* Increase image height on tablets */
+            .offer-card-col .card-img-top {
+                height: 200px !important;
+            }
         }
         
         @media (max-width: 576px) {
@@ -241,6 +269,33 @@ if ($pdo) {
             .btn-earn-money, .btn-outline-primary {
                 font-size: 0.75rem !important;
                 padding: 0.25rem 0.4rem !important;
+            }
+            
+            /* Further increase image height on small screens */
+            .offer-card-col .card-img-top {
+                height: 180px !important;
+            }
+            
+            /* Reduce title font size on small screens */
+            .offer-card-col .card-title {
+                font-size: 0.8rem !important;
+            }
+            
+            /* Adjust price tag font size */
+            .price-tag {
+                font-size: 1rem !important;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            /* Further increase image height on very small screens */
+            .offer-card-col .card-img-top {
+                height: 160px !important;
+            }
+            
+            /* Further reduce title font size */
+            .offer-card-col .card-title {
+                font-size: 0.75rem !important;
             }
         }
     </style>
@@ -485,7 +540,7 @@ if ($pdo) {
             <?php else: ?>
                 <div class="row g-3">
                     <?php foreach (array_slice($all_offers, 0, 12) as $offer): ?>
-                        <div class="col-md-3 col-sm-6 offer-card-col">
+                        <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 offer-card-col">
                             <div class="card border-0 shadow-sm h-100">
                                 <?php 
                                 // Determine image source (using same approach as product_details.php)

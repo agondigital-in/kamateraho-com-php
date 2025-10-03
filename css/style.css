@@ -915,3 +915,95 @@ h2:after {
 .category-card:hover .card-title {
     color: #1a2a6c;
 }
+
+/* Responsive styles for Trending Promotion Tasks */
+.offer-card-col {
+    display: flex;
+    flex-direction: column;
+}
+
+.offer-card-col .card {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.offer-card-col .card-img-top {
+    object-fit: cover;
+    width: 100%;
+}
+
+.offer-card-col .card-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Additional responsive adjustments for smaller screens */
+@media (max-width: 400px) {
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+    
+    .typing-text {
+        font-size: 1.1rem;
+        min-height: 35px;
+    }
+    
+    .buttons a {
+        padding: 10px 20px;
+        font-size: 0.9rem;
+    }
+    
+    .stats {
+        gap: 15px;
+    }
+    
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .stat-number {
+        font-size: 1.2rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+    
+    /* Increase image height on very small screens */
+    .offer-card-col .card-img-top {
+        height: 160px !important;
+    }
+}
+
+/* Extra small devices (phones, less than 400px) */
+@media (max-width: 350px) {
+    .hero-content h1 {
+        font-size: 1.6rem;
+    }
+    
+    .typing-text {
+        font-size: 1rem;
+        min-height: 30px;
+    }
+    
+    .buttons {
+        gap: 10px;
+    }
+    
+    .buttons a {
+        padding: 8px 15px;
+        font-size: 0.85rem;
+    }
+    
+    .hero-visual {
+        height: 200px;
+    }
+    
+    /* Further increase image height on extremely small screens */
+    .offer-card-col .card-img-top {
+        height: 150px !important;
+    }
+}

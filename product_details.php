@@ -393,7 +393,7 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             }
             
             .product-image {
-                max-height: 300px;
+                max-height: 350px;
             }
             
             .thumbnail {
@@ -413,7 +413,7 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
         
         @media (max-width: 576px) {
             .product-image {
-                max-height: 250px;
+                max-height: 300px;
             }
             
             .thumbnail {
@@ -428,6 +428,17 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             
             .section-title {
                 font-size: 1.25rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .product-image {
+                max-height: 250px;
+            }
+            
+            .thumbnail {
+                width: 40px;
+                height: 40px;
             }
         }
     </style>
