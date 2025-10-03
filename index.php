@@ -220,12 +220,6 @@ if ($pdo) {
                 width: 100%;
                 margin-bottom: 10px;
             }
-            
-            /* Ensure images maintain aspect ratio on mobile */
-            .card-img-top {
-                height: 150px !important;
-                object-fit: cover;
-            }
         }
         
         @media (max-width: 576px) {
@@ -248,44 +242,6 @@ if ($pdo) {
                 font-size: 0.75rem !important;
                 padding: 0.25rem 0.4rem !important;
             }
-            
-            /* Further optimize images for small screens */
-            .card-img-top {
-                height: 130px !important;
-            }
-            
-            .card-title {
-                font-size: 0.85rem !important;
-            }
-        }
-        
-        @media (max-width: 400px) {
-            .category-card-wrapper {
-                width: 90px;
-                margin-right: 6px;
-            }
-            
-            .category-card .rounded-circle {
-                width: 70px !important;
-                height: 70px !important;
-            }
-            
-            .card-img-top {
-                height: 120px !important;
-            }
-        }
-        
-        /* Ensure consistent card height */
-        .card.equal-height {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .card.equal-height .card-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
         }
     </style>
 </head>
@@ -530,7 +486,7 @@ if ($pdo) {
                 <div class="row g-3">
                     <?php foreach (array_slice($all_offers, 0, 12) as $offer): ?>
                         <div class="col-md-3 col-sm-6 offer-card-col">
-                            <div class="card border-0 shadow-sm h-100 equal-height">
+                            <div class="card border-0 shadow-sm h-100">
                                 <?php 
                                 // Determine image source (using same approach as product_details.php)
                                 $image_src = '';
@@ -592,7 +548,7 @@ if ($pdo) {
                     <div class="row g-3">
                         <?php foreach ($credit_cards as $card): ?>
                             <div class="col-md-3 col-sm-6 offer-card-col">
-                                <div class="card border-0 shadow-sm h-100 equal-height">
+                                <div class="card border-0 shadow-sm h-100">
                                     <img src="<?php echo htmlspecialchars(normalize_image($card['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <div class="card-body d-flex flex-column">
                                         <!-- Product Title -->
@@ -626,7 +582,7 @@ if ($pdo) {
                     <div class="row g-3">
                         <?php foreach ($kotak_offers as $offer): ?>
                             <div class="col-md-3 col-sm-6 offer-card-col">
-                                <div class="card border-0 shadow-sm h-100 equal-height">
+                                <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
                                         <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <?php else: ?>
@@ -666,7 +622,7 @@ if ($pdo) {
                     <div class="row g-3">
                         <?php foreach ($icici_offers as $offer): ?>
                             <div class="col-md-3 col-sm-6 offer-card-col">
-                                <div class="card border-0 shadow-sm h-100 equal-height">
+                                <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
                                         <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <?php else: ?>
@@ -706,7 +662,7 @@ if ($pdo) {
                     <div class="row g-3">
                         <?php foreach ($bajaj_offers as $offer): ?>
                             <div class="col-md-3 col-sm-6 offer-card-col">
-                                <div class="card border-0 shadow-sm h-100 equal-height">
+                                <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
                                         <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
                                     <?php else: ?>
