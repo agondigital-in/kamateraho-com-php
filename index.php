@@ -290,7 +290,7 @@ if ($pdo) {
         @media (max-width: 400px) {
             /* Further increase image height on very small screens */
             .offer-card-col .card-img-top {
-                height: 160px !important;
+                height: 239px !important;
             }
             
             /* Further reduce title font size */
