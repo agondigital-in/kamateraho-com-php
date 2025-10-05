@@ -340,6 +340,297 @@ try {
             font-size: 1rem;
             color: var(--text-secondary);
         }
+        
+        /* Responsive styles for all devices */
+        @media (max-width: 1200px) {
+            .stats-number {
+                font-size: 1.8rem;
+            }
+            
+            .revenue-amount {
+                font-size: 1.6rem;
+            }
+            
+            .action-btn {
+                min-width: 140px;
+                padding: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 992px) {
+            .welcome-banner {
+                padding: 1.5rem 0;
+                margin-bottom: 1.5rem;
+            }
+            
+            .stats-icon {
+                width: 50px;
+                height: 50px;
+                font-size: 1.2rem;
+            }
+            
+            .stats-number {
+                font-size: 1.6rem;
+            }
+            
+            .stats-label {
+                font-size: 0.9rem;
+            }
+            
+            .action-btn {
+                min-width: 130px;
+                padding: 1rem;
+            }
+            
+            .action-btn i {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .revenue-amount {
+                font-size: 1.4rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .welcome-banner {
+                padding: 1.2rem 0;
+                margin-bottom: 1.2rem;
+                border-radius: 0 0 15px 15px;
+            }
+            
+            .display-6 {
+                font-size: 1.8rem;
+            }
+            
+            .lead {
+                font-size: 1rem;
+            }
+            
+            .stats-card {
+                margin-bottom: 1rem;
+            }
+            
+            .stats-icon {
+                width: 45px;
+                height: 45px;
+                font-size: 1rem;
+                margin-right: 0.8rem;
+            }
+            
+            .stats-number {
+                font-size: 1.4rem;
+            }
+            
+            .stats-label {
+                font-size: 0.85rem;
+            }
+            
+            .section-title {
+                font-size: 1.3rem;
+                margin-bottom: 1rem;
+            }
+            
+            .quick-actions {
+                gap: 0.8rem;
+                margin: 1rem 0;
+            }
+            
+            .action-btn {
+                min-width: 120px;
+                padding: 0.8rem;
+            }
+            
+            .action-btn h6 {
+                font-size: 0.9rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .action-btn p {
+                font-size: 0.75rem;
+            }
+            
+            .activity-item {
+                padding: 0.8rem;
+            }
+            
+            .revenue-card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .revenue-amount {
+                font-size: 1.2rem;
+                margin: 0.3rem 0;
+            }
+            
+            .revenue-label {
+                font-size: 0.85rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .welcome-banner {
+                padding: 1rem 0;
+                margin-bottom: 1rem;
+                border-radius: 0 0 10px 10px;
+            }
+            
+            .display-6 {
+                font-size: 1.5rem;
+            }
+            
+            .lead {
+                font-size: 0.9rem;
+            }
+            
+            .stats-card .card-body {
+                padding: 1rem;
+            }
+            
+            .stats-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 0.9rem;
+                margin-right: 0.5rem;
+            }
+            
+            .stats-number {
+                font-size: 1.2rem;
+            }
+            
+            .stats-label {
+                font-size: 0.8rem;
+            }
+            
+            .section-title {
+                font-size: 1.2rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .quick-actions {
+                gap: 0.5rem;
+                margin: 0.8rem 0;
+            }
+            
+            .action-btn {
+                min-width: 100%;
+                padding: 0.7rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .action-btn i {
+                font-size: 1.3rem;
+                margin-bottom: 0.3rem;
+            }
+            
+            .action-btn h6 {
+                font-size: 0.85rem;
+                margin-bottom: 0.2rem;
+            }
+            
+            .action-btn p {
+                font-size: 0.7rem;
+            }
+            
+            .activity-card .card-body {
+                padding: 0.8rem;
+            }
+            
+            .activity-item {
+                padding: 0.7rem;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .activity-item .flex-grow-1 {
+                margin-bottom: 0.5rem;
+            }
+            
+            .revenue-card {
+                padding: 0.8rem;
+                margin-bottom: 0.8rem;
+            }
+            
+            .revenue-amount {
+                font-size: 1.1rem;
+                margin: 0.2rem 0;
+            }
+            
+            .revenue-label {
+                font-size: 0.8rem;
+            }
+            
+            .footer-section {
+                padding: 1.5rem 0;
+                margin-top: 2rem;
+            }
+            
+            .footer-section h5 {
+                font-size: 1rem;
+            }
+            
+            .footer-section p {
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .welcome-banner {
+                padding: 0.8rem 0;
+                margin-bottom: 0.8rem;
+            }
+            
+            .display-6 {
+                font-size: 1.3rem;
+            }
+            
+            .lead {
+                font-size: 0.8rem;
+            }
+            
+            .stats-icon {
+                width: 35px;
+                height: 35px;
+                font-size: 0.8rem;
+            }
+            
+            .stats-number {
+                font-size: 1rem;
+            }
+            
+            .stats-label {
+                font-size: 0.75rem;
+            }
+            
+            .section-title {
+                font-size: 1.1rem;
+            }
+            
+            .action-btn {
+                padding: 0.6rem;
+            }
+            
+            .action-btn i {
+                font-size: 1.1rem;
+            }
+            
+            .action-btn h6 {
+                font-size: 0.8rem;
+            }
+            
+            .activity-item {
+                padding: 0.6rem;
+            }
+            
+            .revenue-amount {
+                font-size: 1rem;
+            }
+            
+            .revenue-label {
+                font-size: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
