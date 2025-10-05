@@ -246,7 +246,7 @@ if ($pdo) {
             
             /* Increase image height on tablets */
             .offer-card-col .card-img-top {
-                height: 200px !important;
+                height: 260px !important;
             }
         }
         

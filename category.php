@@ -129,6 +129,46 @@ try {
             padding: 0.75rem 1rem;
             border-radius: 0.375rem;
         }
+        
+        /* Enhanced "Earn Money" button styles */
+        .btn-earn-money {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            padding: 12px 25px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(67, 97, 238, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-earn-money:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4);
+            background: linear-gradient(135deg, #3a0ca3, #4361ee);
+        }
+        
+        .btn-earn-money:active {
+            transform: translateY(1px);
+        }
+        
+        .btn-earn-money::after {
+            content: "";
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 20px;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(30deg);
+            transition: all 0.6s;
+        }
+        
+        .btn-earn-money:hover::after {
+            left: 120%;
+        }
     </style>
 </head>
 <body>
