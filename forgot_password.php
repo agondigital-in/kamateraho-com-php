@@ -44,7 +44,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updateStmt->execute([$hashedPassword, $email]);
                 
                 // Prepare data for API call with the temporary password and reset link
-                $resetLink = "https://yourdomain.com/reset_password.php?token=" . $token;
+                // Use the current domain instead of placeholder
+                $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
+                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
+                // URL encode the token to ensure it's properly transmitted
+                $encodedToken = urlencode($token);
+                $resetLink = $protocol . "://" . $domain . "/reset_password.php?token=" . $encodedToken;
+                
                 $api_data = [
                     'email' => $email,
                     'Password' => $tempPassword,

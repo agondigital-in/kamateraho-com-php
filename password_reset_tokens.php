@@ -18,15 +18,25 @@ class PasswordResetTokens {
     // Validate a token
     public static function validateToken($token) {
         $tokens = self::getTokens();
+        // Debug information
+        // error_log("Validating token: " . $token);
+        // error_log("Available tokens: " . print_r($tokens, true));
+        
         if (isset($tokens[$token])) {
             // Check if token is less than 1 hour old
-            if (time() - $tokens[$token]['created_at'] < 3600) {
+            $tokenAge = time() - $tokens[$token]['created_at'];
+            // error_log("Token age: " . $tokenAge . " seconds");
+            
+            if ($tokenAge < 3600) { // 1 hour = 3600 seconds
                 return $tokens[$token]['email'];
             } else {
                 // Token expired, remove it
+                // error_log("Token expired, removing it");
                 unset($tokens[$token]);
                 self::saveTokens($tokens);
             }
+        } else {
+            // error_log("Token not found");
         }
         return false;
     }

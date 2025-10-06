@@ -7,6 +7,9 @@ include 'password_reset_tokens.php';
 $token = $_GET['token'] ?? '';
 $email = '';
 
+// URL decode the token in case ccit was encoded
+$token = urldecode($token);
+
 if (!empty($token)) {
     $email = PasswordResetTokens::validateToken($token);
 }
