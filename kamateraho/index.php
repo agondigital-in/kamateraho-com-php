@@ -1616,7 +1616,7 @@ No skills needed – start earning today.</p>
             <div style="margin-bottom: 3rem;">
                 <div style="position: relative; padding-bottom: 56.25%; height: 0; border-radius: 15px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
                     <video 
-                        src="https://res.cloudinary.com/dqsxrixfq/video/upload/v1759300487/IMG_4535_bu1spx.mp4" 
+                        src="https://res.cloudinary.com/dqsxrixfq/video/upload/v1759739791/WhatsApp_Video_2025-10-06_at_13.19.49_6fad57d6_ddckzg.mp4" 
                         style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none; object-fit: cover;"
                         autoplay 
                         loop 
