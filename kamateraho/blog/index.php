@@ -362,8 +362,8 @@
                 <li><a href="/">Testimonials</a></li>
                 <li><a href="/withdrawal-info">Withdrawals</a></li>
                 <li><a href="/">Blog</a></li>
-                <li><a href="../register.php">Register</a></li>
-                <li><a href="../login.php">Login</a></li>
+                <li><a href="../../register.php">Register</a></li>
+                <li><a href="../../login.php">Login</a></li>
             </ul>
         </nav>
     </header>
