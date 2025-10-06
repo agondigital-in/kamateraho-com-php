@@ -117,7 +117,9 @@ if (isset($_POST['apply_now'])) {
     if (!empty($redirect_url)) {
         // Add p_id=user_id parameter to the redirect URL
         $separator = (strpos($redirect_url, '?') !== false) ? '&' : '?';
-        $redirect_url .= $separator . 'p_id=' . $user_id;
+        // Add click counter parameter
+        $click_counter = time(); // Using timestamp as a simple click counter
+        $redirect_url .= $separator . 'p_id=' . $user_id . '&click_id=' . $click_counter;
         header("Location: " . $redirect_url);
         exit;
     } else {
