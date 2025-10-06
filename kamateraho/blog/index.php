@@ -407,7 +407,7 @@
                 <div class="blog-content">
                     <h3>Top 5 Ways to Earn Money Online</h3>
                     <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 5, 2025</span>
+                        <span><i class="far fa-calendar"></i> Oct 10, 2025</span>
                         <span><i class="far fa-user"></i> Admin</span>
                     </div>
                     <p class="blog-excerpt">Discover the most effective methods to earn money from the comfort of your home. These proven strategies can help you boost your income significantly.</p>
@@ -416,7 +416,7 @@
             </div>
 
             <!-- Blog Post 2 -->
-            <div class="blog-card">
+            <!-- <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>Maximizing Your Earnings with KamateRaho</h3>
@@ -427,10 +427,10 @@
                     <p class="blog-excerpt">Learn how to make the most of our platform with these expert tips. Increase your daily earnings and unlock new opportunities.</p>
                     <a href="post2.php" class="read-more">Read More</a>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Blog Post 3 -->
-            <div class="blog-card">
+            <!-- <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>Understanding Payment Methods</h3>
@@ -441,10 +441,10 @@
                     <p class="blog-excerpt">Get detailed information about our payment methods and how to withdraw your earnings quickly and securely.</p>
                     <a href="post3.php" class="read-more">Read More</a>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Blog Post 4 -->
-            <div class="blog-card">
+            <!-- <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>Success Stories from Our Users</h3>
@@ -455,10 +455,10 @@
                     <p class="blog-excerpt">Read inspiring stories from our community members who have successfully earned money through our platform.</p>
                     <a href="post4.php" class="read-more">Read More</a>
                 </div>
-            </div>
+            </div> -->
 
             <!-- Blog Post 5 -->
-            <div class="blog-card">
+            <!-- <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>New Features Coming Soon</h3>
@@ -469,7 +469,7 @@
                     <p class="blog-excerpt">Exciting updates are on the horizon! Discover what new features we're adding to enhance your experience.</p>
                     <a href="post5.php" class="read-more">Read More</a>
                 </div>
-            </div>
+            </div> -->
         </div>
 
         <div class="pagination">
