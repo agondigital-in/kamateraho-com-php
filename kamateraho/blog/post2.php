@@ -132,14 +132,14 @@
                 </div>
                 <nav>
                     <ul id="navMenu">
-                        <li><a href="../">Home</a></li>
-                        <li><a href="../#how-it-works">How It Works</a></li>
-                        <li><a href="../#testimonial-container">Testimonials</a></li>
-                        <li><a href="../#withdrawal-info">Withdrawals</a></li>
-                        <li><a href="./">Blog</a></li>
-                        <li><a href="../../register.php">Register</a></li>
-                        <li><a href="../../login.php">Login</a></li>
-                    </ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/">How It Works</a></li>
+                <li><a href="/">Testimonials</a></li>
+                <li><a href="/withdrawal-info">Withdrawals</a></li>
+                <li><a href="/">Blog</a></li>
+                <li><a href="../../register.php">Register</a></li>
+                <li><a href="../../login.php">Login</a></li>
+            </ul>
                 </nav>
             </div>
         </div>
