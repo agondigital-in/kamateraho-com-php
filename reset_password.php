@@ -1,32 +1,22 @@
 <?php
 session_start();
 include 'config/db.php';
-include 'password_reset_tokens.php';
 
-// Check if a token is provided
-$token = $_GET['token'] ?? '';
-$email = '';
-
-// URL decode the token in case ccit was encoded
-$token = urldecode($token);
-
-if (!empty($token)) {
-    $email = PasswordResetTokens::validateToken($token);
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
 }
-
-$valid_request = !empty($email);
 
 $message = '';
 $error = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $currentPassword = $_POST['current_password'];
     $newPassword = $_POST['new_password'];
     $confirmPassword = $_POST['confirm_password'];
     
-    // Check if we have a valid email from the token
-    if (empty($email)) {
-        $error = "Invalid or expired reset link. Please request a new password reset.";
-    } elseif (empty($newPassword) || empty($confirmPassword)) {
+    if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
         $error = "All fields are required!";
     } elseif ($newPassword !== $confirmPassword) {
         $error = "New password and confirm password do not match!";
@@ -36,15 +26,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $error = "Database connection failed. Please contact the administrator.";
     } else {
         try {
-            // Update to new password
-            $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
-            $updateStmt = $pdo->prepare("UPDATE users SET password = ? WHERE email = ?");
-            $updateStmt->execute([$hashedPassword, $email]);
+            // Get current user's data
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+            $stmt->execute([$_SESSION['user_id']]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            // Remove the token so it can't be used again
-            PasswordResetTokens::removeToken($token);
-            
-            $message = "Password updated successfully! You can now <a href='login.php'>login</a> with your new password.";
+            if ($user && password_verify($currentPassword, $user['password'])) {
+                // Current password is correct, update to new password
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $updateStmt = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
+                $updateStmt->execute([$hashedPassword, $_SESSION['user_id']]);
+                
+                $message = "Password updated successfully! You can now continue using the platform with your new password.";
+            } else {
+                $error = "Current password is incorrect!";
+            }
         } catch(PDOException $e) {
             $error = "Failed to update password. Please try again later.";
         }
@@ -218,52 +214,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             
             <div class="reset-password-body">
-                <?php if (!$valid_request): ?>
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-circle me-2"></i>Invalid or expired reset link. Please <a href="forgot_password.php">request a new password reset</a>.
-                    </div>
-                    <div class="form-footer">
-                        <p><a href="login.php">Back to Login</a></p>
-                    </div>
-                <?php else: ?>
-                    <?php if ($message): ?>
-                        <div class="alert alert-success">
-                            <i class="fas fa-check-circle me-2"></i><?php echo $message; ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <?php if ($error): ?>
-                        <div class="alert alert-danger">
-                            <i class="fas fa-exclamation-circle me-2"></i><?php echo $error; ?>
-                        </div>
-                    <?php endif; ?>
-                    
-                    <?php if (empty($message)): ?>
-                        <form method="POST">
-                            <div class="form-group">
-                                <label for="new_password">New Password</label>
-                                <div class="input-icon">
-                                    <i class="fas fa-lock"></i>
-                                    <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" required>
-                                </div>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="confirm_password">Confirm New Password</label>
-                                <div class="input-icon">
-                                    <i class="fas fa-lock"></i>
-                                    <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm new password" required>
-                                </div>
-                            </div>
-                            
-                            <button type="submit" class="btn-reset">Update Password</button>
-                        </form>
-                    <?php endif; ?>
-                    
-                    <div class="form-footer">
-                        <p><a href="login.php">Back to Login</a></p>
+                <?php if ($message): ?>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle me-2"></i><?php echo $message; ?>
                     </div>
                 <?php endif; ?>
+                
+                <?php if ($error): ?>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle me-2"></i><?php echo $error; ?>
+                    </div>
+                <?php endif; ?>
+                
+                <form method="POST">
+                    <div class="form-group">
+                        <label for="current_password">Current Password</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter your current password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="new_password">New Password</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm New Password</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm new password" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-reset">Update Password</button>
+                </form>
+                
+                <div class="form-footer">
+                    <p><a href="index.php">Back to Dashboard</a></p>
+                </div>
             </div>
         </div>
     </div>

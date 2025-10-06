@@ -1,7 +1,6 @@
 <?php
 session_start();
 include 'config/db.php';
-include 'password_reset_tokens.php';
 
 $message = '';
 $error = '';
@@ -32,36 +31,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($user) {
-                // User found, generate a reset token
-                $token = PasswordResetTokens::generateToken($email);
-                
-                // Generate a temporary password
-                $tempPassword = generateRandomPassword(10);
-                $hashedPassword = password_hash($tempPassword, PASSWORD_DEFAULT);
+                // User found, generate a new password
+                $newPassword = generateRandomPassword(10);
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 
                 // Update the password in the database
                 $updateStmt = $pdo->prepare("UPDATE users SET password = ? WHERE email = ?");
                 $updateStmt->execute([$hashedPassword, $email]);
                 
-                // Prepare data for API call with the temporary password and reset link
-                // Use the current domain instead of placeholder
-                $domain = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'localhost';
-                $protocol = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http';
-                // URL encode the token to ensure it's properly transmitted
-                $encodedToken = urlencode($token);
-                $resetLink = $protocol . "://" . $domain . "/reset_password.php?token=" . $encodedToken;
-                
+                // Prepare data for API call with the new plain text password
                 $api_data = [
                     'email' => $email,
-                    'Password' => $tempPassword,
-                    'ResetLink' => $resetLink
+                    'Password' => $newPassword  // Send the new plain text password
                 ];
                 
                 // API endpoint
                 $url = 'https://mail.agondev.space/send-password';
                 
                 // Authorization token
-                $token_auth = 'km_ritik_ritikyW8joeSZUHp6zgPm8Y8';
+                $token = 'km_ritik_ritikyW8joeSZUHp6zgPm8Y8';
                 
                 // Initialize cURL
                 $ch = curl_init($url);
@@ -70,7 +58,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($api_data));
                 curl_setopt($ch, CURLOPT_HTTPHEADER, [
                     'Content-Type: application/json',
-                    'Authorization: Bearer ' . $token_auth
+                    'Authorization: Bearer ' . $token
                 ]);
                 
                 // Execute the request
@@ -79,13 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 curl_close($ch);
                 
                 if ($http_code === 200) {
-                    $message = "A temporary password and reset link have been sent to your email address. Please check your email and follow the instructions to reset your password.";
+                    $message = "A new password has been sent to your email address. Please check your email and login with the new password. After logging in, you can change it to something you'll remember by visiting the Reset Password page from your profile menu.";
                 } else {
                     $error = "Failed to send password. Please try again later. (Error: " . $http_code . ")";
                 }
             } else {
                 // For security reasons, we'll show the same message whether the user exists or not
-                $message = "If your email exists in our system, a temporary password and reset link have been sent to your email address.";
+                $message = "If your email exists in our system, a new password has been sent to your email address.";
             }
         } catch(PDOException $e) {
             $error = "An error occurred. Please try again later.";
