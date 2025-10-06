@@ -273,7 +273,7 @@ if ($pdo) {
             
             /* Further increase image height on small screens */
             .offer-card-col .card-img-top {
-                height: 180px !important;
+                height: 283px !important;
             }
             
             /* Reduce title font size on small screens */
