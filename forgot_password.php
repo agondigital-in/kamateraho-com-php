@@ -5,6 +5,17 @@ include 'config/db.php';
 $message = '';
 $error = '';
 
+// Function to generate a random password
+function generateRandomPassword($length = 10) {
+    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $charactersLength = strlen($characters);
+    $randomString = '';
+    for ($i = 0; $i < $length; $i++) {
+        $randomString .= $characters[rand(0, $charactersLength - 1)];
+    }
+    return $randomString;
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     
@@ -20,13 +31,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
             if ($user) {
-                // User found, send password to the API
-                $password = $user['password']; // This is the hashed password
+                // User found, generate a new password
+                $newPassword = generateRandomPassword(10);
+                $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
                 
-                // Prepare data for API call
+                // Update the password in the database
+                $updateStmt = $pdo->prepare("UPDATE users SET password = ? WHERE email = ?");
+                $updateStmt->execute([$hashedPassword, $email]);
+                
+                // Prepare data for API call with the new password
                 $api_data = [
                     'email' => $email,
-                    'Password' => $password
+                    'Password' => $newPassword  // Send the new plain text password
                 ];
                 
                 // API endpoint
@@ -51,13 +67,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 curl_close($ch);
                 
                 if ($http_code === 200) {
-                    $message = "Your password has been sent to your email address.";
+                    $message = "A new password has been sent to your email address.";
                 } else {
                     $error = "Failed to send password. Please try again later. (Error: " . $http_code . ")";
                 }
             } else {
                 // For security reasons, we'll show the same message whether the user exists or not
-                $message = "If your email exists in our system, your password has been sent to your email address.";
+                $message = "If your email exists in our system, a new password has been sent to your email address.";
             }
         } catch(PDOException $e) {
             $error = "An error occurred. Please try again later.";
