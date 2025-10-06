@@ -153,11 +153,6 @@ if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in']) {
                             </div>
                         </form>
                         
-                        <div class="mt-4 text-center">
-                            <p class="text-muted small">
-                                <i class="bi bi-info-circle"></i> Demo credentials: admin / admin123
-                            </p>
-                        </div>
                     </div>
                 </div>
             </div>
