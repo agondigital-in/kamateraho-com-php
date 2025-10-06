@@ -7,6 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - KamateRaho.com</title>
+    <meta name="google-site-verification" content="L5OFuMQut1wlaXZQjXlLUO6eqfZprVYYsN1ZMj0MOpM" />
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -330,9 +331,20 @@
         }
 
     </style>
+    
 </head>
 <body>
+    <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RMM38DLZLM');
+</script>
      <header>
+
         <div class="logo">
             <img src="../img/logo.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
         </div>

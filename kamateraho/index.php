@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="L5OFuMQut1wlaXZQjXlLUO6eqfZprVYYsN1ZMj0MOpM" />
     <title>KamateRaho.com - Earn cash from Home</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -1251,6 +1252,16 @@
 </head>
 <body>
     <header>
+        
+        <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-RMM38DLZLM');
+</script>
         <div class="logo">
             <img src="kamateraho/img/logo.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
         </div>
