@@ -2,81 +2,47 @@
 session_start();
 include 'config/db.php';
 
+// Check if user is logged in
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit;
+}
+
 $message = '';
 $error = '';
 
-// Function to generate a random password
-function generateRandomPassword($length = 10) {
-    $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $charactersLength = strlen($characters);
-    $randomString = '';
-    for ($i = 0; $i < $length; $i++) {
-        $randomString .= $characters[rand(0, $charactersLength - 1)];
-    }
-    return $randomString;
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
+    $currentPassword = $_POST['current_password'];
+    $newPassword = $_POST['new_password'];
+    $confirmPassword = $_POST['confirm_password'];
     
-    if (empty($email)) {
-        $error = "Please enter your email address!";
+    if (empty($currentPassword) || empty($newPassword) || empty($confirmPassword)) {
+        $error = "All fields are required!";
+    } elseif ($newPassword !== $confirmPassword) {
+        $error = "New password and confirm password do not match!";
+    } elseif (strlen($newPassword) < 6) {
+        $error = "Password must be at least 6 characters long!";
     } elseif ($pdo === null) {
         $error = "Database connection failed. Please contact the administrator.";
     } else {
         try {
-            // Check if user exists
-            $stmt = $pdo->prepare("SELECT * FROM users WHERE email = ?");
-            $stmt->execute([$email]);
+            // Get current user's data
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE id = ?");
+            $stmt->execute([$_SESSION['user_id']]);
             $user = $stmt->fetch(PDO::FETCH_ASSOC);
             
-            if ($user) {
-                // User found, generate a new password
-                $newPassword = generateRandomPassword(10);
+            if ($user && password_verify($currentPassword, $user['password'])) {
+                // Current password is correct, update to new password
                 $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
+                $updateStmt = $pdo->prepare("UPDATE users SET password = ? WHERE id = ?");
+                $updateStmt->execute([$hashedPassword, $_SESSION['user_id']]);
                 
-                // Update the password in the database
-                $updateStmt = $pdo->prepare("UPDATE users SET password = ? WHERE email = ?");
-                $updateStmt->execute([$hashedPassword, $email]);
-                
-                // Prepare data for API call with the new plain text password
-                $api_data = [
-                    'email' => $email,
-                    'Password' => $newPassword  // Send the new plain text password
-                ];
-                
-                // API endpoint
-                $url = 'https://mail.agondev.space/send-password';
-                
-                // Authorization token
-                $token = 'km_ritik_ritikyW8joeSZUHp6zgPm8Y8';
-                
-                // Initialize cURL
-                $ch = curl_init($url);
-                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                curl_setopt($ch, CURLOPT_POST, true);
-                curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($api_data));
-                curl_setopt($ch, CURLOPT_HTTPHEADER, [
-                    'Content-Type: application/json',
-                    'Authorization: Bearer ' . $token
-                ]);
-                
-                // Execute the request
-                $response = curl_exec($ch);
-                $http_code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-                curl_close($ch);
-                
-                if ($http_code === 200) {
-                    $message = "A new password has been sent to your email address. Please check your email and login with the new password. After logging in, you can change it to something you'll remember by visiting the Reset Password page from your profile menu.";
-                } else {
-                    $error = "Failed to send password. Please try again later. (Error: " . $http_code . ")";
-                }
+                $message = "Password updated successfully! You can now continue using the platform with your new password.";
             } else {
-                // For security reasons, we'll show the same message whether the user exists or not
-                $message = "If your email exists in our system, a new password has been sent to your email address.";
+                $error = "Current password is incorrect!";
             }
         } catch(PDOException $e) {
-            $error = "An error occurred. Please try again later.";
+            $error = "Failed to update password. Please try again later.";
         }
     }
 }
@@ -87,7 +53,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forgot Password - KamateRaho</title>
+    <title>Reset Password - KamateRaho</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -109,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             padding: 20px 0;
         }
         
-        .forgot-password-container {
+        .reset-password-container {
             max-width: 500px;
             margin: 0 auto;
             box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
@@ -124,19 +90,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             to { opacity: 1; transform: translateY(0); }
         }
         
-        .forgot-password-header {
+        .reset-password-header {
             background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             color: white;
             padding: 30px;
             text-align: center;
         }
         
-        .forgot-password-header h2 {
+        .reset-password-header h2 {
             font-size: 2rem;
             margin-bottom: 10px;
         }
         
-        .forgot-password-body {
+        .reset-password-body {
             padding: 40px;
         }
         
@@ -233,7 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 padding: 10px 0;
             }
             
-            .forgot-password-body {
+            .reset-password-body {
                 padding: 30px;
             }
         }
@@ -241,13 +207,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
     <div class="container">
-        <div class="forgot-password-container">
-            <div class="forgot-password-header">
-                <h2>Forgot Password</h2>
-                <p>Enter your email to receive your password</p>
+        <div class="reset-password-container">
+            <div class="reset-password-header">
+                <h2>Reset Password</h2>
+                <p>Change your password to something you'll remember</p>
             </div>
             
-            <div class="forgot-password-body">
+            <div class="reset-password-body">
                 <?php if ($message): ?>
                     <div class="alert alert-success">
                         <i class="fas fa-check-circle me-2"></i><?php echo $message; ?>
@@ -262,18 +228,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 
                 <form method="POST">
                     <div class="form-group">
-                        <label for="email">Email Address</label>
+                        <label for="current_password">Current Password</label>
                         <div class="input-icon">
-                            <i class="fas fa-envelope"></i>
-                            <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-control" id="current_password" name="current_password" placeholder="Enter your current password" required>
                         </div>
                     </div>
                     
-                    <button type="submit" class="btn-reset">Send Password</button>
+                    <div class="form-group">
+                        <label for="new_password">New Password</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-control" id="new_password" name="new_password" placeholder="Enter new password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm New Password</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm new password" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-reset">Update Password</button>
                 </form>
                 
                 <div class="form-footer">
-                    <p><a href="login.php">Back to Login</a></p>
+                    <p><a href="index.php">Back to Dashboard</a></p>
                 </div>
             </div>
         </div>
