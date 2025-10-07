@@ -1699,7 +1699,7 @@ function showSlides(n) {
     <section class="withdrawal-info" id="withdrawal-info">
         <div class="container">
             <h2>Withdrawal Information</h2>
-            <p>Learn about our straightforward and secure withdrawal process</p>
+            <p>Learn about our simple and secure withdrawal process</p>
         </div>
         
         <div class="info-cards">
@@ -1709,13 +1709,13 @@ function showSlides(n) {
                     <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #3498db, #8e44ad); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);">
                         <i class="fas fa-exchange-alt" style="color: white; font-size: 2rem;"></i>
                     </div>
-                    <h3>Withdrawal Process</h3>
+                    <h3>Withdrawal Method</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #3498db, #8e44ad); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Request withdrawals with a small minimum amount. After quick verification, your funds are transferred instantly via UPI to your bank account.</p>
+                <p>Request withdrawals with a reasonable minimum amount. After verification, your funds are transferred to your bank account through secure payment methods.</p>
                 <div style="text-align: center;">
                     <div style="display: inline-flex; align-items: center; gap: 0.5rem; color: #3498db; font-weight: 500;">
-                        <span>Fast Processing</span>
+                        <span>Efficient Processing</span>
                         <i class="fas fa-bolt" style="color: #f39c12;"></i>
                     </div>
                 </div>
@@ -1727,13 +1727,13 @@ function showSlides(n) {
                     <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #e74c3c, #e67e22); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2);">
                         <i class="fas fa-gift" style="color: white; font-size: 2rem;"></i>
                     </div>
-                    <h3>Welcome Bonus</h3>
+                    <h3>Registration Bonus</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Receive a welcome bonus instantly upon registration in your wallet. No hidden fees, no minimum withdrawal requirements – start earning right away!</p>
+                <p>Receive a welcome bonus upon registration in your wallet. No hidden fees, no minimum withdrawal requirements – start participating right away!</p>
                 <div style="text-align: center;">
                     <div style="display: inline-block; background: #e74c3c; color: white; padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 600; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);">
-                        ₹50 Bonus
+                        Welcome Bonus
                     </div>
                 </div>
             </div>
@@ -1744,10 +1744,10 @@ function showSlides(n) {
                     <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #27ae60, #2ecc71); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(39, 174, 96, 0.2);">
                         <i class="fas fa-cash-check-alt" style="color: white; font-size: 2rem;"></i>
                     </div>
-                    <h3>Payment Options</h3>
+                    <h3>Transfer Methods</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #27ae60, #2ecc71); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Enjoy instant transfers to your bank account via UPI ID or QR code. Most withdrawals are processed quickly.</p>
+                <p>Enjoy convenient transfers to your bank account through various payment methods. Withdrawals are processed efficiently.</p>
                 <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
                     <div style="width: 50px; height: 50px; background: #27ae60; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
                         <i class="fas fa-qrcode"></i>
@@ -1929,17 +1929,17 @@ function showSlides(n) {
             
             <div class="footer-single-item">
                 <h3>About Us</h3>
-                <p>KamateRaho.com is India's trusted platform for earning extra income online. We offer instant payouts through popular payment methods including Paytm, PhonePe, and Google Pay.</p>
+                <p>KamateRaho.com connects users with various online earning opportunities. We facilitate secure transactions through popular payment methods.</p>
             </div>
             
             <div class="footer-single-item">
                 <h3>How It Works</h3>
-                <p>Explore offers on our platform, participate with genuine details, and submit redemption requests. Once approved, your earnings are transferred instantly to your chosen payment method.</p>
+                <p>Explore offers on our platform, participate with genuine details, and submit requests. Once approved, your earnings are transferred to your chosen payment method.</p>
             </div>
             
             <div class="footer-single-item">
                 <h3>Stay Connected</h3>
-                <p>Follow us on social media for the latest updates, exclusive offers, and helpful tips to maximize your earnings.</p>
+                <p>Follow us on social media for the latest updates and helpful tips.</p>
                 <div class="footer-social">
                     <a href="https://www.facebook.com/share/17JFgQNHrS/?mibextid=wwXIfr" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>

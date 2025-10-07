@@ -27,7 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us - KamateRaho</title>
+    <title>Contact KamateRaho - Online Earning Platform</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -491,7 +491,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <nav>
             <ul id="navMenu">
-                <li><a href="index.php">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="index.php#how-it-works">How It Works</a></li>
                 <li><a href="index.php#testimonial-container">Testimonials</a></li>
                 <li><a href="index.php#withdrawal-info">Withdrawals</a></li>
@@ -542,7 +542,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <section class="contact-section">
         <h2 class="section-title">Contact Us</h2>
-        <p class="section-subtitle">Have questions or feedback? We'd love to hear from you!</p>
+        <p class="section-subtitle">Have questions about our platform or services? We're here to help!</p>
         
         <div class="contact-container">
             <div class="contact-form">
@@ -648,7 +648,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul class="footer-links">
-                    <li><a href="index.php">Home</a></li>
+                    <li><a href="/">Home</a></li>
                     <li><a href="index.php#how-it-works">How It Works</a></li>
                     <li><a href="index.php#testimonial-container">Testimonials</a></li>
                     <li><a href="index.php#withdrawal-info">Withdrawals</a></li>
@@ -667,7 +667,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="footer-section">
                 <h3>About Us</h3>
-                <p>KamateRaho.com is your exclusive site to earn pocket cash online. Instant payouts supported via Paytm, PhonePe, Google Pay, and more.</p>
+                <p>KamateRaho.com connects users with various online earning opportunities. We facilitate partnerships between offer providers and users, supporting instant payouts via Paytm, PhonePe, Google Pay, and more.</p>
             </div>
             
             <div class="footer-section">
