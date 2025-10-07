@@ -74,7 +74,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
-   
+      <div class="banner-section py-4 bg-light">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div class="carousel-item active">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card border-0 shadow-sm">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card border-0 shadow-sm">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card border-0 shadow-sm">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card border-0 shadow-sm">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card border-0 shadow-sm">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <div class="card border-0 shadow-sm">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="container mt-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
