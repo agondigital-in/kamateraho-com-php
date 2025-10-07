@@ -9,11 +9,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = $_POST['subject'];
     $message = $_POST['message'];
     
+    // Get user ID if logged in
+    $user_id = null;
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+    }
+    
     // Save to database
     if ($pdo) {
         try {
-            $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$name, $email, $subject, $message]);
+            $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, subject, message, user_id) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$name, $email, $subject, $message, $user_id]);
             $success = "Thank you for your message! We'll get back to you soon.";
         } catch (PDOException $e) {
             $error = "Sorry, there was an error sending your message. Please try again.";

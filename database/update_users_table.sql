@@ -10,6 +10,8 @@ CREATE TABLE IF NOT EXISTS contact_messages (
     message TEXT NOT NULL,
     reply TEXT NULL,
     status ENUM('pending', 'replied') DEFAULT 'pending',
+    user_id INT NULL, -- Add user_id column to link messages to users
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    replied_at TIMESTAMP NULL
-);  
+    replied_at TIMESTAMP NULL,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE SET NULL
+);
