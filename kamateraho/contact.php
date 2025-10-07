@@ -584,10 +584,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="info-icon">
                         <i class="fas fa-map-marker-alt"></i>
                     </div>
-                    <div class="info-content">
+                    <!-- <div class="info-content">
                         <h3>Our Location</h3>
                         <p>123 Business Avenue, Suite 100<br>City, State 12345</p>
-                    </div>
+                    </div> -->
                 </div>
                 
                 <div class="info-item">

@@ -1279,7 +1279,7 @@
                 <li><a href="#testimonial-container">Testimonials</a></li>
                 <li><a href="#withdrawal-info">Withdrawals</a></li>
                 <li><a href="kamateraho/blog/index.php">Blog</a></li>
-                <li><a href="contact.php">Contact</a></li>
+                <li><a href="kamateraho/contact.php">Contact</a></li>
                 <li><a href="../register.php">Register</a></li>
                 <li><a href="../login.php">Login</a></li>
             </ul>
