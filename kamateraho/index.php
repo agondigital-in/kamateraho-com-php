@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="google-site-verification" content="L5OFuMQut1wlaXZQjXlLUO6eqfZprVYYsN1ZMj0MOpM" />
-    <title>KamateRaho.com - Earn cash from Home</title>
+    <title>KamateRaho.com - Earn Extra Income Online</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -1274,7 +1274,7 @@
         
         <nav>
             <ul id="navMenu">
-                <li><a href="#">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#testimonial-container">Testimonials</a></li>
                 <li><a href="#withdrawal-info">Withdrawals</a></li>
@@ -1485,19 +1485,19 @@ img {vertical-align: middle;}
 <div class="mySlides fade active">
  
   <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811999/Brown_Yellow_Make_Money_Youtube_Thumbnail_a9t6jd.png" alt="Slide 1">
-  <!-- <div class="text">Earn cash from Home</div> -->
+  <!-- <div class="text">Earn Extra Income Online</div> -->
 </div>
 
 <div class="mySlides fade">
  
   <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759812237/G_old_and_Black_Modern_How_to_Earn_Money_Online_YouTube_Thumbnail_wbnikz.png" alt="Slide 2">
-  <!-- <div class="text">Complete Simple Tasks</div> -->
+  <!-- <div class="text">Complete Straightforward Tasks</div> -->
 </div>
 
 <div class="mySlides fade">
   
   <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759812315/Red_and_White_Money_YouTube_Thumbnail_1_1_dlknpu.png" alt="Slide 3">
-  <!-- <div class="text">Get Paid Instantly</div> -->
+  <!-- <div class="text">Get Paid Quickly</div> -->
 </div>
 
 
@@ -1591,7 +1591,7 @@ function showSlides(n) {
                 <i class="fas fa-bolt" style="color: white; font-size: 2rem;"></i>
             </div>
             <h3>Fast Payments</h3>
-            <p>Receive your earnings quickly through popular payment methods including Paytm, PhonePe, and Google Pay. Most payments processed within 24-48 hours of approval.</p>
+            <p>Receive your earnings quickly through popular payment methods. Most payments are processed promptly after approval.</p>
             <div style="background: linear-gradient(to right, #3498db, #8e44ad); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
         
@@ -1600,7 +1600,7 @@ function showSlides(n) {
                 <i class="fas fa-users" style="color: white; font-size: 2rem;"></i>
             </div>
             <h3>Referral Rewards</h3>
-            <p>Expand your earning potential by inviting friends to join. Earn ₹3 for each successful referral and build your passive income stream.</p>
+            <p>Expand your earning potential by inviting friends to join. Earn rewards for each successful referral and build your income stream.</p>
             <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
     </section>
@@ -1634,19 +1634,19 @@ function showSlides(n) {
                     <div class="step-card" style="padding: 1.5rem; max-width: 300px; flex: 1; min-width: 250px;">
                         <div class="step-number" style="width: 50px; height: 50px; font-size: 1.4rem;">1</div>
                         <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Create Your Account</h3>
-                        <p style="font-size: 1rem; margin-bottom: 0;">Sign up for a free account and receive an instant ₹50 welcome bonus to get started.</p>
+                        <p style="font-size: 1rem; margin-bottom: 0;">Sign up for a free account and receive an instant welcome bonus to get started.</p>
                     </div>
                     
                     <div class="step-card" style="padding: 1.5rem; max-width: 300px; flex: 1; min-width: 250px;">
                         <div class="step-number" style="width: 50px; height: 50px; font-size: 1.4rem;">2</div>
                         <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Explore Opportunities</h3>
-                        <p style="font-size: 1rem; margin-bottom: 0;">Discover and enroll in offers that align with your interests and capabilities.</p>
+                        <p style="font-size: 1rem; margin-bottom: 0;">Discover and enroll in offers that match your preferences.</p>
                     </div>
                     
                     <div class="step-card" style="padding: 1.5rem; max-width: 300px; flex: 1; min-width: 250px;">
                         <div class="step-number" style="width: 50px; height: 50px; font-size: 1.4rem;">3</div>
                         <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Receive Your Earnings</h3>
-                        <p style="font-size: 1rem; margin-bottom: 0;">Complete assigned tasks, get approved, and have your earnings transferred directly to your wallet.</p>
+                        <p style="font-size: 1rem; margin-bottom: 0;">Complete tasks, get approved, and receive your earnings.</p>
                     </div>
                 </div>
             </div>
@@ -1682,9 +1682,9 @@ function showSlides(n) {
      <section class="paid-amount">
         <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 2rem; text-align: left; max-width: 1200px; margin: 0 auto; padding: 2rem;">
             <div style="flex: 1; min-width: 300px;">
-                <h2 style="font-size: 2.2rem; margin-bottom: 1rem; animation: pulse 2s infinite;">₹17,68,087 already paid to KamateRaho users. Start earning today!</h2>
-                <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 90%;">Join our community and start earning cash today. Over ₹17 lakhs already paid to our users!</p>
-                <a href="register.php" class="btn-primary" style="animation: bounce 2s infinite;">Create Your FREE Account Now</a>
+                <h2 style="font-size: 2.2rem; margin-bottom: 1rem; animation: pulse 2s infinite;">Join thousands of users earning extra income. Start earning today!</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 90%;">Join our growing community and start earning additional income today. Many users have already benefited from our platform!</p>
+                <a href="register.php" class="btn-primary" style="animation: bounce 2s infinite;">Create Your Account</a>
             </div>
             <div style="flex: 1; min-width: 300px; text-align: center;">
                 <div style="background: white; border-radius: 15px; padding: 15px;  display: inline-block; animation: float 3s ease-in-out infinite;">
@@ -1712,7 +1712,7 @@ function showSlides(n) {
                     <h3>Withdrawal Process</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #3498db, #8e44ad); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Request withdrawals with a minimum amount of ₹200. After verification within 12 hours, your funds are transferred instantly via UPI to your bank account.</p>
+                <p>Request withdrawals with a small minimum amount. After quick verification, your funds are transferred instantly via UPI to your bank account.</p>
                 <div style="text-align: center;">
                     <div style="display: inline-flex; align-items: center; gap: 0.5rem; color: #3498db; font-weight: 500;">
                         <span>Fast Processing</span>
@@ -1730,7 +1730,7 @@ function showSlides(n) {
                     <h3>Welcome Bonus</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Receive ₹50 instantly upon registration in your wallet. No hidden fees, no minimum withdrawal requirements – start earning right away!</p>
+                <p>Receive a welcome bonus instantly upon registration in your wallet. No hidden fees, no minimum withdrawal requirements – start earning right away!</p>
                 <div style="text-align: center;">
                     <div style="display: inline-block; background: #e74c3c; color: white; padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 600; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);">
                         ₹50 Bonus
@@ -1747,7 +1747,7 @@ function showSlides(n) {
                     <h3>Payment Options</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #27ae60, #2ecc71); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Enjoy instant transfers to your bank account via UPI ID or QR code. Most withdrawals are processed within 24 hours.</p>
+                <p>Enjoy instant transfers to your bank account via UPI ID or QR code. Most withdrawals are processed quickly.</p>
                 <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
                     <div style="width: 50px; height: 50px; background: #27ae60; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
                         <i class="fas fa-qrcode"></i>
@@ -1813,19 +1813,19 @@ function showSlides(n) {
     <script>
         const testimonials = [
             {
-                quote: "KamateRaho has provided me with the easiest way to earn money from home! The process is truly fast and reliable.",
+                quote: "This platform has provided me with a convenient way to earn extra income! The process is fast and reliable.",
                 name: "Mohan Kumar",
                 
                 src: "https://media.istockphoto.com/id/1093206918/photo/portrait-indian-man-standing-at-his-house-in-village.jpg?s=612x612&w=0&k=20&c=UnoX47wcHldmeF_RN7FZ9dcJZ6oSAHM74xkLxJejJBs=",
             },
             {
-                quote: "Instant payouts and a simple process – I'm earning consistently every month. Highly recommended!",
+                quote: "Quick payouts and a simple process – I'm earning consistently. Highly recommended!",
                 name: "Apurna Devi",
                 
                 src: "https://media.istockphoto.com/id/1309084086/photo/rural-women-using-phone-in-villlage.jpg?s=612x612&w=0&k=20&c=U-m5YS4jVAva2iErd10TAcOYWut2IZgu5P89ysOKR1s=",
             },
             {
-                quote: "Earning through referrals and tasks has never been this easy. KamateRaho has truly made a difference!",
+                quote: "Earning through referrals and tasks has never been this easy. This platform has truly made a difference!",
                 name: "Ram Kumar",
                 
                 src: "https://as1.ftcdn.net/jpg/04/77/80/58/1000_F_477805833_bx7BuNnQpsZAxVpDaQhQ1QwB1SvoHXdR.jpg",
@@ -1957,9 +1957,9 @@ function showSlides(n) {
     <script>
         /* Typing Effect */
         const textArray = [
-            "Earn cash from Home",
-            "Complete Simple Tasks",
-            "Get Paid Instantly"
+            "Earn Extra Income Online",
+            "Complete Straightforward Tasks",
+            "Get Paid Quickly"
         ];
         let index = 0;
         let charIndex = 0;

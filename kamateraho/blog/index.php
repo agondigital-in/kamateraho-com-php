@@ -357,7 +357,7 @@
         
         <nav>
             <ul id="navMenu">
-                <li><a href="/kamateraho/index.php">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="#how-it-works">How It Works</a></li>
                 <li><a href="#testimonial-container">Testimonials</a></li>
                 <li><a href="#withdrawal-info">Withdrawals</a></li>
