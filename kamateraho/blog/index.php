@@ -345,8 +345,8 @@
 </script>
      <header>
 
-        <div class="logo">
-            <img src="../img/logo.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
+         <div class="logo">
+            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811997/logo_cpe9n0.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
         </div>
         
         <div class="menu-toggle" id="menuToggle">
