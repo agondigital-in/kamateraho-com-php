@@ -33,6 +33,48 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Referral Modal -->
+    <div class="modal fade referral-modal" id="referralModal" tabindex="-1" aria-labelledby="referralModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header referral-header">
+                    <h5 class="modal-title" id="referralModalLabel">Refer & Earn</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <p>Share your referral link with friends and earn ₹3 for each successful referral!</p>
+                    
+                    <div class="referral-link-box">
+                        <?php
+                        $base_url = "https://kamateraho.com/";
+                        $referral_link = $base_url . "register.php?ref=" . $_SESSION['user_id'];
+                        ?>
+                        <div class="referral-link" id="referralLink"><?php echo $referral_link; ?></div>
+                    </div>
+                    
+                    <button class="copy-btn" id="copyReferralBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Referral Link
+                    </button>
+                    
+                    <div class="social-share">
+                        <a href="https://api.whatsapp.com/send?text=Join KamateRaho and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://twitter.com/intent/tweet?text=Join KamateRaho and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="https://t.me/share/url?url=<?php echo urlencode($referral_link); ?>&text=Join KamateRaho and earn money from home!" target="_blank" class="social-btn telegram">
+                            <i class="fab fa-telegram-plane"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
     <div class="container mt-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
