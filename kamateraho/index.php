@@ -1262,8 +1262,8 @@
 
   gtag('config', 'G-RMM38DLZLM');
 </script>
-        <div class="logo">
-            <img src="kamateraho/img/logo.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
+           <div class="logo">
+            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811997/logo_cpe9n0.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
         </div>
         
         <div class="menu-toggle" id="menuToggle">
@@ -1483,21 +1483,22 @@ img {vertical-align: middle;}
 
 <div class="mySlides fade active">
  
-  <img src="kamateraho/img/Brown Yellow Make Money Youtube Thumbnail.png" alt="Slide 1">
+  <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811999/Brown_Yellow_Make_Money_Youtube_Thumbnail_a9t6jd.png" alt="Slide 1">
   <!-- <div class="text">Earn cash from Home</div> -->
 </div>
 
 <div class="mySlides fade">
  
-  <img src="kamateraho/img/Red and White Money YouTube Thumbnail (1).png" alt="Slide 2">
+  <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759812237/G_old_and_Black_Modern_How_to_Earn_Money_Online_YouTube_Thumbnail_wbnikz.png" alt="Slide 2">
   <!-- <div class="text">Complete Simple Tasks</div> -->
 </div>
 
 <div class="mySlides fade">
   
-  <img src="kamateraho/img/G old and Black Modern How to Earn Money Online YouTube Thumbnail.png" alt="Slide 3">
+  <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759812315/Red_and_White_Money_YouTube_Thumbnail_1_1_dlknpu.png" alt="Slide 3">
   <!-- <div class="text">Get Paid Instantly</div> -->
 </div>
+
 
 <a class="prev" onclick="plusSlides(-1)">❮</a>
 <a class="next" onclick="plusSlides(1)">❯</a>
@@ -1687,7 +1688,7 @@ No skills needed – start earning today.</p>
             </div>
             <div style="flex: 1; min-width: 300px; text-align: center;">
                 <div style="background: white; border-radius: 15px; padding: 15px;  display: inline-block; animation: float 3s ease-in-out infinite;">
-                    <img src="kamateraho/img/brandIcons.gif" alt="Payment Success" style="max-width: 100%; height: auto; border-radius: 10px;">
+                    <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759812579/brandIcons_kswbrv.gif" alt="Payment Success" style="max-width: 100%; height: auto; border-radius: 10px;">
                 </div>
             </div>
         </div>
