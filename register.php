@@ -634,10 +634,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         <nav>
           <ul id="navMenu">
-                <li><a href="/kamateraho/index.php">Home</a></li>
+                <li><a href="/">Home</a></li>
                 <li><a href="/kamateraho/index.php">How It Works</a></li>
                 <li><a href="/kamateraho/index.php">Testimonials</a></li>
                 <li><a href="/kamateraho/index.php">Withdrawals</a></li>
+                <li><a href="/kamateraho/contact.php">Contact</a></li>
                 <li><a href="/kamateraho/blog/index.php">Blog</a></li>
                 <li><a href="register.php">Register</a></li>
                 <li><a href="login.php">Login</a></li>
