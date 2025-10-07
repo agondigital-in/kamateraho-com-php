@@ -1581,9 +1581,8 @@ function showSlides(n) {
             <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #1a2a6c, #f7b733); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(26, 42, 108, 0.2);">
                 <i class="fas fa-home" style="color: white; font-size: 2rem;"></i>
             </div>
-            <h3>Earn from Home</h3>
-            <p>Work from anywhere, anytime with just your phone and internet.
-No skills needed – start earning today.</p>
+            <h3>Work From Anywhere</h3>
+            <p>Enjoy the flexibility of working from anywhere with just your smartphone and internet connection. No specialized skills required – start earning immediately.</p>
             <div style="background: linear-gradient(to right, #1a2a6c, #f7b733); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
         
@@ -1591,8 +1590,8 @@ No skills needed – start earning today.</p>
             <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #3498db, #8e44ad); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);">
                 <i class="fas fa-bolt" style="color: white; font-size: 2rem;"></i>
             </div>
-            <h3>Instant Payments</h3>
-            <p>Earn money online anytime, anywhere with just your smartphone and internet. Get fast payments in Paytm, PhonePe, or Google Pay within 24–48 hours.</p>
+            <h3>Fast Payments</h3>
+            <p>Receive your earnings quickly through popular payment methods including Paytm, PhonePe, and Google Pay. Most payments processed within 24-48 hours of approval.</p>
             <div style="background: linear-gradient(to right, #3498db, #8e44ad); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
         
@@ -1600,8 +1599,8 @@ No skills needed – start earning today.</p>
             <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #e74c3c, #e67e22); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2);">
                 <i class="fas fa-users" style="color: white; font-size: 2rem;"></i>
             </div>
-            <h3>Referral Bonus</h3>
-            <p>Invite friends and earn ₹3 for every successful referral. Share more, refer more, and increase your online earnings instantly!</p>
+            <h3>Referral Rewards</h3>
+            <p>Expand your earning potential by inviting friends to join. Earn ₹3 for each successful referral and build your passive income stream.</p>
             <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
         </div>
     </section>
@@ -1634,20 +1633,20 @@ No skills needed – start earning today.</p>
                 <div class="step-container" style="padding: 0; display: flex; justify-content: flex-start; gap: 1.5rem; flex-wrap: wrap;">
                     <div class="step-card" style="padding: 1.5rem; max-width: 300px; flex: 1; min-width: 250px;">
                         <div class="step-number" style="width: 50px; height: 50px; font-size: 1.4rem;">1</div>
-                        <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Join KamateRaho.com</h3>
-                        <p style="font-size: 1rem; margin-bottom: 0;">Create your free account and get Rs 50 instantly as a welcome bonus.</p>
+                        <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Create Your Account</h3>
+                        <p style="font-size: 1rem; margin-bottom: 0;">Sign up for a free account and receive an instant ₹50 welcome bonus to get started.</p>
                     </div>
                     
                     <div class="step-card" style="padding: 1.5rem; max-width: 300px; flex: 1; min-width: 250px;">
                         <div class="step-number" style="width: 50px; height: 50px; font-size: 1.4rem;">2</div>
-                        <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Participate in Offers</h3>
-                        <p style="font-size: 1rem; margin-bottom: 0;">Browse and register in offers that match your interests and skills.</p>
+                        <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Explore Opportunities</h3>
+                        <p style="font-size: 1rem; margin-bottom: 0;">Discover and enroll in offers that align with your interests and capabilities.</p>
                     </div>
                     
                     <div class="step-card" style="padding: 1.5rem; max-width: 300px; flex: 1; min-width: 250px;">
                         <div class="step-number" style="width: 50px; height: 50px; font-size: 1.4rem;">3</div>
-                        <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Get Paid</h3>
-                        <p style="font-size: 1rem; margin-bottom: 0;">Complete tasks, get approved, and receive payments directly to your wallet.</p>
+                        <h3 style="font-size: 1.4rem; margin-bottom: 0.8rem;">Receive Your Earnings</h3>
+                        <p style="font-size: 1rem; margin-bottom: 0;">Complete assigned tasks, get approved, and have your earnings transferred directly to your wallet.</p>
                     </div>
                 </div>
             </div>
@@ -1700,7 +1699,7 @@ No skills needed – start earning today.</p>
     <section class="withdrawal-info" id="withdrawal-info">
         <div class="container">
             <h2>Withdrawal Information</h2>
-            <p>Understand our simple and secure withdrawal process</p>
+            <p>Learn about our straightforward and secure withdrawal process</p>
         </div>
         
         <div class="info-cards">
@@ -1710,10 +1709,10 @@ No skills needed – start earning today.</p>
                     <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #3498db, #8e44ad); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(52, 152, 219, 0.2);">
                         <i class="fas fa-exchange-alt" style="color: white; font-size: 2rem;"></i>
                     </div>
-                    <h3>How Withdrawals Work</h3>
+                    <h3>Withdrawal Process</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #3498db, #8e44ad); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Withdraw a minimum of ₹200. After verification within 12 hours, your cash is transferred instantly via UPI to your bank account.</p>
+                <p>Request withdrawals with a minimum amount of ₹200. After verification within 12 hours, your funds are transferred instantly via UPI to your bank account.</p>
                 <div style="text-align: center;">
                     <div style="display: inline-flex; align-items: center; gap: 0.5rem; color: #3498db; font-weight: 500;">
                         <span>Fast Processing</span>
@@ -1728,10 +1727,10 @@ No skills needed – start earning today.</p>
                     <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #e74c3c, #e67e22); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(231, 76, 60, 0.2);">
                         <i class="fas fa-gift" style="color: white; font-size: 2rem;"></i>
                     </div>
-                    <h3>Registration Bonus</h3>
+                    <h3>Welcome Bonus</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #e74c3c, #e67e22); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Register now and get ₹50 instantly in your wallet. No hidden charges, no minimum withdrawal – start earning immediately!</p>
+                <p>Receive ₹50 instantly upon registration in your wallet. No hidden fees, no minimum withdrawal requirements – start earning right away!</p>
                 <div style="text-align: center;">
                     <div style="display: inline-block; background: #e74c3c; color: white; padding: 0.5rem 1.5rem; border-radius: 30px; font-weight: 600; font-size: 1.1rem; box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);">
                         ₹50 Bonus
@@ -1745,10 +1744,10 @@ No skills needed – start earning today.</p>
                     <div style="width: 80px; height: 80px; background: linear-gradient(135deg, #27ae60, #2ecc71); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem; box-shadow: 0 10px 20px rgba(39, 174, 96, 0.2);">
                         <i class="fas fa-cash-check-alt" style="color: white; font-size: 2rem;"></i>
                     </div>
-                    <h3>Payment Methods</h3>
+                    <h3>Payment Options</h3>
                 </div>
                 <div style="background: linear-gradient(to right, #27ae60, #2ecc71); height: 3px; border-radius: 2px; margin: 1.5rem 0;"></div>
-                <p>Get instant transfers to your bank via UPI ID or QR code. Withdrawals are processed within 24 hours.</p>
+                <p>Enjoy instant transfers to your bank account via UPI ID or QR code. Most withdrawals are processed within 24 hours.</p>
                 <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 1rem;">
                     <div style="width: 50px; height: 50px; background: #27ae60; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white;">
                         <i class="fas fa-qrcode"></i>
@@ -1814,21 +1813,21 @@ No skills needed – start earning today.</p>
     <script>
         const testimonials = [
             {
-                quote: "KamateRaho ने मुझे घर बैठे पैसे कमाने का सबसे आसान तरीका दिया! सच में जल्दी और भरोसेमंद।",
+                quote: "KamateRaho has provided me with the easiest way to earn money from home! The process is truly fast and reliable.",
                 name: "Mohan Kumar",
-               
+                
                 src: "https://media.istockphoto.com/id/1093206918/photo/portrait-indian-man-standing-at-his-house-in-village.jpg?s=612x612&w=0&k=20&c=UnoX47wcHldmeF_RN7FZ9dcJZ6oSAHM74xkLxJejJBs=",
             },
             {
-                quote: "Instant payouts और आसान process – मैं हर महीने अच्छा खासा कमा रहा हूँ। Highly recommend!",
-                name: "Apurna davi",
-            
+                quote: "Instant payouts and a simple process – I'm earning consistently every month. Highly recommended!",
+                name: "Apurna Devi",
+                
                 src: "https://media.istockphoto.com/id/1309084086/photo/rural-women-using-phone-in-villlage.jpg?s=612x612&w=0&k=20&c=U-m5YS4jVAva2iErd10TAcOYWut2IZgu5P89ysOKR1s=",
             },
             {
-                quote: "Referral और tasks के जरिए कमाई करना इतना आसान कभी नहीं था। KamateRaho ने सच में मदद की!",
+                quote: "Earning through referrals and tasks has never been this easy. KamateRaho has truly made a difference!",
                 name: "Ram Kumar",
-              
+                
                 src: "https://as1.ftcdn.net/jpg/04/77/80/58/1000_F_477805833_bx7BuNnQpsZAxVpDaQhQ1QwB1SvoHXdR.jpg",
             },
         ];
@@ -1929,18 +1928,18 @@ No skills needed – start earning today.</p>
             </div>
             
             <div class="footer-single-item">
-                <h3>Who we are?</h3>
-                <p>KamateRaho.com is your exclusive site to earn pocket cash online. Instant payouts supported via Paytm, PhonePe, Google Pay, and more.</p>
+                <h3>About Us</h3>
+                <p>KamateRaho.com is India's trusted platform for earning extra income online. We offer instant payouts through popular payment methods including Paytm, PhonePe, and Google Pay.</p>
             </div>
             
             <div class="footer-single-item">
-                <h3>How it Works?</h3>
-                <p>Participate in offers on our page with genuine details and send a redeem request. Once approved, your Paytm amount will be transferred instantly.</p>
+                <h3>How It Works</h3>
+                <p>Explore offers on our platform, participate with genuine details, and submit redemption requests. Once approved, your earnings are transferred instantly to your chosen payment method.</p>
             </div>
             
             <div class="footer-single-item">
                 <h3>Stay Connected</h3>
-                <p>Connect with us on social media for updates and offers.</p>
+                <p>Follow us on social media for the latest updates, exclusive offers, and helpful tips to maximize your earnings.</p>
                 <div class="footer-social">
                     <a href="https://www.facebook.com/share/17JFgQNHrS/?mibextid=wwXIfr" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
                     <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
