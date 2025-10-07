@@ -498,6 +498,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </style>
 </head>
 <body>
+       <div class="container-fluid">
        <header>
           <div class="logo">
             <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811997/logo_cpe9n0.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
@@ -558,7 +559,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
     </script>
-    <div class="container-fluid">
+ 
         <div class="login-container">
             <div class="login-banner">
                 <h2>Welcome Back!</h2>
