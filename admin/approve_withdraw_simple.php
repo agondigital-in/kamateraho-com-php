@@ -87,12 +87,27 @@ try {
                 $message = "Purchase/Application request rejected! The amount has been credited to the user's wallet.";
             } else {
                 // For regular withdrawal requests, update wallet history status to rejected
+                // Try the exact match first
                 $stmt = $pdo->prepare("UPDATE wallet_history SET status = 'rejected' WHERE user_id = ? AND amount = ? AND type = 'debit' AND status = 'pending' AND description = 'Withdrawal request submitted'");
                 $stmt->execute([$request['user_id'], $request['amount']]);
                 
+                // Check if we updated any rows
+                $rows_affected = $stmt->rowCount();
+                error_log("Wallet history exact match update rows affected: " . $rows_affected);
+                
+                // If no rows were updated, try a more flexible match
+                if ($rows_affected == 0) {
+                    error_log("Trying flexible match for wallet history update");
+                    $stmt = $pdo->prepare("UPDATE wallet_history SET status = 'rejected' WHERE user_id = ? AND amount = ? AND type = 'debit' AND status = 'pending' AND description LIKE 'Withdrawal request submitted%'");
+                    $stmt->execute([$request['user_id'], $request['amount']]);
+                    $rows_affected = $stmt->rowCount();
+                    error_log("Wallet history flexible match update rows affected: " . $rows_affected);
+                }
+                
                 // Refund the amount to user's wallet
                 $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?");
-                $stmt->execute([$request['amount'], $request['user_id']]);
+                $result = $stmt->execute([$request['amount'], $request['user_id']]);
+                error_log("User wallet balance update result: " . ($result ? "success" : "failed"));
                 
                 // Add entry to wallet history for refund
                 $description = "Withdrawal request rejected - amount refunded";
