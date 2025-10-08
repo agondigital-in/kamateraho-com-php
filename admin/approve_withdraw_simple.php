@@ -63,26 +63,37 @@ try {
             $stmt->execute([$id]);
             
             // Check if this is a purchase request (identified by UPI ID starting with "purchase@")
-            if (strpos($request['upi_id'], 'purchase@') === 0) {
+            $is_purchase_request = (strpos($request['upi_id'], 'purchase@') === 0);
+            error_log("Processing rejection for request ID: " . $id . ", Is purchase request: " . ($is_purchase_request ? 'Yes' : 'No') . ", UPI ID: " . $request['upi_id']);
+            
+            if ($is_purchase_request) {
                 // For purchase requests, we need to add the amount to user's wallet since it was never deducted
                 $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?");
-                $stmt->execute([$request['amount'], $request['user_id']]);
+                $result = $stmt->execute([$request['amount'], $request['user_id']]);
+                error_log("User wallet balance update for purchase request: " . ($result ? "success" : "failed"));
                 
-                // Update wallet history status to rejected
-                // First, let's try to update any pending credit entry for this user
+                // Update wallet history status to rejected with improved query
+                // Try LIKE match first
                 $stmt = $pdo->prepare("UPDATE wallet_history SET status = 'rejected' WHERE user_id = ? AND amount = ? AND type = 'credit' AND status = 'pending' AND description LIKE 'Purchase/Application request submitted%'");
                 $stmt->execute([$request['user_id'], $request['amount']]);
                 
                 // Check if we updated any rows
-                if ($stmt->rowCount() == 0) {
-                    // If no rows were updated, let's log what entries exist for debugging
-                    error_log("No wallet history entry found for user_id: " . $request['user_id'] . ", amount: " . $request['amount']);
+                $rows_affected = $stmt->rowCount();
+                error_log("Wallet history rows updated (LIKE match): " . $rows_affected);
+                
+                // If no rows were updated, try exact match
+                if ($rows_affected == 0) {
+                    $stmt = $pdo->prepare("UPDATE wallet_history SET status = 'rejected' WHERE user_id = ? AND amount = ? AND type = 'credit' AND status = 'pending' AND description = 'Purchase/Application request submitted'");
+                    $stmt->execute([$request['user_id'], $request['amount']]);
+                    $rows_affected = $stmt->rowCount();
+                    error_log("Wallet history rows updated (exact match): " . $rows_affected);
                 }
                 
                 // Add entry to wallet history for the refund
                 $description = "Purchase/Application request rejected - amount credited";
                 $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, ?, 'credit', 'approved', ?)");
                 $stmt->execute([$request['user_id'], $request['amount'], $description]);
+                error_log("Added refund entry to wallet history for purchase request");
                 
                 $message = "Purchase/Application request rejected! The amount has been credited to the user's wallet.";
             } else {
