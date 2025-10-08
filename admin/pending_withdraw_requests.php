@@ -19,6 +19,14 @@ try {
 <div class="container-fluid">
     <h2 class="mb-4">Pending Withdraw Requests</h2>
     
+    <?php if (isset($_GET['message'])): ?>
+        <div class="alert alert-success"><?php echo htmlspecialchars($_GET['message']); ?></div>
+    <?php endif; ?>
+    
+    <?php if (isset($_GET['error'])): ?>
+        <div class="alert alert-danger"><?php echo htmlspecialchars($_GET['error']); ?></div>
+    <?php endif; ?>
+    
     <?php if (isset($error)): ?>
         <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
@@ -82,6 +90,10 @@ try {
                                                class="btn btn-success">Approve</a>
                                             <a href="approve_withdraw.php?id=<?php echo $request['id']; ?>&action=reject" 
                                                class="btn btn-danger">Reject</a>
+                                            <!-- Added Delete button that actually deletes the request -->
+                                            <a href="delete_withdraw.php?id=<?php echo $request['id']; ?>" 
+                                               class="btn btn-outline-danger"
+                                               onclick="return confirm('Are you sure you want to permanently delete this request? This action cannot be undone.')">Delete</a>
                                         </div>
                                     </td>
                                 </tr>

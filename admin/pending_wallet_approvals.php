@@ -19,6 +19,14 @@ try {
 <div class="container-fluid">
     <h2 class="mb-4">Pending Wallet Approvals</h2>
     
+    <?php if (isset($_GET['message'])): ?>
+        <div class="alert alert-success"><?php echo htmlspecialchars($_GET['message']); ?></div>
+    <?php endif; ?>
+    
+    <?php if (isset($_GET['error'])): ?>
+        <div class="alert alert-danger"><?php echo htmlspecialchars($_GET['error']); ?></div>
+    <?php endif; ?>
+    
     <?php if (isset($error)): ?>
         <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
     <?php endif; ?>
@@ -72,6 +80,10 @@ try {
                                                class="btn btn-success">Approve</a>
                                             <a href="approve_wallet.php?id=<?php echo $history['id']; ?>&action=reject" 
                                                class="btn btn-danger">Reject</a>
+                                            <!-- Added Delete button that actually deletes the entry -->
+                                            <a href="delete_wallet.php?id=<?php echo $history['id']; ?>" 
+                                               class="btn btn-outline-danger"
+                                               onclick="return confirm('Are you sure you want to permanently delete this entry? This action cannot be undone.')">Delete</a>
                                         </div>
                                     </td>
                                 </tr>
