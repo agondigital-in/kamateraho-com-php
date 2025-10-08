@@ -492,9 +492,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <nav>
             <ul id="navMenu">
                 <li><a href="/">Home</a></li>
-                <li><a href="index.php#how-it-works">How It Works</a></li>
-                <li><a href="index.php#testimonial-container">Testimonials</a></li>
-                <li><a href="index.php#withdrawal-info">Withdrawals</a></li>
+                <li><a href="/">How It Works</a></li>
+                <li><a href="/">Testimonials</a></li>
+                <li><a href="/">Withdrawals</a></li>
                 <li><a href="blog/index.php">Blog</a></li>
                 <li><a href="contact.php">Contact</a></li>
                 <li><a href="../register.php">Register</a></li>
