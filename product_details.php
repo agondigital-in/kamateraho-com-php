@@ -114,8 +114,14 @@ if (isset($_POST['apply_now'])) {
             $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, ?, 'credit', 'pending', ?)");
             $stmt->execute([$user_id, $amount, $description]);
             
+            // Get the ID of the inserted wallet history entry for debugging
+            $wallet_history_id = $pdo->lastInsertId();
+            
             // Commit transaction
             $pdo->commit();
+            
+            // Log for debugging
+            error_log("Purchase request created - Request ID: " . $request_id . ", Wallet History ID: " . $wallet_history_id . ", User ID: " . $user_id . ", Amount: " . $amount);
             
             $success_message = "Your application request has been submitted successfully! The admin will process your request shortly.";
         } catch(PDOException $e) {
