@@ -39,6 +39,8 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <!-- Custom Admin CSS -->
     <link rel="stylesheet" href="assets/admin.css">
+    <!-- Batch Action CSS -->
+    <link rel="stylesheet" href="assets/admin_batch.css">
     <!-- Custom Admin CSS -->
     <style>
         :root {
@@ -578,3 +580,7 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
             });
         });
         </script>
+        <!-- Batch Action JavaScript -->
+        <script src="assets/admin_batch.js"></script>
+    </body>
+</html>
