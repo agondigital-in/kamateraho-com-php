@@ -1,9 +1,6 @@
 <?php
 include 'config/db.php';
 
-// Include notifications functionality
-require_once __DIR__ . '/admin/notifications.php';
-
 // Check for referral code in URL
 $referrer_id = null;
 if (isset($_GET['ref']) && is_numeric($_GET['ref'])) {
@@ -102,12 +99,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     */
                 }
                 
-                // Create notification for admin
-                if ($pdo) {
-                    $notification_message = "New user registered: " . $name . " (" . $email . ")";
-                    createNotification($pdo, $user_id, $notification_message);
-                }
-                
                 // Commit transaction
                 $pdo->commit();
                 
@@ -124,7 +115,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
 ?>
 
 <!DOCTYPE html>

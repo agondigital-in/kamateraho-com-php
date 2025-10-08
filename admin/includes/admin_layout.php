@@ -21,15 +21,6 @@ if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
     exit;
 }
 
-// Include notifications functionality
-require_once __DIR__ . '/../notifications.php';
-
-// Get unread notifications count
-$unread_count = 0;
-if ($pdo) {
-    $unread_count = getUnreadNotificationsCount($pdo);
-}
-
 // Admin information (in a real application, this would come from a database)
 $admin_name = "Admin User";
 $admin_email = "admin@kamateraho.com";
@@ -128,23 +119,6 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
         
         .sidebar .nav-link.active {
             background-color: rgba(255, 255, 255, 0.2);
-        }
-        
-        /* Notification badge */
-        .notification-badge {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            background-color: #ff4757;
-            color: white;
-            border-radius: 50%;
-            width: 20px;
-            height: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            font-weight: bold;
         }
         
         /* Main Content Styles */
@@ -558,22 +532,6 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-cash-stack"></i> <span>Pending Withdraw Requests</span>
                     </a>
                 </li>
-                <!-- Notifications Link -->
-                <li class="nav-item position-relative">
-                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'admin_notifications.php') ? 'active' : ''; ?>" href="admin_notifications.php">
-                        <i class="bi bi-bell"></i> <span>Notifications</span>
-                        <?php if ($unread_count > 0): ?>
-                            <span class="notification-badge"><?php echo $unread_count; ?></span>
-                        <?php endif; ?>
-                    </a>
-                </li>
-                <!-- Send Notification Link -->
-                <li class="nav-item">
-                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'send_notification.php') ? 'active' : ''; ?>" href="send_notification.php">
-                        <i class="bi bi-envelope-plus"></i> <span>Send Notification</span>
-                    </a>
-                </li>
-
             </ul>
         </div>
     </div>

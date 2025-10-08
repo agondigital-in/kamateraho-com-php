@@ -2,9 +2,6 @@
 session_start();
 include 'config/db.php';
 
-// Include notifications functionality
-require_once __DIR__ . '/admin/notifications.php';
-
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
     header("Location: index.php");
@@ -48,12 +45,6 @@ try {
 } catch(PDOException $e) {
     $error = "Error fetching withdraw requests: " . $e->getMessage();
     $withdraw_requests = [];
-}
-
-// Fetch user notifications
-$user_notifications = [];
-if ($pdo) {
-    $user_notifications = getUserNotifications($pdo, $user_id);
 }
 
 // Fetch revenue data (user-specific)

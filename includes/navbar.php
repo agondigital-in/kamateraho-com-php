@@ -5,16 +5,12 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Include database connection
-include_once __DIR__ . '/../config/db.php';
+include_once 'config/db.php';
 
-// Include notifications functionality
-require_once __DIR__ . '/../admin/notifications.php';
-
-// Initialize wallet balance and notifications count
+// Initialize wallet balance
 $wallet_balance = 0.00;
-$notifications_count = 0;
 
-// Fetch wallet balance and notifications if user is logged in
+// Fetch wallet balance if user is logged in
 if (isset($_SESSION['user_id']) && $pdo) {
     try {
         $stmt = $pdo->prepare("SELECT wallet_balance, name FROM users WHERE id = ?");
@@ -24,15 +20,9 @@ if (isset($_SESSION['user_id']) && $pdo) {
             $wallet_balance = $user['wallet_balance'];
             $user_name = $user['name'];
         }
-        
-        // Get unread notifications count for the user
-        $stmt = $pdo->prepare("SELECT COUNT(*) FROM notifications WHERE user_id = ? AND is_read = 0");
-        $stmt->execute([$_SESSION['user_id']]);
-        $notifications_count = $stmt->fetchColumn();
     } catch (PDOException $e) {
         // Handle error silently
         $wallet_balance = 0.00;
-        $notifications_count = 0;
     }
 }
 ?>
@@ -58,6 +48,9 @@ if (isset($_SESSION['user_id']) && $pdo) {
                 </li>
                    
                 <li class="nav-item">
+                    <a class="nav-link" href="user_messages.php">Messages</a>
+                </li>
+                  <li class="nav-item">
                     <?php if (isset($_SESSION['user_id'])): ?>
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#referralModal">Refer Friend & Earn</a>
                     <?php else: ?>
@@ -68,16 +61,6 @@ if (isset($_SESSION['user_id']) && $pdo) {
             
             <div class="d-flex align-items-center">
                 <?php if (isset($_SESSION['user_id'])): ?>
-                    <!-- Notifications Icon -->
-                    <a href="user_notifications.php" class="me-3 position-relative text-decoration-none">
-                        <i class="fas fa-bell text-primary" style="font-size: 1.2rem;"></i>
-                        <?php if ($notifications_count > 0): ?>
-                            <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="font-size: 0.6rem;">
-                                <?php echo $notifications_count; ?>
-                            </span>
-                        <?php endif; ?>
-                    </a>
-                    
                     <!-- Wallet Balance Display - Now clickable to go to dashboard -->
                     <a href="dashboard.php" class="me-3 d-flex align-items-center wallet-display text-decoration-none">
                         <i class="fas fa-wallet text-primary me-1"></i>
