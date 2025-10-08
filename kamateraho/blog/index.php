@@ -364,7 +364,7 @@
                 <li><a href="#">Blog</a></li>
                 <li><a href="/kamateraho/contact.php">Contact</a></li>
                 <li><a href="https://kamateraho.com/register.php">Register</a></li>
-                <li><a href="../login.php">Login</a></li>
+                <li><a href="https://kamateraho.com/login.php">Login</a></li>
             </ul>
         </nav>
     </header>
@@ -429,18 +429,18 @@
             </div>
 
             <!-- Blog Post 2 -->
-            <!-- <div class="blog-card">
+            <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>Maximizing Your Earnings with KamateRaho</h3>
                     <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 3, 2025</span>
+                        <span><i class="far fa-calendar"></i> Oct 10, 2025</span>
                         <span><i class="far fa-user"></i> Admin</span>
                     </div>
                     <p class="blog-excerpt">Learn how to make the most of our platform with these expert tips. Increase your daily earnings and unlock new opportunities.</p>
                     <a href="post2.php" class="read-more">Read More</a>
                 </div>
-            </div> -->
+            </div>
 
             <!-- Blog Post 3 -->
             <!-- <div class="blog-card">
