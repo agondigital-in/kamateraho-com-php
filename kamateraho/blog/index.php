@@ -363,7 +363,7 @@
                 <li><a href="/">Withdrawals</a></li>
                 <li><a href="#">Blog</a></li>
                 <li><a href="/kamateraho/contact.php">Contact</a></li>
-                <li><a href="../register.php">Register</a></li>
+                <li><a href="https://kamateraho.com/register.php">Register</a></li>
                 <li><a href="../login.php">Login</a></li>
             </ul>
         </nav>
