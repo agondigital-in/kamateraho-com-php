@@ -92,9 +92,6 @@ if (isset($_POST['apply_now'])) {
             $upi_id = "purchase@" . time(); // Special UPI ID to identify purchases
             $screenshot = ""; // No screenshot needed for this type of request
             
-            // Begin transaction
-            $pdo->beginTransaction();
-            
             // Insert withdraw request with special UPI ID to identify it as a purchase
             $stmt = $pdo->prepare("INSERT INTO withdraw_requests (user_id, amount, upi_id, screenshot, offer_title, offer_description) VALUES (?, ?, ?, ?, ?, ?)");
             $stmt->execute([
@@ -108,20 +105,6 @@ if (isset($_POST['apply_now'])) {
             
             // Get the ID of the inserted request
             $request_id = $pdo->lastInsertId();
-            
-            // Add entry to wallet history for tracking
-            $description = "Purchase/Application request submitted";
-            $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, ?, 'credit', 'pending', ?)");
-            $stmt->execute([$user_id, $amount, $description]);
-            
-            // Get the ID of the inserted wallet history entry for debugging
-            $wallet_history_id = $pdo->lastInsertId();
-            
-            // Commit transaction
-            $pdo->commit();
-            
-            // Log for debugging
-            error_log("Purchase request created - Request ID: " . $request_id . ", Wallet History ID: " . $wallet_history_id . ", User ID: " . $user_id . ", Amount: " . $amount);
             
             $success_message = "Your application request has been submitted successfully! The admin will process your request shortly.";
         } catch(PDOException $e) {
