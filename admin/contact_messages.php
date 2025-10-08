@@ -70,6 +70,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['reply_message'])) {
     }
 }
 
+// Handle delete submission
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_message'])) {
+    $message_id = $_POST['message_id'];
+    
+    if ($pdo) {
+        try {
+            // First get the message details for logging
+            $stmt = $pdo->prepare("SELECT * FROM contact_messages WHERE id = ?");
+            $stmt->execute([$message_id]);
+            $message = $stmt->fetch(PDO::FETCH_ASSOC);
+            
+            if ($message) {
+                // Delete the message
+                $stmt = $pdo->prepare("DELETE FROM contact_messages WHERE id = ?");
+                $stmt->execute([$message_id]);
+                
+                // Log activity for sub-admin
+                if ($isSubAdmin) {
+                    try {
+                        $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                        $activityStmt->execute([$subAdminId, 'contact_delete', 'Deleted contact message from: ' . $message['name'] . ' (' . $message['email'] . ')']);
+                    } catch (PDOException $e) {
+                        // Silently fail on activity logging
+                    }
+                }
+                
+                $success = "Message deleted successfully!";
+            } else {
+                $error = "Message not found!";
+            }
+        } catch (PDOException $e) {
+            $error = "Error deleting message: " . $e->getMessage();
+        }
+    } else {
+        $error = "Database connection failed!";
+    }
+}
+
 // Fetch all contact messages
 $messages = [];
 if ($pdo) {
@@ -128,18 +166,29 @@ if ($isSubAdmin) {
                             <p><?php echo nl2br(htmlspecialchars($msg['reply'])); ?></p>
                             <p><strong>Replied at:</strong> <?php echo $msg['replied_at']; ?></p>
                         </div>
-                    <?php else: ?>
-                        <div class="border-top mt-3 pt-3">
-                            <h6>Reply to Message</h6>
-                            <form method="POST">
+                    <?php endif; ?>
+                    
+                    <div class="mt-3 d-flex justify-content-between">
+                        <?php if ($msg['status'] !== 'replied'): ?>
+                            <div>
+                                <h6>Reply to Message</h6>
+                                <form method="POST" class="d-inline">
+                                    <input type="hidden" name="message_id" value="<?php echo $msg['id']; ?>">
+                                    <div class="mb-3">
+                                        <textarea name="reply" class="form-control" rows="4" placeholder="Enter your reply..." required></textarea>
+                                    </div>
+                                    <button type="submit" name="reply_message" class="btn btn-primary">Send Reply</button>
+                                </form>
+                            </div>
+                        <?php endif; ?>
+                        
+                        <div class="text-end">
+                            <form method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this message? This action cannot be undone.')">
                                 <input type="hidden" name="message_id" value="<?php echo $msg['id']; ?>">
-                                <div class="mb-3">
-                                    <textarea name="reply" class="form-control" rows="4" placeholder="Enter your reply..." required></textarea>
-                                </div>
-                                <button type="submit" name="reply_message" class="btn btn-primary">Send Reply</button>
+                                <button type="submit" name="delete_message" class="btn btn-danger">Delete Message</button>
                             </form>
                         </div>
-                    <?php endif; ?>
+                    </div>
                 </div>
             </div>
         <?php endforeach; ?>
