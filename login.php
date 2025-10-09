@@ -499,7 +499,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </head>
 <body>
        <div class="container-fluid">
-       <header>
+       <!-- <header>
           <div class="logo">
             <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811997/logo_cpe9n0.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
         </div>
@@ -522,7 +522,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <li><a href="login.php">Login</a></li>
             </ul>
         </nav>
-    </header>
+    </header> -->
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
