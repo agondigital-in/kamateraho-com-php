@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
+     <style>
         .blog-header {
             text-align: center;
             padding: 3rem 0;
@@ -76,29 +76,23 @@
             line-height: 1.6;
         }
         
-        .payment-methods {
+        .tips-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 1.5rem;
             margin: 2rem 0;
         }
         
-        .payment-card {
+        .tip-card {
             background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
             padding: 1.5rem;
             border-radius: 10px;
-            text-align: center;
-            transition: transform 0.3s ease;
+            border-left: 4px solid #1a2a6c;
         }
         
-        .payment-card:hover {
-            transform: translateY(-5px);
-        }
-        
-        .payment-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
+        .tip-card h3 {
             color: #1a2a6c;
+            margin-top: 0;
         }
         
         .back-link {
@@ -113,35 +107,6 @@
             text-decoration: underline;
         }
         
-        .process-steps {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin: 2rem 0;
-        }
-        
-        .step {
-            flex: 1;
-            min-width: 200px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
-            padding: 1.5rem;
-            border-radius: 10px;
-            text-align: center;
-        }
-        
-        .step-number {
-            width: 40px;
-            height: 40px;
-            background: #1a2a6c;
-            color: white;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1rem;
-            font-weight: bold;
-        }
-        
         @media (max-width: 768px) {
             .blog-header h1 {
                 font-size: 2rem;
@@ -151,36 +116,275 @@
                 height: 250px;
             }
         }
+        
+              /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideInDown 0.5s ease-out;
+        }
+
+        @keyframes slideInDown {
+            from {
+                transform: translateY(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 50px;
+            width: auto;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .logo span {
+            color: #ff6e7f;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 30px;
+            height: 21px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            display: block;
+            height: 3px;
+            width: 100%;
+            background-color: #1a2a6c;
+            border-radius: 3px;
+            transition: all 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        /* Ensure menu is visible on desktop */
+        @media (min-width: 769px) {
+            nav ul {
+                display: flex !important;
+            }
+        }
+
+        /* Hide mobile menu by default */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            nav ul.active {
+                display: flex;
+            }
+        }
+
+        nav ul li {
+            margin-left: 25px;
+        }
+
+        nav ul li a {
+            color: #1a2a6c;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            padding: 8px 12px;
+            border-radius: 20px;
+            white-space: nowrap;
+        }
+
+        nav ul li a:hover {
+            background: rgba(26, 42, 108, 0.1);
+            color: #1a2a6c;
+            transform: translateY(-2px);
+        }
+
+        .auth-buttons {
+            display: flex;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-left: 15px;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-login {
+            background: transparent;
+            color: #1a2a6c;
+            border: 2px solid #1a2a6c;
+        }
+
+        .btn-login:hover {
+            background: #1a2a6c;
+            color: white;
+        }
+
+        .btn-register {
+            background: #1a2a6c;
+            color: white;
+            border: 2px solid #1a2a6c;
+        }
+
+        .btn-register:hover {
+            background: transparent;
+            color: #1a2a6c;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                flex-direction: column;
+                background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+                width: 70%;
+                height: 100vh;
+                padding: 80px 20px 20px;
+                transition: right 0.3s ease;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+                margin: 0;
+                border-left: 1px solid #d1d1d1;
+                display: none; /* Hide by default on mobile */
+            }
+
+            nav ul.active {
+                right: 0;
+                display: flex !important; /* Show when active */
+            }
+
+            nav ul li {
+                margin: 15px 0;
+                text-align: center;
+            }
+
+            nav ul li a {
+                display: block;
+                padding: 15px;
+                font-size: 1.2rem;
+                color: #1a2a6c;
+            }
+
+            .auth-buttons {
+                position: absolute;
+                top: 20px;
+                right: 20px;
+            }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="logo">
-                    <h1>Kamate<span>Raho</span>.com</h1>
-                </div>
-                <div class="menu-toggle" id="menuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <nav>
-                     <ul id="navMenu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#testimonial-container">Testimonials</a></li>
-                <li><a href="#withdrawal-info">Withdrawals</a></li>
-                <li><a href="kamateraho/blog/index.php">Blog</a></li>
-                <li><a href="kamateraho/contact.php">Contact</a></li>
-                <li><a href="../register.php">Register</a></li>
-                <li><a href="../login.php">Login</a></li>
-            </ul>
-                </nav>
-            </div>
+      <header>
+          <div class="logo">
+            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811997/logo_cpe9n0.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
         </div>
+        
+        <div class="menu-toggle" id="menuToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <nav>
+          <ul id="navMenu">
+                <li><a href="/">Home</a></li>
+                <li><a href="/">How It Works</a></li>
+                <li><a href="/">Testimonials</a></li>
+                <li><a href="/">Withdrawals</a></li>
+                <li><a href="/">Blog</a></li>
+                <li><a href="/kamateraho/contact.php">Contact</a></li>
+                <li><a href="https://kamateraho.com/register.php">Register</a></li>
+                <li><a href="https://kamateraho.com/login.php">Login</a></li>
+            </ul>
+        </nav>
     </header>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    
+                    // Animate hamburger icon
+                    const spans = menuToggle.querySelectorAll('span');
+                    if (navMenu.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+                
+                // Close menu when clicking on a link
+                const navLinks = document.querySelectorAll('nav ul li a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        const spans = menuToggle.querySelectorAll('span');
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    });
+                });
+            }
+        });
 
+        
+    </script>
     <section class="blog-header">
         <div class="container">
             <h1>Understanding Payment Methods</h1>
