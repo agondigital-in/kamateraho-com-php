@@ -384,11 +384,7 @@
     <section class="blog-container">
         <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
         
-        <div class="blog-meta">
-            <span><i class="far fa-calendar"></i> Oct 10, 2025</span>
-            <span><i class="far fa-user"></i> Admin</span>
-            <span><i class="far fa-clock"></i> 5 min read</span>
-        </div>
+        
         
         <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Top 5 Ways to Earn Money Online" class="blog-image">
         
