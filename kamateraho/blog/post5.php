@@ -208,7 +208,7 @@
     </section>
 
     <section class="blog-container">
-        <a href="./" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
         
         <div class="blog-meta">
             <span><i class="far fa-calendar"></i> Sep 20, 2025</span>
