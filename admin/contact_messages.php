@@ -108,11 +108,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_message'])) {
     }
 }
 
-// Fetch all contact messages
+// Fetch all contact messages with user information
 $messages = [];
 if ($pdo) {
     try {
-        $stmt = $pdo->query("SELECT * FROM contact_messages ORDER BY created_at DESC");
+        $stmt = $pdo->query("SELECT cm.*, u.name as user_name, u.email as user_email FROM contact_messages cm LEFT JOIN users u ON cm.user_id = u.id ORDER BY cm.created_at DESC");
         $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch (PDOException $e) {
         $error = "Error fetching messages: " . $e->getMessage();
@@ -156,6 +156,14 @@ if ($isSubAdmin) {
                 <div class="card-body">
                     <p><strong>From:</strong> <?php echo htmlspecialchars($msg['name']); ?> 
                     &lt;<?php echo htmlspecialchars($msg['email']); ?>&gt;</p>
+                    
+                    <?php if ($msg['user_id']): ?>
+                        <p><strong>User Account:</strong> <?php echo htmlspecialchars($msg['user_name']); ?> 
+                        &lt;<?php echo htmlspecialchars($msg['user_email']); ?>&gt; (ID: <?php echo $msg['user_id']; ?>)</p>
+                    <?php else: ?>
+                        <p><strong>User:</strong> Guest (No account)</p>
+                    <?php endif; ?>
+                    
                     <p><strong>Date:</strong> <?php echo $msg['created_at']; ?></p>
                     <p><strong>Message:</strong></p>
                     <p><?php echo nl2br(htmlspecialchars($msg['message'])); ?></p>

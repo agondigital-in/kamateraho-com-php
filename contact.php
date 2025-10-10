@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'config/db.php';
 include 'includes/navbar.php';
 
@@ -9,17 +10,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = $_POST['subject'];
     $message = $_POST['message'];
     
+    // Get user_id if user is logged in
+    $user_id = null;
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+    }
+    
     // Save to database
     if ($pdo) {
         try {
-            $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
-            $stmt->execute([$name, $email, $subject, $message]);
+            if ($user_id) {
+                $stmt = $pdo->prepare("INSERT INTO contact_messages (user_id, name, email, subject, message) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$user_id, $name, $email, $subject, $message]);
+            } else {
+                $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
+                $stmt->execute([$name, $email, $subject, $message]);
+            }
             $success = "Thank you for your message! We'll get back to you soon.";
         } catch (PDOException $e) {
             $error = "Sorry, there was an error sending your message. Please try again.";
         }
     } else {
         $error = "Database connection failed. Please try again later.";
+    }
+} else {
+    // Pre-fill form with user data if logged in
+    if (isset($_SESSION['user_id'])) {
+        $user_id = $_SESSION['user_id'];
+        try {
+            $stmt = $pdo->prepare("SELECT name, email FROM users WHERE id = ?");
+            $stmt->execute([$user_id]);
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($user) {
+                $prefill_name = $user['name'];
+                $prefill_email = $user['email'];
+            }
+        } catch (PDOException $e) {
+            // Silently fail, form will be empty
+        }
     }
 }
 ?>
@@ -58,12 +86,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form method="POST">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" name="name" required>
+                        <input type="text" class="form-control" id="name" name="name" value="<?php echo isset($prefill_name) ? htmlspecialchars($prefill_name) : ''; ?>" required>
                     </div>
                     
                     <div class="mb-3">
                         <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" name="email" required>
+                        <input type="email" class="form-control" id="email" name="email" value="<?php echo isset($prefill_email) ? htmlspecialchars($prefill_email) : ''; ?>" required>
                     </div>
                     
                     <div class="mb-3">
