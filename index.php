@@ -102,7 +102,7 @@ if ($pdo) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KamateRaho - CashKaro.com Clone</title>
+    <title>cashbacklo - CashKaro.com Clone</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
@@ -298,6 +298,60 @@ if ($pdo) {
                 font-size: 0.75rem !important;
             }
         }
+
+        /* Retailer-style cards for categories */
+        .retailer-card { border-radius: 10px; background: #fff; position: relative; }
+        .retailer-card .logo-wrap { height: 120px; display: flex; align-items: center; justify-content: center; background:#ffffff; }
+        .retailer-card .logo-wrap img { max-height: 100%; max-width: 100%; width: 100%; object-fit: contain; }
+        .retailer-ribbon { position: absolute; top: 12px; left: 12px; background: #e31b53; color: #fff; font-size: .7rem; font-weight: 800; padding: .25rem .5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: .3px; }
+        .you-earn-pill { display: inline-block; background: #f0f2f5; color: #6b7280; border-radius: 999px; padding: .2rem .6rem; font-size: .7rem; font-weight: 700; }
+        .profit-text { font-weight: 800; color: #111827; margin: .35rem 0 0; }
+        .btn-share { background: #22c55e; color: #fff; border: none; border-radius: 999px; font-weight: 800; }
+        .btn-share:hover { background: #16a34a; color: #fff; }
+        .btn-copy-outline { background: #fff; border: 2px solid #d1d5db; color: #111827; border-radius: 999px; font-weight: 800; }
+        .btn-copy-outline:hover { background: #f9fafb; }
+        .category-card-wrapper { width: 280px; margin-right: 16px; }
+        .scrolling-wrapper { overflow: hidden; }
+        .scrolling-content { display: flex; }
+        @media (max-width: 576px) {
+            .category-card-wrapper { width: 240px; margin-right: 12px; }
+        }
+
+        /* Flash deals card styles (Trending Promotion Tasks) */
+        .flash-card { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #e5e7eb; }
+        .flash-banner { background: #ffffff; height: 260px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .flash-banner img { max-height: 100%; max-width: 100%; width: 100%; object-fit: contain; border-radius: 0; box-shadow: none; }
+        .flash-pill { position: absolute; right: 12px; top: 12px; background: #fff; color: #ef4444; font-weight: 800; font-size: .7rem; padding: .2rem .5rem; border-radius: 999px; letter-spacing: .2px; }
+        .deal-strip { background: #ef4444; color: #fff; font-weight: 800; font-size: .75rem; padding: .35rem .6rem; text-transform: uppercase; letter-spacing: .3px; }
+        .meta { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: .6rem .75rem; }
+        .meta small { display: block; color: #6b7280; font-weight: 700; font-size: .7rem; }
+        .meta .val { font-weight: 900; color: #111827; }
+        .price-old { color: #9ca3af; text-decoration: line-through; font-weight: 700; margin-right: .35rem; }
+        .actions { padding: .6rem .75rem .9rem; }
+        .actions .btn { white-space: nowrap; }
+        /* Desktop: inline 3 buttons */
+        @media (min-width: 768px) {
+            .actions .btn { width: auto; }
+        }
+        /* Mobile: stack buttons full width */
+        @media (max-width: 767.98px) {
+            .actions .btn { width: 100%; }
+        }
+        .btn-earn-now { background: linear-gradient(135deg,#38bdf8,#0ea5e9); color:#fff; border:none; border-radius: 10px; font-weight: 800; }
+        .btn-earn-now:hover { filter: brightness(1.03); color:#fff; }
+
+        /* Ad-style tiles (2 rows x 4 columns) */
+        .tile-card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px; }
+        .tile-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; }
+        .tile { display:flex; flex-direction:column; gap:6px; }
+        .tile-thumb { width:100%; aspect-ratio:1/1; background:#fff; border:1px solid #e5e7eb; border-top:3px solid #facc15; border-radius:3px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+        .tile-thumb img { width:100%; height:100%; object-fit:cover; }
+        .tile-caption { font-size:.82rem; color:#374151; line-height:1.15; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .tile-see-all { display:inline-block; margin-top:8px; color:#0a58ca; font-weight:700; font-size:.9rem; text-decoration:none; }
+        .tile-see-all:hover { text-decoration:underline; }
+        @media (max-width: 767.98px) { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
+        /* Vertical separators between columns on md+ */
+        @media (min-width: 768px) { .tile-col { position:relative; } .tile-col + .tile-col { border-left:1px solid #e5e7eb; } }
     </style>
 </head>
 
@@ -313,11 +367,11 @@ if ($pdo) {
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <p>Share your referral link with friends and earn ₹3 for each successful referral!</p>
+                    <p>Share your referral link with friends and earn â‚¹3 for each successful referral!</p>
                     
                     <div class="referral-link-box">
                         <?php
-                        $base_url = "https://kamateraho.com/";
+                        $base_url = "https://cashbacklo.com/";
                         $referral_link = $base_url . "register.php?ref=" . $_SESSION['user_id'];
                         ?>
                         <div class="referral-link" id="referralLink"><?php echo $referral_link; ?></div>
@@ -328,16 +382,16 @@ if ($pdo) {
                     </button>
                     
                     <div class="social-share">
-                        <a href="https://api.whatsapp.com/send?text=Join KamateRaho and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn whatsapp">
+                        <a href="https://api.whatsapp.com/send?text=Join cashbacklo and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn whatsapp">
                             <i class="fab fa-whatsapp"></i>
                         </a>
                         <a href="https://www.facebook.com/sharer/sharer.php?u=<?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn facebook">
                             <i class="fab fa-facebook-f"></i>
                         </a>
-                        <a href="https://twitter.com/intent/tweet?text=Join KamateRaho and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn twitter">
+                        <a href="https://twitter.com/intent/tweet?text=Join cashbacklo and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn twitter">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="https://t.me/share/url?url=<?php echo urlencode($referral_link); ?>&text=Join KamateRaho and earn money from home!" target="_blank" class="social-btn telegram">
+                        <a href="https://t.me/share/url?url=<?php echo urlencode($referral_link); ?>&text=Join cashbacklo and earn money from home!" target="_blank" class="social-btn telegram">
                             <i class="fab fa-telegram-plane"></i>
                         </a>
                     </div>
@@ -453,29 +507,26 @@ if ($pdo) {
                             for ($i = 0; $i < 2; $i++):
                                 foreach ($category_items as $category): ?>
                                     <div class="category-card-wrapper">
-                                        <div class="card category-card border-0 shadow-sm overflow-hidden text-center">
-                                            <div class="position-relative">
-                                                <!-- Circular category image -->
-                                                <div class="d-flex justify-content-center align-items-center" style="height: 150px;">
-                                                    <img src="<?php echo $category['image_url']; ?>" 
-                                                         class="rounded-circle" 
-                                                         alt="<?php echo htmlspecialchars($category['name']); ?>" 
-                                                         style="width: 120px; height: 120px; object-fit: cover; border: 3px solid #1a2a6c;">
-                                                </div>
+                                        <div class="card retailer-card border-0 shadow-sm text-center p-3 h-100">
+                                            <span class="retailer-ribbon">Top</span>
+                                            <div class="logo-wrap mb-2">
+                                                <img src="<?php echo $category['image_url']; ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
                                             </div>
-                                            <div class="card-body">
-                                                <!-- Price below image -->
-                                                <?php if (!empty($category['price'])): ?>
-                                                    <div class="price-tag mt-2" style="font-weight: 700; color: #28a745; font-size: 1.1rem;">
-                                                        ₹<?php echo number_format($category['price'], 2); ?>
-                                                    </div>
-                                                <?php endif; ?>
-                                                
-                                                <!-- Category title below price -->
-                                                <h6 class="card-title mt-2 mb-0 text-center" style="font-weight: 600; color: #1a2a6c;">
-                                                    <?php echo htmlspecialchars($category['name']); ?>
-                                                </h6>
-                                                <a href="category.php?id=<?php echo $category['id']; ?>" class="stretched-link"></a>
+                                            <div class="mb-2">
+                                                <span class="you-earn-pill">YOU EARN</span>
+                                                <div class="profit-text">Upto <?php echo !empty($category['price']) ? 'â‚¹'.number_format($category['price'], 0) : 'Best'; ?> Profit</div>
+                                            </div>
+                                            <?php 
+                                                $share_url = 'category.php?id=' . $category['id'];
+                                                $wa_text = 'Check this offer: ' . $share_url;
+                                            ?>
+                                            <div class="d-grid gap-2 mt-auto">
+                                                <a target="_blank" href="https://api.whatsapp.com/send?text=<?php echo urlencode($wa_text); ?>" class="btn btn-share">
+                                                    <i class="fab fa-whatsapp me-1"></i> SHARE NOW
+                                                </a>
+                                                <button class="btn btn-copy-outline copy-link-btn" data-link="<?php echo htmlspecialchars($share_url); ?>">
+                                                    COPY LINK
+                                                </button>
                                             </div>
                                         </div>
                                     </div>
@@ -485,6 +536,69 @@ if ($pdo) {
                     </div>
                 <?php endif; ?>
             </section>
+
+<!-- More Picks For You (Relocated just below navbar) -->
+    <?php if (isset($pdo)) : ?>
+    <?php
+    // Ensure $all_offers is loaded when this section is above main queries
+    if (!isset($all_offers)) {
+        try {
+            $stmt = $pdo->query("SELECT * FROM offers WHERE is_active = 1 ORDER BY created_at DESC");
+            $all_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            $all_offers = [];
+        }
+    }
+    ?>
+    <?php if (!empty($all_offers)): ?>
+    <div class="container mt-3">
+        <section class="mb-4">
+            <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+                <h2 class="mb-0 text-primary">More Picks For You</h2>
+            </div> -->
+            <div class="row g-3">
+                <?php 
+                    // Group offers into chunks of 4 for each tile card
+                    $tile_groups_top = array_chunk($all_offers, 4);
+                    // Show only first 3 groups (3 boxes)
+                    foreach (array_slice($tile_groups_top, 0, 3) as $group): ?>
+                    <div class="col-lg-4 col-md-6 col-12 tile-col">
+                        <div class="tile-card h-100">
+                            <div class="tile-grid">
+                                <?php foreach ($group as $g): 
+                                    // Choose image source similar to earlier logic
+                                    $tile_img = '';
+                                    if (!empty($g['image'])) {
+                                        if (preg_match('/^https?:\/\//i', $g['image'])) {
+                                            $tile_img = $g['image'];
+                                        } else {
+                                            $tile_img = htmlspecialchars($g['image']);
+                                        }
+                                    }
+                                    $caption = !empty($g['title']) ? $g['title'] : 'Offer';
+                                ?>
+                                <a href="product_details.php?id=<?php echo $g['id']; ?>" class="tile text-decoration-none">
+                                    <div class="tile-thumb">
+                                        <?php if (!empty($tile_img)): ?>
+                                            <img src="<?php echo $tile_img; ?>" alt="<?php echo htmlspecialchars($caption); ?>">
+                                        <?php else: ?>
+                                            <i class="fas fa-image text-muted"></i>
+                                        <?php endif; ?>
+                                    </div>
+                                    <div class="tile-caption"><?php echo htmlspecialchars(mb_strimwidth($caption, 0, 28, 'â€¦')); ?></div>
+                                </a>
+                                <?php endforeach; ?>
+                            </div>
+                            <a href="all_offers.php" class="tile-see-all">See all offers</a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+    </div>
+    <?php endif; ?>
+    <?php endif; ?>
+
             
             <!-- Trending Promotion Tasks -->
             <div class="text-start mb-4">
@@ -540,50 +654,54 @@ if ($pdo) {
             <?php else: ?>
                 <div class="row g-3">
                     <?php foreach (array_slice($all_offers, 0, 12) as $offer): ?>
-                        <div class="col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-6 col-12 offer-card-col">
-                            <div class="card border-0 shadow-sm h-100">
+                        <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 offer-card-col">
+                            <div class="flash-card h-100">
                                 <?php 
-                                // Determine image source (using same approach as product_details.php)
+                                // Determine image source
                                 $image_src = '';
                                 if (!empty($offer['image'])) {
-                                    // Check if it's an absolute URL
                                     if (preg_match('/^https?:\/\//i', $offer['image'])) {
                                         $image_src = $offer['image'];
-                                    } 
-                                    // For local files, use the direct path
-                                    else {
+                                    } else {
                                         $image_src = htmlspecialchars($offer['image']);
                                     }
                                 }
-                                
-                                // Display image or fallback
-                                if (!empty($image_src)): ?>
-                                    <img src="<?php echo $image_src; ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
-                                <?php else: ?>
-                                    <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
-                                        <i class="fas fa-image fa-3x text-muted"></i>
-                                    </div>
-                                <?php endif; ?>
-                                <div class="card-body d-flex flex-column">
-                                    <!-- Amount/Price below image -->
-                                    <?php if (!empty($offer['price'])): ?>
-                                        <div class="price-tag mb-2" style="font-weight: 700; color: #28a745; font-size: 1.1rem;">
-                                            ₹<?php echo number_format($offer['price'], 2); ?>
-                                        </div>
+                                ?>
+                                <div class="flash-banner">
+                                    <?php if (!empty($image_src)): ?>
+                                        <img src="<?php echo $image_src; ?>" alt="<?php echo htmlspecialchars($offer['title']); ?>">
+                                    <?php else: ?>
+                                        <div class="text-white fw-bold">Deal</div>
                                     <?php endif; ?>
-                                    
-                                    <!-- Title below amount -->
-                                    <h5 class="card-title text-center mb-3" style="font-size: 0.9rem;">
+                                    <span class="flash-pill">Flash Sale</span>
+                                </div>
+                                
+                                <div class="p-2">
+                                    <div class="text-dark fw-bold text-center mb-1" style="min-height:40px;font-size:.95rem;">
                                         <?php echo htmlspecialchars($offer['title']); ?>
-                                    </h5>
-                                    
-                                    <!-- Two buttons below title -->
-                                    <div class="d-flex gap-2 mt-auto">
-                                        <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-money flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
-                                        <button class="btn btn-outline-primary copy-link-btn flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;"
+                                    </div>
+                                    <div class="meta">
+                                        <div>
+                                            <small>Starting From</small>
+                                            <div class="val">â‚¹<?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
+                                        </div>
+                                        <div>
+                                            <small>Per Sale You Earn</small>
+                                            <div class="val">â‚¹<?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <?php $share_text = 'Check this deal: ' . url('product_details.php?id=' . $offer['id']); ?>
+                                        <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-now flex-fill">EARN NOW</a>
+                                        <a class="btn btn-share flex-fill" target="_blank" href="https://api.whatsapp.com/send?text=<?php echo urlencode($share_text); ?>">
+                                            <i class="fab fa-whatsapp me-1"></i> SHARE NOW
+                                        </a>
+                                        <button class="btn btn-copy-outline copy-link-btn flex-fill" 
                                                 data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($offer['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
                                                 <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
-                                            <?php echo isset($_SESSION['user_id']) ? 'Refer & Earn' : 'Login to Copy'; ?>
+                                            <?php echo isset($_SESSION['user_id']) ? 'COPY LINK' : 'Login to Copy'; ?>
                                         </button>
                                     </div>
                                 </div>
@@ -592,7 +710,7 @@ if ($pdo) {
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
-            
+
             <!-- Best Life Insurance Free Credit Cards -->
             <section class="mb-5">
                
@@ -819,7 +937,7 @@ if ($pdo) {
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <h5>KamateRaho</h5>
+                    <h5>cashbacklo</h5>
                     <p>Earn cash from home by completing simple tasks and get paid instantly.</p>
                 </div>
                 <div class="col-md-6">
@@ -836,7 +954,7 @@ if ($pdo) {
             </div>
             <hr class="my-4">
             <div class="text-center">
-                <p>&copy; 2025 KamateRaho. All rights reserved.</p>
+                <p>&copy; 2025 cashbacklo. All rights reserved.</p>
             </div>
         </div>
     </footer>
