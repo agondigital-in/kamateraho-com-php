@@ -120,8 +120,8 @@ if (isset($_SESSION['user_id']) && $pdo) {
 <nav class="navbar navbar-expand-lg navbar-light ek-navbar sticky-top">
     <div class="container">
         <!-- Left: Hamburger + Brand -->
-        <a class="navbar-brand d-flex align-items-center" href="index.php">
-            <img src="cashbacklo/img/logo.png" alt="cashbacklo Logo">
+         <a class="navbar-brand fw-bold" href="index.php">
+            <img src="kamateraho/img/logo.png" alt="KamateRaho Logo" style="height: 50px; width: auto;">
         </a>
 
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#ekNav" aria-controls="ekNav" aria-expanded="false" aria-label="Toggle navigation">
