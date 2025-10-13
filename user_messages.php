@@ -22,6 +22,19 @@ if ($pdo) {
         $error = "Error fetching messages: " . $e->getMessage();
     }
 }
+
+// Ensure Bootstrap CSS/JS are available as a fallback (in case navbar/header didn't include them)
+echo '<!-- Fallback Bootstrap CSS (CDN) + meta viewport + small inline fallback styles -->';
+echo '<meta name="viewport" content="width=device-width, initial-scale=1">';
+echo '<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">';
+echo '<style>
+/* minimal fallback styles so layout is readable if Bootstrap isn\'t loaded */
+.container{max-width:1140px;margin:0 auto;padding:1rem;}
+.card{border:1px solid #e9ecef;border-radius:.375rem;padding:1rem;background:#fff;margin-bottom:1rem;}
+.card-header{font-weight:600;background:transparent;border-bottom:none;padding:0 0 .5rem 0;}
+.badge{display:inline-block;padding:.35em .65em;font-size:.75em;font-weight:700;color:#fff;background:#28a745;border-radius:.25rem;}
+.breadcrumb{background:transparent;padding:.5rem 0;margin-bottom:1rem;}
+</style>';
 ?>
 
 <div class="container mt-5">
@@ -52,7 +65,8 @@ if ($pdo) {
                         <div class="card-header">
                             <div class="d-flex justify-content-between">
                                 <h5><?php echo htmlspecialchars($msg['subject']); ?></h5>
-                                <span class="badge bg-success">Replied</span>
+                                <!-- support for both BS4 (badge-success) and BS5 (bg-success) -->
+                                <span class="badge bg-success badge-success">Replied</span>
                             </div>
                         </div>
                         <div class="card-body">
@@ -73,4 +87,10 @@ if ($pdo) {
     </div>
 </div>
 
-<?php include 'includes/footer.php'; ?>
+<?php
+// Load Bootstrap JS (CDN) as fallback for interactive components
+echo '<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>';
+echo '<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js"></script>';
+
+include 'includes/footer.php';
+?>
