@@ -248,7 +248,7 @@
                 <a href="#">FAQ</a>
                 <a href="#">Support</a>
             </div>
-            <p class="copyright">&copy; 2025 KamateRaho. All rights reserved. | Designed with <i class="fas fa-heart" style="color: #f7b733;"></i> for You</p>
+            <p class="copyright">&copy; 2025 KamateRaho. All rights reserved. </p>
         </div>
     </div>
 </footer>
