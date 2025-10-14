@@ -1,7 +1,6 @@
 <?php
 session_start();
 include 'config/db.php';
-include 'includes/navbar.php';
 
 // Check if user is logged in
 if (!isset($_SESSION['user_id'])) {
@@ -35,6 +34,8 @@ if ($pdo) {
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
+    <?php include 'includes/navbar.php'; ?>
+    
     <div class="container mt-5">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
