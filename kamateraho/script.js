@@ -32,10 +32,23 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const targetElement = document.querySelector(targetId);
             if (targetElement) {
+                // Get the header height for proper offset calculation
+                const header = document.querySelector('header');
+                const headerHeight = header ? header.offsetHeight : 70;
+                
                 window.scrollTo({
-                    top: targetElement.offsetTop - 70,
+                    top: targetElement.offsetTop - headerHeight,
                     behavior: 'smooth'
                 });
+                
+                // For mobile, close the menu after clicking
+                const mobileNavLinks = document.querySelector('.nav-links');
+                const menuToggle = document.querySelector('.menu-toggle');
+                if (mobileNavLinks && menuToggle && mobileNavLinks.classList.contains('active')) {
+                    mobileNavLinks.classList.remove('active');
+                    menuToggle.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
             }
         });
     });
