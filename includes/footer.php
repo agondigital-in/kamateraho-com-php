@@ -217,8 +217,7 @@
                     </a>
                 </div>
             </div>
-            
-            <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+             <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
                 <h5 class="footer-heading">Quick Links</h5>
                 <ul class="footer-links">
                     <li><a href="index.php">Home</a></li>
