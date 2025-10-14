@@ -138,21 +138,42 @@ document.addEventListener('DOMContentLoaded', function() {
     // Mobile menu toggle
     const menuToggle = document.querySelector('.menu-toggle');
     const mobileNavLinks = document.querySelector('.nav-links');
-    
-    menuToggle.addEventListener('click', function() {
-        mobileNavLinks.classList.toggle('active');
-        // Animate hamburger icon
-        this.classList.toggle('active');
-    });
-    
-    // Close mobile menu when clicking on a link
-    const navItems = document.querySelectorAll('.nav-links a');
-    navItems.forEach(item => {
-        item.addEventListener('click', function() {
-            mobileNavLinks.classList.remove('active');
-            menuToggle.classList.remove('active');
+
+    if (menuToggle && mobileNavLinks) {
+        menuToggle.addEventListener('click', function() {
+            mobileNavLinks.classList.toggle('active');
+            // Animate hamburger icon
+            this.classList.toggle('active');
+            
+            // Prevent body scroll when menu is open
+            if (mobileNavLinks.classList.contains('active')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = '';
+            }
         });
-    });
+        
+        // Close mobile menu when clicking on a link
+        const navItems = document.querySelectorAll('.nav-links a');
+        navItems.forEach(item => {
+            item.addEventListener('click', function() {
+                mobileNavLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (mobileNavLinks.classList.contains('active') && 
+                !mobileNavLinks.contains(event.target) && 
+                !menuToggle.contains(event.target)) {
+                mobileNavLinks.classList.remove('active');
+                menuToggle.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    }
     
     // Enhanced brand slider functionality
     const sliderTrack = document.querySelector('.slider-track');
