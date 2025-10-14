@@ -1,3 +1,102 @@
+<?php
+session_start();
+include 'config/db.php';
+include 'config/app.php';
+
+// Normalize image path to an absolute URL using BASE_URL
+function normalize_image($path) {
+    if (!$path) return '';
+    // If already absolute URL, return as-is
+    if (preg_match('/^https?:\/\//i', $path)) {
+        return $path;
+    }
+    // Remove leading ../ if present from legacy stored paths
+    $path = preg_replace('#^\.\./#', '', $path);
+    // Ensure no leading slash issues
+    $path = ltrim($path, '/');  
+    // Build absolute URL
+    return url($path);
+}
+
+// Check if user is logged in, if not redirect to login page
+if (!isset($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+// Check if database connection is available
+if ($pdo) {
+    // Fetch all categories
+    try {
+        $stmt = $pdo->query("SELECT * FROM categories ORDER BY name");
+        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        $error = "Error fetching categories: " . $e->getMessage();
+        $categories = [];
+    }
+    
+    // Fetch active credit cards
+    try {
+        $stmt = $pdo->query("SELECT * FROM credit_cards WHERE is_active = 1 ORDER BY created_at DESC LIMIT 4");
+        $credit_cards = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        $credit_cards = [];
+    }
+    
+    // Fetch specific categories by ID and their offers
+    try {
+        // Fetch category with ID=8 for kotak811 section and its offers
+        $stmt = $pdo->prepare("SELECT * FROM categories WHERE id = 8");
+        $stmt->execute();
+        $kotak_category = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($kotak_category) {
+            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 8 AND is_active = 1 ORDER BY created_at DESC LIMIT 4");
+            $stmt->execute();
+            $kotak_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $kotak_offers = [];
+        }
+        
+        // Fetch category with ID=9 for ICICI Life Insurance section and its offers
+        $stmt = $pdo->prepare("SELECT * FROM categories WHERE id = 9");
+        $stmt->execute();
+        $icici_category = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($icici_category) {
+            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 9 AND is_active = 1 ORDER BY created_at DESC LIMIT 4");
+            $stmt->execute();
+            $icici_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $icici_offers = [];
+        }
+        
+        // Fetch category with ID=10 for Bajaj Insta EMI section and its offers
+        $stmt = $pdo->prepare("SELECT * FROM categories WHERE id = 10");
+        $stmt->execute();
+        $bajaj_category = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($bajaj_category) {
+            $stmt = $pdo->prepare("SELECT * FROM offers WHERE category_id = 10 AND is_active = 1 ORDER BY created_at DESC LIMIT 4");
+            $stmt->execute();
+            $bajaj_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } else {
+            $bajaj_offers = [];
+        }
+    } catch(PDOException $e) {
+        $kotak_offers = [];
+        $icici_offers = [];
+        $bajaj_offers = [];
+    }
+} else {
+    $categories = [];
+    $credit_cards = [];
+    $kotak_offers = [];
+    $icici_offers = [];
+    $bajaj_offers = [];
+}
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,52 +107,15 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <style>
-        body {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
-            min-height: 100vh;
-            padding-bottom: 50px;
-        }
-        
-        .main-container {
-            background: rgba(255, 255, 255, 0.85);
-            border-radius: 20px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
-            margin-top: 30px;
-            padding: 30px;
-        }
-        
-        .section-title {
-            color: #1a2a6c;
-            font-weight: 700;
-            position: relative;
-            padding-bottom: 15px;
-            margin-bottom: 25px;
-        }
-        
-        .section-title:after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 70px;
-            height: 4px;
-            background: linear-gradient(90deg, #1a2a6c, #f7b733);
-            border-radius: 2px;
-        }
-        
         .btn-earn-money {
-            border: 2px solid #0d6efd !important;
-            background: linear-gradient(135deg, #4361ee, #3a0ca3) !important;
+            border: 2px solid #0d6efd !important; /* Blue border */
+            background: linear-gradient(135deg, #4361ee, #3a0ca3) !important; /* Matching gradient */
             color: white !important;
-            border-radius: 30px !important;
-            font-weight: 600 !important;
-            transition: all 0.3s ease !important;
         }
         
         .btn-earn-money:hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 6px 15px rgba(67, 97, 238, 0.4) !important;
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3) !important;
         }
         
         /* Referral Modal Styles */
@@ -142,16 +204,6 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-        }
-        
-        .offer-card-col .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
         }
         
         .offer-card-col .card-img-top {
@@ -196,11 +248,6 @@
             .offer-card-col .card-img-top {
                 height: 260px !important;
             }
-            
-            .main-container {
-                padding: 20px 15px;
-                margin-top: 20px;
-            }
         }
         
         @media (max-width: 576px) {
@@ -238,10 +285,6 @@
             .price-tag {
                 font-size: 1rem !important;
             }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
         }
         
         @media (max-width: 400px) {
@@ -257,320 +300,58 @@
         }
 
         /* Retailer-style cards for categories */
-        .retailer-card { 
-            border-radius: 15px; 
-            background: #fff; 
-            position: relative; 
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            border: none;
-        }
-        
-        .retailer-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-        
-        .retailer-card .logo-wrap { 
-            height: 120px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            background:#ffffff; 
-        }
-        
-        .retailer-card .logo-wrap img { 
-            max-height: 100%; 
-            max-width: 100%; 
-            width: 100%; 
-            object-fit: contain; 
-        }
-        
-        .retailer-ribbon { 
-            position: absolute; 
-            top: 12px; 
-            left: 12px; 
-            background: linear-gradient(135deg, #e31b53, #ff6b6b); 
-            color: #fff; 
-            font-size: .7rem; 
-            font-weight: 800; 
-            padding: .25rem .5rem; 
-            border-radius: 4px; 
-            text-transform: uppercase; 
-            letter-spacing: .3px; 
-        }
-        
-        .you-earn-pill { 
-            display: inline-block; 
-            background: linear-gradient(135deg, #f0f2f5, #e2e8f0); 
-            color: #1a2a6c; 
-            border-radius: 999px; 
-            padding: .2rem .6rem; 
-            font-size: .7rem; 
-            font-weight: 700; 
-        }
-        
-        .profit-text { 
-            font-weight: 800; 
-            color: #111827; 
-            margin: .35rem 0 0; 
-        }
-        
-        .btn-share { 
-            background: linear-gradient(135deg, #22c55e, #16a34a); 
-            color: #fff; 
-            border: none; 
-            border-radius: 999px; 
-            font-weight: 800; 
-            transition: all 0.3s ease;
-        }
-        
-        .btn-share:hover { 
-            background: linear-gradient(135deg, #16a34a, #15803d); 
-            color: #fff; 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(34, 197, 94, 0.3);
-        }
-        
-        .btn-copy-outline { 
-            background: #fff; 
-            border: 2px solid #d1d5db; 
-            color: #111827; 
-            border-radius: 999px; 
-            font-weight: 800; 
-            transition: all 0.3s ease;
-        }
-        
-        .btn-copy-outline:hover { 
-            background: #f9fafb; 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-        
-        .category-card-wrapper { 
-            width: 280px; 
-            margin-right: 16px; 
-        }
-        
-        .scrolling-wrapper { 
-            overflow: hidden; 
-        }
-        
-        .scrolling-content { 
-            display: flex; 
-        }
-        
+        .retailer-card { border-radius: 10px; background: #fff; position: relative; }
+        .retailer-card .logo-wrap { height: 120px; display: flex; align-items: center; justify-content: center; background:#ffffff; }
+        .retailer-card .logo-wrap img { max-height: 100%; max-width: 100%; width: 100%; object-fit: contain; }
+        .retailer-ribbon { position: absolute; top: 12px; left: 12px; background: #e31b53; color: #fff; font-size: .7rem; font-weight: 800; padding: .25rem .5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: .3px; }
+        .you-earn-pill { display: inline-block; background: #f0f2f5; color: #6b7280; border-radius: 999px; padding: .2rem .6rem; font-size: .7rem; font-weight: 700; }
+        .profit-text { font-weight: 800; color: #111827; margin: .35rem 0 0; }
+        .btn-share { background: #22c55e; color: #fff; border: none; border-radius: 999px; font-weight: 800; }
+        .btn-share:hover { background: #16a34a; color: #fff; }
+        .btn-copy-outline { background: #fff; border: 2px solid #d1d5db; color: #111827; border-radius: 999px; font-weight: 800; }
+        .btn-copy-outline:hover { background: #f9fafb; }
+        .category-card-wrapper { width: 280px; margin-right: 16px; }
+        .scrolling-wrapper { overflow: hidden; }
+        .scrolling-content { display: flex; }
         @media (max-width: 576px) {
-            .category-card-wrapper { 
-                width: 240px; 
-                margin-right: 12px; 
-            }
+            .category-card-wrapper { width: 240px; margin-right: 12px; }
         }
 
         /* Flash deals card styles (Trending Promotion Tasks) */
-        .flash-card { 
-            border-radius: 15px; 
-            overflow: hidden; 
-            background: #fff; 
-            border: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .flash-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        
-        .flash-banner { 
-            background: #ffffff; 
-            height: 260px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
-            position: relative; 
-        }
-        
-        .flash-banner img { 
-            max-height: 100%; 
-            max-width: 100%; 
-            width: auto; 
-            height: auto; 
-            object-fit: contain; 
-            border-radius: 0; 
-            box-shadow: none; 
-        }
-        
-        .flash-pill { 
-            position: absolute; 
-            right: 12px; 
-            top: 12px; 
-            background: #fff; 
-            color: #ef4444; 
-            font-weight: 800; 
-            font-size: .7rem; 
-            padding: .2rem .5rem; 
-            border-radius: 999px; 
-            letter-spacing: .2px; 
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        }
-        
-        .deal-strip { 
-            background: #ef4444; 
-            color: #fff; 
-            font-weight: 800; 
-            font-size: .75rem; 
-            padding: .35rem .6rem; 
-            text-transform: uppercase; 
-            letter-spacing: .3px; 
-        }
-        
-        .meta { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; 
-            gap: .5rem; 
-            padding: .6rem .75rem; 
-        }
-        
-        .meta small { 
-            display: block; 
-            color: #6b7280; 
-            font-weight: 700; 
-            font-size: .7rem; 
-        }
-        
-        .meta .val { 
-            font-weight: 900; 
-            color: #111827; 
-        }
-        
-        .price-old { 
-            color: #9ca3af; 
-            text-decoration: line-through; 
-            font-weight: 700; 
-            margin-right: .35rem; 
-        }
-        
-        .actions { 
-            padding: .6rem .75rem .9rem; 
-        }
-        
-        .actions .btn { 
-            white-space: nowrap; 
-        }
-        
+        .flash-card { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #e5e7eb; }
+        .flash-banner { background: #ffffff; height: 260px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .flash-banner img { max-height: 100%; max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 0; box-shadow: none; }
+        .flash-pill { position: absolute; right: 12px; top: 12px; background: #fff; color: #ef4444; font-weight: 800; font-size: .7rem; padding: .2rem .5rem; border-radius: 999px; letter-spacing: .2px; }
+        .deal-strip { background: #ef4444; color: #fff; font-weight: 800; font-size: .75rem; padding: .35rem .6rem; text-transform: uppercase; letter-spacing: .3px; }
+        .meta { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: .6rem .75rem; }
+        .meta small { display: block; color: #6b7280; font-weight: 700; font-size: .7rem; }
+        .meta .val { font-weight: 900; color: #111827; }
+        .price-old { color: #9ca3af; text-decoration: line-through; font-weight: 700; margin-right: .35rem; }
+        .actions { padding: .6rem .75rem .9rem; }
+        .actions .btn { white-space: nowrap; }
         /* Desktop: inline 3 buttons */
         @media (min-width: 768px) {
-            .actions .btn { 
-                width: auto; 
-            }
+            .actions .btn { width: auto; }
         }
-        
         /* Mobile: stack buttons full width */
         @media (max-width: 767.98px) {
-            .actions .btn { 
-                width: 100%; 
-            }
+            .actions .btn { width: 100%; }
         }
-        
-        .btn-earn-now { 
-            background: linear-gradient(135deg,#38bdf8,#0ea5e9); 
-            color:#fff; 
-            border:none; 
-            border-radius: 10px; 
-            font-weight: 800; 
-            transition: all 0.3s ease;
-        }
-        
-        .btn-earn-now:hover { 
-            filter: brightness(1.03); 
-            color:#fff; 
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4);
-        }
+        .btn-earn-now { background: linear-gradient(135deg,#38bdf8,#0ea5e9); color:#fff; border:none; border-radius: 10px; font-weight: 800; }
+        .btn-earn-now:hover { filter: brightness(1.03); color:#fff; }
 
         /* Ad-style tiles (2 rows x 4 columns) */
-        .tile-card { 
-            background:#fff; 
-            border:1px solid #e5e7eb; 
-            border-radius:15px; 
-            padding:15px; 
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-            transition: all 0.3s ease;
-        }
-        
-        .tile-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
-        }
-        
-        .tile-grid { 
-            display:grid; 
-            grid-template-columns: repeat(2, 1fr);   
-        }
-        
-        .tile { 
-            display:flex; 
-            flex-direction:column; 
-            gap:6px; 
-        }
-        
-        .tile-thumb { 
-            width:100%; 
-            aspect-ratio:1/1; 
-            background:#fff; 
-            border:1px solid #e5e7eb; 
-            border-radius:8px; 
-            overflow:hidden; 
-            display:flex; 
-            align-items:center; 
-            justify-content:center; 
-        }
-        
-        .tile-thumb img { 
-            width:100%; 
-            height:100%; 
-            object-fit:contain; 
-        }
-        
-        .tile-caption { 
-            font-size:.82rem; 
-            color:#374151; 
-            line-height:1.15; 
-            display:-webkit-box; 
-            -webkit-line-clamp:2; 
-            -webkit-box-orient:vertical; 
-            overflow:hidden; 
-        }
-        
-        .tile-see-all { 
-            display:inline-block; 
-            margin-top:8px; 
-            color:#0a58ca; 
-            font-weight:700; 
-            font-size:.9rem; 
-            text-decoration:none; 
-        }
-        
-        .tile-see-all:hover { 
-            text-decoration:underline; 
-        }
-        
-        @media (max-width: 767.98px) { 
-            .tile-grid { 
-                grid-template-columns: repeat(2, 1fr); 
-            } 
-        }
-        
+        .tile-card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px; }
+        .tile-grid { display:grid; grid-template-columns: repeat(2, 1fr);   }
+        .tile { display:flex; flex-direction:column; gap:6px; }
+        .tile-thumb { width:100%; aspect-ratio:1/1; background:#fff; border:1px solid #e5e7eb; border-radius:3px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+        .tile-thumb img { width:100%; height:100%; object-fit:contain; }
+        .tile-caption { font-size:.82rem; color:#374151; line-height:1.15; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .tile-see-all { display:inline-block; margin-top:8px; color:#0a58ca; font-weight:700; font-size:.9rem; text-decoration:none; }
+        .tile-see-all:hover { text-decoration:underline; }
+        @media (max-width: 767.98px) { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
         /* Vertical separators between columns on md+ */
-        @media (min-width: 768px) { 
-            .tile-col { 
-                position:relative; 
-            } 
-            .tile-col + .tile-col { 
-                border-left:1px solid #e5e7eb; 
-            } 
-        }
+        @media (min-width: 768px) { .tile-col { position:relative; } .tile-col + .tile-col { border-left:1px solid #e5e7eb; } }
         
         /* Additional styles to ensure images are not cut off */
         .tile-thumb {
@@ -593,57 +374,6 @@
         .tile-thumb .image-placeholder {
             font-size: 2rem;
             color: #ccc;
-        }
-        
-        /* Banner carousel styling */
-        .banner-section {
-            margin-top: 20px;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        .carousel-item .card {
-            border-radius: 15px;
-            overflow: hidden;
-            border: none;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        
-        .carousel-control-prev-icon,
-        .carousel-control-next-icon {
-            background-color: rgba(26, 42, 108, 0.5);
-            border-radius: 50%;
-            padding: 20px;
-        }
-        
-        .carousel-indicators [data-bs-target] {
-            background-color: #1a2a6c;
-            opacity: 0.5;
-        }
-        
-        .carousel-indicators .active {
-            opacity: 1;
-        }
-        
-        /* Filter and sort container */
-        .filter-sort-container {
-            background: rgba(255, 255, 255, 0.7);
-            padding: 15px;
-            border-radius: 15px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .form-select {
-            border-radius: 30px;
-            border: 2px solid #e2e8f0;
-            padding: 8px 15px;
-        }
-        
-        .form-select:focus {
-            border-color: #1a2a6c;
-            box-shadow: 0 0 0 0.25rem rgba(26, 42, 108, 0.15);
         }
     </style>
 </head>
@@ -694,7 +424,7 @@
     </div>
    
     <!-- Banner Section -->
-    <div class="banner-section py-4">
+    <div class="banner-section py-4 bg-light">
         <div class="container">
             <div class="row">
                 <div class="col-12">
@@ -753,7 +483,7 @@
         </div>
     </div>
     
-    <div class="container main-container">
+    <div class="container">
         <?php if (!$pdo): ?>
             <div class="alert alert-warning">
                 <h4>Database Not Initialized</h4>
@@ -764,7 +494,7 @@
             <!-- Categories Section -->
             <section id="categories" class="mb-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0 section-title">Best Promotion Tasks For You To Start</h2>
+                    <h2 class="mb-0 text-primary">Best Promotion Tasks For You To Start</h2>
                     <a href="#" class="text-decoration-none"></a>
                 </div>
                 
@@ -847,7 +577,7 @@
     <div class="container mt-3">
         <section class="mb-4">
             <!-- <div class="d-flex justify-content-between align-items-center mb-3">
-                <h2 class="mb-0 section-title">More Picks For You</h2>
+                <h2 class="mb-0 text-primary">More Picks For You</h2>
             </div> -->
             <div class="row g-3">
                 <?php 
@@ -897,7 +627,7 @@
             
             <!-- Trending Promotion Tasks -->
             <div class="text-start mb-4">
-                <h2 class="section-title">Trending Promotion Tasks</h2>
+                <h2 class="text-primary">Trending Promotion Tasks</h2>
                 <!-- Filter and Sort Options -->
                 <div class="d-flex justify-content-between align-items-center mb-3 filter-sort-container">
                     <form method="GET" class="d-flex gap-2 w-100">
@@ -978,11 +708,11 @@
                                     <div class="meta">
                                         <div>
                                             <small>Starting From</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
                                         </div>
                                         <div>
                                             <small>Per Sale You Earn</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
                                         </div>
                                     </div>
                                 </div>
