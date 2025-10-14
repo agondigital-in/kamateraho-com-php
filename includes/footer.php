@@ -221,31 +221,14 @@
                 <h5 class="footer-heading">Quick Links</h5>
                 <ul class="footer-links">
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="about.php">About Us</a></li>
+              
                     <li><a href="how-to-earn.php">How It Works</a></li>
                     <li><a href="all_offers.php">All Offers</a></li>
                     <li><a href="contact.php">Contact</a></li>
                 </ul>
             </div>
             
-            <div class="col-lg-3 col-md-6 mb-4 mb-lg-0">
-                <h5 class="footer-heading">Contact Us</h5>
-                <ul class="contact-info">
-                    <li>
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>123 Business Avenue, Suite 100<br>City, State 12345</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-phone-alt"></i>
-                        <span>+1 (123) 456-7890</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-envelope"></i>
-                        <span>support@kamateraho.com</span>
-                    </li>
-                </ul>
-            </div>
-            
+        
             <div class="col-lg-3 col-md-6">
                 <h5 class="footer-heading">Newsletter</h5>
                 <p>Subscribe to our newsletter for the latest offers and updates.</p>
