@@ -320,7 +320,7 @@ if ($pdo) {
         /* Flash deals card styles (Trending Promotion Tasks) */
         .flash-card { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #e5e7eb; }
         .flash-banner { background: #ffffff; height: 260px; display: flex; align-items: center; justify-content: center; position: relative; }
-        .flash-banner img { max-height: 100%; max-width: 100%; width: 100%; object-fit: contain; border-radius: 0; box-shadow: none; }
+        .flash-banner img { max-height: 100%; max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 0; box-shadow: none; }
         .flash-pill { position: absolute; right: 12px; top: 12px; background: #fff; color: #ef4444; font-weight: 800; font-size: .7rem; padding: .2rem .5rem; border-radius: 999px; letter-spacing: .2px; }
         .deal-strip { background: #ef4444; color: #fff; font-weight: 800; font-size: .75rem; padding: .35rem .6rem; text-transform: uppercase; letter-spacing: .3px; }
         .meta { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: .6rem .75rem; }
@@ -345,13 +345,36 @@ if ($pdo) {
         .tile-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; }
         .tile { display:flex; flex-direction:column; gap:6px; }
         .tile-thumb { width:100%; aspect-ratio:1/1; background:#fff; border:1px solid #e5e7eb; border-top:3px solid #facc15; border-radius:3px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-        .tile-thumb img { width:100%; height:100%; object-fit:cover; }
+        .tile-thumb img { width:100%; height:100%; object-fit:contain; }
         .tile-caption { font-size:.82rem; color:#374151; line-height:1.15; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
         .tile-see-all { display:inline-block; margin-top:8px; color:#0a58ca; font-weight:700; font-size:.9rem; text-decoration:none; }
         .tile-see-all:hover { text-decoration:underline; }
         @media (max-width: 767.98px) { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
         /* Vertical separators between columns on md+ */
         @media (min-width: 768px) { .tile-col { position:relative; } .tile-col + .tile-col { border-left:1px solid #e5e7eb; } }
+        
+        /* Additional styles to ensure images are not cut off */
+        .tile-thumb {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+        
+        .tile-thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .tile-thumb .image-placeholder {
+            font-size: 2rem;
+            color: #ccc;
+        }
     </style>
 </head>
 
@@ -411,17 +434,17 @@ if ($pdo) {
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: contain; height: 200px;">
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: contain; height: 200px;">
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: contain; height: 200px;">
                                         </div>
                                     </div>
                                 </div>
@@ -430,17 +453,17 @@ if ($pdo) {
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: contain; height: 200px;">
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: contain; height: 200px;">
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3">
                                         <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: contain; height: 200px;">
                                         </div>
                                     </div>
                                 </div>
@@ -510,7 +533,7 @@ if ($pdo) {
                                         <div class="card retailer-card border-0 shadow-sm text-center p-3 h-100">
                                             <span class="retailer-ribbon">Top</span>
                                             <div class="logo-wrap mb-2">
-                                                <img src="<?php echo $category['image_url']; ?>" alt="<?php echo htmlspecialchars($category['name']); ?>">
+                                                <img src="<?php echo $category['image_url']; ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" style="object-fit: contain; max-height: 120px;">
                                             </div>
                                             <div class="mb-2">
                                                 <span class="you-earn-pill">YOU EARN</span>
@@ -580,12 +603,14 @@ if ($pdo) {
                                 <a href="product_details.php?id=<?php echo $g['id']; ?>" class="tile text-decoration-none">
                                     <div class="tile-thumb">
                                         <?php if (!empty($tile_img)): ?>
-                                            <img src="<?php echo $tile_img; ?>" alt="<?php echo htmlspecialchars($caption); ?>">
+                                            <img src="<?php echo $tile_img; ?>" alt="<?php echo htmlspecialchars($caption); ?>" loading="lazy">
                                         <?php else: ?>
-                                            <i class="fas fa-image text-muted"></i>
+                                            <div class="image-placeholder">
+                                                <i class="fas fa-image text-muted"></i>
+                                            </div>
                                         <?php endif; ?>
                                     </div>
-                                    <div class="tile-caption"><?php echo htmlspecialchars(mb_strimwidth($caption, 0, 28, 'â€¦')); ?></div>
+                                    <div class="tile-caption"><?php echo htmlspecialchars(mb_strimwidth($caption, 0, 28, '…')); ?></div>
                                 </a>
                                 <?php endforeach; ?>
                             </div>
@@ -669,7 +694,7 @@ if ($pdo) {
                                 ?>
                                 <div class="flash-banner">
                                     <?php if (!empty($image_src)): ?>
-                                        <img src="<?php echo $image_src; ?>" alt="<?php echo htmlspecialchars($offer['title']); ?>">
+                                        <img src="<?php echo $image_src; ?>" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="object-fit: contain; width: 100%; height: 100%;">
                                     <?php else: ?>
                                         <div class="text-white fw-bold">Deal</div>
                                     <?php endif; ?>
@@ -722,7 +747,7 @@ if ($pdo) {
                         <?php foreach ($credit_cards as $card): ?>
                             <div class="col-md-3 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
-                                    <img src="<?php echo htmlspecialchars(normalize_image($card['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 180px; object-fit: cover;">
+                                    <img src="<?php echo htmlspecialchars(normalize_image($card['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 180px; object-fit: contain; padding: 10px;">
                                     <div class="card-body d-flex flex-column">
                                         <!-- Product Title -->
                                         <h5 class="card-title text-center mb-1" style="font-size: 0.9rem;"><?php echo htmlspecialchars($card['title']); ?></h5>
@@ -757,7 +782,7 @@ if ($pdo) {
                             <div class="col-md-3 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
+                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: contain; padding: 10px;">
                                     <?php else: ?>
                                         <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-image fa-3x text-muted"></i>
@@ -797,7 +822,7 @@ if ($pdo) {
                             <div class="col-md-3 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
+                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: contain; padding: 10px;">
                                     <?php else: ?>
                                         <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-image fa-3x text-muted"></i>
@@ -837,7 +862,7 @@ if ($pdo) {
                             <div class="col-md-3 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
                                     <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: cover;">
+                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: contain; padding: 10px;">
                                     <?php else: ?>
                                         <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
                                             <i class="fas fa-image fa-3x text-muted"></i>
