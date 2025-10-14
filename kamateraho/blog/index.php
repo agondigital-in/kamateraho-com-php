@@ -345,9 +345,9 @@
             <nav>
                 <div class="logo">Cashback<span>lo</span></div>
                 <ul class="nav-links">
-                    <li><a href="#features">Features</a></li>
-                    <li><a href="#how-it-works">How It Works</a></li>
-                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="/">Features</a></li>
+                    <li><a href="/">How It Works</a></li>
+                    <li><a href="/">Testimonials</a></li>
                     
                     <li><a href="../faq.html">FAQ</a></li>
                     <li><a href="/">Contact</a></li>
