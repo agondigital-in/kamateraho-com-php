@@ -342,9 +342,9 @@ if ($pdo) {
 
         /* Ad-style tiles (2 rows x 4 columns) */
         .tile-card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px; }
-        .tile-grid { display:grid; grid-template-columns: repeat(2, 1fr); gap:8px; }
+        .tile-grid { display:grid; grid-template-columns: repeat(2, 1fr);   }
         .tile { display:flex; flex-direction:column; gap:6px; }
-        .tile-thumb { width:100%; aspect-ratio:1/1; background:#fff; border:1px solid #e5e7eb; border-top:3px solid #facc15; border-radius:3px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+        .tile-thumb { width:100%; aspect-ratio:1/1; overflow:hidden; display:flex; align-items:center; justify-content:center; }
         .tile-thumb img { width:100%; height:100%; object-fit:contain; }
         .tile-caption { font-size:.82rem; color:#374151; line-height:1.15; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
         .tile-see-all { display:inline-block; margin-top:8px; color:#0a58ca; font-weight:700; font-size:.9rem; text-decoration:none; }
