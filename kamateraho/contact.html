@@ -262,16 +262,6 @@
                 setTimeout(() => {
                     contactForm.reset();
                 }, 1000);
-                
-                // Prevent default form submission since we're handling it via PHP
-                // But we still want the form to submit to the backend
-                // So we won't call e.preventDefault() here
-            });
-            
-            // Add click event to close thank you message
-            thankYouMessage.addEventListener('click', function() {
-                thankYouMessage.style.display = 'none';
-                formCard.classList.remove('form-submitted');
             });
             
             function createFireworks() {

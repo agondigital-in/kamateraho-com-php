@@ -41,8 +41,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
     // Form submission handling (if we add forms later)
-    // Exclude the contact form from this generic handler
-    const forms = document.querySelectorAll('form:not(#contactForm)');
+    const forms = document.querySelectorAll('form');
     forms.forEach(form => {
         form.addEventListener('submit', function(e) {
             e.preventDefault();
