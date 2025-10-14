@@ -367,7 +367,7 @@ if ($pdo) {
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body text-center">
-                    <p>Share your referral link with friends and earn â‚¹3 for each successful referral!</p>
+                    <p>Share your referral link with friends and earn 3 for each successful referral!</p>
                     
                     <div class="referral-link-box">
                         <?php
@@ -514,7 +514,7 @@ if ($pdo) {
                                             </div>
                                             <div class="mb-2">
                                                 <span class="you-earn-pill">YOU EARN</span>
-                                                <div class="profit-text">Upto <?php echo !empty($category['price']) ? 'â‚¹'.number_format($category['price'], 0) : 'Best'; ?> Profit</div>
+                                                <div class="profit-text">Upto <?php echo !empty($category['price']) ? ''.number_format($category['price'], 0) : 'Best'; ?> Profit</div>
                                             </div>
                                             <?php 
                                                 $share_url = 'category.php?id=' . $category['id'];
@@ -683,11 +683,11 @@ if ($pdo) {
                                     <div class="meta">
                                         <div>
                                             <small>Starting From</small>
-                                            <div class="val">â‚¹<?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
                                         </div>
                                         <div>
                                             <small>Per Sale You Earn</small>
-                                            <div class="val">â‚¹<?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
                                         </div>
                                     </div>
                                 </div>
