@@ -331,30 +331,7 @@
 </script>
 </head>
 <body>
-      <header>
-          <div class="logo">
-            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811997/logo_cpe9n0.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
-        </div>
-        
-        <div class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        
-        <nav>
-          <ul id="navMenu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/">How It Works</a></li>
-                <li><a href="/">Testimonials</a></li>
-                <li><a href="/">Withdrawals</a></li>
-                <li><a href="/">Blog</a></li>
-                <li><a href="/kamateraho/contact.php">Contact</a></li>
-                <li><a href="https://kamateraho.com/register.php">Register</a></li>
-                <li><a href="https://kamateraho.com/login.php">Login</a></li>
-            </ul>
-        </nav>
-    </header>
+     
     
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -402,7 +379,7 @@
     </section>
 
     <section class="blog-container">
-        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+        <a href="./index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
         
        
         
@@ -550,45 +527,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-single-line">
-            <div class="footer-single-item">
-                <h3>Navigate</h3>
-                <ul class="footer-links">
-                    <li><a href="../">Home</a></li>
-                    <li><a href="../privacy-policy.php">Privacy Policy</a></li>
-                    <li><a href="../terms-conditions.php">Terms & Conditions</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>Who we are?</h3>
-                <p>KamateRaho.com is your exclusive site to earn pocket cash online. Instant payouts supported via Paytm, PhonePe, Google Pay, and more.</p>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>How it Works?</h3>
-                <p>Participate in offers on our page with genuine details and send a redeem request. Once approved, your Paytm amount will be transferred instantly.</p>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>Stay Connected</h3>
-                <p>Connect with us on social media for updates and offers.</p>
-                <div class="footer-social">
-                    <a href="https://www.facebook.com/share/17JFgQNHrS/?mibextid=wwXIfr" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/_kamate_raho?igsh=d2hsYmo2NXFvOGRi" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© 2025 KamateRaho.com. All rights reserved.</p>
-        </div>
-    </footer>
-
+   
     <script>
         // Mobile menu toggle
         document.addEventListener('DOMContentLoaded', function() {

@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - KamateRaho.com</title>
     <meta name="google-site-verification" content="L5OFuMQut1wlaXZQjXlLUO6eqfZprVYYsN1ZMj0MOpM" />
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -128,18 +128,7 @@
             }
         }
               /* Header Styles */
-        header {
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
-            padding: 15px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            animation: slideInDown 0.5s ease-out;
-        }
+        
 
         @keyframes slideInDown {
             from {
@@ -351,30 +340,30 @@
 
   gtag('config', 'G-RMM38DLZLM');
 </script>
-     <header>
+       <header>
+        <div class="container">
+            <nav>
+                <div class="logo">Cashback<span>lo</span></div>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    
+                    <li><a href="../faq.html">FAQ</a></li>
+                    <li><a href="/">Contact</a></li>
+                    <li><a href="../terms.html">Terms</a></li>
+                    <li><a href="../privacy.html">Privacy</a></li>
+                    <li><a href="../../register.php" class="btn animated-btn">Sign Up</a></li>
+                    <li><a href="../../login.php" class="btn animated-btn"> Login </a></li>
 
-         <div class="logo">
-            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811997/logo_cpe9n0.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
+                </ul>
+                <div class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
         </div>
-        
-        <div class="menu-toggle" id="menuToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        
-        <nav>
-            <ul id="navMenu">
-                <li><a href="/">Home</a></li>
-                <li><a href="/">How It Works</a></li>
-                <li><a href="/">Testimonials</a></li>
-                <li><a href="/">Withdrawals</a></li>
-                <li><a href="#">Blog</a></li>
-                <li><a href="/kamateraho/contact.php">Contact</a></li>
-                <li><a href="https://kamateraho.com/register.php">Register</a></li>
-                <li><a href="https://kamateraho.com/login.php">Login</a></li>
-            </ul>
-        </nav>
     </header>
     
     <script>
@@ -465,18 +454,18 @@
             </div>
 
             <!-- Blog Post 4 -->
-            <!-- <div class="blog-card">
+            <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>Success Stories from Our Users</h3>
                     <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Sep 25, 2025</span>
+                        <span><i class="far fa-calendar"></i> Oct 14, 2025</span>
                         <span><i class="far fa-user"></i> Admin</span>
                     </div>
                     <p class="blog-excerpt">Read inspiring stories from our community members who have successfully earned money through our platform.</p>
                     <a href="post4.php" class="read-more">Read More</a>
                 </div>
-            </div> -->
+            </div>
 
             <!-- Blog Post 5 -->
             <!-- <div class="blog-card">
@@ -501,44 +490,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-single-line">
-            <div class="footer-single-item">
-                <h3>Navigate</h3>
-                <ul class="footer-links">
-                    <li><a href="../">Home</a></li>
-                    <li><a href="../privacy-policy.php">Privacy Policy</a></li>
-                    <li><a href="../terms-conditions.php">Terms & Conditions</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>Who we are?</h3>
-                <p>KamateRaho.com is your exclusive site to earn pocket cash online. Instant payouts supported via Paytm, PhonePe, Google Pay, and more.</p>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>How it Works?</h3>
-                <p>Participate in offers on our page with genuine details and send a redeem request. Once approved, your Paytm amount will be transferred instantly.</p>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>Stay Connected</h3>
-                <p>Connect with us on social media for updates and offers.</p>
-                <div class="footer-social">
-                    <a href="https://www.facebook.com/share/17JFgQNHrS/?mibextid=wwXIfr" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/_kamate_raho?igsh=d2hsYmo2NXFvOGRi" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© 2025 KamateRaho.com. All rights reserved.</p>
-        </div>
-    </footer>
+   
 
     <script>
         // Mobile menu toggle
@@ -577,5 +529,53 @@
             }
         });
     </script>
+     <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>KamateRaho</h3>
+                    <p>Helping you save more on every purchase with our innovative cashback rewards program. Join thousands of smart shoppers who are already earning rewards.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">f</a>
+                        <a href="#" class="social-link">t</a>
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">ig</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/">Features</a></li>
+                        <li><a href="/">How It Works</a></li>
+                        <li><a href="/">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                        <li><a href="../faq.html">FAQ</a></li>
+                        <li><a href="/">Contact Us</a></li>
+                        <li><a href="../terms.html">Terms of Service</a></li>
+                        <li><a href="../privacy.html">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <div class="newsletter">
+                        <p>Subscribe to get special offers and updates</p>
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                            <button type="submit" class="newsletter-btn">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 KamateRaho. All rights reserved. | Designed with ❤️ for smart shoppers</p>
+            </div>
+        </div>
+    </footer>
+    <script src="script.js"></script>
 </body>
 </html>

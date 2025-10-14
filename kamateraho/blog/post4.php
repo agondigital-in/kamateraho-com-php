@@ -169,33 +169,7 @@
     </style>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div class="logo">
-                    <h1>Kamate<span>Raho</span>.com</h1>
-                </div>
-                <div class="menu-toggle" id="menuToggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-                <nav>
-                     <ul id="navMenu">
-                <li><a href="#">Home</a></li>
-                <li><a href="#how-it-works">How It Works</a></li>
-                <li><a href="#testimonial-container">Testimonials</a></li>
-                <li><a href="#withdrawal-info">Withdrawals</a></li>
-                <li><a href="kamateraho/blog/index.php">Blog</a></li>
-                <li><a href="kamateraho/contact.php">Contact</a></li>
-                <li><a href="../register.php">Register</a></li>
-                <li><a href="../login.php">Login</a></li>
-            </ul>
-                </nav>
-            </div>
-        </div>
-    </header>
-
+   
     <section class="blog-header">
         <div class="container">
             <h1>Success Stories from Our Users</h1>
@@ -204,10 +178,10 @@
     </section>
 
     <section class="blog-container">
-        <a href="/" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
+        <a href="./index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
         
         <div class="blog-meta">
-            <span><i class="far fa-calendar"></i> Sep 25, 2025</span>
+            <span><i class="far fa-calendar"></i> Oct 14, 2025</span>
             <span><i class="far fa-user"></i> Admin</span>
             <span><i class="far fa-clock"></i> 7 min read</span>
         </div>
@@ -331,45 +305,7 @@
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-single-line">
-            <div class="footer-single-item">
-                <h3>Navigate</h3>
-                <ul class="footer-links">
-                    <li><a href="../">Home</a></li>
-                    <li><a href="../privacy-policy.php">Privacy Policy</a></li>
-                    <li><a href="../terms-conditions.php">Terms & Conditions</a></li>
-                </ul>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>Who we are?</h3>
-                <p>KamateRaho.com is your exclusive site to earn pocket cash online. Instant payouts supported via Paytm, PhonePe, Google Pay, and more.</p>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>How it Works?</h3>
-                <p>Participate in offers on our page with genuine details and send a redeem request. Once approved, your Paytm amount will be transferred instantly.</p>
-            </div>
-            
-            <div class="footer-single-item">
-                <h3>Stay Connected</h3>
-                <p>Connect with us on social media for updates and offers.</p>
-                <div class="footer-social">
-                    <a href="https://www.facebook.com/share/17JFgQNHrS/?mibextid=wwXIfr" target="_blank" title="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="https://www.instagram.com/_kamate_raho?igsh=d2hsYmo2NXFvOGRi" target="_blank" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="footer-bottom">
-            <p>© 2025 KamateRaho.com. All rights reserved.</p>
-        </div>
-    </footer>
-
+   
     <script>
         // Mobile menu toggle
         document.addEventListener('DOMContentLoaded', function() {
