@@ -145,11 +145,28 @@ document.addEventListener('DOMContentLoaded', function() {
             // Animate hamburger icon
             this.classList.toggle('active');
             
+            // Add animation class to nav items
+            const navItems = mobileNavLinks.querySelectorAll('li');
+            
             // Prevent body scroll when menu is open
             if (mobileNavLinks.classList.contains('active')) {
                 document.body.style.overflow = 'hidden';
+                
+                // Add staggered animation to nav items
+                navItems.forEach((item, index) => {
+                    setTimeout(() => {
+                        item.style.transform = 'translateX(0)';
+                        item.style.opacity = '1';
+                    }, 100 * index);
+                });
             } else {
                 document.body.style.overflow = '';
+                
+                // Reset nav items animation
+                navItems.forEach(item => {
+                    item.style.transform = 'translateX(-20px)';
+                    item.style.opacity = '0';
+                });
             }
         });
         
@@ -160,6 +177,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileNavLinks.classList.remove('active');
                 menuToggle.classList.remove('active');
                 document.body.style.overflow = '';
+                
+                // Reset nav items animation
+                const navListItems = mobileNavLinks.querySelectorAll('li');
+                navListItems.forEach(item => {
+                    item.style.transform = 'translateX(-20px)';
+                    item.style.opacity = '0';
+                });
             });
         });
         
@@ -171,6 +195,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 mobileNavLinks.classList.remove('active');
                 menuToggle.classList.remove('active');
                 document.body.style.overflow = '';
+                
+                // Reset nav items animation
+                const navListItems = mobileNavLinks.querySelectorAll('li');
+                navListItems.forEach(item => {
+                    item.style.transform = 'translateX(-20px)';
+                    item.style.opacity = '0';
+                });
             }
         });
     }
