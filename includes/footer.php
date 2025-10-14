@@ -43,6 +43,7 @@
     .footer-links {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
     
     .footer-links li {
@@ -69,6 +70,7 @@
     .contact-info {
         list-style: none;
         padding: 0;
+        margin: 0;
     }
     
     .contact-info li {
@@ -88,6 +90,7 @@
         display: flex;
         gap: 15px;
         margin-top: 20px;
+        flex-wrap: wrap;
     }
     
     .social-icon {
@@ -101,6 +104,7 @@
         color: #fff;
         font-size: 1.2rem;
         transition: all 0.3s ease;
+        flex-shrink: 0;
     }
     
     .social-icon:hover {
@@ -115,6 +119,8 @@
         color: #fff;
         border-radius: 30px 0 0 30px;
         padding: 10px 15px;
+        min-width: 0;
+        flex: 1;
     }
     
     .newsletter .form-control:focus {
@@ -135,6 +141,8 @@
         border-radius: 0 30px 30px 0;
         font-weight: 600;
         transition: all 0.3s ease;
+        padding: 10px 20px;
+        white-space: nowrap;
     }
     
     .btn-subscribe:hover {
@@ -147,12 +155,14 @@
     .footer-divider {
         background: rgba(255, 255, 255, 0.1);
         margin: 30px 0;
+        height: 1px;
     }
     
     .copyright {
         color: rgba(255, 255, 255, 0.7);
         font-size: 0.9rem;
         padding: 20px 0;
+        margin: 0;
     }
     
     .footer-links-inline {
@@ -160,7 +170,13 @@
         gap: 20px;
         justify-content: center;
         flex-wrap: wrap;
-        margin-top: 10px;
+        margin: 10px 0 0;
+        padding: 0;
+        list-style: none;
+    }
+    
+    .footer-links-inline li {
+        margin: 0;
     }
     
     .footer-links-inline a {
@@ -173,6 +189,20 @@
     .footer-links-inline a:hover {
         color: #f7b733;
         text-decoration: underline;
+    }
+    
+    /* Improved spacing and gaps */
+    .footer-content {
+        margin-bottom: 30px;
+    }
+    
+    .footer-section {
+        margin-bottom: 25px;
+    }
+    
+    .footer-description {
+        line-height: 1.6;
+        margin-bottom: 20px;
     }
     
     /* Responsive adjustments */
@@ -193,15 +223,45 @@
         .social-icons {
             justify-content: center;
         }
+        
+        .footer-content {
+            margin-bottom: 20px;
+        }
+        
+        .footer-section {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .footer-heading::after {
+            left: 50%;
+            transform: translateX(-50%);
+        }
+    }
+    
+    @media (max-width: 576px) {
+        .newsletter {
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .newsletter .form-control {
+            border-radius: 30px;
+        }
+        
+        .btn-subscribe {
+            border-radius: 30px;
+            width: 100%;
+        }
     }
 </style>
 
 <footer class="footer-wave">
     <div class="container">
-        <div class="row">
-            <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+        <div class="row footer-content">
+            <div class="col-lg-4 col-md-6 footer-section">
                 <h5 class="footer-heading">KamateRaho</h5>
-                <p>Earn cash from home by completing simple tasks and get paid instantly. Join thousands of users who are already earning with us.</p>
+                <p class="footer-description">Earn cash from home by completing simple tasks and get paid instantly. Join thousands of users who are already earning with us.</p>
                 <div class="social-icons">
                     <a href="https://www.facebook.com/share/17JFgQNHrS/?mibextid=wwXIfr" target="_blank" class="social-icon">
                         <i class="fab fa-facebook-f"></i>
@@ -217,19 +277,16 @@
                     </a>
                 </div>
             </div>
-             <div class="col-lg-2 col-md-6 mb-4 mb-lg-0">
+            <div class="col-lg-2 col-md-6 footer-section">
                 <h5 class="footer-heading">Quick Links</h5>
                 <ul class="footer-links">
                     <li><a href="index.php">Home</a></li>
-              
                     <li><a href="how-to-earn.php">How It Works</a></li>
                     <li><a href="all_offers.php">All Offers</a></li>
                     <li><a href="contact.php">Contact</a></li>
                 </ul>
             </div>
-            
-        
-            <div class="col-lg-3 col-md-6">
+            <div class="col-lg-3 col-md-6 footer-section">
                 <h5 class="footer-heading">Newsletter</h5>
                 <p>Subscribe to our newsletter for the latest offers and updates.</p>
                 <form class="newsletter d-flex">
@@ -242,13 +299,13 @@
         <hr class="footer-divider">
         
         <div class="text-center">
-            <div class="footer-links-inline">
-                <a href="privacy.php">Privacy Policy</a>
-                <a href="terms.php">Terms of Service</a>
-                <a href="#">FAQ</a>
-                <a href="#">Support</a>
-            </div>
-            <p class="copyright">&copy; 2025 KamateRaho. All rights reserved. </p>
+            <ul class="footer-links-inline">
+                <li><a href="privacy.php">Privacy Policy</a></li>
+                <li><a href="terms.php">Terms of Service</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Support</a></li>
+            </ul>
+            <p class="copyright">&copy; 2025 KamateRaho. All rights reserved.</p>
         </div>
     </div>
 </footer>
