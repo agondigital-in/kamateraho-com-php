@@ -88,7 +88,7 @@ nav.scrolled {
     font-size: 28px;
     font-weight: 700;
     color: #ff6b00;
-    /* animation: pulse 2s infinite; */
+    animation: pulse 2s infinite;
     display: flex;
     align-items: center;
 }
