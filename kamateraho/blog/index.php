@@ -343,7 +343,9 @@
        <header>
         <div class="container">
             <nav>
-                <div class="logo">Cashback<span>lo</span></div>
+            <div class="logo">
+            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759811997/logo_cpe9n0.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
+        </div>
                 <ul class="nav-links">
                     <li><a href="/">Features</a></li>
                     <li><a href="/">How It Works</a></li>
