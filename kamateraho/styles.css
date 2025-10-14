@@ -135,15 +135,6 @@ nav.scrolled {
     width: 100%;
 }
 
-/* Ensure navbar text is always visible */
-.nav-links a,
-.nav-links a:visited,
-.nav-links a:active,
-.nav-links a:focus {
-    color: #333 !important;
-    opacity: 1 !important;
-}
-
 /* Enhanced Header Buttons */
 .nav-links .btn {
     padding: 10px 20px;
