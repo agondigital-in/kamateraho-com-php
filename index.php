@@ -24,6 +24,21 @@ if (!isset($_SESSION['user_id'])) {
     exit();
 }
 
+// Get user referral source if available
+$user_referral_source = null;
+if (isset($_SESSION['user_id']) && $pdo) {
+    try {
+        $stmt = $pdo->prepare("SELECT referral_source FROM users WHERE id = ?");
+        $stmt->execute([$_SESSION['user_id']]);
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($user && !empty($user['referral_source'])) {
+            $user_referral_source = $user['referral_source'];
+        }
+    } catch (PDOException $e) {
+        // Handle error silently
+    }
+}
+
 // Check if database connection is available
 if ($pdo) {
     // Fetch all categories
@@ -263,6 +278,10 @@ if ($pdo) {
         .category-card-wrapper { width: 280px; margin-right: 16px; }
         .scrolling-wrapper { overflow: hidden; }
         .scrolling-content { display: flex; }
+        
+        /* Instagram button styles */
+        .btn-instagram { border: none; border-radius: 999px; font-weight: 800; color: white; }
+        .btn-instagram:hover { opacity: 0.9; transform: translateY(-2px); }
         @media (max-width: 576px) {
             .category-card-wrapper { width: 240px; margin-right: 12px; }
         }
@@ -428,6 +447,13 @@ if ($pdo) {
                         <?php
                         $base_url = "https://kamateraho.com/";
                         $referral_link = $base_url . "register.php?ref=" . $_SESSION['user_id'];
+                        
+                        // Add referral source parameter based on user's referral source or default to 'other'
+                        if ($user_referral_source) {
+                            $referral_link .= "&source=" . urlencode($user_referral_source);
+                        } else {
+                            $referral_link .= "&source=other";
+                        }
                         ?>
                         <div class="referral-link" id="referralLink"><?php echo $referral_link; ?></div>
                     </div>
@@ -436,6 +462,7 @@ if ($pdo) {
                         <i class="fas fa-copy me-2"></i>Copy Referral Link
                     </button>
                     
+                    <h6 class="mt-4 mb-3">Or share directly on:</h6>
                     <div class="social-share">
                         <a href="https://api.whatsapp.com/send?text=Join cashbacklo and earn money from home! Register using my referral link: <?php echo urlencode($referral_link); ?>" target="_blank" class="social-btn whatsapp">
                             <i class="fab fa-whatsapp"></i>
@@ -449,6 +476,24 @@ if ($pdo) {
                         <a href="https://t.me/share/url?url=<?php echo urlencode($referral_link); ?>&text=Join cashbacklo and earn money from home!" target="_blank" class="social-btn telegram">
                             <i class="fab fa-telegram-plane"></i>
                         </a>
+                    </div>
+                    
+                    <h6 class="mt-4 mb-3">Platform-specific referral links:</h6>
+                    <div class="platform-links">
+                        <div class="d-flex flex-wrap justify-content-center gap-2">
+                            <a href="<?php echo $base_url . 'register.php?ref=' . $_SESSION['user_id'] . '&source=youtube'; ?>" class="btn btn-danger btn-sm" target="_blank">
+                                <i class="fab fa-youtube me-1"></i>YouTube
+                            </a>
+                            <a href="<?php echo $base_url . 'register.php?ref=' . $_SESSION['user_id'] . '&source=facebook'; ?>" class="btn btn-primary btn-sm" target="_blank">
+                                <i class="fab fa-facebook-f me-1"></i>Facebook
+                            </a>
+                            <a href="<?php echo $base_url . 'register.php?ref=' . $_SESSION['user_id'] . '&source=instagram'; ?>" class="btn btn-instagram btn-sm" target="_blank" style="background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); color: white;">
+                                <i class="fab fa-instagram me-1"></i>Instagram
+                            </a>
+                            <a href="<?php echo $base_url . 'register.php?ref=' . $_SESSION['user_id'] . '&source=twitter'; ?>" class="btn btn-info btn-sm" target="_blank">
+                                <i class="fab fa-twitter me-1"></i>Twitter
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>

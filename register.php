@@ -3,6 +3,9 @@ include 'config/db.php';
 
 // Check for referral code in URL
 $referrer_id = null;
+$referral_source = null;
+
+// Check for referrer ID
 if (isset($_GET['ref']) && is_numeric($_GET['ref'])) {
     $referrer_id = intval($_GET['ref']);
     
@@ -15,6 +18,14 @@ if (isset($_GET['ref']) && is_numeric($_GET['ref'])) {
         }
     } catch (PDOException $e) {
         $referrer_id = null; // Error checking referrer
+    }
+}
+
+// Check for referral source
+if (isset($_GET['source'])) {
+    $allowed_sources = ['youtube', 'facebook', 'instagram', 'twitter', 'other'];
+    if (in_array(strtolower($_GET['source']), $allowed_sources)) {
+        $referral_source = strtolower($_GET['source']);
     }
 }
 
@@ -42,6 +53,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
     
+    // Get referral source from form if not in URL
+    if (!$referral_source && isset($_POST['referral_source'])) {
+        $allowed_sources = ['youtube', 'facebook', 'instagram', 'twitter', 'other'];
+        if (in_array(strtolower($_POST['referral_source']), $allowed_sources)) {
+            $referral_source = strtolower($_POST['referral_source']);
+        }
+    }
+    
     // Validation
     if (empty($name) || empty($email) || empty($phone) || empty($city) || empty($state) || empty($password) || empty($confirm_password)) {
         $error = "All fields are required!";
@@ -66,10 +85,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Begin transaction
                 $pdo->beginTransaction();
                 
-                // Hash password and insert user
+                // Hash password and insert user with referral source
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-                $stmt = $pdo->prepare("INSERT INTO users (name, email, phone, city, state, password, wallet_balance) VALUES (?, ?, ?, ?, ?, ?, 50.00)");
-                $stmt->execute([$name, $email, $phone, $city, $state, $hashed_password]);
+                $stmt = $pdo->prepare("INSERT INTO users (name, email, phone, city, state, password, wallet_balance, referral_source) VALUES (?, ?, ?, ?, ?, ?, 50.00, ?)");
+                $stmt->execute([$name, $email, $phone, $city, $state, $hashed_password, $referral_source]);
                 
                 // Get the inserted user ID
                 $user_id = $pdo->lastInsertId();
@@ -114,7 +133,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Registration failed: " . $e->getMessage();
         }
     }
-}
 ?>
 
 <!DOCTYPE html>
@@ -754,6 +772,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <input type="hidden" name="referrer_id" value="<?php echo $referrer_id; ?>">
                             </div>
                         </div>
+                    <?php endif; ?>
+                    
+                    <?php if ($referral_source): ?>
+                        <input type="hidden" name="referral_source" value="<?php echo htmlspecialchars($referral_source); ?>">
                     <?php endif; ?>
                     
                     <div class="form-group">
