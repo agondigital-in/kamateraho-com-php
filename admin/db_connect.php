@@ -1,6 +1,6 @@
 <?php
 // Database connection file specifically for admin pages that need database access without HTML output
-include '../config/db.php';
+include __DIR__ . '/../config/db.php';
 
 // Check if session is already active
 if (session_status() == PHP_SESSION_NONE) {
@@ -8,7 +8,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Include app configuration with correct relative path
-include_once '../config/app.php';
+include_once __DIR__ . '/../config/app.php';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
