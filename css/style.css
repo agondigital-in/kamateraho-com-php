@@ -1007,3 +1007,42 @@ h2:after {
         height: 150px !important;
     }
 }
+
+/* Banner section enhancements */
+.banner-section {
+    width: 100%;
+    padding: 0;
+    background-color: white; /* Make banner section background white */
+}
+
+.banner-section .carousel-item .row {
+    margin: 0;
+}
+
+.banner-section .carousel-item .col-md-4 {
+    padding: 0 10px;
+}
+
+.banner-section .card {
+    background-color: white; /* Make card background white */
+    border: none; /* Remove border */
+}
+
+.banner-section .card-img-top {
+    height: 300px;
+    object-fit: contain;
+    background-color: transparent; /* Remove background from images */
+}
+
+/* Responsive adjustments for banner section */
+@media (max-width: 768px) {
+    .banner-section .card-img-top {
+        height: 250px;
+    }
+}
+
+@media (max-width: 576px) {
+    .banner-section .card-img-top {
+        height: 200px;
+    }
+}

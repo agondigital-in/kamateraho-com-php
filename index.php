@@ -217,7 +217,116 @@ if ($pdo) {
             flex-direction: column;
         }
         
-        /* Responsive improvements for mobile */
+        /* Banner section enhancements */
+        .banner-section {
+            width: 100%;
+            padding: 0;
+        }
+        
+        .banner-section .carousel-item .row {
+            margin: 0;
+        }
+        
+        .banner-section .carousel-item .col-md-4 {
+            padding: 0 10px;
+        }
+        
+        .banner-section .card-img-top {
+            height: 300px;
+            object-fit: contain;
+        }
+        
+        /* Responsive adjustments for banner section */
+        @media (max-width: 768px) {
+            .banner-section .card-img-top {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .banner-section .card-img-top {
+                height: 200px;
+            }
+        }
+        
+        /* Retailer-style cards for categories */
+        .retailer-card { border-radius: 10px; background: #fff; position: relative; }
+        .retailer-card .logo-wrap { height: 120px; display: flex; align-items: center; justify-content: center; background:#ffffff; }
+        .retailer-card .logo-wrap img { max-height: 100%; max-width: 100%; width: 100%; object-fit: contain; }
+        .retailer-ribbon { position: absolute; top: 12px; left: 12px; background: #e31b53; color: #fff; font-size: .7rem; font-weight: 800; padding: .25rem .5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: .3px; }
+        .you-earn-pill { display: inline-block; background: #f0f2f5; color: #6b7280; border-radius: 999px; padding: .2rem .6rem; font-size: .7rem; font-weight: 700; }
+        .profit-text { font-weight: 800; color: #111827; margin: .35rem 0 0; }
+        .btn-share { background: #22c55e; color: #fff; border: none; border-radius: 999px; font-weight: 800; }
+        .btn-share:hover { background: #16a34a; color: #fff; }
+        .btn-copy-outline { background: #fff; border: 2px solid #d1d5db; color: #111827; border-radius: 999px; font-weight: 800; }
+        .btn-copy-outline:hover { background: #f9fafb; }
+        .category-card-wrapper { width: 280px; margin-right: 16px; }
+        .scrolling-wrapper { overflow: hidden; }
+        .scrolling-content { display: flex; }
+        @media (max-width: 576px) {
+            .category-card-wrapper { width: 240px; margin-right: 12px; }
+        }
+
+        /* Flash deals card styles (Trending Promotion Tasks) */
+        .flash-card { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #e5e7eb; }
+        .flash-banner { background: #ffffff; height: 260px; display: flex; align-items: center; justify-content: center; position: relative; }
+        .flash-banner img { max-height: 100%; max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 0; box-shadow: none; }
+        .flash-pill { position: absolute; right: 12px; top: 12px; background: #fff; color: #ef4444; font-weight: 800; font-size: .7rem; padding: .2rem .5rem; border-radius: 999px; letter-spacing: .2px; }
+        .deal-strip { background: #ef4444; color: #fff; font-weight: 800; font-size: .75rem; padding: .35rem .6rem; text-transform: uppercase; letter-spacing: .3px; }
+        .meta { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: .6rem .75rem; }
+        .meta small { display: block; color: #6b7280; font-weight: 700; font-size: .7rem; }
+        .meta .val { font-weight: 900; color: #111827; }
+        .price-old { color: #9ca3af; text-decoration: line-through; font-weight: 700; margin-right: .35rem; }
+        .actions { padding: .6rem .75rem .9rem; }
+        .actions .btn { white-space: nowrap; }
+        /* Desktop: inline 3 buttons */
+        @media (min-width: 768px) {
+            .actions .btn { width: auto; }
+        }
+        /* Mobile: stack buttons full width */
+        @media (max-width: 767.98px) {
+            .actions .btn { width: 100%; }
+        }
+        .btn-earn-now { background: linear-gradient(135deg,#38bdf8,#0ea5e9); color:#fff; border:none; border-radius: 10px; font-weight: 800; }
+        .btn-earn-now:hover { filter: brightness(1.03); color:#fff; }
+
+        /* Ad-style tiles (2 rows x 4 columns) */
+        .tile-card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px; }
+        .tile-grid { display:grid; grid-template-columns: repeat(2, 1fr);   }
+        .tile { display:flex; flex-direction:column; gap:6px; }
+        .tile-thumb { width:100%; aspect-ratio:1/1; background:#fff; border:1px solid #e5e7eb; border-radius:3px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
+        .tile-thumb img { width:100%; height:100%; object-fit:contain; }
+        .tile-caption { font-size:.82rem; color:#374151; line-height:1.15; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+        .tile-see-all { display:inline-block; margin-top:8px; color:#0a58ca; font-weight:700; font-size:.9rem; text-decoration:none; }
+        .tile-see-all:hover { text-decoration:underline; }
+        @media (max-width: 767.98px) { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
+        /* Vertical separators between columns on md+ */
+        @media (min-width: 768px) { .tile-col { position:relative; } .tile-col + .tile-col { border-left:1px solid #e5e7eb; } }
+        
+        /* Additional styles to ensure images are not cut off */
+        .tile-thumb {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 5px;
+        }
+        
+        .tile-thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .tile-thumb .image-placeholder {
+            font-size: 2rem;
+            color: #ccc;
+        }
+        
+        /* Responsive improvements */
         @media (max-width: 768px) {
             .category-card-wrapper {
                 width: 120px;
@@ -298,83 +407,6 @@ if ($pdo) {
                 font-size: 0.75rem !important;
             }
         }
-
-        /* Retailer-style cards for categories */
-        .retailer-card { border-radius: 10px; background: #fff; position: relative; }
-        .retailer-card .logo-wrap { height: 120px; display: flex; align-items: center; justify-content: center; background:#ffffff; }
-        .retailer-card .logo-wrap img { max-height: 100%; max-width: 100%; width: 100%; object-fit: contain; }
-        .retailer-ribbon { position: absolute; top: 12px; left: 12px; background: #e31b53; color: #fff; font-size: .7rem; font-weight: 800; padding: .25rem .5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: .3px; }
-        .you-earn-pill { display: inline-block; background: #f0f2f5; color: #6b7280; border-radius: 999px; padding: .2rem .6rem; font-size: .7rem; font-weight: 700; }
-        .profit-text { font-weight: 800; color: #111827; margin: .35rem 0 0; }
-        .btn-share { background: #22c55e; color: #fff; border: none; border-radius: 999px; font-weight: 800; }
-        .btn-share:hover { background: #16a34a; color: #fff; }
-        .btn-copy-outline { background: #fff; border: 2px solid #d1d5db; color: #111827; border-radius: 999px; font-weight: 800; }
-        .btn-copy-outline:hover { background: #f9fafb; }
-        .category-card-wrapper { width: 280px; margin-right: 16px; }
-        .scrolling-wrapper { overflow: hidden; }
-        .scrolling-content { display: flex; }
-        @media (max-width: 576px) {
-            .category-card-wrapper { width: 240px; margin-right: 12px; }
-        }
-
-        /* Flash deals card styles (Trending Promotion Tasks) */
-        .flash-card { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #e5e7eb; }
-        .flash-banner { background: #ffffff; height: 260px; display: flex; align-items: center; justify-content: center; position: relative; }
-        .flash-banner img { max-height: 100%; max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 0; box-shadow: none; }
-        .flash-pill { position: absolute; right: 12px; top: 12px; background: #fff; color: #ef4444; font-weight: 800; font-size: .7rem; padding: .2rem .5rem; border-radius: 999px; letter-spacing: .2px; }
-        .deal-strip { background: #ef4444; color: #fff; font-weight: 800; font-size: .75rem; padding: .35rem .6rem; text-transform: uppercase; letter-spacing: .3px; }
-        .meta { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: .6rem .75rem; }
-        .meta small { display: block; color: #6b7280; font-weight: 700; font-size: .7rem; }
-        .meta .val { font-weight: 900; color: #111827; }
-        .price-old { color: #9ca3af; text-decoration: line-through; font-weight: 700; margin-right: .35rem; }
-        .actions { padding: .6rem .75rem .9rem; }
-        .actions .btn { white-space: nowrap; }
-        /* Desktop: inline 3 buttons */
-        @media (min-width: 768px) {
-            .actions .btn { width: auto; }
-        }
-        /* Mobile: stack buttons full width */
-        @media (max-width: 767.98px) {
-            .actions .btn { width: 100%; }
-        }
-        .btn-earn-now { background: linear-gradient(135deg,#38bdf8,#0ea5e9); color:#fff; border:none; border-radius: 10px; font-weight: 800; }
-        .btn-earn-now:hover { filter: brightness(1.03); color:#fff; }
-
-        /* Ad-style tiles (2 rows x 4 columns) */
-        .tile-card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px; }
-        .tile-grid { display:grid; grid-template-columns: repeat(2, 1fr);   }
-        .tile { display:flex; flex-direction:column; gap:6px; }
-        .tile-thumb { width:100%; aspect-ratio:1/1; background:#fff; border:1px solid #e5e7eb; border-radius:3px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-        .tile-thumb img { width:100%; height:100%; object-fit:contain; }
-        .tile-caption { font-size:.82rem; color:#374151; line-height:1.15; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-        .tile-see-all { display:inline-block; margin-top:8px; color:#0a58ca; font-weight:700; font-size:.9rem; text-decoration:none; }
-        .tile-see-all:hover { text-decoration:underline; }
-        @media (max-width: 767.98px) { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
-        /* Vertical separators between columns on md+ */
-        @media (min-width: 768px) { .tile-col { position:relative; } .tile-col + .tile-col { border-left:1px solid #e5e7eb; } }
-        
-        /* Additional styles to ensure images are not cut off */
-        .tile-thumb {
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 5px;
-        }
-        
-        .tile-thumb img {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            object-fit: contain;
-            display: block;
-        }
-        
-        .tile-thumb .image-placeholder {
-            font-size: 2rem;
-            color: #ccc;
-        }
     </style>
 </head>
 
@@ -424,46 +456,46 @@ if ($pdo) {
     </div>
    
     <!-- Banner Section -->
-    <div class="banner-section py-4 bg-light">
-        <div class="container">
-            <div class="row">
-                <div class="col-12">
+    <div class="banner-section py-4 w-100">
+        <div class="container-fluid px-0">
+            <div class="row mx-0">
+                <div class="col-12 px-0">
                     <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner">
                             <div class="carousel-item active">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: contain; height: 200px;">
+                                <div class="row mx-0">
+                                    <div class="col-md-4 mb-3 px-2">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: contain; height: 300px; background-color: transparent;">
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: contain; height: 200px;">
+                                    <div class="col-md-4 mb-3 px-2">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: contain; height: 300px; background-color: transparent;">
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: contain; height: 200px;">
+                                    <div class="col-md-4 mb-3 px-2">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: contain; height: 300px; background-color: transparent;">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="carousel-item">
-                                <div class="row">
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: contain; height: 200px;">
+                                <div class="row mx-0">
+                                    <div class="col-md-4 mb-3 px-2">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: contain; height: 300px; background-color: transparent;">
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: contain; height: 200px;">
+                                    <div class="col-md-4 mb-3 px-2">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: contain; height: 300px; background-color: transparent;">
                                         </div>
                                     </div>
-                                    <div class="col-md-4 mb-3">
-                                        <div class="card border-0 shadow-sm">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: contain; height: 200px;">
+                                    <div class="col-md-4 mb-3 px-2">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: contain; height: 300px; background-color: transparent;">
                                         </div>
                                     </div>
                                 </div>
