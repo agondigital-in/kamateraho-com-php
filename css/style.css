@@ -1012,7 +1012,8 @@ h2:after {
 .banner-section {
     width: 100%;
     padding: 0;
-    background-color: white; /* Make banner section background white */
+    background-color: white; 
+    margin-top: -20px;
 }
 
 .banner-section .carousel-item .row {
