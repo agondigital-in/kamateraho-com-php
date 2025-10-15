@@ -1,11 +1,7 @@
 <?php
 include 'db_connect.php';
 
-// Check if user is admin
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header('Location: login.php');
-    exit();
-}
+
 
 // Pagination settings
 $users_per_page = 20;
