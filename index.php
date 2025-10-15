@@ -594,9 +594,9 @@ if ($pdo) {
             </section>
 
 <!-- More Picks For You (Relocated just below navbar) -->
-    <?php if (isset($pdo)) : ?>
+    <!-- <?php if (isset($pdo)) : ?>
     <?php
-    // Ensure $all_offers is loaded when this section is above main queries
+
     if (!isset($all_offers)) {
         try {
             $stmt = $pdo->query("SELECT * FROM offers WHERE is_active = 1 ORDER BY created_at DESC");
@@ -609,20 +609,20 @@ if ($pdo) {
     <?php if (!empty($all_offers)): ?>
     <div class="container mt-3">
         <section class="mb-4">
-            <!-- <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex justify-content-between align-items-center mb-3">
                 <h2 class="mb-0 text-primary">More Picks For You</h2>
-            </div> -->
+            </div>
             <div class="row g-3">
                 <?php 
-                    // Group offers into chunks of 4 for each tile card
+
                     $tile_groups_top = array_chunk($all_offers, 4);
-                    // Show only first 3 groups (3 boxes)
+                  
                     foreach (array_slice($tile_groups_top, 0, 3) as $group): ?>
                     <div class="col-lg-4 col-md-6 col-12 tile-col">
                         <div class="tile-card h-100">
                             <div class="tile-grid">
                                 <?php foreach ($group as $g): 
-                                    // Choose image source similar to earlier logic
+                                   
                                     $tile_img = '';
                                     if (!empty($g['image'])) {
                                         if (preg_match('/^https?:\/\//i', $g['image'])) {
@@ -655,7 +655,7 @@ if ($pdo) {
         </section>
     </div>
     <?php endif; ?>
-    <?php endif; ?>
+    <?php endif; ?> -->
 
             
             <!-- Trending Promotion Tasks -->
