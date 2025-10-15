@@ -1,10 +1,5 @@
 <?php
-// Check if session is already active
-if (session_status() == PHP_SESSION_NONE) {
-    session_start();
-}
-
-include 'database.php';
+include 'db_connect.php';
 
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
