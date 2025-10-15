@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $price = $_POST['price'];
+    $sequence_id = isset($_POST['sequence_id']) ? (int)$_POST['sequence_id'] : 0;
     $redirect_url = $_POST['redirect_url'];
     $is_active = isset($_POST['is_active']) ? 1 : 0;
     
@@ -113,8 +114,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Update the offer
-        $stmt = $pdo->prepare("UPDATE offers SET category_id = ?, title = ?, description = ?, price = ?, redirect_url = ?, image = ?, is_active = ? WHERE id = ?");
-        $stmt->execute([$category_id, $title, $description, $price, $redirect_url, $image_path, $is_active, $offer_id]);
+        $stmt = $pdo->prepare("UPDATE offers SET category_id = ?, title = ?, description = ?, price = ?, sequence_id = ?, redirect_url = ?, image = ?, is_active = ? WHERE id = ?");
+        $stmt->execute([$category_id, $title, $description, $price, $sequence_id, $redirect_url, $image_path, $is_active, $offer_id]);
         
         $_SESSION['message'] = "Offer updated successfully!";
         header("Location: edit_offer.php?id=" . $offer_id);
@@ -189,6 +190,12 @@ if ($isSubAdmin) {
                 <div class="mb-3">
                     <label for="price" class="form-label">Price (₹)</label>
                     <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?php echo $offer['price']; ?>" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="sequence_id" class="form-label">Sequence ID</label>
+                    <input type="number" class="form-control" id="sequence_id" name="sequence_id" value="<?php echo $offer['sequence_id']; ?>" min="0">
+                    <div class="form-text">Enter a number to determine the order in which this offer appears in the Trending Promotion Tasks section. Lower numbers appear first.</div>
                 </div>
                 
                 <div class="mb-3">

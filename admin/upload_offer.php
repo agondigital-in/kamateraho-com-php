@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $price = $_POST['price'];
+    $sequence_id = isset($_POST['sequence_id']) ? (int)$_POST['sequence_id'] : 0;
     $redirect_url = $_POST['redirect_url'];
     
     // Handle file uploads
@@ -109,11 +110,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     if (empty($error) && !empty($category_id) && !empty($title) && !empty($price) && !empty($uploaded_images)) {
         try {
-            // Insert the main offer
-            $stmt = $pdo->prepare("INSERT INTO offers (category_id, title, description, price, image, redirect_url) VALUES (?, ?, ?, ?, ?, ?)");
+            // Get the next sequence ID
+            $seqStmt = $pdo->query("SELECT COALESCE(MAX(sequence_id), 0) + 1 as next_sequence FROM offers");
+            $nextSequence = $seqStmt->fetch(PDO::FETCH_ASSOC)['next_sequence'];
+            
+            // Insert the main offer with the next sequence ID
+            $stmt = $pdo->prepare("INSERT INTO offers (category_id, title, description, price, sequence_id, image, redirect_url) VALUES (?, ?, ?, ?, ?, ?, ?)");
             // Use the first image as the main image
             $main_image = $uploaded_images[0];
-            $stmt->execute([$category_id, $title, $description, $price, $main_image, $redirect_url]);
+            $stmt->execute([$category_id, $title, $description, $price, $nextSequence, $main_image, $redirect_url]);
             
             // Get the ID of the inserted offer
             $offer_id = $pdo->lastInsertId();
@@ -229,7 +234,13 @@ if ($isSubAdmin) {
                     <label for="price" class="form-label">Price (₹)</label>
                     <input type="number" class="form-control" id="price" name="price" step="0.01" required>
                 </div>
-                
+
+                <div class="mb-3">
+                    <label for="sequence_id" class="form-label">Sequence ID</label>
+                    <input type="number" class="form-control" id="sequence_id" name="sequence_id" value="0" min="0">
+                    <div class="form-text">Enter a number to determine the order in which this offer appears in the Trending Promotion Tasks section. Lower numbers appear first.</div>
+                </div>
+
                 <div class="mb-3">
                     <label for="redirect_url" class="form-label">Redirect URL</label>
                     <input type="url" class="form-control" id="redirect_url" name="redirect_url" placeholder="https://example.com">

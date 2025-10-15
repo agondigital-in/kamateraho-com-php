@@ -90,7 +90,7 @@ try {
         SELECT o.*, c.name as category_name 
         FROM offers o 
         LEFT JOIN categories c ON o.category_id = c.id 
-        ORDER BY o.created_at DESC
+        ORDER BY o.sequence_id ASC, o.created_at DESC
     ");
     $offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch(PDOException $e) {
@@ -151,6 +151,7 @@ if ($isSubAdmin) {
                                 <th>Title</th>
                                 <th>Category</th>
                                 <th>Price (₹)</th>
+                                <th>Sequence ID</th>
                                 <th>Status</th>
                                 <th>Created At</th>
                                 <th>Actions</th>
@@ -181,6 +182,7 @@ if ($isSubAdmin) {
                                 <td><?php echo htmlspecialchars($offer['title']); ?></td>
                                 <td><?php echo htmlspecialchars($offer['category_name'] ?? 'N/A'); ?></td>
                                 <td>₹<?php echo number_format($offer['price'], 2); ?></td>
+                                <td><?php echo $offer['sequence_id']; ?></td>
                                 <td>
                                     <?php if ($offer['is_active']): ?>
                                         <span class="badge bg-success">Active</span>

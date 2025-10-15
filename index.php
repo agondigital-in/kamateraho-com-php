@@ -633,6 +633,7 @@ if ($pdo) {
                 <div class="d-flex justify-content-between align-items-center mb-3 filter-sort-container">
                     <form method="GET" class="d-flex gap-2 w-100">
                         <select name="sort" class="form-select form-select-sm" onchange="this.form.submit()">
+                            <option value="sequence" <?php echo (!isset($_GET['sort']) || (isset($_GET['sort']) && $_GET['sort'] == 'sequence')) ? 'selected' : ''; ?>>Sequence Order</option>
                             <option value="price_desc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'price_desc') ? 'selected' : ''; ?>>Price: High to Low</option>
                             <option value="price_asc" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'price_asc') ? 'selected' : ''; ?>>Price: Low to High</option>
                             <option value="newest" <?php echo (isset($_GET['sort']) && $_GET['sort'] == 'newest') ? 'selected' : ''; ?>>Newest First</option>
@@ -646,8 +647,8 @@ if ($pdo) {
             <?php
             // Fetch all offers for display in Trending Promotion Tasks with sorting
             try {
-                // Default sort order is price high to low
-                $sort_order = "price DESC";
+                // Default sort order is sequence ID
+                $sort_order = "sequence_id ASC, price DESC";
                 if (isset($_GET['sort'])) {
                     switch ($_GET['sort']) {
                         case 'price_asc':
@@ -659,9 +660,15 @@ if ($pdo) {
                         case 'oldest':
                             $sort_order = "created_at ASC";
                             break;
+                        case 'sequence':
+                            $sort_order = "sequence_id ASC, price DESC";
+                            break;
                         case 'price_desc':
-                        default:
                             $sort_order = "price DESC";
+                            break;
+                        default:
+                            // Default to sequence order when no valid sort option is selected
+                            $sort_order = "sequence_id ASC, price DESC";
                             break;
                     }
                 }
@@ -679,7 +686,7 @@ if ($pdo) {
                 </div>
             <?php else: ?>
                 <div class="row g-3">
-                    <?php foreach (array_slice($all_offers, 0, 12) as $offer): ?>
+                    <?php foreach (array_slice($all_offers, 0, 12) as $index => $offer): ?>
                         <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 offer-card-col">
                             <div class="flash-card h-100">
                                 <?php 
@@ -709,11 +716,11 @@ if ($pdo) {
                                     <div class="meta">
                                         <div>
                                             <small>Starting From</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
                                         </div>
                                         <div>
                                             <small>Per Sale You Earn</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : 'â€”'; ?></div>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
                                         </div>
                                     </div>
                                 </div>
@@ -733,6 +740,12 @@ if ($pdo) {
                                 </div>
                             </div>
                         </div>
+                        
+                        <?php 
+                        // Add a clearfix after every 3 cards for proper grid layout
+                        if (($index + 1) % 3 == 0 && $index < count($all_offers) - 1): ?>
+                            <div class="clearfix d-none d-lg-block"></div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
