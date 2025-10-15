@@ -527,6 +527,7 @@ if ($pdo) {
                             endforeach;
                             
                             // Display items twice for seamless looping
+                            // I HAVE ADD https://kamateraho.com/  IN 544 THOUSAND LINES NUMBERS
                             for ($i = 0; $i < 2; $i++):
                                 foreach ($category_items as $category): ?>
                                     <div class="category-card-wrapper">
@@ -540,7 +541,7 @@ if ($pdo) {
                                                 <div class="profit-text">Upto <?php echo !empty($category['price']) ? ''.number_format($category['price'], 0) : 'Best'; ?> Profit</div>
                                             </div>
                                             <?php 
-                                                $share_url = 'category.php?id=' . $category['id'];
+                                                $share_url = 'https://kamateraho.com/category.php?id=' . $category['id'];
                                                 $wa_text = 'Check this offer: ' . $share_url;
                                             ?>
                                             <div class="d-grid gap-2 mt-auto">
