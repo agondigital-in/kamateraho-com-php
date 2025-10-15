@@ -173,6 +173,9 @@ Yearly Data: " . json_encode($yearly_data) . "
                         </div>
                         <i class="bi bi-people fs-1"></i>
                     </div>
+                    <div class="mt-2 text-center">
+                        <a href="all_users.php" class="btn btn-sm btn-light">View All Users</a>
+                    </div>
                 </div>
             </div>
         </div>

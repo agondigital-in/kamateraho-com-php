@@ -1,7 +1,5 @@
 <?php
-session_start();
-include 'auth.php';
-include 'database.php';
+include 'db_connect.php';
 
 // Check if user is admin
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
