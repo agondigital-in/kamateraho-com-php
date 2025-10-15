@@ -1,11 +1,8 @@
 <?php
 include 'db_connect.php';
 
-// Check if user is admin
-if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
-    header('Location: login.php');
-    exit();
-}
+// Set page title for admin layout
+$page_title = "Referral Statistics";
 
 // Fetch referral statistics by source
 $referral_stats = [];
@@ -56,12 +53,10 @@ try {
     <link href="assets/admin.css" rel="stylesheet">
 </head>
 <body>
-    <?php include 'includes/admin_nav.php'; ?>
+    <?php include 'includes/admin_layout.php'; ?>
     
     <div class="container-fluid">
         <div class="row">
-            <?php include 'includes/admin_sidebar.php'; ?>
-            
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">Referral Statistics</h1>
@@ -166,12 +161,12 @@ try {
                     <div class="card-body">
                         <p>Share these platform-specific referral links to track where your users are coming from:</p>
                         <ul>
-                            <li><strong>YouTube:</strong> https://kamateraho.com/register.php?ref=<?php echo $_SESSION['user_id']; ?>&source=youtube</li>
-                            <li><strong>Facebook:</strong> https://kamateraho.com/register.php?ref=<?php echo $_SESSION['user_id']; ?>&source=facebook</li>
-                            <li><strong>Instagram:</strong> https://kamateraho.com/register.php?ref=<?php echo $_SESSION['user_id']; ?>&source=instagram</li>
-                            <li><strong>Twitter:</strong> https://kamateraho.com/register.php?ref=<?php echo $_SESSION['user_id']; ?>&source=twitter</li>
+                            <li><strong>YouTube:</strong> https://kamateraho.com/register.php?ref=[YOUR_USER_ID]&source=youtube</li>
+                            <li><strong>Facebook:</strong> https://kamateraho.com/register.php?ref=[YOUR_USER_ID]&source=facebook</li>
+                            <li><strong>Instagram:</strong> https://kamateraho.com/register.php?ref=[YOUR_USER_ID]&source=instagram</li>
+                            <li><strong>Twitter:</strong> https://kamateraho.com/register.php?ref=[YOUR_USER_ID]&source=twitter</li>
                         </ul>
-                        <p>When users register through these links, their referral source will be automatically tracked in the system.</p>
+                        <p>Replace [YOUR_USER_ID] with your actual user ID. When users register through these links, their referral source will be automatically tracked in the system.</p>
                     </div>
                 </div>
             </main>

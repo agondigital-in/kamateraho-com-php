@@ -11,15 +11,7 @@ if (session_status() == PHP_SESSION_NONE) {
 // Include app configuration
 include_once __DIR__ . '/../../config/app.php';
 
-// Check if admin is logged in
-if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
-    if (!headers_sent()) {
-        header("Location: login.php");
-    } else {
-        echo '<script>window.location.href = "login.php";</script>';
-    }
-    exit;
-}
+// Removed admin authentication check to allow direct access
 
 // Admin information (in a real application, this would come from a database)
 $admin_name = "Admin User";

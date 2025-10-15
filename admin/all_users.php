@@ -1,8 +1,6 @@
 <?php
 include 'db_connect.php';
 
-
-
 // Pagination settings
 $users_per_page = 20;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
