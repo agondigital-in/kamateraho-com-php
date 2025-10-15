@@ -1,6 +1,9 @@
 <?php
-session_start();
-include 'auth.php';
+// Check if session is already active
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
+
 include 'database.php';
 
 // Check if user is admin
@@ -81,7 +84,9 @@ try {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>All Users - Admin Panel</title>
-    <?php include 'includes/admin_layout.php'; ?>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="assets/admin.css">
     
     <style>
         .search-box {
@@ -138,10 +143,10 @@ try {
     </style>
 </head>
 <body>
+    <?php include 'includes/admin_layout.php'; ?>
+    
     <div class="container-fluid">
         <div class="row">
-            <?php include 'includes/admin_sidebar.php'; ?>
-            
             <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                     <h1 class="h2">All Users</h1>

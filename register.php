@@ -133,6 +133,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $error = "Registration failed: " . $e->getMessage();
         }
     }
+}
 ?>
 
 <!DOCTYPE html>
