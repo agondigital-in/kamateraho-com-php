@@ -470,18 +470,18 @@
             </div>
 
             <!-- Blog Post 5 -->
-            <!-- <div class="blog-card">
+            <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>New Features Coming Soon</h3>
                     <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Sep 20, 2025</span>
+                        <span><i class="far fa-calendar"></i> Oct 15, 2025</span>
                         <span><i class="far fa-user"></i> Admin</span>
                     </div>
                     <p class="blog-excerpt">Exciting updates are on the horizon! Discover what new features we're adding to enhance your experience.</p>
                     <a href="post5.php" class="read-more">Read More</a>
                 </div>
-            </div> -->
+            </div>
         </div>
 
         <div class="pagination">
