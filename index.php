@@ -426,7 +426,7 @@ if ($pdo) {
                     
                     <div class="referral-link-box">
                         <?php
-                        $base_url = "https://cashbacklo.com/";
+                        $base_url = "https://kamateraho.com/";
                         $referral_link = $base_url . "register.php?ref=" . $_SESSION['user_id'];
                         ?>
                         <div class="referral-link" id="referralLink"><?php echo $referral_link; ?></div>
@@ -466,17 +466,23 @@ if ($pdo) {
                                 <div class="row mx-0">
                                     <div class="col-md-4 mb-3 px-2">
                                         <div class="card border-0 shadow-sm h-100">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <a href="product_details.php?id=1&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3 px-2">
                                         <div class="card border-0 shadow-sm h-100">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <a href="product_details.php?id=2&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3 px-2">
                                         <div class="card border-0 shadow-sm h-100">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <a href="product_details.php?id=3&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
@@ -485,17 +491,23 @@ if ($pdo) {
                                 <div class="row mx-0">
                                     <div class="col-md-4 mb-3 px-2">
                                         <div class="card border-0 shadow-sm h-100">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <a href="product_details.php?id=4&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3 px-2">
                                         <div class="card border-0 shadow-sm h-100">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <a href="product_details.php?id=5&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            </a>
                                         </div>
                                     </div>
                                     <div class="col-md-4 mb-3 px-2">
                                         <div class="card border-0 shadow-sm h-100">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <a href="product_details.php?id=6&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
