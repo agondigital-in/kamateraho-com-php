@@ -1030,20 +1030,136 @@ h2:after {
 }
 
 .banner-section .card-img-top {
-    height: 300px;
-    object-fit: contain;
-    background-color: transparent; /* Remove background from images */
+    /* Set proper aspect ratio for banner images (2048x560) */
+    width: 100%;
+    height: auto;
+    /* Exact aspect ratio for 2048x560 images (3.66:1) */
+    aspect-ratio: 3.66 / 1;
+    object-fit: cover;
+    background-color: transparent;
+}
+
+/* Custom Peeking Carousel Styles */
+.peeking-carousel-container {
+    position: relative;
+    overflow: hidden;
+    padding: 0 50px;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.peeking-carousel-wrapper {
+    overflow: hidden;
+    position: relative;
+    padding: 20px 0;
+}
+
+.peeking-carousel-track {
+    display: flex;
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    gap: 0;
+    align-items: center;
+}
+
+.carousel-card {
+    flex: 0 0 100%;
+    padding: 0;
+    transition: all 0.6s ease;
+    opacity: 0.5;
+    transform: scale(0.75);
+    filter: blur(2px);
+    pointer-events: none;
+    position: relative;
+}
+
+.carousel-card.active {
+    opacity: 1;
+    transform: scale(1);
+    filter: blur(0);
+    z-index: 10;
+    flex: 0 0 100%;
+    pointer-events: auto;
+}
+
+.carousel-card.peek {
+    opacity: 0.7;
+    transform: scale(0.7);
+    filter: blur(1px);
+    z-index: 5;
+    pointer-events: none;
+}
+
+.peeking-carousel-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: linear-gradient(135deg, rgba(67, 97, 238, 0.9), rgba(58, 12, 163, 0.9));
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.peeking-carousel-nav:hover {
+    transform: translateY(-50%) scale(1.1);
+    box-shadow: 0 6px 20px rgba(67, 97, 238, 0.5);
+}
+
+.peeking-carousel-prev {
+    left: 0;
+}
+
+.peeking-carousel-next {
+    right: 0;
+}
+
+.peeking-carousel-nav .carousel-control-prev-icon,
+.peeking-carousel-nav .carousel-control-next-icon {
+    background-color: transparent;
+    padding: 0;
+    width: 20px;
+    height: 20px;
+    background-size: 100% 100%;
 }
 
 /* Responsive adjustments for banner section */
+@media (max-width: 992px) {
+    .banner-section .card-img-top {
+        aspect-ratio: 3.66 / 1;
+    }
+}
+
 @media (max-width: 768px) {
     .banner-section .card-img-top {
-        height: 250px;
+        aspect-ratio: 3.66 / 1;
+        height: 200px;
     }
 }
 
 @media (max-width: 576px) {
     .banner-section .card-img-top {
-        height: 200px;
+        aspect-ratio: 3.66 / 1;
+        height: 180px;
+    }
+}
+
+@media (max-width: 400px) {
+    .banner-section .card-img-top {
+        aspect-ratio: 3.66 / 1;
+        height: 160px;
+    }
+}
+
+@media (max-width: 350px) {
+    .banner-section .card-img-top {
+        aspect-ratio: 3.66 / 1;
+        height: 150px;
     }
 }
