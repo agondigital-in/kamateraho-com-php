@@ -253,7 +253,7 @@ if ($pdo) {
         /* Custom Peeking Carousel Styles */
         .peeking-carousel-container {
             position: relative;
-            overflow: hidden;
+            overflow: visible;
             padding: 0 50px;
             max-width: 1400px;
             margin: 0 auto;
@@ -262,6 +262,7 @@ if ($pdo) {
         .peeking-carousel-wrapper {
             overflow: visible;
             position: relative;
+            padding: 20px 0;
         }
         
         .peeking-carousel-track {
@@ -272,26 +273,30 @@ if ($pdo) {
         }
         
         .carousel-card {
-            flex: 0 0 70%;
+            flex: 0 0 60%;
             padding: 0;
             transition: all 0.6s ease;
-            opacity: 0.4;
-            transform: scale(0.7);
-            filter: blur(3px);
+            opacity: 0.5;
+            transform: scale(0.75);
+            filter: blur(2px);
+            pointer-events: none;
         }
         
         .carousel-card.active {
             opacity: 1;
             transform: scale(1);
             filter: blur(0);
-            z-index: 2;
-            flex: 0 0 70%;
+            z-index: 10;
+            flex: 0 0 60%;
+            pointer-events: auto;
         }
         
         .carousel-card.peek {
-            opacity: 0.6;
-            transform: scale(0.65);
-            filter: blur(2px);
+            opacity: 0.7;
+            transform: scale(0.7);
+            filter: blur(1px);
+            z-index: 5;
+            pointer-events: none;
         }
         
         .peeking-carousel-nav {
@@ -1575,10 +1580,9 @@ if ($pdo) {
                     const cardWidth = cards[0].offsetWidth;
                     const gap = 0;
                     
-                    // Calculate offset to center the active card with 20% peek on sides
-                    const peekAmount = cardWidth * 0.2; // 20% of card width
+                    // Calculate offset to center the active card
                     const centerOffset = (containerWidth - cardWidth) / 2;
-                    const offset = centerOffset - (currentIndex * cardWidth) + peekAmount;
+                    const offset = centerOffset - (currentIndex * cardWidth);
                     
                     track.style.transform = `translateX(${offset}px)`;
                     
