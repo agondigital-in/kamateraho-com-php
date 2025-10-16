@@ -496,7 +496,7 @@
                     <p class="blog-excerpt">How to Earn Money by Completing Simple Tasks Online</p>
                     <p class="blog-excerpt">Best Referral Programs to Earn ₹500 Daily Online</p>
                     <p class="blog-excerpt">Earn Money Online by Sharing Links</p>
-                    <a href="post5.php" class="read-more">Read More</a>
+                    <a href="post6.php" class="read-more">Read More</a>
                 </div>
             </div>
         </div>
