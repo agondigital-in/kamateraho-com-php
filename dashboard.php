@@ -259,13 +259,7 @@ try {
             padding: 0.5em 0.75em;
             font-weight: 500;
         }
-        
-        .footer-section {
-            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
-            color: var(--text-light); /* Changed text color to black and blue mix */
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
+      
         
         /* Additional text color improvements - mix of black and blue */
         .navbar-brand {
@@ -562,20 +556,7 @@ try {
                 font-size: 0.8rem;
             }
             
-            .footer-section {
-                padding: 1.5rem 0;
-                margin-top: 2rem;
-            }
-            
-            .footer-section h5 {
-                font-size: 1rem;
-            }
-            
-            .footer-section p {
-                font-size: 0.8rem;
-            }
-        }
-        
+          
         @media (max-width: 400px) {
             .welcome-banner {
                 padding: 0.8rem 0;
@@ -878,24 +859,7 @@ try {
         </div>
     </div>
     
-    <div class="footer-section">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5><i class="fas fa-shield-alt me-2"></i>Secure & Trusted</h5>
-                    <p class="small">Your financial information is protected with bank-level security.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5><i class="fas fa-headset me-2"></i>24/7 Support</h5>
-                    <p class="small">Our customer service team is available round the clock.</p>
-                </div>
-                <div class="col-md-4">
-                    <h5><i class="fas fa-sync me-2"></i>Instant Processing</h5>
-                    <p class="small">Most transactions are processed within minutes.</p>
-                </div>
-            </div>
-        </div>
-    </div>
+       <?php include 'includes/footer.php'; ?>
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/js/all.min.js"></script>

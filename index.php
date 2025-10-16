@@ -52,7 +52,7 @@ if ($pdo) {
     
     // Fetch active credit cards
     try {
-        $stmt = $pdo->query("SELECT * FROM credit_cards WHERE is_active = 1 ORDER BY created_at DESC LIMIT 4");
+        $stmt = $pdo->query("SELECT id, title, image, link, amount, percentage, flat_rate, is_active, created_at FROM credit_cards WHERE is_active = 1 ORDER BY created_at DESC LIMIT 4");
         $credit_cards = $stmt->fetchAll(PDO::FETCH_ASSOC);
     } catch(PDOException $e) {
         $credit_cards = [];
@@ -124,8 +124,8 @@ if ($pdo) {
     <link href="css/style.css" rel="stylesheet">
     <style>
         .btn-earn-money {
-            border: 2px solid #0d6efd !important; /* Blue border */
-            background: linear-gradient(135deg, #4361ee, #3a0ca3) !important; /* Matching gradient */
+            border: 2px solid #0d6efd !important;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3) !important;
             color: white !important;
         }
         
@@ -858,6 +858,107 @@ if ($pdo) {
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
         }
+        .tile-thumb img {
+            max-width: 100%;
+            max-height: 100%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            display: block;
+        }
+        
+        .tile-thumb .image-placeholder {
+            font-size: 2rem;
+            color: #ccc;
+        }
+        
+        /* Responsive improvements */
+        @media (max-width: 768px) {
+            .category-card-wrapper {
+                width: 140px;
+                margin-right: 10px;
+            }
+            
+            .offer-card-col {
+                flex: 0 0 50%;
+                max-width: 50%;
+            }
+            
+            .filter-sort-container {
+                flex-direction: column;
+                align-items: flex-start !important;
+            }
+            
+            .filter-sort-container .form-select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+            
+            /* Increase image height on tablets */
+            .offer-card-col .card-img-top {
+                height: 260px !important;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .offer-card-col {
+                flex: 0 0 100%;
+                max-width: 100%;
+            }
+            
+            .category-card-wrapper {
+                width: 130px;
+                margin-right: 8px;
+            }
+            
+            .btn-earn-money, .btn-outline-primary {
+                font-size: 0.7rem !important;
+                padding: 0.25rem 0.4rem !important;
+            }
+            
+            /* Further increase image height on small screens */
+            .offer-card-col .card-img-top {
+                height: 283px !important;
+            }
+            
+            /* Reduce title font size on small screens */
+            .offer-card-col .card-title {
+                font-size: 0.8rem !important;
+            }
+            
+            /* Adjust price tag font size */
+            .price-tag {
+                font-size: 1rem !important;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            /* Further increase image height on very small screens */
+            .offer-card-col .card-img-top {
+                height: 239px !important;
+            }
+            
+            /* Further reduce title font size */
+            .offer-card-col .card-title {
+                font-size: 0.75rem !important;
+            }
+            
+            .category-card-wrapper {
+                width: 120px;
+                margin-right: 6px;
+            }
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrolling-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .scrolling-wrapper {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 
@@ -1281,17 +1382,49 @@ if ($pdo) {
                 <?php if (empty($credit_cards)): ?>
                    
                 <?php else: ?>
-                    <div class="row g-3">
+                    <div class="row g-4">
                         <?php foreach ($credit_cards as $card): ?>
-                            <div class="col-md-3 col-sm-6 offer-card-col">
+                            <div class="col-md-4 col-sm-6 offer-card-col">
                                 <div class="card border-0 shadow-sm h-100">
-                                    <img src="<?php echo htmlspecialchars(normalize_image($card['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 180px; object-fit: contain; padding: 10px;">
+                                    <?php if (!empty($card['image'])): ?>
+                                        <img src="<?php echo htmlspecialchars($card['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 220px; object-fit: contain; padding: 15px;">
+                                    <?php else: ?>
+                                        <div class="bg-light" style="height: 220px; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fas fa-image fa-3x text-muted"></i>
+                                        </div>
+                                    <?php endif; ?>
                                     <div class="card-body d-flex flex-column">
-                                        <!-- Product Title -->
-                                        <h5 class="card-title text-center mb-1" style="font-size: 0.9rem;"><?php echo htmlspecialchars($card['title']); ?></h5>
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+                                            <h5 class="card-title mb-0" style="font-size: 1.1rem;"><?php echo htmlspecialchars($card['title']); ?></h5>
+                                        </div>
+                                        
+                                        <!-- Amount Details -->
+                                        <div class="mb-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                                <?php if ($card['amount'] > 0): ?>
+                                                    <div>
+                                                        <span class="text-muted text-decoration-line-through me-1"></span>
+                                                        <strong class="text-success">₹<?php echo number_format($card['amount'], 0); ?></strong>
+                                                    </div>
+                                                <?php endif; ?>
+                                            </div>
+                                            
+                                            <?php if ($card['percentage'] > 0): ?>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-primary">Percentage: <?php echo number_format($card['percentage'], 2); ?>%</span>
+                                                </div>
+                                            <?php endif; ?>
+                                            
+                                            <?php if ($card['flat_rate'] > 0): ?>
+                                                <div class="mt-2">
+                                                    <span class="badge bg-warning text-dark">Flat Rate: ₹<?php echo number_format($card['flat_rate'], 2); ?></span>
+                                                </div>
+                                            <?php endif; ?>
+                                        </div>
+                                        
                                         <div class="d-flex gap-2 mt-auto">
-                                            <a href="product_details.php?id=<?php echo $card['id']; ?>&type=card" class="btn btn-earn-money flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
-                                            <button class="btn btn-outline-primary copy-link-btn flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;"
+                                            <a href="product_details.php?id=<?php echo $card['id']; ?>&type=card" class="btn btn-earn-money flex-grow-1" style="font-size: 0.9rem; padding: 0.5rem 0.75rem;">Earn Amount</a>
+                                            <button class="btn btn-outline-primary copy-link-btn flex-grow-1" style="font-size: 0.9rem; padding: 0.5rem 0.75rem;"
                                                     data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($card['link'] . $_SESSION['user_id']) : ''; ?>"
                                                     <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
                                                 <?php echo isset($_SESSION['user_id']) ? 'Refer & Earn' : 'Login to Copy'; ?>

@@ -12,6 +12,9 @@ try {
         title VARCHAR(255) NOT NULL,
         image VARCHAR(255) NOT NULL,
         link VARCHAR(500) NOT NULL,
+        amount DECIMAL(10, 2) DEFAULT 0.00,
+        percentage DECIMAL(5, 2) DEFAULT 0.00,
+        flat_rate DECIMAL(10, 2) DEFAULT 0.00,
         is_active BOOLEAN DEFAULT TRUE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )";

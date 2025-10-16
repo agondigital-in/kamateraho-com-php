@@ -45,6 +45,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_card'])) {
         $title = $_POST['title'];
         $link = $_POST['link'];
+        $amount = isset($_POST['amount']) ? $_POST['amount'] : 0;
+        $percentage = isset($_POST['percentage']) ? $_POST['percentage'] : 0;
+        $flat_rate = isset($_POST['flat_rate']) ? $_POST['flat_rate'] : 0;
         $is_active = isset($_POST['is_active']) ? 1 : 0;
         
         // Handle file upload
@@ -84,8 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Store relative path for database storage
                         $image_path = 'uploads/credit_cards/' . $filename;
                         try {
-                            $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, is_active) VALUES (?, ?, ?, ?)");
-                            $stmt->execute([$title, $image_path, $link, $is_active]);
+                            $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, amount, percentage, flat_rate, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                            $stmt->execute([$title, $image_path, $link, $amount, $percentage, $flat_rate, $is_active]);
                             
                             // Log activity for sub-admin
                             if ($isSubAdmin) {
@@ -239,6 +242,27 @@ if ($isSubAdmin) {
                             <label for="link" class="form-label">Link URL</label>
                             <input type="url" class="form-control" id="link" name="link" required>
                         </div>
+
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="amount" class="form-label">Amount (₹)</label>
+                                    <input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0" value="0">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="percentage" class="form-label">Percentage (%)</label>
+                                    <input type="number" class="form-control" id="percentage" name="percentage" step="0.01" min="0" max="100" value="0">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label for="flat_rate" class="form-label">Flat Rate (₹)</label>
+                                    <input type="number" class="form-control" id="flat_rate" name="flat_rate" step="0.01" min="0" value="0">
+                                </div>
+                            </div>
+                        </div>
                         
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="is_active" name="is_active" checked>
@@ -275,6 +299,7 @@ if ($isSubAdmin) {
                             <tr>
                                 <th>Image</th>
                                 <th>Title</th>
+                                <th>Amount Details</th>
                                 <th>Link</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -291,6 +316,20 @@ if ($isSubAdmin) {
                                         <?php endif; ?>
                                     </td>
                                     <td><?php echo htmlspecialchars($card['title']); ?></td>
+                                    <td>
+                                        <?php if ($card['amount'] > 0): ?>
+                                            <div>Amount: ₹<?php echo number_format($card['amount'], 2); ?></div>
+                                        <?php endif; ?>
+                                        <?php if ($card['percentage'] > 0): ?>
+                                            <div>Percentage: <?php echo number_format($card['percentage'], 2); ?>%</div>
+                                        <?php endif; ?>
+                                        <?php if ($card['flat_rate'] > 0): ?>
+                                            <div>Flat Rate: ₹<?php echo number_format($card['flat_rate'], 2); ?></div>
+                                        <?php endif; ?>
+                                        <?php if ($card['amount'] == 0 && $card['percentage'] == 0 && $card['flat_rate'] == 0): ?>
+                                            <span class="text-muted">No amount details</span>
+                                        <?php endif; ?>
+                                    </td>
                                     <td>
                                         <?php if (!empty($card['link'])): ?>
                                             <a href="<?php echo htmlspecialchars($card['link']); ?>" target="_blank">View Link</a>

@@ -482,6 +482,23 @@
                     <a href="post5.php" class="read-more">Read More</a>
                 </div>
             </div>
+              <!-- Blog Post 6 -->
+            <div class="blog-card">
+                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>How to Make Money Online Without Investment
+</h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Oct 16, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">How I Earned ₹50,000 per Month Online — My Journey</p>
+                    <p class="blog-excerpt">How to Earn Money by Completing Simple Tasks Online</p>
+                    <p class="blog-excerpt">Best Referral Programs to Earn ₹500 Daily Online</p>
+                    <p class="blog-excerpt">Earn Money Online by Sharing Links</p>
+                    <a href="post5.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">

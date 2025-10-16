@@ -41,6 +41,11 @@ if ($type === 'card') {
         $item['category_name'] = "Credit Cards";
         $item['category_id'] = 0;
         
+        // Store amount details for display
+        $item['amount'] = $item['amount'] ?? 0;
+        $item['percentage'] = $item['percentage'] ?? 0;
+        $item['flat_rate'] = $item['flat_rate'] ?? 0;
+        
         // No additional images for credit cards
         $additional_images = [];
     } catch(PDOException $e) {
@@ -278,6 +283,24 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         
+        .btn-earn-money {
+            border: 2px solid #0d6efd !important;
+            background: linear-gradient(135deg, #4361ee, #3a0ca3) !important;
+            color: white !important;
+            font-size: 0.85rem;
+            padding: 0.375rem 0.5rem;
+        }
+        
+        .btn-earn-money:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3) !important;
+        }
+        
+        .btn-outline-primary {
+            font-size: 0.85rem;
+            padding: 0.375rem 0.5rem;
+        }
+        
         .info-box {
             background: var(--light-color);
             border-left: 4px solid var(--secondary-color);
@@ -357,13 +380,7 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
         .rating {
             color: #f39c12;
         }
-        
-        .footer-section {
-            background: linear-gradient(135deg, var(--primary-color), var(--dark-color));
-            color: white;
-            padding: 2rem 0;
-            margin-top: 3rem;
-        }
+       
         
         .faq-item {
             margin-bottom: 1rem;
@@ -430,6 +447,11 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             
             .section-title {
                 font-size: 1.25rem;
+            }
+            
+            .btn-earn-money, .btn-outline-primary {
+                font-size: 0.75rem !important;
+                padding: 0.25rem 0.4rem !important;
             }
         }
         
@@ -521,6 +543,41 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                                         </span>
                                     <?php endif; ?>
                                 </div>
+                            <?php elseif ($type === 'card'): ?>
+                                <!-- Display credit card amount details in the same style as all_offers -->
+                                <div class="mb-3">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <?php if ($item['amount'] > 0): ?>
+                                            <div>
+                                                <span class="text-muted text-decoration-line-through me-1"></span>
+                                                <strong class="text-success">Amount: ₹<?php echo number_format($item['amount'], 2); ?></strong>
+                                            </div>
+                                        <?php endif; ?>
+                                        
+                                        <?php if (!empty($item['category_name'])): ?>
+                                            <span class="badge bg-primary"><?php echo htmlspecialchars($item['category_name']); ?></span>
+                                        <?php endif; ?>
+                                    </div>
+                                    
+                                    <?php if ($item['percentage'] > 0): ?>
+                                        <div class="mt-2">
+                                            <span class="badge bg-primary">Percentage: <?php echo number_format($item['percentage'], 2); ?>%</span>
+                                        </div>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($item['flat_rate'] > 0): ?>
+                                        <div class="mt-2">
+                                            <span class="badge bg-warning text-dark">Flat Rate: ₹<?php echo number_format($item['flat_rate'], 2); ?></span>
+                                        </div>
+                                    <?php endif; ?>
+                                    
+                                    <?php if ($item['amount'] == 0 && $item['percentage'] == 0 && $item['flat_rate'] == 0): ?>
+                                        <div>
+                                            <span class="text-muted text-decoration-line-through me-1"></span>
+                                            <strong class="text-success">Amount: Variable</strong>
+                                        </div>
+                                    <?php endif; ?>
+                                </div>
                             <?php endif; ?>
                             
                             <div class="how-to-get-box">
@@ -533,11 +590,18 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                             </div>
                             
                             <div class="mt-4">
-                                <form method="POST">
-                                    <button type="submit" name="apply_now" class="btn btn-primary btn-lg w-100">
-                                        <i class="fas fa-paper-plane me-2"></i>Apply for This Offer
+                                <div class="d-flex gap-2">
+                                    <form method="POST" class="flex-grow-1">
+                                        <button type="submit" name="apply_now" class="btn btn-earn-money w-100">
+                                            <i class="fas fa-paper-plane me-2"></i>Apply for This Offer
+                                        </button>
+                                    </form>
+                                    <button class="btn btn-outline-primary copy-link-btn"
+                                            data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($item['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
+                                            <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
+                                        <?php echo isset($_SESSION['user_id']) ? 'Refer & Earn' : 'Login to Copy'; ?>
                                     </button>
-                                </form>
+                                </div>
                                 <div class="text-center mt-2">
                                     <small class="text-muted">
                                         <i class="fas fa-lock me-1"></i> Your information is secure and encrypted
@@ -597,10 +661,10 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                 </div>
             </div>
             
-            <?php include 'includes/footer.php'; ?>
+         
         <?php endif; ?>
     </div>
-    
+       <?php include 'includes/footer.php'; ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // FAQ accordion functionality
@@ -634,6 +698,35 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             // Add active class to clicked thumbnail
             event.target.classList.add('active');
         }
+        
+        // Copy link functionality (same as all_offers)
+        document.addEventListener('DOMContentLoaded', function() {
+            // Copy link functionality
+            document.querySelectorAll('.copy-link-btn').forEach(button => {
+                button.addEventListener('click', function() {
+                    const link = this.getAttribute('data-link');
+                    if (link) {
+                        navigator.clipboard.writeText(link).then(() => {
+                            // Show feedback to user
+                            const originalText = this.innerHTML;
+                            this.innerHTML = '<i class="fas fa-check"></i> Copied!';
+                            this.classList.remove('btn-outline-primary');
+                            this.classList.add('btn-success');
+                            
+                            // Reset button after 2 seconds
+                            setTimeout(() => {
+                                this.innerHTML = originalText;
+                                this.classList.remove('btn-success');
+                                this.classList.add('btn-outline-primary');
+                            }, 2000);
+                        }).catch(err => {
+                            console.error('Failed to copy: ', err);
+                            alert('Failed to copy link. Please try again.');
+                        });
+                    }
+                });
+            });
+        });
     </script>
 </body>
 </html>
