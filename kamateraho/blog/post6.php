@@ -113,7 +113,7 @@
             <span><i class="far fa-clock"></i> 5 min read</span>
         </div>
 
-        <img src="https://images.unsplash.com/photo-1581091215365-9fdbf7d1dbf6?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80" alt="Make Money Online" class="blog-image">
+        <img src="https://survalyzer.com/wp-content/uploads/2019/07/Create-Online-Surveys.png" alt="Make Money Online" class="blog-image">
 
         <div class="blog-content">
             <p>Making money online without any investment is possible if you know the right platforms and methods. In this blog, we'll guide you through some of the easiest ways to start earning online without spending a single rupee.</p>

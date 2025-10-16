@@ -484,7 +484,7 @@
             </div>
               <!-- Blog Post 6 -->
             <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
+                <img src="https://delhicourses.in/wp-content/uploads/2017/11/earn-with-images.jpg" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>How to Make Money Online Without Investment
 </h3>
