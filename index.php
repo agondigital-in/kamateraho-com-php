@@ -241,53 +241,88 @@ if ($pdo) {
         
         .banner-section .card-img-top {
             height: 300px;
-            object-fit: contain;
+            width: 100%;
+            object-fit: cover;
+        }
+        
+        .carousel-card .card {
+            width: 100%;
+            overflow: hidden;
         }
         
         /* Custom Peeking Carousel Styles */
         .peeking-carousel-container {
             position: relative;
             overflow: hidden;
-            padding: 0 40px;
+            padding: 0 50px;
+            max-width: 1400px;
+            margin: 0 auto;
         }
         
         .peeking-carousel-wrapper {
-            overflow: hidden;
+            overflow: visible;
+            position: relative;
         }
         
         .peeking-carousel-track {
             display: flex;
-            transition: transform 0.5s ease;
-            gap: 20px;
+            transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            gap: 0;
+            align-items: center;
         }
         
         .carousel-card {
-            flex: 0 0 calc(33.333% - 14px);
-            padding: 0 5px;
+            flex: 0 0 70%;
+            padding: 0;
+            transition: all 0.6s ease;
+            opacity: 0.4;
+            transform: scale(0.7);
+            filter: blur(3px);
+        }
+        
+        .carousel-card.active {
+            opacity: 1;
+            transform: scale(1);
+            filter: blur(0);
+            z-index: 2;
+            flex: 0 0 70%;
+        }
+        
+        .carousel-card.peek {
+            opacity: 0.6;
+            transform: scale(0.65);
+            filter: blur(2px);
         }
         
         .peeking-carousel-nav {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
-            background: rgba(0, 0, 0, 0.5);
-            border: none;
-            width: 40px;
-            height: 40px;
+            background: linear-gradient(135deg, rgba(67, 97, 238, 0.9), rgba(58, 12, 163, 0.9));
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            z-index: 10;
+            z-index: 100;
             cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .peeking-carousel-nav:hover {
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.5);
         }
         
         .peeking-carousel-prev {
-            left: 10px;
+            left: 0;
         }
         
         .peeking-carousel-next {
-            right: 10px;
+            right: 0;
         }
         
         .peeking-carousel-nav .carousel-control-prev-icon,
@@ -302,7 +337,11 @@ if ($pdo) {
         /* Peeking effect on mobile */
         @media (max-width: 992px) {
             .carousel-card {
-                flex: 0 0 calc(50% - 10px);
+                flex: 0 0 75%;
+            }
+            
+            .carousel-card.active {
+                flex: 0 0 75%;
             }
             
             .banner-section .card-img-top {
@@ -312,7 +351,11 @@ if ($pdo) {
         
         @media (max-width: 768px) {
             .carousel-card {
-                flex: 0 0 calc(70% - 10px);
+                flex: 0 0 80%;
+            }
+            
+            .carousel-card.active {
+                flex: 0 0 80%;
             }
             
             .banner-section .card-img-top {
@@ -320,37 +363,49 @@ if ($pdo) {
             }
             
             .peeking-carousel-container {
-                padding: 0 30px;
+                padding: 0 40px;
             }
         }
         
         @media (max-width: 576px) {
             .carousel-card {
-                flex: 0 0 calc(90% - 10px);
+                flex: 0 0 85%;
+            }
+            
+            .carousel-card.active {
+                flex: 0 0 85%;
+            }
+            
+            .banner-section .card-img-top {
+                height: 200px;
+            }
+            
+            .peeking-carousel-container {
+                padding: 0 35px;
+            }
+            
+            .peeking-carousel-nav {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .carousel-card {
+                flex: 0 0 90%;
+            }
+            
+            .carousel-card.active {
+                flex: 0 0 90%;
             }
             
             .banner-section .card-img-top {
                 height: 180px;
             }
             
-            .peeking-carousel-container {
-                padding: 0 25px;
-            }
-            
             .peeking-carousel-nav {
                 width: 35px;
                 height: 35px;
-            }
-        }
-        
-        @media (max-width: 400px) {
-            .banner-section .card-img-top {
-                height: 150px;
-            }
-            
-            .peeking-carousel-nav {
-                width: 30px;
-                height: 30px;
             }
         }
         
@@ -923,7 +978,7 @@ if ($pdo) {
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
                                         <a href="product_details.php?id=1&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: cover; height: 300px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -931,7 +986,7 @@ if ($pdo) {
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
                                         <a href="product_details.php?id=2&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: cover; height: 300px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -939,7 +994,7 @@ if ($pdo) {
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
                                         <a href="product_details.php?id=3&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: cover; height: 300px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -947,7 +1002,7 @@ if ($pdo) {
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
                                         <a href="product_details.php?id=4&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: cover; height: 300px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -955,7 +1010,7 @@ if ($pdo) {
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
                                         <a href="product_details.php?id=5&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: cover; height: 300px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -963,7 +1018,7 @@ if ($pdo) {
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
                                         <a href="product_details.php?id=6&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: cover; height: 300px; width: 100%;">
                                         </a>
                                     </div>
                                 </div>
@@ -1221,8 +1276,8 @@ if ($pdo) {
                                             <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
                                         </div>
                                         <div>
-                                            <small>Per Sale You Earn</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
+                                            <!-- <small>Per Sale You Earn</small>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -1503,29 +1558,72 @@ if ($pdo) {
                 });
             }
             
-            // Custom Peeking Carousel Functionality
+            // Custom Peeking Carousel Functionality with 20% Peek Effect
             const track = document.getElementById('bannerTrack');
             const prevBtn = document.getElementById('bannerPrev');
             const nextBtn = document.getElementById('bannerNext');
             
             if (track && prevBtn && nextBtn) {
                 let currentIndex = 0;
-                const cardWidth = track.children[0].offsetWidth + 20; // width + gap
                 const totalCards = track.children.length;
-                const visibleCards = window.innerWidth <= 576 ? 1 : window.innerWidth <= 768 ? 2 : 3;
-                const maxIndex = totalCards - visibleCards;
+                let autoSlideInterval;
                 
-                // Update carousel position
+                // Update carousel position and active states
                 function updateCarousel() {
-                    const offset = -currentIndex * cardWidth;
+                    const cards = track.children;
+                    const containerWidth = track.parentElement.offsetWidth;
+                    const cardWidth = cards[0].offsetWidth;
+                    const gap = 0;
+                    
+                    // Calculate offset to center the active card with 20% peek on sides
+                    const peekAmount = cardWidth * 0.2; // 20% of card width
+                    const centerOffset = (containerWidth - cardWidth) / 2;
+                    const offset = centerOffset - (currentIndex * cardWidth) + peekAmount;
+                    
                     track.style.transform = `translateX(${offset}px)`;
+                    
+                    // Update card states
+                    Array.from(cards).forEach((card, index) => {
+                        card.classList.remove('active', 'peek');
+                        
+                        if (index === currentIndex) {
+                            card.classList.add('active');
+                        } else if (index === currentIndex - 1 || index === currentIndex + 1) {
+                            card.classList.add('peek');
+                        }
+                    });
+                    
+                    // Update button states
+                    prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+                    prevBtn.style.cursor = currentIndex === 0 ? 'not-allowed' : 'pointer';
+                    nextBtn.style.opacity = currentIndex === totalCards - 1 ? '0.5' : '1';
+                    nextBtn.style.cursor = currentIndex === totalCards - 1 ? 'not-allowed' : 'pointer';
+                }
+                
+                // Start auto-slide
+                function startAutoSlide() {
+                    autoSlideInterval = setInterval(() => {
+                        if (currentIndex < totalCards - 1) {
+                            currentIndex++;
+                        } else {
+                            currentIndex = 0;
+                        }
+                        updateCarousel();
+                    }, 4000); // Auto-slide every 4 seconds
+                }
+                
+                // Stop auto-slide
+                function stopAutoSlide() {
+                    clearInterval(autoSlideInterval);
                 }
                 
                 // Next button click
                 nextBtn.addEventListener('click', () => {
-                    if (currentIndex < maxIndex) {
+                    if (currentIndex < totalCards - 1) {
                         currentIndex++;
                         updateCarousel();
+                        stopAutoSlide();
+                        startAutoSlide();
                     }
                 });
                 
@@ -1534,18 +1632,10 @@ if ($pdo) {
                     if (currentIndex > 0) {
                         currentIndex--;
                         updateCarousel();
+                        stopAutoSlide();
+                        startAutoSlide();
                     }
                 });
-                
-                // Auto-slide functionality
-                setInterval(() => {
-                    if (currentIndex < maxIndex) {
-                        currentIndex++;
-                    } else {
-                        currentIndex = 0; // Reset to start for continuous loop
-                    }
-                    updateCarousel();
-                }, 3000); // Auto-slide every 3 seconds
                 
                 // Touch swipe functionality
                 let startX = 0;
@@ -1553,36 +1643,39 @@ if ($pdo) {
                 
                 track.addEventListener('touchstart', (e) => {
                     startX = e.changedTouches[0].screenX;
+                    stopAutoSlide();
                 });
                 
                 track.addEventListener('touchend', (e) => {
                     endX = e.changedTouches[0].screenX;
                     handleSwipe();
+                    startAutoSlide();
                 });
                 
                 function handleSwipe() {
                     const threshold = 50;
                     
-                    if (startX - endX > threshold) {
-                        // Swipe left - next slide
-                        if (currentIndex < maxIndex) {
-                            currentIndex++;
-                            updateCarousel();
-                        }
-                    } else if (endX - startX > threshold) {
-                        // Swipe right - prev slide
-                        if (currentIndex > 0) {
-                            currentIndex--;
-                            updateCarousel();
-                        }
+                    if (startX - endX > threshold && currentIndex < totalCards - 1) {
+                        currentIndex++;
+                        updateCarousel();
+                    } else if (endX - startX > threshold && currentIndex > 0) {
+                        currentIndex--;
+                        updateCarousel();
                     }
                 }
                 
+                // Pause on hover
+                track.addEventListener('mouseenter', stopAutoSlide);
+                track.addEventListener('mouseleave', startAutoSlide);
+                
                 // Update on window resize
                 window.addEventListener('resize', () => {
-                    currentIndex = 0;
                     updateCarousel();
                 });
+                
+                // Initialize
+                updateCarousel();
+                startAutoSlide();
             }
         });
     </script>
