@@ -492,11 +492,8 @@
                         <span><i class="far fa-calendar"></i> Oct 16, 2025</span>
                         <span><i class="far fa-user"></i> Admin</span>
                     </div>
-                    <p class="blog-excerpt">How I Earned ₹50,000 per Month Online — My Journey</p>
-                    <p class="blog-excerpt">How to Earn Money by Completing Simple Tasks Online</p>
-                    <p class="blog-excerpt">Best Referral Programs to Earn ₹500 Daily Online</p>
-                    <p class="blog-excerpt">Earn Money Online by Sharing Links</p>
-                    <a href="post6.php" class="read-more">Read More</a>
+                    <p class="blog-excerpt">How I Earned ₹50,000 per Month Online ..</p>
+                     <a href="post6.php" class="read-more">Read More</a>
                 </div>
             </div>
         </div>
