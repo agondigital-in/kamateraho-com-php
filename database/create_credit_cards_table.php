@@ -10,8 +10,10 @@ try {
     $sql = "CREATE TABLE IF NOT EXISTS credit_cards (
         id INT(11) AUTO_INCREMENT PRIMARY KEY,
         title VARCHAR(255) NOT NULL,
+        description TEXT,
         image VARCHAR(255) NOT NULL,
-        link VARCHAR(500) NOT NULL,
+        link TEXT NOT NULL,
+        sequence_id INT(11) DEFAULT 0,
         amount DECIMAL(10, 2) DEFAULT 0.00,
         percentage DECIMAL(5, 2) DEFAULT 0.00,
         flat_rate DECIMAL(10, 2) DEFAULT 0.00,

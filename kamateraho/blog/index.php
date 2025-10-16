@@ -493,7 +493,7 @@
                         <span><i class="far fa-user"></i> Admin</span>
                     </div>
                     <p class="blog-excerpt">How I Earned ₹50,000 per Month Online ..</p>
-                     <a href="post.php" class="read-more">Read More</a>
+                     <a href="post6.php" class="read-more">Read More</a>
                 </div>
             </div>
         </div>

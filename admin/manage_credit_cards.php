@@ -44,7 +44,9 @@ $error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (isset($_POST['add_card'])) {
         $title = $_POST['title'];
+        $description = $_POST['description'];
         $link = $_POST['link'];
+        $sequence_id = $_POST['sequence_id'];
         $amount = isset($_POST['amount']) ? $_POST['amount'] : 0;
         $percentage = isset($_POST['percentage']) ? $_POST['percentage'] : 0;
         $flat_rate = isset($_POST['flat_rate']) ? $_POST['flat_rate'] : 0;
@@ -87,8 +89,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         // Store relative path for database storage
                         $image_path = 'uploads/credit_cards/' . $filename;
                         try {
-                            $stmt = $pdo->prepare("INSERT INTO credit_cards (title, image, link, amount, percentage, flat_rate, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)");
-                            $stmt->execute([$title, $image_path, $link, $amount, $percentage, $flat_rate, $is_active]);
+                            $stmt = $pdo->prepare("INSERT INTO credit_cards (title, description, image, link, sequence_id, amount, percentage, flat_rate, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+                            $stmt->execute([$title, $description, $image_path, $link, $sequence_id, $amount, $percentage, $flat_rate, $is_active]);
                             
                             // Log activity for sub-admin
                             if ($isSubAdmin) {
@@ -239,8 +241,18 @@ if ($isSubAdmin) {
                         </div>
                         
                         <div class="mb-3">
+                            <label for="description" class="form-label">Description</label>
+                            <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
                             <label for="link" class="form-label">Link URL</label>
                             <input type="url" class="form-control" id="link" name="link" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="sequence_id" class="form-label">Sequence ID</label>
+                            <input type="number" class="form-control" id="sequence_id" name="sequence_id" min="0" value="0">
                         </div>
 
                         <div class="row">
@@ -299,8 +311,10 @@ if ($isSubAdmin) {
                             <tr>
                                 <th>Image</th>
                                 <th>Title</th>
+                                <th>Description</th>
                                 <th>Amount Details</th>
                                 <th>Link</th>
+                                <th>Sequence</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -316,6 +330,7 @@ if ($isSubAdmin) {
                                         <?php endif; ?>
                                     </td>
                                     <td><?php echo htmlspecialchars($card['title']); ?></td>
+                                    <td><?php echo htmlspecialchars($card['description'] ?? ''); ?></td>
                                     <td>
                                         <?php if ($card['amount'] > 0): ?>
                                             <div>Amount: ₹<?php echo number_format($card['amount'], 2); ?></div>
@@ -337,6 +352,7 @@ if ($isSubAdmin) {
                                             <span class="text-muted">No link</span>
                                         <?php endif; ?>
                                     </td>
+                                    <td><?php echo htmlspecialchars($card['sequence_id'] ?? '0'); ?></td>
                                     <td>
                                         <?php if ($card['is_active']): ?>
                                             <span class="badge bg-success">Active</span>
