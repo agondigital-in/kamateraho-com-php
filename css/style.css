@@ -1089,6 +1089,69 @@ h2:after {
     pointer-events: none;
 }
 
+/* Peeking effect on mobile */
+@media (max-width: 992px) {
+    .carousel-card {
+        flex: 0 0 100%;
+    }
+    
+    .carousel-card.active {
+        flex: 0 0 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-card {
+        flex: 0 0 100%;
+    }
+    
+    .carousel-card.active {
+        flex: 0 0 100%;
+    }
+    
+    .peeking-carousel-container {
+        padding: 0 40px;
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-card {
+        flex: 0 0 100%;
+    }
+    
+    .carousel-card.active {
+        flex: 0 0 100%;
+    }
+    
+    .peeking-carousel-container {
+        padding: 0 35px;
+    }
+    
+    .peeking-carousel-nav {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media (max-width: 400px) {
+    .carousel-card {
+        flex: 0 0 100%;
+    }
+    
+    .carousel-card.active {
+        flex: 0 0 100%;
+    }
+    
+    .peeking-carousel-container {
+        padding: 0 30px;
+    }
+    
+    .peeking-carousel-nav {
+        width: 35px;
+        height: 35px;
+    }
+}
+
 .peeking-carousel-nav {
     position: absolute;
     top: 50%;

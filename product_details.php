@@ -120,12 +120,52 @@ if (isset($_POST['apply_now'])) {
         // Add click counter parameter
         $click_counter = time(); // Using timestamp as a simple click counter
         $redirect_url .= $separator . 'p_id=' . $user_id . '&click_id=' . $click_counter;
-        header("Location: " . $redirect_url);
+        
+        // Instead of redirecting directly, show a page that opens the link in a new tab
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Redirecting...</title>
+            <script>
+                window.open('<?php echo $redirect_url; ?>', '_blank');
+                window.location.href = 'index.php';
+            </script>
+        </head>
+        <body>
+            <p>If you are not redirected automatically, <a href="<?php echo $redirect_url; ?>" target="_blank">click here</a> to open the offer in a new tab.</p>
+            <script>
+                setTimeout(function() {
+                    window.location.href = 'index.php';
+                }, 3000);
+            </script>
+        </body>
+        </html>
+        <?php
         exit;
     } else {
         // Fallback to Bajaj Finserv if no redirect URL is set
         $redirect_url = "https://www.bajajfinserv.in/webform/v1/emicard/login?utm_source=Expartner&utm_medium=79&utm_campaign=6111";
-        header("Location: " . $redirect_url);
+        ?>
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Redirecting...</title>
+            <script>
+                window.open('<?php echo $redirect_url; ?>', '_blank');
+                window.location.href = 'index.php';
+            </script>
+        </head>
+        <body>
+            <p>If you are not redirected automatically, <a href="<?php echo $redirect_url; ?>" target="_blank">click here</a> to open the offer in a new tab.</p>
+            <script>
+                setTimeout(function() {
+                    window.location.href = 'index.php';
+                }, 3000);
+            </script>
+        </body>
+        </html>
+        <?php
         exit;
     }
 }

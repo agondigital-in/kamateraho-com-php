@@ -303,46 +303,6 @@ if ($pdo) {
             pointer-events: none;
         }
         
-        .peeking-carousel-nav {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: linear-gradient(135deg, rgba(67, 97, 238, 0.9), rgba(58, 12, 163, 0.9));
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-        
-        .peeking-carousel-nav:hover {
-            transform: translateY(-50%) scale(1.1);
-            box-shadow: 0 6px 20px rgba(67, 97, 238, 0.5);
-        }
-        
-        .peeking-carousel-prev {
-            left: 0;
-        }
-        
-        .peeking-carousel-next {
-            right: 0;
-        }
-        
-        .peeking-carousel-nav .carousel-control-prev-icon,
-        .peeking-carousel-nav .carousel-control-next-icon {
-            background-color: transparent;
-            padding: 0;
-            width: 20px;
-            height: 20px;
-            background-size: 100% 100%;
-        }
-        
         /* Peeking effect on mobile */
         @media (max-width: 992px) {
             .carousel-card {
@@ -351,10 +311,6 @@ if ($pdo) {
             
             .carousel-card.active {
                 flex: 0 0 100%;
-            }
-            
-            .banner-section .card-img-top {
-                aspect-ratio: 3.66 / 1;
             }
         }
         
@@ -365,10 +321,6 @@ if ($pdo) {
             
             .carousel-card.active {
                 flex: 0 0 100%;
-            }
-            
-            .banner-section .card-img-top {
-                aspect-ratio: 3.66 / 1;
             }
             
             .peeking-carousel-container {
@@ -383,10 +335,6 @@ if ($pdo) {
             
             .carousel-card.active {
                 flex: 0 0 100%;
-            }
-            
-            .banner-section .card-img-top {
-                aspect-ratio: 3.66 / 1;
             }
             
             .peeking-carousel-container {
@@ -408,8 +356,8 @@ if ($pdo) {
                 flex: 0 0 100%;
             }
             
-            .banner-section .card-img-top {
-                aspect-ratio: 3.66 / 1;
+            .peeking-carousel-container {
+                padding: 0 30px;
             }
             
             .peeking-carousel-nav {
@@ -996,7 +944,7 @@ if ($pdo) {
                                 <!-- Banner 1 -->
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=1&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=1&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
                                             <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608969/2_qpu9gr.png" class="card-img-top" alt="Banner 1">
                                         </a>
                                     </div>
@@ -1004,7 +952,7 @@ if ($pdo) {
                                 <!-- Banner 2 -->
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=2&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=2&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
                                             <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608964/4_yihxur.png" class="card-img-top" alt="Banner 2">
                                         </a>
                                     </div>
@@ -1012,7 +960,7 @@ if ($pdo) {
                                 <!-- Banner 3 -->
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=3&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=3&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
                                             <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608962/1_jmmalq.png" class="card-img-top" alt="Banner 3">
                                         </a>
                                     </div>
@@ -1020,7 +968,7 @@ if ($pdo) {
                                 <!-- Banner 4 -->
                                 <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=4&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=4&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
                                             <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608963/3_j2su4t.png" class="card-img-top" alt="Banner 4">
                                         </a>
                                     </div>
@@ -1028,7 +976,7 @@ if ($pdo) {
                                 <!-- Banner 5 -->
                                 <!-- <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=5&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=5&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
                                             <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5">
                                         </a>
                                     </div>
@@ -1036,7 +984,7 @@ if ($pdo) {
                                 <!-- Banner 6 -->
                                 <!-- <div class="carousel-card">
                                     <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=6&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=6&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
                                             <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6">
                                         </a>
                                     </div>
