@@ -239,89 +239,492 @@ if ($pdo) {
             padding: 0;
         }
         
-        .banner-section .carousel-item .row {
-            margin: 0;
-        }
-        
-        .banner-section .carousel-item .col-md-4 {
-            padding: 0 10px;
-        }
-        
         .banner-section .card-img-top {
             height: 300px;
             object-fit: contain;
         }
         
-        /* Responsive adjustments for banner section */
-        @media (max-width: 768px) {
+        /* Custom Peeking Carousel Styles */
+        .peeking-carousel-container {
+            position: relative;
+            overflow: hidden;
+            padding: 0 40px;
+        }
+        
+        .peeking-carousel-wrapper {
+            overflow: hidden;
+        }
+        
+        .peeking-carousel-track {
+            display: flex;
+            transition: transform 0.5s ease;
+            gap: 20px;
+        }
+        
+        .carousel-card {
+            flex: 0 0 calc(33.333% - 14px);
+            padding: 0 5px;
+        }
+        
+        .peeking-carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.5);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            cursor: pointer;
+        }
+        
+        .peeking-carousel-prev {
+            left: 10px;
+        }
+        
+        .peeking-carousel-next {
+            right: 10px;
+        }
+        
+        .peeking-carousel-nav .carousel-control-prev-icon,
+        .peeking-carousel-nav .carousel-control-next-icon {
+            background-color: transparent;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+            background-size: 100% 100%;
+        }
+        
+        /* Peeking effect on mobile */
+        @media (max-width: 992px) {
+            .carousel-card {
+                flex: 0 0 calc(50% - 10px);
+            }
+            
             .banner-section .card-img-top {
                 height: 250px;
             }
         }
         
-        @media (max-width: 576px) {
+        @media (max-width: 768px) {
+            .carousel-card {
+                flex: 0 0 calc(70% - 10px);
+            }
+            
             .banner-section .card-img-top {
-                height: 200px;
+                height: 220px;
+            }
+            
+            .peeking-carousel-container {
+                padding: 0 30px;
             }
         }
         
-        /* Retailer-style cards for categories */
-        .retailer-card { border-radius: 10px; background: #fff; position: relative; }
-        .retailer-card .logo-wrap { height: 120px; display: flex; align-items: center; justify-content: center; background:#ffffff; }
-        .retailer-card .logo-wrap img { max-height: 100%; max-width: 100%; width: 100%; object-fit: contain; }
-        .retailer-ribbon { position: absolute; top: 12px; left: 12px; background: #e31b53; color: #fff; font-size: .7rem; font-weight: 800; padding: .25rem .5rem; border-radius: 4px; text-transform: uppercase; letter-spacing: .3px; }
-        .you-earn-pill { display: inline-block; background: #f0f2f5; color: #6b7280; border-radius: 999px; padding: .2rem .6rem; font-size: .7rem; font-weight: 700; }
-        .profit-text { font-weight: 800; color: #111827; margin: .35rem 0 0; }
-        .btn-share { background: #22c55e; color: #fff; border: none; border-radius: 999px; font-weight: 800; }
-        .btn-share:hover { background: #16a34a; color: #fff; }
-        .btn-copy-outline { background: #fff; border: 2px solid #d1d5db; color: #111827; border-radius: 999px; font-weight: 800; }
-        .btn-copy-outline:hover { background: #f9fafb; }
-        .category-card-wrapper { width: 280px; margin-right: 16px; }
-        .scrolling-wrapper { overflow: hidden; }
-        .scrolling-content { display: flex; }
+        @media (max-width: 576px) {
+            .carousel-card {
+                flex: 0 0 calc(90% - 10px);
+            }
+            
+            .banner-section .card-img-top {
+                height: 180px;
+            }
+            
+            .peeking-carousel-container {
+                padding: 0 25px;
+            }
+            
+            .peeking-carousel-nav {
+                width: 35px;
+                height: 35px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .banner-section .card-img-top {
+                height: 150px;
+            }
+            
+            .peeking-carousel-nav {
+                width: 30px;
+                height: 30px;
+            }
+        }
+        
+        /* Improved responsive adjustments for banner section */
+        @media (max-width: 992px) {
+            .banner-section .card-img-top {
+                height: 250px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .banner-section .card-img-top {
+                height: 220px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .banner-section .card-img-top {
+                height: 180px;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .banner-section .card-img-top {
+                height: 150px;
+            }
+        }
+        
+        /* Ensure carousel controls are visible on mobile */
+        .banner-section .carousel-control-prev,
+        .banner-section .carousel-control-next {
+            width: 5%;
+            opacity: 0.8;
+            z-index: 10;
+        }
+        
+        .banner-section .carousel-control-prev:hover,
+        .banner-section .carousel-control-next:hover {
+            opacity: 1;
+        }
+        
+        .banner-section .carousel-control-prev-icon,
+        .banner-section .carousel-control-next-icon {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 50%;
+            padding: 10px;
+            width: 30px;
+            height: 30px;
+            background-size: 60% 60%;
+        }
+        
+        @media (max-width: 576px) {
+            .banner-section .carousel-control-prev-icon,
+            .banner-section .carousel-control-next-icon {
+                padding: 8px;
+                width: 25px;
+                height: 25px;
+            }
+        }
+        
+        /* Retailer-style cards for categories - IMPROVED RESPONSIVE VERSION */
+        .retailer-card { 
+            border-radius: 10px; 
+            background: #fff; 
+            position: relative; 
+            padding: 10px !important;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .retailer-card .logo-wrap { 
+            height: 80px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background:#ffffff; 
+        }
+        .retailer-card .logo-wrap img { 
+            max-height: 100%; 
+            max-width: 100%; 
+            width: 100%; 
+            object-fit: contain; 
+        }
+        .retailer-ribbon { 
+            position: absolute; 
+            top: 8px; 
+            left: 8px; 
+            background: #e31b53; 
+            color: #fff; 
+            font-size: .6rem; 
+            font-weight: 800; 
+            padding: .2rem .4rem; 
+            border-radius: 4px; 
+            text-transform: uppercase; 
+            letter-spacing: .3px; 
+        }
+        .you-earn-pill { 
+            display: inline-block; 
+            background: #f0f2f5; 
+            color: #6b7280; 
+            border-radius: 999px; 
+            padding: .15rem .5rem; 
+            font-size: .6rem; 
+            font-weight: 700; 
+        }
+        .profit-text { 
+            font-weight: 800; 
+            color: #111827; 
+            margin: .25rem 0 0; 
+            font-size: .75rem;
+        }
+        .btn-share { 
+            background: #22c55e; 
+            color: #fff; 
+            border: none; 
+            border-radius: 999px; 
+            font-weight: 800; 
+            font-size: .7rem;
+            padding: .3rem .6rem;
+            white-space: nowrap;
+        }
+        .btn-share:hover { 
+            background: #16a34a; 
+            color: #fff; 
+        }
+        .btn-copy-outline { 
+            background: #fff; 
+            border: 2px solid #d1d5db; 
+            color: #111827; 
+            border-radius: 999px; 
+            font-weight: 800; 
+            font-size: .7rem;
+            padding: .3rem .6rem;
+            white-space: nowrap;
+        }
+        .btn-copy-outline:hover { 
+            background: #f9fafb; 
+        }
+        .category-card-wrapper { 
+            width: 160px; 
+            margin-right: 12px; 
+            flex-shrink: 0;
+        }
+        .scrolling-wrapper { 
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            padding-bottom: 10px;
+        }
+        .scrolling-content { 
+            display: flex; 
+            flex-wrap: nowrap;
+        }
+        
+        /* Additional responsive adjustments for category cards */
+        @media (max-width: 992px) {
+            .category-card-wrapper { 
+                width: 150px; 
+                margin-right: 10px; 
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .category-card-wrapper { 
+                width: 140px; 
+                margin-right: 10px; 
+            }
+            .retailer-card .logo-wrap { 
+                height: 70px; 
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .category-card-wrapper { 
+                width: 130px; 
+                margin-right: 8px; 
+            }
+            .retailer-card .logo-wrap { 
+                height: 60px; 
+            }
+            .btn-share, .btn-copy-outline {
+                font-size: .65rem;
+                padding: .25rem .5rem;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .category-card-wrapper { 
+                width: 120px; 
+                margin-right: 6px; 
+            }
+            .retailer-card .logo-wrap { 
+                height: 50px; 
+            }
+            .btn-share, .btn-copy-outline {
+                font-size: .6rem;
+                padding: .2rem .4rem;
+            }
+        }
         
         /* Instagram button styles */
-        .btn-instagram { border: none; border-radius: 999px; font-weight: 800; color: white; }
-        .btn-instagram:hover { opacity: 0.9; transform: translateY(-2px); }
-        @media (max-width: 576px) {
-            .category-card-wrapper { width: 240px; margin-right: 12px; }
+        .btn-instagram { 
+            border: none; 
+            border-radius: 999px; 
+            font-weight: 800; 
+            color: white; 
         }
-
+        .btn-instagram:hover { 
+            opacity: 0.9; 
+            transform: translateY(-2px); 
+        }
+        
         /* Flash deals card styles (Trending Promotion Tasks) */
-        .flash-card { border-radius: 10px; overflow: hidden; background: #fff; border: 1px solid #e5e7eb; }
-        .flash-banner { background: #ffffff; height: 260px; display: flex; align-items: center; justify-content: center; position: relative; }
-        .flash-banner img { max-height: 100%; max-width: 100%; width: auto; height: auto; object-fit: contain; border-radius: 0; box-shadow: none; }
-        .flash-pill { position: absolute; right: 12px; top: 12px; background: #fff; color: #ef4444; font-weight: 800; font-size: .7rem; padding: .2rem .5rem; border-radius: 999px; letter-spacing: .2px; }
-        .deal-strip { background: #ef4444; color: #fff; font-weight: 800; font-size: .75rem; padding: .35rem .6rem; text-transform: uppercase; letter-spacing: .3px; }
-        .meta { display: grid; grid-template-columns: 1fr 1fr; gap: .5rem; padding: .6rem .75rem; }
-        .meta small { display: block; color: #6b7280; font-weight: 700; font-size: .7rem; }
-        .meta .val { font-weight: 900; color: #111827; }
-        .price-old { color: #9ca3af; text-decoration: line-through; font-weight: 700; margin-right: .35rem; }
-        .actions { padding: .6rem .75rem .9rem; }
-        .actions .btn { white-space: nowrap; }
+        .flash-card { 
+            border-radius: 10px; 
+            overflow: hidden; 
+            background: #fff; 
+            border: 1px solid #e5e7eb; 
+        }
+        .flash-banner { 
+            background: #ffffff; 
+            height: 260px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            position: relative; 
+        }
+        .flash-banner img { 
+            max-height: 100%; 
+            max-width: 100%; 
+            width: auto; 
+            height: auto; 
+            object-fit: contain; 
+            border-radius: 0; 
+            box-shadow: none; 
+        }
+        .flash-pill { 
+            position: absolute; 
+            right: 12px; 
+            top: 12px; 
+            background: #fff; 
+            color: #ef4444; 
+            font-weight: 800; 
+            font-size: .7rem; 
+            padding: .2rem .5rem; 
+            border-radius: 999px; 
+            letter-spacing: .2px; 
+        }
+        .deal-strip { 
+            background: #ef4444; 
+            color: #fff; 
+            font-weight: 800; 
+            font-size: .75rem; 
+            padding: .35rem .6rem; 
+            text-transform: uppercase; 
+            letter-spacing: .3px; 
+        }
+        .meta { 
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: .5rem; 
+            padding: .6rem .75rem; 
+        }
+        .meta small { 
+            display: block; 
+            color: #6b7280; 
+            font-weight: 700; 
+            font-size: .7rem; 
+        }
+        .meta .val { 
+            font-weight: 900; 
+            color: #111827; 
+        }
+        .price-old { 
+            color: #9ca3af; 
+            text-decoration: line-through; 
+            font-weight: 700; 
+            margin-right: .35rem; 
+        }
+        .actions { 
+            padding: .6rem .75rem .9rem; 
+        }
+        .actions .btn { 
+            white-space: nowrap; 
+        }
         /* Desktop: inline 3 buttons */
         @media (min-width: 768px) {
-            .actions .btn { width: auto; }
+            .actions .btn { 
+                width: auto; 
+            }
         }
         /* Mobile: stack buttons full width */
         @media (max-width: 767.98px) {
-            .actions .btn { width: 100%; }
+            .actions .btn { 
+                width: 100%; 
+            }
         }
-        .btn-earn-now { background: linear-gradient(135deg,#38bdf8,#0ea5e9); color:#fff; border:none; border-radius: 10px; font-weight: 800; }
-        .btn-earn-now:hover { filter: brightness(1.03); color:#fff; }
+        .btn-earn-now { 
+            background: linear-gradient(135deg,#38bdf8,#0ea5e9); 
+            color:#fff; 
+            border:none; 
+            border-radius: 10px; 
+            font-weight: 800; 
+        }
+        .btn-earn-now:hover { 
+            filter: brightness(1.03); 
+            color:#fff; 
+        }
 
         /* Ad-style tiles (2 rows x 4 columns) */
-        .tile-card { background:#fff; border:1px solid #e5e7eb; border-radius:8px; padding:10px; }
-        .tile-grid { display:grid; grid-template-columns: repeat(2, 1fr);   }
-        .tile { display:flex; flex-direction:column; gap:6px; }
-        .tile-thumb { width:100%; aspect-ratio:1/1; background:#fff; border:1px solid #e5e7eb; border-radius:3px; overflow:hidden; display:flex; align-items:center; justify-content:center; }
-        .tile-thumb img { width:100%; height:100%; object-fit:contain; }
-        .tile-caption { font-size:.82rem; color:#374151; line-height:1.15; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
-        .tile-see-all { display:inline-block; margin-top:8px; color:#0a58ca; font-weight:700; font-size:.9rem; text-decoration:none; }
-        .tile-see-all:hover { text-decoration:underline; }
-        @media (max-width: 767.98px) { .tile-grid { grid-template-columns: repeat(2, 1fr); } }
+        .tile-card { 
+            background:#fff; 
+            border:1px solid #e5e7eb; 
+            border-radius:8px; 
+            padding:10px; 
+        }
+        .tile-grid { 
+            display:grid; 
+            grid-template-columns: repeat(2, 1fr);   
+        }
+        .tile { 
+            display:flex; 
+            flex-direction:column; 
+            gap:6px; 
+        }
+        .tile-thumb { 
+            width:100%; 
+            aspect-ratio:1/1; 
+            background:#fff; 
+            border:1px solid #e5e7eb; 
+            border-radius:3px; 
+            overflow:hidden; 
+            display:flex; 
+            align-items:center; 
+            justify-content:center; 
+        }
+        .tile-thumb img { 
+            width:100%; 
+            height:100%; 
+            object-fit:contain; 
+        }
+        .tile-caption { 
+            font-size:.82rem; 
+            color:#374151; 
+            line-height:1.15; 
+            display:-webkit-box; 
+            -webkit-line-clamp:2; 
+            -webkit-box-orient:vertical; 
+            overflow:hidden; 
+        }
+        .tile-see-all { 
+            display:inline-block; 
+            margin-top:8px; 
+            color:#0a58ca; 
+            font-weight:700; 
+            font-size:.9rem; 
+            text-decoration:none; 
+        }
+        .tile-see-all:hover { 
+            text-decoration:underline; 
+        }
+        @media (max-width: 767.98px) { 
+            .tile-grid { 
+                grid-template-columns: repeat(2, 1fr); 
+            } 
+        }
         /* Vertical separators between columns on md+ */
-        @media (min-width: 768px) { .tile-col { position:relative; } .tile-col + .tile-col { border-left:1px solid #e5e7eb; } }
+        @media (min-width: 768px) { 
+            .tile-col { 
+                position:relative; 
+            } 
+            .tile-col + .tile-col { 
+                border-left:1px solid #e5e7eb; 
+            } 
+        }
         
         /* Additional styles to ensure images are not cut off */
         .tile-thumb {
@@ -349,13 +752,8 @@ if ($pdo) {
         /* Responsive improvements */
         @media (max-width: 768px) {
             .category-card-wrapper {
-                width: 120px;
+                width: 140px;
                 margin-right: 10px;
-            }
-            
-            .category-card .rounded-circle {
-                width: 90px !important;
-                height: 90px !important;
             }
             
             .offer-card-col {
@@ -386,17 +784,12 @@ if ($pdo) {
             }
             
             .category-card-wrapper {
-                width: 100px;
+                width: 130px;
                 margin-right: 8px;
             }
             
-            .category-card .rounded-circle {
-                width: 80px !important;
-                height: 80px !important;
-            }
-            
             .btn-earn-money, .btn-outline-primary {
-                font-size: 0.75rem !important;
+                font-size: 0.7rem !important;
                 padding: 0.25rem 0.4rem !important;
             }
             
@@ -426,6 +819,22 @@ if ($pdo) {
             .offer-card-col .card-title {
                 font-size: 0.75rem !important;
             }
+            
+            .category-card-wrapper {
+                width: 120px;
+                margin-right: 6px;
+            }
+        }
+        
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .scrolling-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+        
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .scrolling-wrapper {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
     </style>
 </head>
@@ -506,64 +915,67 @@ if ($pdo) {
         <div class="container-fluid px-0">
             <div class="row mx-0">
                 <div class="col-12 px-0">
-                    <div id="bannerCarousel" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item active">
-                                <div class="row mx-0">
-                                    <div class="col-md-4 mb-3 px-2">
-                                        <div class="card border-0 shadow-sm h-100">
-                                            <a href="product_details.php?id=1&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: contain; height: 300px; background-color: transparent;">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-3 px-2">
-                                        <div class="card border-0 shadow-sm h-100">
-                                            <a href="product_details.php?id=2&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: contain; height: 300px; background-color: transparent;">
-                                            </a>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4 mb-3 px-2">
-                                        <div class="card border-0 shadow-sm h-100">
-                                            <a href="product_details.php?id=3&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: contain; height: 300px; background-color: transparent;">
-                                            </a>
-                                        </div>
+                    <!-- Custom Peeking Carousel -->
+                    <div class="peeking-carousel-container">
+                        <div class="peeking-carousel-wrapper">
+                            <div class="peeking-carousel-track" id="bannerTrack">
+                                <!-- Banner 1 -->
+                                <div class="carousel-card">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <a href="product_details.php?id=1&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300494/6_ftxkhz.png" class="card-img-top" alt="Banner 1" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                        </a>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="carousel-item">
-                                <div class="row mx-0">
-                                    <div class="col-md-4 mb-3 px-2">
-                                        <div class="card border-0 shadow-sm h-100">
-                                            <a href="product_details.php?id=4&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: contain; height: 300px; background-color: transparent;">
-                                            </a>
-                                        </div>
+                                <!-- Banner 2 -->
+                                <div class="carousel-card">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <a href="product_details.php?id=2&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300532/1_v9r0lh.png" class="card-img-top" alt="Banner 2" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                        </a>
                                     </div>
-                                    <div class="col-md-4 mb-3 px-2">
-                                        <div class="card border-0 shadow-sm h-100">
-                                            <a href="product_details.php?id=5&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: contain; height: 300px; background-color: transparent;">
-                                            </a>
-                                        </div>
+                                </div>
+                                <!-- Banner 3 -->
+                                <div class="carousel-card">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <a href="product_details.php?id=3&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300537/2_kgswae.png" class="card-img-top" alt="Banner 3" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                        </a>
                                     </div>
-                                    <div class="col-md-4 mb-3 px-2">
-                                        <div class="card border-0 shadow-sm h-100">
-                                            <a href="product_details.php?id=6&user_id=<?php echo $_SESSION['user_id']; ?>">
-                                                <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: contain; height: 300px; background-color: transparent;">
-                                            </a>
-                                        </div>
+                                </div>
+                                <!-- Banner 4 -->
+                                <div class="carousel-card">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <a href="product_details.php?id=4&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300727/3_rgraak.png" class="card-img-top" alt="Banner 4" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Banner 5 -->
+                                <div class="carousel-card">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <a href="product_details.php?id=5&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                        </a>
+                                    </div>
+                                </div>
+                                <!-- Banner 6 -->
+                                <div class="carousel-card">
+                                    <div class="card border-0 shadow-sm h-100">
+                                        <a href="product_details.php?id=6&user_id=<?php echo $_SESSION['user_id']; ?>">
+                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6" style="object-fit: contain; height: 300px; background-color: transparent;">
+                                        </a>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#bannerCarousel" data-bs-slide="prev">
+                        
+                        <!-- Navigation Arrows -->
+                        <button class="peeking-carousel-nav peeking-carousel-prev" id="bannerPrev">
                             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Previous</span>
                         </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#bannerCarousel" data-bs-slide="next">
+                        <button class="peeking-carousel-nav peeking-carousel-next" id="bannerNext">
                             <span class="carousel-control-next-icon" aria-hidden="true"></span>
                             <span class="visually-hidden">Next</span>
                         </button>
@@ -584,7 +996,7 @@ if ($pdo) {
             <!-- Categories Section -->
             <section id="categories" class="mb-5">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0 text-primary">Best Promotion Tasks For You To Start</h2>
+                    <h2 class="mb-0 text-primary" style="font-size: 1.5rem;">Best Promotion Tasks For You To Start</h2>
                     <a href="#" class="text-decoration-none"></a>
                 </div>
                 
@@ -621,10 +1033,10 @@ if ($pdo) {
                             for ($i = 0; $i < 2; $i++):
                                 foreach ($category_items as $category): ?>
                                     <div class="category-card-wrapper">
-                                        <div class="card retailer-card border-0 shadow-sm text-center p-3 h-100">
+                                        <div class="card retailer-card border-0 shadow-sm text-center h-100">
                                             <span class="retailer-ribbon">Top</span>
                                             <div class="logo-wrap mb-2">
-                                                <img src="<?php echo $category['image_url']; ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" style="object-fit: contain; max-height: 120px;">
+                                                <img src="<?php echo $category['image_url']; ?>" alt="<?php echo htmlspecialchars($category['name']); ?>" style="object-fit: contain; max-height: 80px;">
                                             </div>
                                             <div class="mb-2">
                                                 <span class="you-earn-pill">YOU EARN</span>
@@ -636,7 +1048,7 @@ if ($pdo) {
                                             ?>
                                             <div class="d-grid gap-2 mt-auto">
                                                 <a target="_blank" href="https://api.whatsapp.com/send?text=<?php echo urlencode($wa_text); ?>" class="btn btn-share">
-                                                    <i class="fab fa-whatsapp me-1"></i> SHARE NOW
+                                                    <i class="fab fa-whatsapp me-1"></i> SHARE
                                                 </a>
                                                 <button class="btn btn-copy-outline copy-link-btn" data-link="<?php echo htmlspecialchars($share_url); ?>">
                                                     COPY LINK
@@ -1056,6 +1468,120 @@ if ($pdo) {
                         console.error('Failed to copy: ', err);
                         alert('Failed to copy link. Please try again.');
                     });
+                });
+            }
+            
+            // Auto-scroll categories for better UX
+            const categoriesScroll = document.getElementById('categories-scroll');
+            if (categoriesScroll) {
+                let scrollPosition = 0;
+                const scrollStep = 1;
+                const scrollInterval = 30;
+                
+                function autoScroll() {
+                    categoriesScroll.scrollLeft += scrollStep;
+                    scrollPosition += scrollStep;
+                    
+                    // Reset scroll when we've scrolled past half the content
+                    if (scrollPosition >= categoriesScroll.scrollWidth / 2) {
+                        categoriesScroll.scrollLeft = 0;
+                        scrollPosition = 0;
+                    }
+                }
+                
+                // Start auto-scrolling
+                let scrollTimer = setInterval(autoScroll, scrollInterval);
+                
+                // Pause auto-scroll on hover
+                categoriesScroll.addEventListener('mouseenter', () => {
+                    clearInterval(scrollTimer);
+                });
+                
+                // Resume auto-scroll when not hovering
+                categoriesScroll.addEventListener('mouseleave', () => {
+                    scrollTimer = setInterval(autoScroll, scrollInterval);
+                });
+            }
+            
+            // Custom Peeking Carousel Functionality
+            const track = document.getElementById('bannerTrack');
+            const prevBtn = document.getElementById('bannerPrev');
+            const nextBtn = document.getElementById('bannerNext');
+            
+            if (track && prevBtn && nextBtn) {
+                let currentIndex = 0;
+                const cardWidth = track.children[0].offsetWidth + 20; // width + gap
+                const totalCards = track.children.length;
+                const visibleCards = window.innerWidth <= 576 ? 1 : window.innerWidth <= 768 ? 2 : 3;
+                const maxIndex = totalCards - visibleCards;
+                
+                // Update carousel position
+                function updateCarousel() {
+                    const offset = -currentIndex * cardWidth;
+                    track.style.transform = `translateX(${offset}px)`;
+                }
+                
+                // Next button click
+                nextBtn.addEventListener('click', () => {
+                    if (currentIndex < maxIndex) {
+                        currentIndex++;
+                        updateCarousel();
+                    }
+                });
+                
+                // Previous button click
+                prevBtn.addEventListener('click', () => {
+                    if (currentIndex > 0) {
+                        currentIndex--;
+                        updateCarousel();
+                    }
+                });
+                
+                // Auto-slide functionality
+                setInterval(() => {
+                    if (currentIndex < maxIndex) {
+                        currentIndex++;
+                    } else {
+                        currentIndex = 0; // Reset to start for continuous loop
+                    }
+                    updateCarousel();
+                }, 3000); // Auto-slide every 3 seconds
+                
+                // Touch swipe functionality
+                let startX = 0;
+                let endX = 0;
+                
+                track.addEventListener('touchstart', (e) => {
+                    startX = e.changedTouches[0].screenX;
+                });
+                
+                track.addEventListener('touchend', (e) => {
+                    endX = e.changedTouches[0].screenX;
+                    handleSwipe();
+                });
+                
+                function handleSwipe() {
+                    const threshold = 50;
+                    
+                    if (startX - endX > threshold) {
+                        // Swipe left - next slide
+                        if (currentIndex < maxIndex) {
+                            currentIndex++;
+                            updateCarousel();
+                        }
+                    } else if (endX - startX > threshold) {
+                        // Swipe right - prev slide
+                        if (currentIndex > 0) {
+                            currentIndex--;
+                            updateCarousel();
+                        }
+                    }
+                }
+                
+                // Update on window resize
+                window.addEventListener('resize', () => {
+                    currentIndex = 0;
+                    updateCarousel();
                 });
             }
         });
