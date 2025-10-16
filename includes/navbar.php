@@ -115,6 +115,121 @@ if (isset($_SESSION['user_id']) && $pdo) {
     .ek-subbar .announce { color: #0f2e46; font-weight: 800; display: inline-flex; align-items: center; gap: .35rem; letter-spacing: .2px; }
     .ek-subbar .btn-eligibility { border: 2px solid #42b883; color: #0f3d2e; background: #fff; border-radius: 999px; padding: .35rem .8rem; font-weight: 700; }
     .ek-subbar .btn-eligibility:hover { background: #e8f6ef; }
+    
+    /* Spin & Earn Button */
+    .spin-btn {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        border: none;
+        color: #fff;
+        padding: 10px 20px;
+        border-radius: 50px;
+        font-weight: bold;
+        box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .spin-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 154, 158, 0.6);
+    }
+    
+    .spin-btn:active {
+        transform: translateY(0);
+    }
+    
+    /* Wheel Styles */
+    .wheel-container {
+        position: relative;
+        width: 300px;
+        height: 300px;
+        margin: 0 auto;
+    }
+    
+    .wheel {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        position: relative;
+        overflow: hidden;
+        border: 8px solid #333;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        transition: transform 4s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        background: #fff;
+    }
+    
+    .wheel-section {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        transform-origin: bottom right;
+        left: 0;
+        top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+    }
+    
+    .wheel-section-content {
+        transform: rotate(30deg);
+        width: 100px;
+        text-align: right;
+        padding-right: 20px;
+        font-weight: bold;
+        font-size: 14px;
+        color: #333;
+    }
+    
+    .wheel-pointer {
+        position: absolute;
+        top: -20px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40px;
+        height: 40px;
+        background: #fff;
+        clip-path: polygon(50% 100%, 0 0, 100% 0);
+        z-index: 10;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+    
+    .wheel-center {
+        position: absolute;
+        width: 50px;
+        height: 50px;
+        background: #333;
+        border-radius: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 5;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    }
+    
+    .spin-result {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 24px;
+        font-weight: bold;
+        min-height: 40px;
+    }
+    
+    .spins-left {
+        text-align: center;
+        margin-top: 10px;
+        font-weight: bold;
+        color: #666;
+    }
+    
+    @media (max-width: 576px) {
+        .wheel-container {
+            width: 250px;
+            height: 250px;
+        }
+    }
 </style>
 
 <nav class="navbar navbar-expand-lg navbar-light ek-navbar sticky-top">
@@ -203,6 +318,7 @@ if (isset($_SESSION['user_id']) && $pdo) {
                 <a href="user_messages.php" class="text-decoration-none" style="color:#0f3d2e;font-weight:700;"><i class="fas fa-envelope me-1"></i>Messages</a>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="#" class="text-decoration-none" style="color:#0f3d2e;font-weight:700;" data-bs-toggle="modal" data-bs-target="#referralModal"><i class="fas fa-user-friends me-1"></i>Refer Friend & Earn</a>
+                    <a href="#" class="text-decoration-none" style="color:#0f3d2e;font-weight:700;" data-bs-toggle="modal" data-bs-target="#spinModal"><i class="fas fa-sync-alt me-1"></i>Spin & Earn</a>
                 <?php else: ?>
                     <a href="register.php" class="text-decoration-none" style="color:#0f3d2e;font-weight:700;"><i class="fas fa-user-friends me-1"></i>Refer Friend & Earn</a>
                 <?php endif; ?>
@@ -211,5 +327,161 @@ if (isset($_SESSION['user_id']) && $pdo) {
     </div>
 </div>
 
+<!-- Spin & Earn Modal -->
+<div class="modal fade" id="spinModal" tabindex="-1" aria-labelledby="spinModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="spinModalLabel">🎡 Spin & Earn</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="spins-left" id="spinsLeft">Spins left: <span id="spinsCount">3</span></div>
+                
+                <div class="wheel-container">
+                    <div class="wheel-pointer"></div>
+                    <div class="wheel" id="wheel">
+                        <!-- Wheel sections will be generated by JavaScript -->
+                    </div>
+                    <div class="wheel-center"></div>
+                </div>
+                
+                <div class="spin-result" id="spinResult">
+                    Click SPIN to try your luck!
+                </div>
+                
+                <button id="spinWheelBtn" class="spin-btn mt-3" style="padding: 12px 30px;">
+                    <i class="fas fa-sync-alt"></i> SPIN
+                </button>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
-
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Spin & Earn functionality
+    const spinModal = document.getElementById('spinModal');
+    const spinWheelBtn = document.getElementById('spinWheelBtn');
+    const wheel = document.getElementById('wheel');
+    const spinResult = document.getElementById('spinResult');
+    const spinsCount = document.getElementById('spinsCount');
+    
+    // Create wheel sections
+    const rewards = ['₹20', '₹10', '₹30', '₹5', '₹15', 'Better Luck Next Time'];
+    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
+    
+    rewards.forEach((reward, index) => {
+        const section = document.createElement('div');
+        section.className = 'wheel-section';
+        section.style.transform = `rotate(${index * 60}deg)`;
+        section.style.backgroundColor = colors[index];
+        
+        const content = document.createElement('div');
+        content.className = 'wheel-section-content';
+        content.textContent = reward;
+        
+        section.appendChild(content);
+        wheel.appendChild(section);
+    });
+    
+    // Get initial spins count when modal is shown
+    spinModal.addEventListener('shown.bs.modal', function () {
+        fetch('spin_earn.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    spinsCount.textContent = data.spins_left;
+                    if (data.spins_left <= 0) {
+                        spinWheelBtn.disabled = true;
+                        spinWheelBtn.textContent = 'No Spins Left';
+                    }
+                }
+            })
+            .catch(error => console.error('Error:', error));
+    });
+    
+    // Spin the wheel
+    spinWheelBtn.addEventListener('click', function() {
+        // Disable button during spin
+        spinWheelBtn.disabled = true;
+        spinWheelBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Spinning...';
+        spinResult.textContent = 'Spinning...';
+        
+        // Send request to spin
+        fetch('spin_earn.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Update spins left
+                spinsCount.textContent = data.spins_left;
+                
+                // Check if reward is 20 or 30 (keep spinning)
+                if (data.reward == 20 || data.reward == 30) {
+                    // Animate wheel for continuous spin
+                    const spins = 5 + Math.floor(Math.random() * 5); // 5-10 extra spins
+                    const extraRotation = spins * 360;
+                    const randomAngle = Math.floor(Math.random() * 60);
+                    wheel.style.transform = `rotate(${extraRotation + randomAngle}deg)`;
+                    
+                    // After animation, show result
+                    setTimeout(() => {
+                        spinResult.textContent = data.message;
+                        spinWheelBtn.disabled = false;
+                        spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
+                        
+                        // Check if no spins left
+                        if (data.spins_left <= 0) {
+                            spinWheelBtn.disabled = true;
+                            spinWheelBtn.textContent = 'No Spins Left';
+                        }
+                    }, 4000);
+                } else {
+                    // Normal spin with result
+                    const rewardIndex = rewards.indexOf(data.reward > 0 ? '₹' + data.reward : 'Better Luck Next Time');
+                    const rotation = (360 - (rewardIndex * 60)) + (360 * 5); // 5 full rotations + position
+                    wheel.style.transform = `rotate(${rotation}deg)`;
+                    
+                    // After animation, show result
+                    setTimeout(() => {
+                        spinResult.textContent = data.message;
+                        spinWheelBtn.disabled = false;
+                        spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
+                        
+                        // Check if no spins left
+                        if (data.spins_left <= 0) {
+                            spinWheelBtn.disabled = true;
+                            spinWheelBtn.textContent = 'No Spins Left';
+                        }
+                    }, 4000);
+                }
+            } else {
+                // Error or no spins left
+                spinResult.textContent = data.message;
+                spinWheelBtn.disabled = false;
+                spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
+                
+                // If no spins left, disable button
+                if (data.message.includes('maximum spins')) {
+                    spinWheelBtn.disabled = true;
+                    spinWheelBtn.textContent = 'No Spins Left';
+                }
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            spinResult.textContent = 'Error occurred. Please try again.';
+            spinWheelBtn.disabled = false;
+            spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
+        });
+    });
+});
+</script>

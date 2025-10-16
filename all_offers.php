@@ -13,7 +13,7 @@ function normalize_image($path) {
     // Remove leading ../ if present from legacy stored paths
     $path = preg_replace('#^\.\./#', '', $path);
     // Ensure no leading slash issues
-    $path = ltrim($path, '/');  
+    $path = ltrim($path, '/');
     // Build absolute URL
     return url($path);
 }
@@ -137,6 +137,30 @@ if ($pdo) {
             max-width: 300px;
         }
         
+        /* Spin & Earn Button */
+        .spin-btn {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+            border: none;
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 50px;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(255, 154, 158, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .spin-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 154, 158, 0.6);
+        }
+        
+        .spin-btn:active {
+            transform: translateY(0);
+        }
+        
         /* Responsive improvements */
         @media (max-width: 768px) {
             .offer-card-col {
@@ -175,9 +199,14 @@ if ($pdo) {
     <div class="container mt-4">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1 class="text-primary">All Available Offers</h1>
-            <a href="index.php" class="btn btn-outline-primary">
-                <i class="fas fa-arrow-left me-2"></i>Back to Home
-            </a>
+            <div class="d-flex align-items-center gap-2">
+                <button id="spinBtn" class="spin-btn" data-bs-toggle="modal" data-bs-target="#spinModal">
+                    <i class="fas fa-sync-alt"></i> Spin & Earn
+                </button>
+                <a href="index.php" class="btn btn-outline-primary">
+                    <i class="fas fa-arrow-left me-2"></i>Back to Home
+                </a>
+            </div>
         </div>
         
         <?php if ($error): ?>
