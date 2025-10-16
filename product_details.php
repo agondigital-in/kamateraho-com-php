@@ -34,7 +34,7 @@ if ($type === 'card') {
         
         // Set variables for credit card
         $item['title'] = $item['title'];
-        $item['description'] = "Credit Card Offer";
+        $item['description'] = $item['description'] ?? "Credit Card Offer"; // Use actual description from DB
         $item['price'] = 0;
         $item['image'] = $item['image'];
         $item['redirect_url'] = $item['link'];
