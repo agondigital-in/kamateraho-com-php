@@ -61,6 +61,20 @@ if ($pdo) {
                 $card['image'] = normalize_image($card['image']);
             }
         }
+        
+        // Remove duplicate credit cards based on title
+        $seen_titles = [];
+        $unique_credit_cards = [];
+        foreach ($credit_cards as $card) {
+            if (!in_array($card['title'], $seen_titles)) {
+                $seen_titles[] = $card['title'];
+                $unique_credit_cards[] = $card;
+            }
+        }
+        $credit_cards = $unique_credit_cards;
+        
+        // Limit to 8 credit cards maximum
+        $credit_cards = array_slice($credit_cards, 0, 8);
     } catch(PDOException $e) {
         $credit_cards = [];
     }
