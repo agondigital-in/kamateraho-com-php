@@ -30,11 +30,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_email'])) {
             $failed_emails = [];
             
             foreach ($users as $user) {
-                // Include the email template
-                include '../admin/email_template.php';
+                // Check if this is a special Diwali offer
+                $isDiwaliOffer = (strpos(strtolower($subject), 'diwali') !== false);
                 
-                // Generate HTML email content
-                $htmlContent = getEmailTemplate($subject, $message, $user['name']);
+                if ($isDiwaliOffer) {
+                    // Include the Diwali email template
+                    include_once '../admin/diwali_email_template.php';
+                    $htmlContent = getDiwaliEmailTemplate($user['name']);
+                } else {
+                    // Include the regular email template
+                    include_once '../admin/email_template.php';
+                    $htmlContent = getEmailTemplate($subject, $message, $user['name']);
+                }
                 
                 $api_data = [
                     'email' => $user['email'],

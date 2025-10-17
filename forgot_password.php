@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updateStmt->execute([$hashedPassword, $email]);
                 
                 // Include the email template
-                include 'admin/email_template.php';
+                include_once 'admin/email_template.php';
                 
                 // Prepare email content
                 $emailSubject = 'Your New Password for KamateRaho';

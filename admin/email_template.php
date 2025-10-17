@@ -4,6 +4,8 @@
  * This template can be used for sending HTML emails
  */
 
+// Prevent multiple inclusions
+if (!function_exists('getEmailTemplate')) {
 function getEmailTemplate($subject, $message, $userName = '') {
     // Read the HTML template file
     $templatePath = __DIR__ . '/email_template.html';
@@ -51,4 +53,5 @@ function getEmailTemplate($subject, $message, $userName = '') {
     
     return $template;
 }
+} // Close function_exists check
 ?>
