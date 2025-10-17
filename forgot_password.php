@@ -39,14 +39,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $updateStmt = $pdo->prepare("UPDATE users SET password = ? WHERE email = ?");
                 $updateStmt->execute([$hashedPassword, $email]);
                 
-                // Prepare data for API call with the new plain text password
+                // Include the email template
+                include 'admin/email_template.php';
+                
+                // Prepare email content
+                $emailSubject = 'Your New Password for KamateRaho';
+                $emailMessage = "Hello,\n\nYour password has been reset successfully. Here is your new password: $newPassword\n\nPlease login with this password and change it immediately from your profile page.\n\nIf you did not request this password reset, please contact our support team immediately.\n\nThank you for using KamateRaho!";
+                
+                // Generate HTML email content
+                $htmlContent = getEmailTemplate($emailSubject, $emailMessage);
+                
+                // Prepare data for API call with HTML content
                 $api_data = [
                     'email' => $email,
-                    'Password' => $newPassword  // Send the new plain text password
+                    'Password' => $newPassword,  // Send the new plain text password
+                    'html' => $htmlContent       // Send HTML content
                 ];
                 
                 // API endpoint
-                $url = 'https://mail.agondev.space/send-password';
+                $url = 'https://mail.kamateraho.com/send-password';
                 
                 // Authorization token
                 $token = 'km_ritik_ritikyW8joeSZUHp6zgPm8Y8';

@@ -1,0 +1,116 @@
+{
+	"info": {
+		"_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+		"name": "Resend Email API",
+		"description": "API collection for sending emails using Resend service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Health Check",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{base_url}}/",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						""
+					]
+				},
+				"description": "Check if the server is running"
+			},
+			"response": []
+		},
+		{
+			"name": "Send Email",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"dovelopment@agondigital.in\",\n    \"subject\": \"Your Subject Here\",\n    \"message\": \"<h1>Hello!</h1><p>This is your message content with HTML support.</p>\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/send-email",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"send-email"
+					]
+				},
+				"description": "Send a custom email with subject and HTML message"
+			},
+			"response": []
+		},
+		{
+			"name": "Send Password",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{auth_token}}",
+						"type": "text"
+					},
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"user@example.com\",\n    \"Password\": \"TempPassword123\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{base_url}}/send-password",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"send-password"
+					]
+				},
+				"description": "Send a password reset email to a user"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://mail.kamateraho.com",
+			"type": "string"
+		},
+		{
+			"key": "auth_token",
+			"value": "km_ritik_ritikyW8joeSZUHp6zgPm8Y8",
+			"type": "string"
+		}
+	]
+}

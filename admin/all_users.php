@@ -30,14 +30,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_email'])) {
             $failed_emails = [];
             
             foreach ($users as $user) {
+                // Include the email template
+                include '../admin/email_template.php';
+                
+                // Generate HTML email content
+                $htmlContent = getEmailTemplate($subject, $message, $user['name']);
+                
                 $api_data = [
                     'email' => $user['email'],
                     'subject' => $subject,
-                    'message' => $message
+                    'message' => $message,
+                    'html' => $htmlContent
                 ];
                 
                 // API endpoint for sending emails
-                $url = 'https://mail.agondev.space/send-email';
+                $url = 'https://mail.kamateraho.com/send-email';
                 
                 // Authorization token (same as used in forgot_password.php)
                 $token = 'km_ritik_ritikyW8joeSZUHp6zgPm8Y8';
