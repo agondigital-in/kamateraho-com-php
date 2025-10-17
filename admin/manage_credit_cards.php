@@ -183,6 +183,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch(PDOException $e) {
             $error = "Error updating credit card status: " . $e->getMessage();
         }
+    } elseif (isset($_POST['edit_card'])) {
+        // Redirect to edit page
+        $id = $_POST['id'];
+        header("Location: edit_credit_card.php?id=" . $id);
+        exit;
     }
 }
 
@@ -228,49 +233,49 @@ if ($isSubAdmin) {
     
     <!-- Add Credit Card Form -->
     <div class="card mb-4">
-        <div class="card-header">
-            <h5>Add New Credit Card</h5>
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">Add New Credit Card</h5>
         </div>
         <div class="card-body">
-            <form method="POST" enctype="multipart/form-data">
+            <form method="POST" enctype="multipart/form-data" class="credit-card-form">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="title" class="form-label">Card Title</label>
+                            <label for="title" class="form-label fw-bold">Card Title</label>
                             <input type="text" class="form-control" id="title" name="title" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
+                            <label for="description" class="form-label fw-bold">Description</label>
                             <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="link" class="form-label">Link URL</label>
+                            <label for="link" class="form-label fw-bold">Link URL</label>
                             <input type="url" class="form-control" id="link" name="link" required>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="sequence_id" class="form-label">Sequence ID</label>
+                            <label for="sequence_id" class="form-label fw-bold">Sequence ID</label>
                             <input type="number" class="form-control" id="sequence_id" name="sequence_id" min="0" value="0">
                         </div>
 
                         <div class="row">
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label for="amount" class="form-label">Amount (₹)</label>
+                                    <label for="amount" class="form-label fw-bold">Amount (₹)</label>
                                     <input type="number" class="form-control" id="amount" name="amount" step="0.01" min="0" value="0">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label for="percentage" class="form-label">Percentage (%)</label>
+                                    <label for="percentage" class="form-label fw-bold">Percentage (%)</label>
                                     <input type="number" class="form-control" id="percentage" name="percentage" step="0.01" min="0" max="100" value="0">
                                 </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="mb-3">
-                                    <label for="flat_rate" class="form-label">Flat Rate (₹)</label>
+                                    <label for="flat_rate" class="form-label fw-bold">Flat Rate (₹)</label>
                                     <input type="number" class="form-control" id="flat_rate" name="flat_rate" step="0.01" min="0" value="0">
                                 </div>
                             </div>
@@ -278,105 +283,111 @@ if ($isSubAdmin) {
                         
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="is_active" name="is_active" checked>
-                            <label class="form-check-label" for="is_active">Active</label>
+                            <label class="form-check-label fw-bold" for="is_active">Active</label>
                         </div>
                     </div>
                     
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label for="image" class="form-label">Card Image</label>
+                            <label for="image" class="form-label fw-bold">Card Image</label>
                             <input type="file" class="form-control" id="image" name="image" accept="image/*" required>
                             <div class="form-text">Recommended size: 300x200 pixels</div>
+                        </div>
+                        
+                        <!-- Image preview -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Image Preview</label>
+                            <div class="border rounded p-2 text-center" style="height: 200px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                                <span class="text-muted">No image selected</span>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
-                <button type="submit" name="add_card" class="btn btn-primary">Add Credit Card</button>
+                <div class="d-grid">
+                    <button type="submit" name="add_card" class="btn btn-primary btn-lg">Add Credit Card</button>
+                </div>
             </form>
         </div>
     </div>
     
     <!-- Credit Cards List -->
     <div class="card">
-        <div class="card-header">
-            <h5>Credit Cards</h5>
+        <div class="card-header bg-secondary text-white">
+            <h5 class="mb-0">Credit Cards</h5>
         </div>
         <div class="card-body">
             <?php if (empty($credit_cards)): ?>
-                <p>No credit cards found.</p>
+                <div class="text-center py-5">
+                    <i class="fas fa-credit-card fa-3x text-muted mb-3"></i>
+                    <h4>No credit cards found</h4>
+                    <p class="text-muted">Add your first credit card using the form above</p>
+                </div>
             <?php else: ?>
-                <div class="table-responsive">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Amount Details</th>
-                                <th>Link</th>
-                                <th>Sequence</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($credit_cards as $card): ?>
-                                <tr>
-                                    <td>
-                                        <?php if (!empty($card['image'])): ?>
-                                            <img src="../<?php echo htmlspecialchars($card['image']); ?>" alt="<?php echo htmlspecialchars($card['title']); ?>" style="width: 100px; height: auto;">
-                                        <?php else: ?>
-                                            <span class="text-muted">No image</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($card['title']); ?></td>
-                                    <td><?php echo htmlspecialchars($card['description'] ?? ''); ?></td>
-                                    <td>
+                <div class="row">
+                    <?php foreach ($credit_cards as $card): ?>
+                        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-4">
+                            <div class="card h-100 shadow-sm">
+                                <div style="height: 150px; overflow: hidden; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                                    <?php if (!empty($card['image'])): ?>
+                                        <img src="../<?php echo htmlspecialchars($card['image']); ?>" alt="<?php echo htmlspecialchars($card['title']); ?>" class="card-img-top" style="object-fit: contain; max-height: 100%; width: auto;">
+                                    <?php else: ?>
+                                        <i class="fas fa-credit-card fa-2x text-muted"></i>
+                                    <?php endif; ?>
+                                </div>
+                                <div class="card-body d-flex flex-column">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($card['title']); ?></h5>
+                                    <p class="card-text flex-grow-1">
+                                        <?php echo htmlspecialchars(substr($card['description'] ?? 'No description', 0, 80)); ?>
+                                        <?php if (strlen($card['description'] ?? '') > 80): ?>...<?php endif; ?>
+                                    </p>
+                                    
+                                    <div class="mb-2">
                                         <?php if ($card['amount'] > 0): ?>
-                                            <div>Amount: ₹<?php echo number_format($card['amount'], 2); ?></div>
+                                            <span class="badge bg-primary">₹<?php echo number_format($card['amount'], 0); ?></span>
                                         <?php endif; ?>
                                         <?php if ($card['percentage'] > 0): ?>
-                                            <div>Percentage: <?php echo number_format($card['percentage'], 2); ?>%</div>
+                                            <span class="badge bg-success"><?php echo number_format($card['percentage'], 0); ?>%</span>
                                         <?php endif; ?>
                                         <?php if ($card['flat_rate'] > 0): ?>
-                                            <div>Flat Rate: ₹<?php echo number_format($card['flat_rate'], 2); ?></div>
+                                            <span class="badge bg-warning text-dark">Flat ₹<?php echo number_format($card['flat_rate'], 0); ?></span>
                                         <?php endif; ?>
-                                        <?php if ($card['amount'] == 0 && $card['percentage'] == 0 && $card['flat_rate'] == 0): ?>
-                                            <span class="text-muted">No amount details</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <?php if (!empty($card['link'])): ?>
-                                            <a href="<?php echo htmlspecialchars($card['link']); ?>" target="_blank">View Link</a>
-                                        <?php else: ?>
-                                            <span class="text-muted">No link</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td><?php echo htmlspecialchars($card['sequence_id'] ?? '0'); ?></td>
-                                    <td>
-                                        <?php if ($card['is_active']): ?>
-                                            <span class="badge bg-success">Active</span>
-                                        <?php else: ?>
-                                            <span class="badge bg-secondary">Inactive</span>
-                                        <?php endif; ?>
-                                    </td>
-                                    <td>
-                                        <form method="POST" class="d-inline">
-                                            <input type="hidden" name="id" value="<?php echo $card['id']; ?>">
-                                            <input type="hidden" name="is_active" value="<?php echo $card['is_active'] ? 0 : 1; ?>">
-                                            <button type="submit" name="toggle_active" class="btn btn-sm btn-<?php echo $card['is_active'] ? 'warning' : 'success'; ?>">
-                                                <?php echo $card['is_active'] ? 'Deactivate' : 'Activate'; ?>
-                                            </button>
-                                        </form>
-                                        <form method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this credit card?');">
-                                            <input type="hidden" name="id" value="<?php echo $card['id']; ?>">
-                                            <button type="submit" name="delete_card" class="btn btn-sm btn-danger">Delete</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
+                                    </div>
+                                    
+                                    <div class="mt-auto">
+                                        <div class="d-flex justify-content-between align-items-center mb-2">
+                                            <small class="text-muted">Sequence: <?php echo htmlspecialchars($card['sequence_id'] ?? '0'); ?></small>
+                                            <?php if ($card['is_active']): ?>
+                                                <span class="badge bg-success">Active</span>
+                                            <?php else: ?>
+                                                <span class="badge bg-secondary">Inactive</span>
+                                            <?php endif; ?>
+                                        </div>
+                                        
+                                        <div class="btn-group w-100" role="group">
+                                            <form method="POST" class="w-50">
+                                                <input type="hidden" name="id" value="<?php echo $card['id']; ?>">
+                                                <input type="hidden" name="is_active" value="<?php echo $card['is_active'] ? 0 : 1; ?>">
+                                                <button type="submit" name="toggle_active" class="btn btn-sm btn-<?php echo $card['is_active'] ? 'warning' : 'success'; ?> w-100">
+                                                    <?php echo $card['is_active'] ? 'Deactivate' : 'Activate'; ?>
+                                                </button>
+                                            </form>
+                                            <form method="POST" class="w-50">
+                                                <input type="hidden" name="id" value="<?php echo $card['id']; ?>">
+                                                <button type="submit" name="edit_card" class="btn btn-sm btn-info w-100 text-white">
+                                                    Edit
+                                                </button>
+                                            </form>
+                                            <form method="POST" class="w-50" onsubmit="return confirm('Are you sure you want to delete this credit card?');">
+                                                <input type="hidden" name="id" value="<?php echo $card['id']; ?>">
+                                                <button type="submit" name="delete_card" class="btn btn-sm btn-danger w-100">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
             <?php endif; ?>
         </div>

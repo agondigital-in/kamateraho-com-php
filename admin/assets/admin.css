@@ -432,3 +432,290 @@
         font-size: 1.1rem;
     }
 }
+
+/* Description styling for admin panel */
+.admin-description, strong {
+    font-weight: bolder;
+    overflow: hidden;
+    width: 100px;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+
+/* Responsive styles for Credit Cards section in manage_credit_cards.php */
+.credit-cards-section {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+.credit-cards-section::-webkit-scrollbar {
+    height: 8px;
+}
+
+.credit-cards-section::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.credit-cards-section::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 4px;
+}
+
+.credit-cards-section::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Enhanced Credit Card UI Styles */
+.card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1rem;
+}
+
+.credit-card-item {
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+}
+
+.credit-card-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0,0,0,0.1);
+}
+
+.credit-card-image {
+    height: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    overflow: hidden;
+}
+
+.credit-card-image img {
+    max-height: 100%;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+.credit-card-content {
+    padding: 1rem;
+}
+
+.credit-card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.credit-card-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 1rem;
+    min-height: 60px;
+}
+
+.credit-card-badges {
+    margin-bottom: 1rem;
+}
+
+.credit-card-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.credit-card-actions .btn {
+    flex: 1;
+    font-size: 0.8rem;
+    padding: 0.4rem 0.6rem;
+}
+
+.credit-card-status {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+/* Edit button styling */
+.btn-info {
+    background-color: #17a2b8;
+    border-color: #17a2b8;
+}
+
+.btn-info:hover {
+    background-color: #138496;
+    border-color: #117a8b;
+}
+
+@media (max-width: 768px) {
+    /* Adjust table for better mobile viewing */
+    .table th, .table td {
+        white-space: normal;
+        word-wrap: break-word;
+    }
+    
+    /* Reduce image size in table */
+    .table img {
+        max-width: 60px;
+        height: auto;
+    }
+    
+    /* Stack action buttons vertically */
+    .table .btn-group-sm {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .table .btn-group-sm .btn {
+        margin-bottom: 0;
+        width: 100%;
+    }
+    
+    /* Adjust card grid for tablets */
+    .card-grid {
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    /* Further adjust table for small screens */
+    .table-responsive {
+        font-size: 0.7rem;
+    }
+    
+    /* Reduce image size even more */
+    .table img {
+        max-width: 40px;
+    }
+    
+    /* Reduce padding for better fit */
+    .table th, .table td {
+        padding: 0.25rem;
+    }
+    
+    /* Adjust card body padding */
+    .card-body {
+        padding: 0.75rem;
+    }
+    
+    /* Adjust card grid for mobile */
+    .card-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .credit-card-image {
+        height: 140px;
+    }
+}
+
+@media (max-width: 400px) {
+    /* Further reduce image size */
+    .table img {
+        max-width: 30px;
+    }
+    
+    /* Minimal padding for very small screens */
+    .table th, .table td {
+        padding: 0.15rem;
+        font-size: 0.65rem;
+    }
+    
+    /* Adjust form elements */
+    .form-control, .form-select {
+        padding: 6px 8px;
+        font-size: 0.75rem;
+    }
+    
+    .form-label {
+        font-size: 0.75rem;
+    }
+    
+    /* Adjust card header */
+    .card-header {
+        padding: 8px;
+        font-size: 0.9rem;
+    }
+    
+    /* Adjust button sizes */
+    .btn {
+        padding: 4px 8px;
+        font-size: 0.7rem;
+    }
+    
+    .btn-sm {
+        padding: 3px 6px;
+        font-size: 0.65rem;
+    }
+    
+    /* Adjust credit card item for small screens */
+    .credit-card-image {
+        height: 120px;
+    }
+    
+    .credit-card-content {
+        padding: 0.75rem;
+    }
+    
+    .credit-card-title {
+        font-size: 1rem;
+    }
+    
+    .credit-card-description {
+        font-size: 0.8rem;
+        min-height: 50px;
+    }
+}
+
+/* Specific styles for Credit Cards form */
+.credit-card-form .row {
+    margin-bottom: 1rem;
+}
+
+.credit-card-form .col-md-6 {
+    margin-bottom: 1rem;
+}
+
+.credit-card-form .form-label {
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .credit-card-form .col-md-6 {
+        margin-bottom: 0.75rem;
+    }
+    
+    .credit-card-form .form-label {
+        font-size: 0.85rem;
+    }
+    
+    .credit-card-form .form-control {
+        font-size: 0.85rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .credit-card-form .col-md-6 {
+        margin-bottom: 0.5rem;
+    }
+    
+    /* Stack amount fields vertically on small screens */
+    .credit-card-form .col-md-4 {
+        flex: 0 0 100%;
+        max-width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
