@@ -498,7 +498,7 @@
             </div>
               <!-- Blog Post 7 -->
             <div class="blog-card">
-                <img src="https://delhicourses.in/wp-content/uploads/2017/11/earn-with-images.jpg" alt="Blog Post" class="blog-image">
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760682009/Gemini_Generated_Image_t5redbt5redbt5re_o3g6ym.png" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>How to Make Money Online Without Investment
 </h3>
@@ -507,7 +507,7 @@
                         <span><i class="far fa-user"></i> Admin</span>
                     </div>
                     <p class="blog-excerpt">How I Earned ₹50,000 per Month Online ..</p>
-                     <a href="post6.php" class="read-more">Read More</a>
+                     <a href="post7.php" class="read-more">Read More</a>
                 </div>
             </div>
         </div>
