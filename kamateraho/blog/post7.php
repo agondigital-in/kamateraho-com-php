@@ -91,6 +91,7 @@
 </head>
 <body>
   <section class="hero">
+    <a href="./index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
     <h1>Best Referral Programs to Earn ₹500 Daily Online</h1>
     <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760682530/Gemini_Generated_Image_uaqfwjuaqfwjuaqf_b56e1h.png" alt="Referral Programs">
   </section>
