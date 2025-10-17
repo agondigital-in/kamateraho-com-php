@@ -52,8 +52,15 @@ if ($pdo) {
     
     // Fetch active credit cards
     try {
-        $stmt = $pdo->query("SELECT id, title, image, link, amount, percentage, flat_rate, is_active, created_at FROM credit_cards WHERE is_active = 1 ORDER BY created_at DESC LIMIT 4");
+        $stmt = $pdo->query("SELECT id, title, image, link, amount, percentage, flat_rate, is_active, created_at FROM credit_cards ORDER BY created_at DESC");
         $credit_cards = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // Normalize image paths for credit cards
+        foreach ($credit_cards as &$card) {
+            if (!empty($card['image'])) {
+                $card['image'] = normalize_image($card['image']);
+            }
+        }
     } catch(PDOException $e) {
         $credit_cards = [];
     }
@@ -985,6 +992,43 @@ if ($pdo) {
             -ms-overflow-style: none;  /* IE and Edge */
             scrollbar-width: none;  /* Firefox */
         }
+        
+        /* Additional responsive improvements */
+        @media (max-width: 768px) {
+            .filter-sort-container {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+            
+            .filter-sort-container .form-select {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .btn-earn-money, .btn-outline-primary {
+                font-size: 0.7rem !important;
+                padding: 0.25rem 0.4rem !important;
+            }
+            
+            /* Reduce title font size on small screens */
+            .offer-card-col .card-title {
+                font-size: 0.8rem !important;
+            }
+            
+            /* Adjust price tag font size */
+            .price-tag {
+                font-size: 1rem !important;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            /* Further reduce title font size */
+            .offer-card-col .card-title {
+                font-size: 0.75rem !important;
+            }
+        }
     </style>
 </head>
 
@@ -1178,7 +1222,7 @@ if ($pdo) {
                             endforeach;
                             
                             // Display items twice for seamless looping
-                            // I HAVE ADD https://kamateraho.com/  IN 544 THOUSAND LINES NUMBERS
+                            // I HAVE ADD https://kamateraho.com/  IN  544 THOUSAND LINES NUMBERS
                             for ($i = 0; $i < 2; $i++):
                                 foreach ($category_items as $category): ?>
                                     <div class="category-card-wrapper">
@@ -1276,9 +1320,9 @@ if ($pdo) {
     <?php endif; ?>
     <?php endif; ?> -->
 
-            
-            <!-- Trending Promotion Tasks -->
-            <div class="text-start mb-4">
+             <!-- Best Life Insurance Free Credit Cards -->
+            <section class="mb-5">
+                 <div class="text-start mb-4">
                 <h2 class="text-primary">Trending Promotion Tasks</h2>
                 <!-- Filter and Sort Options -->
                 <div class="d-flex justify-content-between align-items-center mb-3 filter-sort-container">
@@ -1293,120 +1337,11 @@ if ($pdo) {
                     </form>
                 </div>
             </div>
-            
-            <!-- Display uploaded offers in Trending Promotion Tasks section -->
-            <?php
-            // Fetch all offers for display in Trending Promotion Tasks with sorting
-            try {
-                // Default sort order is sequence ID
-                $sort_order = "sequence_id ASC, price DESC";
-                if (isset($_GET['sort'])) {
-                    switch ($_GET['sort']) {
-                        case 'price_asc':
-                            $sort_order = "price ASC";
-                            break;
-                        case 'newest':
-                            $sort_order = "created_at DESC";
-                            break;
-                        case 'oldest':
-                            $sort_order = "created_at ASC";
-                            break;
-                        case 'sequence':
-                            $sort_order = "sequence_id ASC, price DESC";
-                            break;
-                        case 'price_desc':
-                            $sort_order = "price DESC";
-                            break;
-                        default:
-                            // Default to sequence order when no valid sort option is selected
-                            $sort_order = "sequence_id ASC, price DESC";
-                            break;
-                    }
-                }
-                
-                $stmt = $pdo->query("SELECT * FROM offers WHERE is_active = 1 ORDER BY " . $sort_order);
-                $all_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            } catch(PDOException $e) {
-                $all_offers = [];
-            }
-            ?>
-            
-            <?php if (empty($all_offers)): ?>
-                <div class="alert alert-info text-center">
-                    No offers available yet. Please check back later.
-                </div>
-            <?php else: ?>
-                <div class="row g-3">
-                    <?php foreach (array_slice($all_offers, 0, 12) as $index => $offer): ?>
-                        <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 offer-card-col">
-                            <div class="flash-card h-100">
-                                <?php 
-                                // Determine image source
-                                $image_src = '';
-                                if (!empty($offer['image'])) {
-                                    if (preg_match('/^https?:\/\//i', $offer['image'])) {
-                                        $image_src = $offer['image'];
-                                    } else {
-                                        $image_src = htmlspecialchars($offer['image']);
-                                    }
-                                }
-                                ?>
-                                <div class="flash-banner">
-                                    <?php if (!empty($image_src)): ?>
-                                        <img src="<?php echo $image_src; ?>" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="object-fit: contain; width: 100%; height: 100%;">
-                                    <?php else: ?>
-                                        <div class="text-white fw-bold">Deal</div>
-                                    <?php endif; ?>
-                                    <span class="flash-pill">Flash Sale</span>
-                                </div>
-                                
-                                <div class="p-2">
-                                    <div class="text-dark fw-bold text-center mb-1" style="min-height:40px;font-size:.95rem;">
-                                        <?php echo htmlspecialchars($offer['title']); ?>
-                                    </div>
-                                    <div class="meta">
-                                        <div>
-                                            <small>Starting From</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
-                                        </div>
-                                        <div>
-                                            <!-- <small>Per Sale You Earn</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div> -->
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="actions">
-                                    <div class="d-flex gap-2 flex-wrap">
-                                        <?php $share_text = 'Check this deal: ' . url('product_details.php?id=' . $offer['id']); ?>
-                                        <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-now flex-fill">EARN NOW</a>
-                                        <a class="btn btn-share flex-fill" target="_blank" href="https://api.whatsapp.com/send?text=<?php echo urlencode($share_text); ?>">
-                                            <i class="fab fa-whatsapp me-1"></i> SHARE NOW
-                                        </a>
-                                        <button class="btn btn-copy-outline copy-link-btn flex-fill" 
-                                                data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($offer['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
-                                                <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
-                                            <?php echo isset($_SESSION['user_id']) ? 'COPY LINK' : 'Login to Copy'; ?>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <?php 
-                        // Add a clearfix after every 3 cards for proper grid layout
-                        if (($index + 1) % 3 == 0 && $index < count($all_offers) - 1): ?>
-                            <div class="clearfix d-none d-lg-block"></div>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </div>
-            <?php endif; ?>
-
-            <!-- Best Life Insurance Free Credit Cards -->
-            <section class="mb-5">
-               
                 
                 <?php if (empty($credit_cards)): ?>
-                   
+                    <div class="alert alert-info text-center">
+                        No credit cards available yet. Please check back later.
+                    </div>
                 <?php else: ?>
                     <div class="row g-4">
                         <?php foreach ($credit_cards as $card): ?>
@@ -1583,6 +1518,117 @@ if ($pdo) {
                     </div>
                 <?php endif; ?>
             </section>
+            <!-- Trending Promotion Tasks -->
+          
+            
+            <!-- Display uploaded offers in Trending Promotion Tasks section -->
+            <?php
+            // Fetch all offers for display in Trending Promotion Tasks with sorting
+            try {
+                // Default sort order is sequence ID
+                $sort_order = "sequence_id ASC, price DESC";
+                if (isset($_GET['sort'])) {
+                    switch ($_GET['sort']) {
+                        case 'price_asc':
+                            $sort_order = "price ASC";
+                            break;
+                        case 'newest':
+                            $sort_order = "created_at DESC";
+                            break;
+                        case 'oldest':
+                            $sort_order = "created_at ASC";
+                            break;
+                        case 'sequence':
+                            $sort_order = "sequence_id ASC, price DESC";
+                            break;
+                        case 'price_desc':
+                            $sort_order = "price DESC";
+                            break;
+                        default:
+                            // Default to sequence order when no valid sort option is selected
+                            $sort_order = "sequence_id ASC, price DESC";
+                            break;
+                    }
+                }
+                
+                $stmt = $pdo->query("SELECT * FROM offers WHERE is_active = 1 ORDER BY " . $sort_order);
+                $all_offers = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            } catch(PDOException $e) {
+                $all_offers = [];
+            }
+            ?>
+            
+            <?php if (empty($all_offers)): ?>
+                <div class="alert alert-info text-center">
+                    No offers available yet. Please check back later.
+                </div>
+            <?php else: ?>
+                <div class="row g-3">
+                    <?php foreach (array_slice($all_offers, 0, 12) as $index => $offer): ?>
+                        <div class="col-xxl-4 col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12 offer-card-col">
+                            <div class="flash-card h-100">
+                                <?php 
+                                // Determine image source
+                                $image_src = '';
+                                if (!empty($offer['image'])) {
+                                    if (preg_match('/^https?:\/\//i', $offer['image'])) {
+                                        $image_src = $offer['image'];
+                                    } else {
+                                        $image_src = htmlspecialchars($offer['image']);
+                                    }
+                                }
+                                ?>
+                                <div class="flash-banner">
+                                    <?php if (!empty($image_src)): ?>
+                                        <img src="<?php echo $image_src; ?>" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="object-fit: contain; width: 100%; height: 100%;">
+                                    <?php else: ?>
+                                        <div class="text-white fw-bold">Deal</div>
+                                    <?php endif; ?>
+                                    <span class="flash-pill">Flash Sale</span>
+                                </div>
+                                
+                                <div class="p-2">
+                                    <div class="text-dark fw-bold text-center mb-1" style="min-height:40px;font-size:.95rem;">
+                                        <?php echo htmlspecialchars($offer['title']); ?>
+                                    </div>
+                                    <div class="meta">
+                                        <div>
+                                            <small>Starting From</small>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
+                                        </div>
+                                        <div>
+                                            <!-- <small>Per Sale You Earn</small>
+                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="actions">
+                                    <div class="d-flex gap-2 flex-wrap">
+                                        <?php $share_text = 'Check this deal: ' . url('product_details.php?id=' . $offer['id']); ?>
+                                        <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-now flex-fill">EARN NOW</a>
+                                        <a class="btn btn-share flex-fill" target="_blank" href="https://api.whatsapp.com/send?text=<?php echo urlencode($share_text); ?>">
+                                            <i class="fab fa-whatsapp me-1"></i> SHARE NOW
+                                        </a>
+                                        <button class="btn btn-copy-outline copy-link-btn flex-fill" 
+                                                data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($offer['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
+                                                <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
+                                            <?php echo isset($_SESSION['user_id']) ? 'COPY LINK' : 'Login to Copy'; ?>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <?php 
+                        // Add a clearfix after every 3 cards for proper grid layout
+                        if (($index + 1) % 3 == 0 && $index < count($all_offers) - 1): ?>
+                            <div class="clearfix d-none d-lg-block"></div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            <?php endif; ?>
+
+           
             
            
         <?php endif; ?>

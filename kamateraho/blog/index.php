@@ -496,6 +496,20 @@
                      <a href="post6.php" class="read-more">Read More</a>
                 </div>
             </div>
+              <!-- Blog Post 7 -->
+            <div class="blog-card">
+                <img src="https://delhicourses.in/wp-content/uploads/2017/11/earn-with-images.jpg" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>How to Make Money Online Without Investment
+</h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Oct 17, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">How I Earned ₹50,000 per Month Online ..</p>
+                     <a href="post6.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">

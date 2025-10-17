@@ -153,8 +153,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     }
                 }
                 
-                // Use JavaScript redirect to avoid headers already sent error
-                echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card deleted successfully!") . "';</script>";
+                // Use PHP header redirect for better reliability
+                header("Location: manage_credit_cards.php?success=" . urlencode("Credit card deleted successfully!"));
                 exit;
             }
         } catch(PDOException $e) {
@@ -177,8 +177,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             }
             
-            // Use JavaScript redirect to avoid headers already sent error
-            echo "<script>window.location.href = 'manage_credit_cards.php?success=" . urlencode("Credit card status updated successfully!") . "';</script>";
+            // Use PHP header redirect for better reliability
+            header("Location: manage_credit_cards.php?success=" . urlencode("Credit card status updated successfully!"));
             exit;
         } catch(PDOException $e) {
             $error = "Error updating credit card status: " . $e->getMessage();
