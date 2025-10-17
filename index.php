@@ -326,6 +326,12 @@ if ($pdo) {
             .peeking-carousel-container {
                 padding: 0 40px;
             }
+            
+            /* Reduce image height and width on tablets */
+            .carousel-card .card-img-top {
+                height: 160px !important;
+                object-fit: contain !important;
+            }
         }
         
         @media (max-width: 576px) {
@@ -345,6 +351,12 @@ if ($pdo) {
                 width: 40px;
                 height: 40px;
             }
+            
+            /* Further reduce image height and width on mobile */
+            .carousel-card .card-img-top {
+                height: 140px !important;
+                object-fit: contain !important;
+            }
         }
         
         @media (max-width: 400px) {
@@ -363,6 +375,20 @@ if ($pdo) {
             .peeking-carousel-nav {
                 width: 35px;
                 height: 35px;
+            }
+            
+            /* Further reduce image height and width on small screens */
+            .carousel-card .card-img-top {
+                height: 120px !important;
+                object-fit: contain !important;
+            }
+        }
+        
+        @media (max-width: 350px) {
+            /* Further reduce image height and width on very small screens */
+            .carousel-card .card-img-top {
+                height: 100px !important;
+                object-fit: contain !important;
             }
         }
         
