@@ -713,6 +713,30 @@ if ($pdo) {
             filter: brightness(1.03); 
             color:#fff; 
         }
+        
+        /* Ensure all action buttons in Trending Promotion Tasks have equal size */
+        .actions .btn {
+            white-space: nowrap;
+            font-size: 0.85rem;
+            padding: 0.5rem 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 40px; /* Ensure consistent height */
+        }
+        
+        /* Desktop: inline 3 buttons */
+        @media (min-width: 768px) {
+            .actions .btn { 
+                width: auto; 
+            }
+        }
+        /* Mobile: stack buttons full width */
+        @media (max-width: 767.98px) {
+            .actions .btn { 
+                width: 100%; 
+            }
+        }
 
         /* Ad-style tiles (2 rows x 4 columns) */
         .tile-card { 
@@ -1605,11 +1629,11 @@ if ($pdo) {
                                 <div class="actions">
                                     <div class="d-flex gap-2 flex-wrap">
                                         <?php $share_text = 'Check this deal: ' . url('product_details.php?id=' . $offer['id']); ?>
-                                        <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-now flex-fill">EARN NOW</a>
-                                        <a class="btn btn-share flex-fill" target="_blank" href="https://api.whatsapp.com/send?text=<?php echo urlencode($share_text); ?>">
+                                        <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-now flex-fill text-center">EARN NOW</a>
+                                        <a class="btn btn-share flex-fill text-center" target="_blank" href="https://api.whatsapp.com/send?text=<?php echo urlencode($share_text); ?>">
                                             <i class="fab fa-whatsapp me-1"></i> SHARE NOW
                                         </a>
-                                        <button class="btn btn-copy-outline copy-link-btn flex-fill" 
+                                        <button class="btn btn-copy-outline copy-link-btn flex-fill text-center" 
                                                 data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($offer['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
                                                 <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
                                             <?php echo isset($_SESSION['user_id']) ? 'COPY LINK' : 'Login to Copy'; ?>
