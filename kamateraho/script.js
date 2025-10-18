@@ -402,3 +402,55 @@ window.addEventListener('resize', function() {
         menuToggle.classList.remove('active');
     }
 });
+
+// Popup Modal Functionality
+document.addEventListener('DOMContentLoaded', function() {
+    // Create popup functionality
+    const popup = document.getElementById('imagePopup');
+    const popupImage = document.getElementById('popupImage');
+    const closeBtn = document.querySelector('.popup-close');
+    
+    // Function to show popup with image
+    function showPopup(imageSrc) {
+        if (popup && popupImage) {
+            popupImage.src = imageSrc;
+            popup.style.display = 'block';
+            document.body.style.overflow = 'hidden'; // Prevent background scrolling
+        }
+    }
+    
+    // Function to hide popup
+    function hidePopup() {
+        if (popup) {
+            popup.style.display = 'none';
+            document.body.style.overflow = ''; // Re-enable scrolling
+        }
+    }
+    
+    // Close popup when close button is clicked
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hidePopup);
+    }
+    
+    // Close popup when clicking outside the image
+    if (popup) {
+        popup.addEventListener('click', function(e) {
+            if (e.target === popup) {
+                hidePopup();
+            }
+        });
+    }
+    
+    // Close popup when pressing Escape key
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && popup && popup.style.display === 'block') {
+            hidePopup();
+        }
+    });
+    
+    // Show popup automatically when page loads after a delay
+    // Using a placeholder image with the correct dimensions (1365x768)
+    setTimeout(function() {
+        showPopup('https://placehold.co/1365x768/ff6b00/ffffff?text=KamateRaho+Special+Offer');
+    }, 2000); // Show after 2 seconds
+});
