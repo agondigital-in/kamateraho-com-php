@@ -2118,7 +2118,7 @@ footer {
 .popup-content {
     position: relative;
     background-color: #fff;
-    margin: 10% auto;
+    margin: 0 auto;
     padding: 0;
     border-radius: 10px;
     width: 70%;
@@ -2127,6 +2127,8 @@ footer {
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.3s ease;
     aspect-ratio: 16/9;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .popup-image {
@@ -2180,6 +2182,9 @@ footer {
 @media (max-width: 1200px) {
     .popup-content {
         max-width: 90%;
+        margin: 0 auto;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -2190,8 +2195,10 @@ footer {
 @media (max-width: 1024px) {
     .popup-content {
         width: 80%;
-        margin: 8% auto;
+        margin: 0 auto;
         max-width: 80%;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -2202,8 +2209,10 @@ footer {
 @media (max-width: 768px) {
     .popup-content {
         width: 85%;
-        margin: 12% auto;
+        margin: 0 auto;
         max-width: 85%;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -2222,8 +2231,10 @@ footer {
 @media (max-width: 480px) {
     .popup-content {
         width: 90%;
-        margin: 18% auto;
+        margin: 0 auto;
         max-width: 90%;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -2242,8 +2253,10 @@ footer {
 @media (max-width: 320px) {
     .popup-content {
         width: 95%;
-        margin: 25% auto;
+        margin: 0 auto;
         max-width: 95%;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -3168,7 +3181,7 @@ footer {
 .popup-content {
     position: relative;
     background-color: #fff;
-    margin: 10% auto;
+    margin: 0 auto;
     padding: 0;
     border-radius: 10px;
     width: 70%;
@@ -3177,6 +3190,8 @@ footer {
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.3s ease;
     aspect-ratio: 16/9;
+    top: 50%;
+    transform: translateY(-50%);
 }
 
 .popup-image {
@@ -3230,6 +3245,9 @@ footer {
 @media (max-width: 1200px) {
     .popup-content {
         max-width: 90%;
+        margin: 0 auto;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -3240,8 +3258,10 @@ footer {
 @media (max-width: 1024px) {
     .popup-content {
         width: 80%;
-        margin: 8% auto;
+        margin: 0 auto;
         max-width: 80%;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -3252,8 +3272,10 @@ footer {
 @media (max-width: 768px) {
     .popup-content {
         width: 85%;
-        margin: 12% auto;
+        margin: 0 auto;
         max-width: 85%;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -3272,8 +3294,10 @@ footer {
 @media (max-width: 480px) {
     .popup-content {
         width: 90%;
-        margin: 18% auto;
+        margin: 0 auto;
         max-width: 90%;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
@@ -3292,8 +3316,10 @@ footer {
 @media (max-width: 320px) {
     .popup-content {
         width: 95%;
-        margin: 25% auto;
+        margin: 0 auto;
         max-width: 95%;
+        top: 50%;
+        transform: translateY(-50%);
     }
     
     .popup-image {
