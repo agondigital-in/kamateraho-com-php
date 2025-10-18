@@ -2118,12 +2118,12 @@ footer {
 .popup-content {
     position: relative;
     background-color: #fff;
-    margin: 5% auto;
+    margin: 10% auto;
     padding: 0;
     border-radius: 10px;
-    width: 90%;
-    max-width: 1365px;
-    max-height: 768px;
+    width: 70%;
+    max-width: 960px;
+    max-height: 540px;
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.3s ease;
     aspect-ratio: 16/9;
@@ -2179,35 +2179,35 @@ footer {
 /* Responsive adjustments for popup */
 @media (max-width: 1200px) {
     .popup-content {
-        max-width: 95%;
+        max-width: 90%;
     }
     
     .popup-image {
-        max-height: 650px;
+        max-height: 540px;
     }
 }
 
 @media (max-width: 1024px) {
     .popup-content {
-        width: 95%;
-        margin: 7% auto;
-        max-width: 95%;
+        width: 80%;
+        margin: 8% auto;
+        max-width: 80%;
     }
     
     .popup-image {
-        max-height: 600px;
+        max-height: 480px;
     }
 }
 
 @media (max-width: 768px) {
     .popup-content {
-        width: 95%;
-        margin: 10% auto;
-        max-width: 95%;
+        width: 85%;
+        margin: 12% auto;
+        max-width: 85%;
     }
     
     .popup-image {
-        max-height: 500px;
+        max-height: 400px;
     }
     
     .popup-close {
@@ -2221,13 +2221,13 @@ footer {
 
 @media (max-width: 480px) {
     .popup-content {
-        width: 95%;
-        margin: 15% auto;
-        max-width: 95%;
+        width: 90%;
+        margin: 18% auto;
+        max-width: 90%;
     }
     
     .popup-image {
-        max-height: 400px;
+        max-height: 320px;
     }
     
     .popup-close {
@@ -2242,12 +2242,12 @@ footer {
 @media (max-width: 320px) {
     .popup-content {
         width: 95%;
-        margin: 20% auto;
+        margin: 25% auto;
         max-width: 95%;
     }
     
     .popup-image {
-        max-height: 300px;
+        max-height: 240px;
     }
     
     .popup-close {
@@ -3168,12 +3168,12 @@ footer {
 .popup-content {
     position: relative;
     background-color: #fff;
-    margin: 5% auto;
+    margin: 10% auto;
     padding: 0;
     border-radius: 10px;
-    width: 90%;
-    max-width: 1365px;
-    max-height: 768px;
+    width: 70%;
+    max-width: 960px;
+    max-height: 540px;
     box-shadow: 0 5px 30px rgba(0, 0, 0, 0.3);
     animation: slideIn 0.3s ease;
     aspect-ratio: 16/9;
@@ -3229,35 +3229,35 @@ footer {
 /* Responsive adjustments for popup */
 @media (max-width: 1200px) {
     .popup-content {
-        max-width: 95%;
+        max-width: 90%;
     }
     
     .popup-image {
-        max-height: 650px;
+        max-height: 540px;
     }
 }
 
 @media (max-width: 1024px) {
     .popup-content {
-        width: 95%;
-        margin: 7% auto;
-        max-width: 95%;
+        width: 80%;
+        margin: 8% auto;
+        max-width: 80%;
     }
     
     .popup-image {
-        max-height: 600px;
+        max-height: 480px;
     }
 }
 
 @media (max-width: 768px) {
     .popup-content {
-        width: 95%;
-        margin: 10% auto;
-        max-width: 95%;
+        width: 85%;
+        margin: 12% auto;
+        max-width: 85%;
     }
     
     .popup-image {
-        max-height: 500px;
+        max-height: 400px;
     }
     
     .popup-close {
@@ -3271,13 +3271,13 @@ footer {
 
 @media (max-width: 480px) {
     .popup-content {
-        width: 95%;
-        margin: 15% auto;
-        max-width: 95%;
+        width: 90%;
+        margin: 18% auto;
+        max-width: 90%;
     }
     
     .popup-image {
-        max-height: 400px;
+        max-height: 320px;
     }
     
     .popup-close {
@@ -3292,12 +3292,12 @@ footer {
 @media (max-width: 320px) {
     .popup-content {
         width: 95%;
-        margin: 20% auto;
+        margin: 25% auto;
         max-width: 95%;
     }
     
     .popup-image {
-        max-height: 300px;
+        max-height: 240px;
     }
     
     .popup-close {
