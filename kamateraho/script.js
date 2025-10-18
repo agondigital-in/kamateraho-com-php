@@ -416,7 +416,52 @@ document.addEventListener('DOMContentLoaded', function() {
             popupImage.src = imageSrc;
             popup.style.display = 'block';
             document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            
+            // Create confetti effect when popup appears
+            createConfetti();
         }
+    }
+    
+    // Function to create confetti effect
+    function createConfetti() {
+        // Create confetti from top of screen
+        confetti({
+            particleCount: 150,
+            spread: 180,
+            origin: { y: 0 },
+            gravity: 0.8,
+            ticks: 300,
+            colors: ['#ff6b00', '#ff8c00', '#ffeb3b', '#4caf50', '#2196f3'],
+            shapes: ['circle', 'square'],
+            scalar: 1.2
+        });
+        
+        // Create additional confetti bursts
+        setTimeout(() => {
+            confetti({
+                particleCount: 100,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                gravity: 0.8,
+                ticks: 200,
+                colors: ['#ff6b00', '#ff8c00', '#ffeb3b'],
+                scalar: 0.8
+            });
+        }, 300);
+        
+        setTimeout(() => {
+            confetti({
+                particleCount: 100,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                gravity: 0.8,
+                ticks: 200,
+                colors: ['#ff6b00', '#ff8c00', '#ffeb3b'],
+                scalar: 0.8
+            });
+        }, 600);
     }
     
     // Function to hide popup
@@ -424,7 +469,25 @@ document.addEventListener('DOMContentLoaded', function() {
         if (popup) {
             popup.style.display = 'none';
             document.body.style.overflow = ''; // Re-enable scrolling
+            
+            // Create closing confetti effect
+            createClosingConfetti();
         }
+    }
+    
+    // Function to create closing confetti effect
+    function createClosingConfetti() {
+        // Create confetti burst when closing
+        confetti({
+            particleCount: 100,
+            spread: 120,
+            origin: { y: 0.5 },
+            gravity: 1.2,
+            ticks: 200,
+            colors: ['#ff6b00', '#ff8c00', '#ffeb3b', '#4caf50'],
+            shapes: ['circle'],
+            scalar: 1.0
+        });
     }
     
     // Close popup when close button is clicked
@@ -450,26 +513,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Function to get responsive image URL based on screen size
     function getResponsiveImageUrl() {
-        if (window.innerWidth <= 320) {
-            return 'https://placehold.co/320x180/ff6b00/ffffff?text=Party+Pop';
-        } else if (window.innerWidth <= 480) {
-            return 'https://placehold.co/480x270/ff6b00/ffffff?text=Party+Pop';
-        } else if (window.innerWidth <= 768) {
-            return 'https://placehold.co/768x432/ff6b00/ffffff?text=Party+Pop';
-        } else if (window.innerWidth <= 1024) {
-            return 'https://placehold.co/1024x576/ff6b00/ffffff?text=Party+Pop';
-        } else {
-            // Full size for larger screens
-            return 'https://placehold.co/1365x768/ff6b00/ffffff?text=Party+Pop';
-        }
+        // Use the actual image file with correct path
+        return '/kamateraho/img/Get ₹200 Instant in Bank Account — Diwali Offer by KamateRaho (1).png';
     }
-    
-    // Update popup image on window resize
-    window.addEventListener('resize', function() {
-        if (popup && popup.style.display === 'block' && popupImage) {
-            popupImage.src = getResponsiveImageUrl();
-        }
-    });
     
     // Show popup automatically when page loads after a delay
     setTimeout(function() {
