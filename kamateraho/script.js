@@ -448,9 +448,31 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
+    // Function to get responsive image URL based on screen size
+    function getResponsiveImageUrl() {
+        if (window.innerWidth <= 320) {
+            return 'https://placehold.co/320x180/ff6b00/ffffff?text=Party+Pop';
+        } else if (window.innerWidth <= 480) {
+            return 'https://placehold.co/480x270/ff6b00/ffffff?text=Party+Pop';
+        } else if (window.innerWidth <= 768) {
+            return 'https://placehold.co/768x432/ff6b00/ffffff?text=Party+Pop';
+        } else if (window.innerWidth <= 1024) {
+            return 'https://placehold.co/1024x576/ff6b00/ffffff?text=Party+Pop';
+        } else {
+            // Full size for larger screens
+            return 'https://placehold.co/1365x768/ff6b00/ffffff?text=Party+Pop';
+        }
+    }
+    
+    // Update popup image on window resize
+    window.addEventListener('resize', function() {
+        if (popup && popup.style.display === 'block' && popupImage) {
+            popupImage.src = getResponsiveImageUrl();
+        }
+    });
+    
     // Show popup automatically when page loads after a delay
-    // Using a placeholder image with the correct dimensions (1365x768)
     setTimeout(function() {
-        showPopup('https://placehold.co/1365x768/ff6b00/ffffff?text=KamateRaho+Special+Offer');
-    }, 2000); // Show after 2 seconds
+        showPopup(getResponsiveImageUrl());
+    }, 5000); // Show after 5 seconds
 });
