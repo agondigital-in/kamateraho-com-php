@@ -2,6 +2,7 @@
 session_start();
 include 'config/db.php';
 include 'config/app.php';
+include 'includes/price_helper.php'; // Include price helper functions
 
 // Normalize image path to an absolute URL using BASE_URL
 function normalize_image($path) {
@@ -100,6 +101,22 @@ if ($pdo) {
         .btn-earn-money:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3) !important;
+        }
+        
+        /* Price type styling */
+        .price-fixed {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .price-flat-percent {
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        .price-upto-percent {
+            color: #ffc107;
+            font-weight: bold;
         }
         
         .offer-card-col {
@@ -304,7 +321,7 @@ if ($pdo) {
                                             <span class="text-muted text-decoration-line-through me-1">
                                                 <?php echo !empty($offer['original_price']) ? '₹' . number_format($offer['original_price'], 0) : ''; ?>
                                             </span>
-                                            <strong class="text-success">₹<?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '0'; ?></strong>
+                                            <strong class="text-success"><?php echo !empty($offer['price']) ? display_price($offer['price'], $offer['price_type'] ?? 'fixed') : '0'; ?></strong>
                                         </div>
                                     </div>
                                     <div class="d-flex gap-2 mt-auto">

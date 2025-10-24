@@ -3,6 +3,7 @@ session_start();
 $page_title = "Manage Offers";
 include '../config/db.php';
 include '../config/app.php';
+include '../includes/price_helper.php'; // Include price helper functions
 
 // Check if main admin is logged in
 $isAdmin = false;
@@ -181,7 +182,7 @@ if ($isSubAdmin) {
                                 </td>
                                 <td><?php echo htmlspecialchars($offer['title']); ?></td>
                                 <td><?php echo htmlspecialchars($offer['category_name'] ?? 'N/A'); ?></td>
-                                <td>₹<?php echo number_format($offer['price'], 2); ?></td>
+                                <td><?php echo display_price($offer['price'], $offer['price_type'] ?? 'fixed'); ?></td>
                                 <td><?php echo $offer['sequence_id']; ?></td>
                                 <td>
                                     <?php if ($offer['is_active']): ?>

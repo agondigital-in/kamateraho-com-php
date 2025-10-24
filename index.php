@@ -2,6 +2,7 @@
 session_start();
 include 'config/db.php';
 include 'config/app.php';
+include 'includes/price_helper.php'; // Include price helper functions
 
 // Normalize image path to an absolute URL using BASE_URL
 function normalize_image($path) {
@@ -153,6 +154,22 @@ if ($pdo) {
         .btn-earn-money:hover {
             transform: translateY(-2px) !important;
             box-shadow: 0 4px 8px rgba(67, 97, 238, 0.3) !important;
+        }
+        
+        /* Price type styling */
+        .price-fixed {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .price-flat-percent {
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        .price-upto-percent {
+            color: #ffc107;
+            font-weight: bold;
         }
         
         /* Referral Modal Styles */
@@ -1376,192 +1393,11 @@ if ($pdo) {
                 </div>
             </div>
                 
-                <?php if (empty($credit_cards)): ?>
-                    <div class="alert alert-info text-center">
-                        No credit cards available yet. Please check back later.
-                    </div>
-                <?php else: ?>
-                    <div class="row g-4">
-                        <?php foreach ($credit_cards as $card): ?>
-                            <div class="col-md-4 col-sm-6 offer-card-col">
-                                <div class="card border-0 shadow-sm h-100">
-                                    <?php if (!empty($card['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars($card['image']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($card['title']); ?>" style="height: 220px; object-fit: contain; padding: 15px;">
-                                    <?php else: ?>
-                                        <div class="bg-light" style="height: 220px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-image fa-3x text-muted"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="card-body d-flex flex-column">
-                                        <div class="d-flex justify-content-between align-items-start mb-3">
-                                            <h5 class="card-title mb-0" style="font-size: 1.1rem;"><?php echo htmlspecialchars($card['title']); ?></h5>
-                                        </div>
-                                        
-                                        <!-- Amount Details -->
-                                        <div class="mb-3">
-                                            <div class="d-flex justify-content-between align-items-center mb-3">
-                                                <?php if ($card['amount'] > 0): ?>
-                                                    <div>
-                                                        <span class="text-muted text-decoration-line-through me-1"></span>
-                                                        <strong class="text-success">₹<?php echo number_format($card['amount'], 0); ?></strong>
-                                                    </div>
-                                                <?php endif; ?>
-                                            </div>
-                                            
-                                            <?php if ($card['percentage'] > 0): ?>
-                                                <div class="mt-2">
-                                                    <span class="badge bg-primary">Percentage: <?php echo number_format($card['percentage'], 2); ?>%</span>
-                                                </div>
-                                            <?php endif; ?>
-                                            
-                                            <?php if ($card['flat_rate'] > 0): ?>
-                                                <div class="mt-2">
-                                                    <span class="badge bg-warning text-dark">Flat Rate: ₹<?php echo number_format($card['flat_rate'], 2); ?></span>
-                                                </div>
-                                            <?php endif; ?>
-                                        </div>
-                                        
-                                        <div class="d-flex gap-2 mt-auto">
-                                            <a href="product_details.php?id=<?php echo $card['id']; ?>&type=card" class="btn btn-earn-money flex-grow-1" style="font-size: 0.9rem; padding: 0.5rem 0.75rem;">Earn Amount</a>
-                                            <button class="btn btn-outline-primary copy-link-btn flex-grow-1" style="font-size: 0.9rem; padding: 0.5rem 0.75rem;"
-                                                    data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($card['link'] . $_SESSION['user_id']) : ''; ?>"
-                                                    <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
-                                                <?php echo isset($_SESSION['user_id']) ? 'Refer & Earn' : 'Login to Copy'; ?>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
             </section>
             
-            <!-- Kotak811 Section -->
-            <section class="mb-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                 
-                    <a href="category.php?id=8" class="text-decoration-none"></a>
-                </div>
-                
-                <?php if (empty($kotak_offers)): ?>
-                   
-                <?php else: ?>
-                    <div class="row g-3">
-                        <?php foreach ($kotak_offers as $offer): ?>
-                            <div class="col-md-3 col-sm-6 offer-card-col">
-                                <div class="card border-0 shadow-sm h-100">
-                                    <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: contain; padding: 10px;">
-                                    <?php else: ?>
-                                        <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-image fa-3x text-muted"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="card-body d-flex flex-column">
-                                        <!-- Product Title -->
-                                        <h5 class="card-title text-center mb-1" style="font-size: 0.9rem;"><?php echo htmlspecialchars($offer['title']); ?></h5>
-                                        <div class="d-flex gap-2 mt-auto">
-                                            <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-money flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
-                                            <button class="btn btn-outline-primary copy-link-btn flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;"
-                                                    data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($offer['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
-                                                    <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
-                                                <?php echo isset($_SESSION['user_id']) ? 'Refer & Earn' : 'Login to Copy'; ?>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </section>
-            
-            <!-- ICICI Life Insurance Section -->
-            <section class="mb-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-              
-                    <a href="category.php?id=9" class="text-decoration-none"></a>
-                </div>
-                
-                <?php if (empty($icici_offers)): ?>
-                  
-                <?php else: ?>
-                    <div class="row g-3">
-                        <?php foreach ($icici_offers as $offer): ?>
-                            <div class="col-md-3 col-sm-6 offer-card-col">
-                                <div class="card border-0 shadow-sm h-100">
-                                    <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: contain; padding: 10px;">
-                                    <?php else: ?>
-                                        <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-image fa-3x text-muted"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="card-body d-flex flex-column">
-                                        <!-- Product Title -->
-                                        <h5 class="card-title text-center mb-1" style="font-size: 0.9rem;"><?php echo htmlspecialchars($offer['title']); ?></h5>
-                                        <div class="d-flex gap-2 mt-auto">
-                                            <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-money flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
-                                            <button class="btn btn-outline-primary copy-link-btn flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;"
-                                                    data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($offer['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
-                                                    <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
-                                                <?php echo isset($_SESSION['user_id']) ? 'Refer & Earn' : 'Login to Copy'; ?>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </section>
-            
-            <!-- Bajaj Insta EMI Section -->
-            <section class="mb-5">
-                <div class="d-flex justify-content-between align-items-center mb-4">
-                 
-                    <a href="category.php?id=10" class="text-decoration-none"></a>
-                </div>
-                
-                <?php if (empty($bajaj_offers)): ?>
-                   
-                <?php else: ?>
-                    <div class="row g-3">
-                        <?php foreach ($bajaj_offers as $offer): ?>
-                            <div class="col-md-3 col-sm-6 offer-card-col">
-                                <div class="card border-0 shadow-sm h-100">
-                                    <?php if (!empty($offer['image'])): ?>
-                                        <img src="<?php echo htmlspecialchars(normalize_image($offer['image'])); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($offer['title']); ?>" style="height: 180px; object-fit: contain; padding: 10px;">
-                                    <?php else: ?>
-                                        <div class="bg-light" style="height: 180px; display: flex; align-items: center; justify-content: center;">
-                                            <i class="fas fa-image fa-3x text-muted"></i>
-                                        </div>
-                                    <?php endif; ?>
-                                    <div class="card-body d-flex flex-column">
-                                        <!-- Product Title -->
-                                        <h5 class="card-title text-center mb-1" style="font-size: 0.9rem;"><?php echo htmlspecialchars($offer['title']); ?></h5>
-                                        <div class="d-flex gap-2 mt-auto">
-                                            <a href="product_details.php?id=<?php echo $offer['id']; ?>" class="btn btn-earn-money flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;">Earn Amount</a>
-                                            <button class="btn btn-outline-primary copy-link-btn flex-grow-1" style="font-size: 0.85rem; padding: 0.375rem 0.5rem;"
-                                                    data-link="<?php echo isset($_SESSION['user_id']) ? htmlspecialchars($offer['redirect_url'] . $_SESSION['user_id']) : ''; ?>"
-                                                    <?php echo !isset($_SESSION['user_id']) ? 'disabled' : ''; ?>>
-                                                <?php echo isset($_SESSION['user_id']) ? 'Refer & Earn' : 'Login to Copy'; ?>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php endforeach; ?>
-                    </div>
-                <?php endif; ?>
-            </section>
             <!-- Trending Promotion Tasks -->
-          
-            
-            <!-- Display uploaded offers in Trending Promotion Tasks section -->
             <?php
-            // Fetch all offers for display in Trending Promotion Tasks with sorting
+            
             try {
                 // Default sort order is sequence ID
                 $sort_order = "sequence_id ASC, price DESC";
@@ -1632,11 +1468,11 @@ if ($pdo) {
                                     <div class="meta">
                                         <div>
                                             <small>Starting From</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div>
+                                            <div class="val"><?php echo !empty($offer['price']) ? display_price($offer['price'], $offer['price_type'] ?? 'fixed') : '—'; ?></div>
                                         </div>
                                         <div>
                                             <!-- <small>Per Sale You Earn</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? number_format($offer['price'], 0) : '—'; ?></div> -->
+                                            <div class="val"><?php echo !empty($offer['price']) ? display_price($offer['price'], $offer['price_type'] ?? 'fixed') : '—'; ?></div> -->
                                         </div>
                                     </div>
                                 </div>
@@ -1665,10 +1501,6 @@ if ($pdo) {
                     <?php endforeach; ?>
                 </div>
             <?php endif; ?>
-
-           
-            
-           
         <?php endif; ?>
     </div> <!-- End of container -->
     
@@ -1888,7 +1720,6 @@ if ($pdo) {
             }
         });
     </script>
-    
     <!-- Footer -->
    <?php include 'includes/footer.php'; ?>
     

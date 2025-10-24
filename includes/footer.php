@@ -255,7 +255,7 @@
         }
     }
 </style>
-
+<br>
 <footer class="footer-wave">
     <div class="container">
         <div class="row footer-content">

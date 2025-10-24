@@ -82,6 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $price = $_POST['price'];
+    $price_type = $_POST['price_type']; // New field for price type
     $sequence_id = isset($_POST['sequence_id']) ? (int)$_POST['sequence_id'] : 0;
     $redirect_url = $_POST['redirect_url'];
     $is_active = isset($_POST['is_active']) ? 1 : 0;
@@ -114,8 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Update the offer
-        $stmt = $pdo->prepare("UPDATE offers SET category_id = ?, title = ?, description = ?, price = ?, sequence_id = ?, redirect_url = ?, image = ?, is_active = ? WHERE id = ?");
-        $stmt->execute([$category_id, $title, $description, $price, $sequence_id, $redirect_url, $image_path, $is_active, $offer_id]);
+        $stmt = $pdo->prepare("UPDATE offers SET category_id = ?, title = ?, description = ?, price = ?, price_type = ?, sequence_id = ?, redirect_url = ?, image = ?, is_active = ? WHERE id = ?");
+        $stmt->execute([$category_id, $title, $description, $price, $price_type, $sequence_id, $redirect_url, $image_path, $is_active, $offer_id]);
         
         $_SESSION['message'] = "Offer updated successfully!";
         header("Location: edit_offer.php?id=" . $offer_id);
@@ -188,8 +189,18 @@ if ($isSubAdmin) {
                 </div>
                 
                 <div class="mb-3">
-                    <label for="price" class="form-label">Price (₹)</label>
+                    <label for="price" class="form-label" id="price_label">Price (₹)</label>
                     <input type="number" class="form-control" id="price" name="price" step="0.01" value="<?php echo $offer['price']; ?>" required>
+                </div>
+                
+                <!-- New price type selection -->
+                <div class="mb-3">
+                    <label for="price_type" class="form-label">Price Type</label>
+                    <select class="form-select" id="price_type" name="price_type" required>
+                        <option value="fixed" <?php echo ($offer['price_type'] == 'fixed') ? 'selected' : ''; ?>>Fixed (₹)</option>
+                        <option value="flat_percent" <?php echo ($offer['price_type'] == 'flat_percent') ? 'selected' : ''; ?>>Flat Percent (%)</option>
+                        <option value="upto_percent" <?php echo ($offer['price_type'] == 'upto_percent') ? 'selected' : ''; ?>>Upto Percent (%)</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -248,6 +259,49 @@ if ($isSubAdmin) {
             </form>
         </div>
     </div>
+    
+    <script>
+        // Update price label based on price type selection
+        document.getElementById('price_type').addEventListener('change', function() {
+            const priceLabel = document.getElementById('price_label');
+            const priceType = this.value;
+            
+            switch(priceType) {
+                case 'fixed':
+                    priceLabel.textContent = 'Price (₹)';
+                    break;
+                case 'flat_percent':
+                    priceLabel.textContent = 'Percent (%)';
+                    break;
+                case 'upto_percent':
+                    priceLabel.textContent = 'Percent (%)';
+                    break;
+                default:
+                    priceLabel.textContent = 'Price (₹)';
+            }
+        });
+        
+        // Initialize the label on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const priceTypeSelect = document.getElementById('price_type');
+            const priceLabel = document.getElementById('price_label');
+            const priceType = priceTypeSelect.value;
+            
+            switch(priceType) {
+                case 'fixed':
+                    priceLabel.textContent = 'Price (₹)';
+                    break;
+                case 'flat_percent':
+                    priceLabel.textContent = 'Percent (%)';
+                    break;
+                case 'upto_percent':
+                    priceLabel.textContent = 'Percent (%)';
+                    break;
+                default:
+                    priceLabel.textContent = 'Price (₹)';
+            }
+        });
+    </script>
     
     <div class="mt-3">
         <a href="manage_offers.php" class="btn btn-primary">Back to Manage Offers</a>

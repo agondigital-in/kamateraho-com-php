@@ -34,6 +34,7 @@ CREATE TABLE IF NOT EXISTS offers (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     price DECIMAL(10, 2) NOT NULL,
+    price_type ENUM('fixed', 'flat_percent', 'upto_percent') DEFAULT 'fixed',
     image VARCHAR(255),
     redirect_url VARCHAR(500),
     is_active BOOLEAN DEFAULT TRUE,

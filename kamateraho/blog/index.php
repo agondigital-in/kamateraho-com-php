@@ -512,6 +512,21 @@
                      <a href="post7.php" class="read-more">Read More</a>
                 </div>
             </div>
+              <!-- Blog Post 8 -->
+            <div class="blog-card">
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761300628/Gemini_Generated_Image_esukctesukctesuk_2_pjueny.png" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>KamateRaho Offer Zone: Daily Tasks Complete Karo, Cash Jeeto
+
+</h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Oct 24, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">2025 Ka Best Earning Platform – KamateRaho App Review & Guide</p>
+                     <a href="post8.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'config/db.php';
+include 'includes/price_helper.php'; // Include price helper functions
 
 // Get ID and type from URL
 $id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
@@ -80,58 +81,129 @@ $success_message = '';
 $error_message = '';
 
 // Handle apply now action
+error_log("POST data received: " . print_r($_POST, true));
+error_log("Session data: user_id=" . (isset($_SESSION['user_id']) ? $_SESSION['user_id'] : 'not set'));
+
 if (isset($_POST['apply_now'])) {
+    error_log("Apply now button was clicked");
+    
     // Create a withdraw request for this offer/card
     if ($item) {
         try {
             // For offers, use the price; for cards, we'll need to determine the amount
-            $amount = ($type === 'offer' && isset($item['price'])) ? $item['price'] : 0;
+            // Handle different price types
+            if ($type === 'offer' && isset($item['price'])) {
+                $price_type = $item['price_type'] ?? 'fixed';
+                
+                // For percentage-based offers, use a default amount or the stored price
+                // The actual amount will be set by admin later
+                if ($price_type !== 'fixed') {
+                    // For percentage-based offers, store the offer price (percentage) as amount
+                    // Admin will adjust this later
+                    $amount = $item['price'];
+                } else {
+                    // For fixed price, use the stored price
+                    $amount = $item['price'];
+                }
+            } else {
+                $amount = 0;
+                $price_type = 'fixed';
+            }
             
             // Special handling for credit cards - we'll use a default amount or get it from somewhere
             if ($type === 'card') {
                 // For credit cards, we'll use a default amount or prompt for it
                 $amount = 10000; // Default amount for credit card applications
+                $price_type = 'fixed';
             }
             
-            // Create a special "purchase" withdraw request that will add money to wallet when approved
-            $upi_id = "purchase@" . time(); // Special UPI ID to identify purchases
-            $screenshot = ""; // No screenshot needed for this type of request
+            // Check if user exists in database
+            $userCheckStmt = $pdo->prepare("SELECT id FROM users WHERE id = ?");
+            $userCheckStmt->execute([$user_id]);
+            $userExists = $userCheckStmt->fetch();
             
-            // Insert withdraw request with special UPI ID to identify it as a purchase
-            $stmt = $pdo->prepare("INSERT INTO withdraw_requests (user_id, amount, upi_id, screenshot, offer_title, offer_description) VALUES (?, ?, ?, ?, ?, ?)");
-            $stmt->execute([
-                $user_id, 
-                $amount, 
-                $upi_id, 
-                $screenshot,
-                $item['title'],
-                $item['description']
-            ]);
-            
-            // Get the ID of the inserted request
-            $request_id = $pdo->lastInsertId();
-            
-            $success_message = "Your application request has been submitted successfully! The admin will process your request shortly.";
+            if (!$userExists) {
+                error_log("ERROR: User ID " . $user_id . " does not exist in users table");
+                $error_message = "User account not found. Please contact support.";
+            } else {
+                error_log("User ID " . $user_id . " exists in users table");
+                
+                // Create a special "purchase" withdraw request that will add money to wallet when approved
+                $timestamp = time();
+                $upi_id = "purchase@" . $timestamp; // Special UPI ID to identify purchases
+                error_log("Generated UPI ID: " . $upi_id . " (timestamp: " . $timestamp . ")");
+                $screenshot = ""; // No screenshot needed for this type of request
+                
+                // Debug: Log the data being inserted
+                error_log("Creating withdraw request - User ID: " . $user_id . ", Amount: " . $amount . ", UPI ID: " . $upi_id . ", Offer Title: " . $item['title']);
+                
+                // Add additional information for percentage-based offers
+                $offer_description = $item['description'];
+                if ($type === 'offer' && !empty($price_type) && $price_type !== 'fixed') {
+                    $offer_description .= " | Offer type: " . ucfirst(str_replace('_', ' ', $price_type)) . " | Offer percentage: " . number_format($item['price'], 2) . "% | Admin to determine final amount";
+                }
+                
+                // Insert withdraw request with special UPI ID to identify it as a purchase
+                $stmt = $pdo->prepare("INSERT INTO withdraw_requests (user_id, amount, upi_id, screenshot, offer_title, offer_description) VALUES (?, ?, ?, ?, ?, ?)");
+                $result = $stmt->execute([
+                    $user_id, 
+                    $amount, 
+                    $upi_id, 
+                    $screenshot,
+                    $item['title'],
+                    $offer_description
+                ]);
+                
+                // Debug: Check if insertion was successful
+                if ($result) {
+                    error_log("Withdraw request inserted successfully");
+                    // Get the ID of the inserted request
+                    $request_id = $pdo->lastInsertId();
+                    error_log("Request ID: " . $request_id);
+                    $success_message = "Your application request has been submitted successfully! The admin will review your request and determine the final reward amount.";
+                } else {
+                    error_log("Failed to insert withdraw request");
+                    error_log("Error info: " . print_r($stmt->errorInfo(), true));
+                    $error_message = "Failed to submit your application request. Please try again.";
+                }
+            }
         } catch(PDOException $e) {
+            error_log("Database error creating request: " . $e->getMessage());
+            error_log("SQL State: " . $e->getCode());
+            $error_message = "Error creating request: " . $e->getMessage();
+        } catch(Exception $e) {
+            error_log("General error creating request: " . $e->getMessage());
             $error_message = "Error creating request: " . $e->getMessage();
         }
+    } else {
+        error_log("No item found for apply_now action");
+        $error_message = "Unable to process your request. Item not found.";
     }
     
-    // Redirect to the item's redirect URL with only p_id=user_id parameter
-    $redirect_url = $item['redirect_url'];
-    if (!empty($redirect_url)) {
-        // Add p_id=user_id parameter to the redirect URL
-        $separator = (strpos($redirect_url, '?') !== false) ? '&' : '?';
-        // Add click counter parameter
-        $click_counter = time(); // Using timestamp as a simple click counter
-        $redirect_url .= $separator . 'p_id=' . $user_id . '&click_id=' . $click_counter;
-        header("Location: " . $redirect_url);
-        exit;
+    // Check if there are any errors before processing
+    if (!empty($error_message)) {
+        error_log("Error message exists, not redirecting: " . $error_message);
     } else {
-        // Fallback to Bajaj Finserv if no redirect URL is set
-        $redirect_url = "https://www.bajajfinserv.in/webform/v1/emicard/login?utm_source=Expartner&utm_medium=79&utm_campaign=6111";
-        header("Location: " . $redirect_url);
-        exit;
+        error_log("No errors, preparing redirect");
+        // Only redirect if there were no errors
+        // Redirect to the item's redirect URL with only p_id=user_id parameter
+        $redirect_url = $item['redirect_url'];
+        if (!empty($redirect_url)) {
+            // Add p_id=user_id parameter to the redirect URL
+            $separator = (strpos($redirect_url, '?') !== false) ? '&' : '?';
+            // Add click counter parameter
+            $click_counter = time(); // Using timestamp as a simple click counter
+            $redirect_url .= $separator . 'p_id=' . $user_id . '&click_id=' . $click_counter;
+            error_log("Redirecting to: " . $redirect_url);
+            header("Location: " . $redirect_url);
+            exit;
+        } else {
+            // Fallback to Bajaj Finserv if no redirect URL is set
+            $redirect_url = "https://www.bajajfinserv.in/webform/v1/emicard/login?utm_source=Expartner&utm_medium=79&utm_campaign=6111";
+            error_log("Redirecting to fallback URL: " . $redirect_url);
+            header("Location: " . $redirect_url);
+            exit;
+        }
     }
 }
 
@@ -240,6 +312,22 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             font-weight: 600;
             display: inline-block;
             font-size: 1.2rem;
+        }
+        
+        /* Price type styling */
+        .price-fixed {
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .price-flat-percent {
+            color: #007bff;
+            font-weight: bold;
+        }
+        
+        .price-upto-percent {
+            color: #ffc107;
+            font-weight: bold;
         }
         
         .section-title {
@@ -496,12 +584,78 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                 <i class="fas fa-check-circle me-2"></i><?php echo $success_message; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+            <div class="text-center mb-4">
+                <div class="spinner-border text-success" role="status">
+                    <span class="visually-hidden">Redirecting...</span>
+                </div>
+                <p class="mt-2">Redirecting to offer page in 3 seconds...</p>
+            </div>
+            <!-- Celebratory animation -->
+            <div id="celebration-animation" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999;"></div>
+            <script>
+                // Create celebratory animation
+                function createCelebration() {
+                    const container = document.getElementById('celebration-animation');
+                    container.innerHTML = '';
+                    
+                    // Create multiple celebratory elements
+                    for (let i = 0; i < 50; i++) {
+                        const elem = document.createElement('div');
+                        elem.style.position = 'absolute';
+                        elem.style.width = '10px';
+                        elem.style.height = '10px';
+                        elem.style.backgroundColor = getRandomColor();
+                        elem.style.borderRadius = '50%';
+                        elem.style.left = Math.random() * 100 + '%';
+                        elem.style.top = '-10px';
+                        elem.style.opacity = '0';
+                        elem.style.animation = `fall-${i} 2s ease-in forwards`;
+                        
+                        // Add CSS for animation
+                        const style = document.createElement('style');
+                        style.innerHTML = `
+                            @keyframes fall-${i} {
+                                0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+                                100% { transform: translateY(${Math.random() * 100 + 200}px) rotate(${Math.random() * 360}deg); opacity: 0; }
+                            }
+                        `;
+                        document.head.appendChild(style);
+                        
+                        container.appendChild(elem);
+                    }
+                }
+                
+                function getRandomColor() {
+                    const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ff9900'];
+                    return colors[Math.floor(Math.random() * colors.length)];
+                }
+                
+                // Trigger celebration animation
+                createCelebration();
+                
+                // Redirect after 3 seconds if the request was successful
+                setTimeout(function() {
+                    <?php if ($item && !empty($item['redirect_url'])): ?>
+                        var redirectUrl = "<?php echo htmlspecialchars($item['redirect_url']); ?>";
+                        var separator = redirectUrl.indexOf('?') !== -1 ? '&' : '?';
+                        var userId = "<?php echo $user_id; ?>";
+                        var clickCounter = "<?php echo time(); ?>";
+                        window.location.href = redirectUrl + separator + 'p_id=' + userId + '&click_id=' + clickCounter;
+                    <?php else: ?>
+                        // Fallback to Bajaj Finserv if no redirect URL is set
+                        window.location.href = "https://www.bajajfinserv.in/webform/v1/emicard/login?utm_source=Expartner&utm_medium=79&utm_campaign=6111";
+                    <?php endif; ?>
+                }, 3000);
+            </script>
         <?php endif; ?>
 
         <?php if (!empty($error_message)): ?>
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <i class="fas fa-exclamation-circle me-2"></i><?php echo $error_message; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            <div class="text-center mb-4">
+                <p class="mt-2">Please correct the error and try again.</p>
             </div>
         <?php endif; ?>
         
@@ -536,7 +690,7 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                         <div class="p-4">
                             <?php if ($type === 'offer' && isset($item['price']) && $item['price'] > 0): ?>
                                 <div class="mb-3">
-                                    <span class="price-tag">₹<?php echo number_format($item['price'], 2); ?></span>
+                                    <span class="price-tag"><?php echo display_price($item['price'], $item['price_type'] ?? 'fixed'); ?></span>
                                     <?php if (!empty($item['redirect_url'])): ?>
                                         <span class="badge bg-success ms-2">
                                             <i class="fas fa-external-link-alt me-1"></i> External Offer
@@ -592,6 +746,23 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                             <div class="mt-4">
                                 <div class="d-flex gap-2">
                                     <form method="POST" class="flex-grow-1">
+                                        <?php if ($type === 'offer' && !empty($item['price_type']) && $item['price_type'] !== 'fixed'): ?>
+                                            <!-- For percentage-based offers, show information but don't allow user to enter amount -->
+                                            <div class="mb-3">
+                                                <div class="alert alert-info">
+                                                    <strong>Offer Details:</strong> This offer provides <?php 
+                                                    switch($item['price_type']) {
+                                                        case 'flat_percent':
+                                                            echo number_format($item['price'], 2) . '% reward';
+                                                            break;
+                                                        case 'upto_percent':
+                                                            echo 'up to ' . number_format($item['price'], 2) . '% reward';
+                                                            break;
+                                                    }
+                                                    ?>. The exact reward amount will be determined by the admin after you apply.
+                                                </div>
+                                            </div>
+                                        <?php endif; ?>
                                         <button type="submit" name="apply_now" class="btn btn-earn-money w-100">
                                             <i class="fas fa-paper-plane me-2"></i>Apply for This Offer
                                         </button>

@@ -124,35 +124,89 @@ $filter_type = isset($_GET['type']) ? $_GET['type'] : '';
 $filter_user_id = isset($_GET['user_id']) ? $_GET['user_id'] : '';
 
 // Build query based on filters
-$sql = "SELECT wr.*, u.name, u.email, u.id as user_id FROM withdraw_requests wr 
+// Use a more flexible JOIN to match offers
+$sql = "SELECT wr.*, u.name, u.email, u.id as user_id, o.price_type FROM withdraw_requests wr 
         JOIN users u ON wr.user_id = u.id 
+        LEFT JOIN offers o ON wr.offer_title = o.title OR wr.offer_title LIKE CONCAT('%', o.title, '%')
         WHERE wr.status = 'pending'";
 
 $params = [];
 
 // Add type filter
 if (!empty($filter_type)) {
+    error_log("Applying filter type: " . $filter_type);
     if ($filter_type === 'purchase') {
         $sql .= " AND wr.upi_id LIKE 'purchase@%'";
+        error_log("Added purchase filter to SQL");
     } elseif ($filter_type === 'withdrawal') {
         $sql .= " AND wr.upi_id NOT LIKE 'purchase@%'";
+        error_log("Added withdrawal filter to SQL");
     }
+} else {
+    error_log("No filter type specified - showing all pending requests");
+    // By default, show all pending requests (both purchase and withdrawal)
 }
 
 // Add User ID filter
 if (!empty($filter_user_id)) {
     $sql .= " AND u.id = ?";
     $params[] = $filter_user_id;
+
 }
 
 $sql .= " ORDER BY wr.created_at DESC";
 
+// Debug: Log the SQL query
+error_log("Pending requests SQL: " . $sql);
+error_log("Pending requests params: " . json_encode($params));
+
 // Fetch pending withdraw requests with filters
 try {
+    error_log("Executing SQL query: " . $sql);
+    error_log("With parameters: " . json_encode($params));
+    
     $stmt = $pdo->prepare($sql);
     $stmt->execute($params);
     $pending_withdraw_requests = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+    error_log("Found " . count($pending_withdraw_requests) . " pending requests");
+    
+    // Log details of each request for debugging
+    foreach ($pending_withdraw_requests as $request) {
+        error_log("Request ID: " . $request['id'] . 
+                  ", User ID: " . $request['user_id'] . 
+                  ", Amount: " . $request['amount'] . 
+                  ", UPI ID: " . $request['upi_id'] . 
+                  ", Offer Title: " . $request['offer_title'] . 
+                  ", Status: " . $request['status'] .
+                  ", Is Purchase: " . (strpos($request['upi_id'], 'purchase@') === 0 ? 'Yes' : 'No'));
+    }
+    
+    // Also log all requests without filters to see what's in the database
+    $allStmt = $pdo->prepare("SELECT * FROM withdraw_requests WHERE status = 'pending' ORDER BY created_at DESC LIMIT 10");
+    $allStmt->execute();
+    $allRequests = $allStmt->fetchAll(PDO::FETCH_ASSOC);
+    error_log("Total pending requests in database (no filters): " . count($allRequests));
+    foreach ($allRequests as $request) {
+        error_log("All requests - ID: " . $request['id'] . 
+                  ", User ID: " . $request['user_id'] . 
+                  ", Amount: " . $request['amount'] . 
+                  ", UPI ID: " . $request['upi_id'] . 
+                  ", Offer Title: " . $request['offer_title'] . 
+                  ", Status: " . $request['status'] .
+                  ", Is Purchase: " . (strpos($request['upi_id'], 'purchase@') === 0 ? 'Yes' : 'No'));
+    }
+    
+    // Log all users to see if there's a mismatch
+    $userStmt = $pdo->prepare("SELECT id, name, email FROM users ORDER BY id LIMIT 20");
+    $userStmt->execute();
+    $users = $userStmt->fetchAll(PDO::FETCH_ASSOC);
+    error_log("Users in database:");
+    foreach ($users as $user) {
+        error_log("User ID: " . $user['id'] . ", Name: " . $user['name'] . ", Email: " . $user['email']);
+    }
 } catch(PDOException $e) {
+    error_log("Database error fetching pending withdraw requests: " . $e->getMessage());
     $error = "Error fetching pending withdraw requests: " . $e->getMessage();
     $pending_withdraw_requests = [];
 }
@@ -226,7 +280,8 @@ if (isset($_POST['selected_requests']) && is_array($_POST['selected_requests']))
                                     <th><input type="checkbox" id="selectAll"></th>
                                     <th>User ID</th>
                                     <th>Email</th>
-                                    <th>Amount</th>
+                                    <th>Amount / Reward</th>
+                                    <th>Price Type</th>
                                     <th>Type</th>
                                     <th>Details</th>
                                     <th>Requested On</th>
@@ -240,9 +295,68 @@ if (isset($_POST['selected_requests']) && is_array($_POST['selected_requests']))
                                             <?php echo in_array($request['id'], $selected_checkboxes) ? 'checked' : ''; ?>></td>
                                         <td><?php echo htmlspecialchars($request['user_id']); ?></td>
                                         <td><?php echo htmlspecialchars($request['email']); ?></td>
-                                        <td>₹<?php echo number_format($request['amount'], 2); ?></td>
                                         <td>
-                                            <?php if (strpos($request['upi_id'], 'purchase@') === 0): ?>
+                                            <?php 
+                                            // Try to get price_type from offers table if not already in request
+                                            $price_type = '';
+                                            $offer_price = 0;
+                                            if (!empty($request['price_type'])) {
+                                                $price_type = $request['price_type'];
+                                                error_log("Price type from JOIN: " . $price_type . " for request ID: " . $request['id']);
+                                            } else {
+                                                // Try to fetch price_type from offers table
+                                                try {
+                                                    $offerStmt = $pdo->prepare("SELECT price_type, price FROM offers WHERE title = ?");
+                                                    $offerStmt->execute([$request['offer_title']]);
+                                                    $offer = $offerStmt->fetch(PDO::FETCH_ASSOC);
+                                                    if ($offer) {
+                                                        $price_type = $offer['price_type'];
+                                                        $offer_price = $offer['price'];
+                                                        error_log("Price type from separate query: " . $price_type . " for request ID: " . $request['id'] . ", Offer Title: " . $request['offer_title']);
+                                                    } else {
+                                                        error_log("No offer found for title: " . $request['offer_title'] . " in request ID: " . $request['id']);
+                                                    }
+                                                } catch (PDOException $e) {
+                                                    error_log("Error fetching offer price_type: " . $e->getMessage() . " for request ID: " . $request['id']);
+                                                }
+                                            }
+                                            
+                                            // Display amount information
+                                            if (!empty($price_type) && $price_type !== 'fixed') {
+                                                // For percentage-based offers, show that admin needs to determine amount
+                                                echo '<span class="text-warning">To be determined</span>';
+                                                echo '<br><small class="text-muted">(' . number_format($offer_price, 2) . '% offer)</small>';
+                                                echo '<br><small class="text-info">Click "Approve" to enter values</small>';
+                                            } else {
+                                                // For fixed price offers, show the amount
+                                                echo '₹' . number_format($request['amount'], 2);
+                                            }
+                                            
+                                            if (!empty($price_type)) {
+                                                switch($price_type) {
+                                                    case 'fixed':
+                                                        echo '<br><span class="badge bg-success">Fixed</span>';
+                                                        break;
+                                                    case 'flat_percent':
+                                                        echo '<br><span class="badge bg-primary">Flat %</span>';
+                                                        break;
+                                                    case 'upto_percent':
+                                                        echo '<br><span class="badge bg-warning">Upto %</span>';
+                                                        break;
+                                                    default:
+                                                        echo '<br><span class="badge bg-secondary">Unknown</span>';
+                                                }
+                                            } else {
+                                                echo '<br><span class="badge bg-secondary">N/A</span>';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php 
+                                            $isPurchase = strpos($request['upi_id'], 'purchase@') === 0;
+                                            error_log("Checking if request ID " . $request['id'] . " is purchase: " . ($isPurchase ? 'Yes' : 'No') . ", UPI ID: " . $request['upi_id']);
+                                            
+                                            if ($isPurchase): ?>
                                                 <span class="badge bg-success">Purchase Request</span>
                                             <?php else: ?>
                                                 <span class="badge bg-primary">Withdrawal</span>

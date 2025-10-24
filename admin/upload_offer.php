@@ -48,6 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title = $_POST['title'];
     $description = $_POST['description'];
     $price = $_POST['price'];
+    $price_type = $_POST['price_type']; // New field for price type
     $sequence_id = isset($_POST['sequence_id']) ? (int)$_POST['sequence_id'] : 0;
     $redirect_url = $_POST['redirect_url'];
     
@@ -115,10 +116,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $nextSequence = $seqStmt->fetch(PDO::FETCH_ASSOC)['next_sequence'];
             
             // Insert the main offer with the next sequence ID
-            $stmt = $pdo->prepare("INSERT INTO offers (category_id, title, description, price, sequence_id, image, redirect_url) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt = $pdo->prepare("INSERT INTO offers (category_id, title, description, price, price_type, sequence_id, image, redirect_url) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
             // Use the first image as the main image
             $main_image = $uploaded_images[0];
-            $stmt->execute([$category_id, $title, $description, $price, $nextSequence, $main_image, $redirect_url]);
+            $stmt->execute([$category_id, $title, $description, $price, $price_type, $nextSequence, $main_image, $redirect_url]);
             
             // Get the ID of the inserted offer
             $offer_id = $pdo->lastInsertId();
@@ -231,8 +232,18 @@ if ($isSubAdmin) {
                 </div>
                 
                 <div class="mb-3">
-                    <label for="price" class="form-label">Price (₹)</label>
+                    <label for="price" class="form-label" id="price_label">Price (₹)</label>
                     <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                </div>
+                
+                <!-- New price type selection -->
+                <div class="mb-3">
+                    <label for="price_type" class="form-label">Price Type</label>
+                    <select class="form-select" id="price_type" name="price_type" required>
+                        <option value="fixed">Fixed (₹)</option>
+                        <option value="flat_percent">Flat Percent (%)</option>
+                        <option value="upto_percent">Upto Percent (%)</option>
+                    </select>
                 </div>
 
                 <div class="mb-3">
@@ -261,6 +272,28 @@ if ($isSubAdmin) {
             </form>
         </div>
     </div>
+    
+    <script>
+        // Update price label based on price type selection
+        document.getElementById('price_type').addEventListener('change', function() {
+            const priceLabel = document.getElementById('price_label');
+            const priceType = this.value;
+            
+            switch(priceType) {
+                case 'fixed':
+                    priceLabel.textContent = 'Price (₹)';
+                    break;
+                case 'flat_percent':
+                    priceLabel.textContent = 'Percent (%)';
+                    break;
+                case 'upto_percent':
+                    priceLabel.textContent = 'Percent (%)';
+                    break;
+                default:
+                    priceLabel.textContent = 'Price (₹)';
+            }
+        });
+    </script>
 <?php if ($isAdmin): ?>
 </div>
 <?php else: ?>

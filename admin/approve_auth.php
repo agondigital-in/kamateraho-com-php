@@ -5,7 +5,7 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Include app configuration
-include_once dirname(__DIR__) . '/../config/app.php';
+include_once __DIR__ . '/../../config/app.php';
 
 // Check if admin is logged in
 if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
