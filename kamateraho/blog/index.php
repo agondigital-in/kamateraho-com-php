@@ -527,6 +527,19 @@
                      <a href="post8.php" class="read-more">Read More</a>
                 </div>
             </div>
+            <!-- Blog Post 9 -->
+            <div class="blog-card">
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761300628/Gemini_Generated_Image_esukctesukctesuk_2_pjueny.png" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3> How to Earn ₹1,000+</h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Oct 26, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">Daily Using Just Your Smartphone (2025 Guide)</p>
+                     <a href="post9.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">
