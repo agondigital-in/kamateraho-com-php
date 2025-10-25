@@ -529,7 +529,7 @@
             </div>
             <!-- Blog Post 9 -->
             <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761300628/Gemini_Generated_Image_esukctesukctesuk_2_pjueny.png" alt="Blog Post" class="blog-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQfnWfOXGCCypvR_SnMa8iuH9Kuzdv9EIh56g&s" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3> How to Earn ₹1,000+</h3>
                     <div class="blog-meta">
