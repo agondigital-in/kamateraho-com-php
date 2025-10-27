@@ -540,6 +540,19 @@
                      <a href="post9.php" class="read-more">Read More</a>
                 </div>
             </div>
+              <!-- Blog Post 10 -->
+            <div class="blog-card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmf8JLigVdLzidnVt0HuXOLjfbOb1PmkyjpwT5tZX65SNz3r2L3tsxjwJ5caWHoYwYPwE&usqp=CAU" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>Work From Home Se Real Income Kaise Banaye </h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">– Complete Guide (2025)</p>
+                     <a href="post11.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">
