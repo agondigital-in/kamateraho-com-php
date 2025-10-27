@@ -542,7 +542,7 @@
             </div>
               <!-- Blog Post 10 -->
             <div class="blog-card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmf8JLigVdLzidnVt0HuXOLjfbOb1PmkyjpwT5tZX65SNz3r2L3tsxjwJ5caWHoYwYPwE&usqp=CAU" alt="Blog Post" class="blog-image">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRQm2y_VIO5wPaKxAj4XlN0K2mBLARmVvATz8HRvOHP07GSyIOV8zp-Sop9WmLLTfgvQbE&usqp=CAU" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>Work From Home Se Real Income Kaise Banaye </h3>
                     <div class="blog-meta">

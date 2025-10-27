@@ -493,7 +493,7 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_credit_cards.php') ? 'active' : ''; ?>" href="manage_credit_cards.php">
+                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_offers.php') ? 'active' : ''; ?>" href="manage_credit_cards.php">
                         <i class="bi bi-credit-card"></i> <span>Manage Credit Cards</span>
                     </a>
                 </li>
