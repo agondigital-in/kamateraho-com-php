@@ -1,3 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Proofs - Kamateraho</title>
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Section Title */
+        .section-title {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+
+        /* Proof Card */
+        .proof-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .proof-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Proof Header */
+        .proof-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .user-details h4 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .user-details p {
+            margin: 2px 0 0;
+            color: #27ae60;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .proof-date {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+
+        /* Proof Image */
+        .proof-image {
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .bank-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .image-placeholder p {
+            margin: 5px 0;
+            color: #7f8c8d;
+        }
+
+        .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50 !important;
+            margin: 10px 0 !important;
+        }
+
+        .upi-ref {
+            font-size: 0.8rem;
+            color: #95a5a6 !important;
+            word-break: break-all;
+        }
+
+        /* Proof Details */
+        .proof-details {
+            padding: 15px 20px;
+        }
+
+        .proof-details p {
+            margin: 0 0 12px;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag {
+            background-color: #e8f4fc;
+            color: #2980b9;
+        }
+
+        .tag.success {
+            background-color: #e8f8f0;
+            color: #27ae60;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title h2 {
+                font-size: 1.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
 <section class="payment-gallery">
         <div class="container">
             <div class="section-title text-center animate__animated animate__fadeIn">
