@@ -302,8 +302,8 @@
             <ul class="footer-links-inline">
                 <li><a href="privacy.php">Privacy Policy</a></li>
                 <li><a href="terms.php">Terms of Service</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Support</a></li>
+                <li><a href="faq.php">FAQ</a></li>
+                <li><a href="support.php">Support</a></li>
             </ul>
             <p class="copyright">&copy; 2025 KamateRaho. All rights reserved.</p>
         </div>
