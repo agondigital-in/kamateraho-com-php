@@ -68,7 +68,7 @@ nav.scrolled {
 }
 
 .nav-links li {
-    margin-left: 24px;
+    margin-left: 24px !important;
 }
 
 .nav-links a {
