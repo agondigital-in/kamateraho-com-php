@@ -37,7 +37,7 @@
       position: relative;
       width: 100%;
       height: 400px;
-      background: url('https://www.tutorialinhindi.com/wp-content/uploads/2025/10/Refer-and-earn-money-game-apps-1024x576.webp') center/cover no-repeat;
+      background: url('https://res.cloudinary.com/dep67o63b/image/upload/v1761714979/Gemini_Generated_Image_ymyqxpymyqxpymyq_vrqhjy.png') center/cover no-repeat;
       display: flex;
       align-items: center;
       justify-content: center;
