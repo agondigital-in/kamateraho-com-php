@@ -346,17 +346,18 @@
             <div class="logo">
             <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1760442084/logo_cpe9n0_1_uhvkri.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
         </div>
-                <ul class="nav-links">
+                 <ul class="nav-links">
                     <li><a href="/">Features</a></li>
-                    <li><a href="/">How It Works</a></li>
-                    <li><a href="/">Testimonials</a></li>
-                    
-                    <li><a href="../faq.html">FAQ</a></li>
-                    <li><a href="/">Contact</a></li>
-                    <li><a href="../terms.html">Terms</a></li>
-                    <li><a href="../privacy.html">Privacy</a></li>
-                    <li><a href="../../register.php" class="btn animated-btn">Sign Up</a></li>
-                    <li><a href="../../login.php" class="btn animated-btn"> Login </a></li>
+                    <li><a href="kamateraho/how-it-works.html">How It Works</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="/kamateraho/blog/index.php">Blog</a></li>
+                    <!-- <li><a href="/kamateraho/faq.html">FAQ</a></li> -->
+                    <li><a href="/kamateraho/contact.html">Support 24/7</a></li>
+                    <li><a href="/kamateraho/payment-proof.html">Payment Proof</a></li>
+                    <!-- <li><a href="/kamateraho/terms.html">Terms</a></li>
+                    <li><a href="/kamateraho/privacy.html">Privacy</a></li> -->
+                    <li><a href="../register.php" class="btn animated-btn">Sign Up</a></li>
+                    <li><a href="../login.php" class="btn animated-btn"> Login </a></li>
 
                 </ul>
                 <div class="menu-toggle">
