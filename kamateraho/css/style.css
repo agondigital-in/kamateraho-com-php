@@ -798,6 +798,90 @@ nav ul li a:hover {
     color: #1a2a6c;
 }
 
+/* Support Section Styles */
+.support-section {
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.support-section .section-title h2 {
+    color: #1a2a6c;
+    margin-bottom: 1rem;
+}
+
+.support-section .section-title p {
+    color: #333;
+    font-size: 1.1rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+}
+
+.support-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.info-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 2rem;
+    text-align: center;
+    flex: 1;
+    min-width: 250px;
+    max-width: 350px;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.info-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.info-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.info-card h3 {
+    color: #1a2a6c;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.info-card p {
+    color: #333;
+    line-height: 1.6;
+}
+
+.support-cta {
+    background: rgba(26, 42, 108, 0.05);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 800px;
+    border: 1px solid rgba(26, 42, 108, 0.1);
+}
+
+.support-cta p {
+    color: #333;
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+}
+
+.support-cta .btn {
+    background: linear-gradient(135deg, #1a2a6c, #f7b733);
+    color: white;
+    padding: 12px 30px;
+    font-size: 1.1rem;
+}
+
 /* Responsive Styles */
 @media (max-width: 992px) {
     .testimonial-slide {
@@ -819,6 +903,11 @@ nav ul li a:hover {
     .step-card {
         min-width: 250px;
         max-width: 350px;
+    }
+    
+    .info-card {
+        min-width: 200px;
+        max-width: 300px;
     }
 }
 
@@ -944,6 +1033,24 @@ nav ul li a:hover {
     }
     
     .step-card p {
+        font-size: 1rem;
+    }
+    
+    .support-info {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .info-card {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .support-cta {
+        padding: 1.5rem;
+    }
+    
+    .support-cta p {
         font-size: 1rem;
     }
 }
