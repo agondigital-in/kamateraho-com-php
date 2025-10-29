@@ -1407,15 +1407,7 @@ nav.scrolled {
     background-color: #00b8d4;
 }
 
-.step:not(:last-child)::after {
-    
-    position: absolute;
-    top: 25px;
-    right: 0;
-    width: 50%;
-    height: 2px;
-    background-color: #ddd;
-}
+
 
 .step h3 {
     margin-bottom: 10px;
