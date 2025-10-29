@@ -24,6 +24,12 @@
       border-radius: 15px;
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
+    .top-img {
+      width: 100%;
+      height: auto;
+      border-radius: 15px;
+      margin-bottom: 25px;
+    }
     h1, h2, h3 {
       color: #222;
     }
@@ -71,6 +77,12 @@
 <body>
   <div class="container">
 
+    <!-- 🔹 Top Image -->
+    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714979/Gemini_Generated_Image_ymyqxpymyqxpymyq_vrqhjy.png" 
+         alt="Top Referral Earning Sites 2025 Banner" 
+         class="top-img">
+
+    <!-- 🔹 Back to Blog Link -->
     <a href="./index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
 
     <h1>Top 10 Best Referral Earning Sites 2025 – Earn Money Online Without Investment</h1>

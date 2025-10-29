@@ -555,7 +555,7 @@
             </div>
               <!-- Blog Post 11 -->
             <div class="blog-card">
-                <img src="https://education.sakshi.com/sites/default/files/images/2023/08/24/work-home-1692862181.jpg" alt="Blog Post" class="blog-image">
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714969/Gemini_Generated_Image_ybpauaybpauaybpa_zlxtta.png" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>top 10 site for referral earning
  </h3>
