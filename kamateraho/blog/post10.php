@@ -101,7 +101,7 @@
 
   <!-- 🔹 Full Width Top Image -->
   <div class="banner">
-    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ35b7iCbqaSmqeuy8jmOJAsVnFtKlLtCgs6g&s" 
+    <img src="https://www.tutorialinhindi.com/wp-content/uploads/2025/10/Refer-and-earn-money-game-apps-1024x576.webp" 
          alt="Top Referral Earning Sites 2025 Banner">
   </div>
 
