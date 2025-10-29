@@ -257,6 +257,61 @@ nav.scrolled {
 }
 
 /* Enhanced How It Works Section */
+.steps-section {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+    animation: fadeInUp 1s ease-out;
+}
+
+.how-it-works-hero {
+    padding: 80px 0 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    color: white;
+    min-height: 40vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.how-it-works-hero .section-title h1 {
+    font-size: 2.8rem;
+    margin-bottom: 20px;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.how-it-works-hero .section-title p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.hero-wave {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    transform: rotate(180deg);
+}
+
+.hero-wave svg {
+    position: relative;
+    display: block;
+    width: calc(100% + 1.3px);
+    height: 80px;
+}
+
+.hero-wave .wave-fill {
+    fill: #FFFFFF;
+    opacity: 0.1;
+}
+
 .steps {
     padding: 4rem 5%;
     background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
@@ -304,7 +359,7 @@ nav.scrolled {
     margin: 0 auto;
 }
 
-.step-container {
+.steps-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -391,51 +446,169 @@ nav.scrolled {
     width: 50px;
 }
 
+/* Features & Benefits Section */
+.features-benefits {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+    text-align: center;
+}
+
+.features-benefits .section-title h2 {
+    color: #1a2a6c;
+    margin-bottom: 1rem;
+}
+
+.features-benefits .section-title p {
+    color: #333;
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 2rem;
+}
+
+.benefits-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2rem;
+    margin: 2rem 0;
+}
+
+.benefit-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+    padding: 2rem;
+    text-align: center;
+    flex: 1;
+    min-width: 250px;
+    max-width: 350px;
+    transition: all 0.3s ease;
+    border: 1px solid #e0e0e0;
+}
+
+.benefit-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.benefit-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.benefit-card h3 {
+    color: #1a2a6c;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.benefit-card p {
+    color: #333;
+    line-height: 1.6;
+}
+
+/* CTA Section */
+.cta-section {
+    padding: 4rem 0;
+    text-align: center;
+    background: linear-gradient(135deg, #00b8d4 0%, #007bff 100%);
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.cta-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.cta-section p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.primary-btn {
+    background-color: white;
+    color: #007bff;
+    font-size: 1.1rem;
+    padding: 15px 40px;
+    animation: tada 3s infinite;
+}
+
+.primary-btn:hover {
+    background-color: #f0f0f0;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(255, 255, 255, 0.3);
+}
+
+.secondary-btn {
+    background: transparent;
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    font-size: 1.1rem;
+    padding: 15px 40px;
+    border-radius: 30px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.secondary-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: white;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
 /* Enhanced Footer Styles */
 footer {
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
-    color: #333;
-    padding: 2rem 0 1rem;
-    margin-top: 2rem;
-    font-family: 'Poppins', sans-serif;
-    border-top: 1px solid #d1d1d1;
+    background: linear-gradient(135deg, #2c3e50 0%, #1a2a3a 100%);
+    color: white;
+    padding: 70px 0 20px;
+    position: relative;
     animation: fadeInUp 1s ease-out;
 }
 
 .footer-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 40px;
+    margin-bottom: 40px;
+}
+
+.footer-column {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    padding: 0 5%;
-    max-width: 1400px;
-    margin: 0 auto;
+    flex-direction: column;
 }
 
-.footer-section {
-    width: 22%;
-    min-width: 200px;
-    margin: 1rem;
-    text-align: left;
-}
-
-.footer-section h3 {
-    color: #1a2a6c;
-    margin-bottom: 1rem;
-    font-size: 1.2rem;
+.footer-column h3 {
+    margin-bottom: 25px;
+    font-size: 1.4rem;
     position: relative;
-    padding-bottom: 0.3rem;
-    font-weight: 600;
+    padding-bottom: 15px;
+    color: #ff6b00;
 }
 
-.footer-section h3::after {
+.footer-column h3::after {
     content: '';
     position: absolute;
-    left: 0;
     bottom: 0;
-    width: 30px;
-    height: 2px;
-    background: #ff6e7f;
-    border-radius: 2px;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: #ff6b00;
+}
+
+.footer-column p {
+    color: #bbb;
+    line-height: 1.7;
+    margin-bottom: 20px;
 }
 
 .footer-links {
@@ -443,57 +616,33 @@ footer {
 }
 
 .footer-links li {
-    margin-bottom: 0.6rem;
+    margin-bottom: 12px;
 }
 
 .footer-links a {
-    color: #333;
+    color: #bbb;
     text-decoration: none;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
-    display: inline-block;
+    transition: all 0.3s;
+    display: block;
     position: relative;
     padding-left: 0;
 }
 
 .footer-links a:hover {
-    color: #1a2a6c;
+    color: #ff6b00;
     padding-left: 8px;
 }
 
 .footer-links a::before {
-    content: "→";
+    content: '→';
     position: absolute;
-    left: -15px;
+    left: 0;
     opacity: 0;
-    transition: all 0.3s ease;
-    color: #ff6e7f;
-    font-size: 0.8rem;
+    transition: all 0.3s;
 }
 
 .footer-links a:hover::before {
     opacity: 1;
-    left: -20px;
-}
-
-.footer-section p {
-    color: #333;
-    line-height: 1.6;
-    font-size: 0.9rem;
-    margin-bottom: 0.8rem;
-}
-
-.footer-contact p {
-    position: relative;
-    padding-left: 25px;
-    margin-bottom: 0.6rem;
-}
-
-.footer-contact p i {
-    position: absolute;
-    left: 0;
-    top: 3px;
-    color: #ff6e7f;
 }
 
 .footer-social {
@@ -534,13 +683,76 @@ footer {
     text-align: center;
     padding-top: 1.5rem;
     margin-top: 1.5rem;
-    border-top: 1px solid rgba(0, 0, 0, 0.1);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     font-size: 0.85rem;
-    color: #333;
+    color: #999;
+}
+
+.copyright {
+    text-align: center;
+    padding-top: 25px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.copyright a {
+    color: #ff6b00;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.copyright a:hover {
+    color: #ff8c00;
+    text-decoration: underline;
 }
 
 .footer-bottom p {
     margin: 0;
+}
+
+/* Newsletter Subscription */
+.newsletter {
+    margin-top: 20px;
+}
+
+.newsletter p {
+    margin-bottom: 15px;
+    color: #bbb;
+}
+
+.newsletter-form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.newsletter-input {
+    padding: 12px 15px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.newsletter-input::placeholder {
+    color: #aaa;
+}
+
+.newsletter-input:focus {
+    background: rgba(255, 255, 255, 0.15);
+    box-shadow: 0 0 0 2px #ff6b00;
+}
+
+.newsletter-btn {
+    background: #ff6b00;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: pointer;
 }
 
 /* Single line footer layout */
@@ -884,6 +1096,16 @@ nav ul li a:hover {
 
 /* Responsive Styles */
 @media (max-width: 992px) {
+    .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+    }
+    
+    .benefit-card {
+        min-width: 200px;
+        max-width: 300px;
+    }
     .testimonial-slide {
         width: 300px;
     }
@@ -914,6 +1136,101 @@ nav ul li a:hover {
 @media (max-width: 768px) {
     .menu-toggle {
         display: flex;
+    }
+    
+    .how-it-works-hero .section-title h1 {
+        font-size: 2rem;
+    }
+    
+    .how-it-works-hero .section-title p {
+        font-size: 1rem;
+    }
+    
+    .hero-wave svg {
+        height: 60px;
+    }
+    
+    .steps h2 {
+        font-size: 2rem;
+    }
+    
+    .steps p {
+        font-size: 1rem;
+    }
+    
+    .step-number {
+        width: 60px;
+        height: 60px;
+        font-size: 1.5rem;
+    }
+    
+    .step-card h3 {
+        font-size: 1.4rem;
+    }
+    
+    .step-card p {
+        font-size: 1rem;
+    }
+    
+    .benefits-grid {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .benefit-card {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .features-benefits .section-title p {
+        font-size: 1rem;
+    }
+    
+    .cta-section h2 {
+        font-size: 2rem;
+    }
+    
+    .cta-section p {
+        font-size: 1rem;
+    }
+    
+    .cta-buttons {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    .support-info {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .info-card {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .support-cta {
+        padding: 1.5rem;
+    }
+    
+    .support-cta p {
+        font-size: 1rem;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+    }
+    
+    .footer-column:first-child {
+        grid-column: span 2;
     }
 
     header nav ul {
@@ -1052,5 +1369,68 @@ nav ul li a:hover {
     
     .support-cta p {
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 575px) {
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .footer-column:first-child {
+        grid-column: span 1;
+    }
+    
+    .social-links {
+        justify-content: center;
+    }
+    
+    .cta-section h2 {
+        font-size: 1.8rem;
+    }
+    
+    .cta-section p {
+        font-size: 0.9rem;
+    }
+    
+    .how-it-works-hero .section-title h1 {
+        font-size: 1.8rem;
+    }
+    
+    .steps h2 {
+        font-size: 1.8rem;
+    }
+    
+    .features-benefits .section-title h2 {
+        font-size: 1.8rem;
+    }
+    
+    .benefit-card {
+        padding: 1.5rem;
+    }
+    
+    .benefit-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .step-card {
+        padding: 2rem;
+    }
+    
+    .step-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .info-card {
+        padding: 1.5rem;
+    }
+    
+    .info-card h3 {
+        font-size: 1.2rem;
+    }
+    
+    .support-cta {
+        padding: 1rem;
     }
 }
