@@ -140,12 +140,20 @@ if (isset($_SESSION['user_id']) && $pdo) {
         transform: translateY(0);
     }
     
-    /* Wheel Styles */
+    /* Enhanced Wheel Styles */
     .wheel-container {
         position: relative;
         width: 300px;
         height: 300px;
         margin: 0 auto;
+        /* Add celebratory animation preference */
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
     }
     
     .wheel {
@@ -181,6 +189,7 @@ if (isset($_SESSION['user_id']) && $pdo) {
         font-weight: bold;
         font-size: 14px;
         color: #333;
+        text-shadow: 1px 1px 2px rgba(255,255,255,0.7);
     }
     
     .wheel-pointer {
@@ -194,6 +203,13 @@ if (isset($_SESSION['user_id']) && $pdo) {
         clip-path: polygon(50% 100%, 0 0, 100% 0);
         z-index: 10;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        /* Add pointer animation */
+        animation: bounce 1s infinite;
+    }
+    
+    @keyframes bounce {
+        0%, 100% { transform: translateX(-50%) translateY(0); }
+        50% { transform: translateX(-50%) translateY(-5px); }
     }
     
     .wheel-center {
@@ -215,6 +231,20 @@ if (isset($_SESSION['user_id']) && $pdo) {
         font-size: 24px;
         font-weight: bold;
         min-height: 40px;
+        /* Add celebratory effect for wins */
+        transition: all 0.3s ease;
+    }
+    
+    .spin-result.win {
+        color: #28a745;
+        text-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
+        animation: winPulse 0.5s ease-in-out;
+    }
+    
+    @keyframes winPulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
     }
     
     .spins-left {
@@ -222,6 +252,58 @@ if (isset($_SESSION['user_id']) && $pdo) {
         margin-top: 10px;
         font-weight: bold;
         color: #666;
+        font-size: 18px;
+    }
+    
+    /* Enhanced Spin Button */
+    #spinWheelBtn {
+        background: linear-gradient(135deg, #ff6b6b, #ffa502);
+        border: none;
+        color: white;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-weight: bold;
+        font-size: 18px;
+        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+    }
+    
+    #spinWheelBtn:hover:not(:disabled) {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+    }
+    
+    #spinWheelBtn:active:not(:disabled) {
+        transform: translateY(1px);
+    }
+    
+    #spinWheelBtn:disabled {
+        background: #cccccc;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+    
+    /* Modal enhancements */
+    .modal-content {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    }
+    
+    .modal-header {
+        background: linear-gradient(135deg, #ff9a9e 0%, #fad0c4 100%);
+        border-radius: 15px 15px 0 0;
+        border: none;
+        color: white;
+    }
+    
+    .modal-title {
+        font-weight: bold;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
     }
     
     @media (max-width: 576px) {
@@ -410,6 +492,7 @@ document.addEventListener('DOMContentLoaded', function() {
         spinWheelBtn.disabled = true;
         spinWheelBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Spinning...';
         spinResult.textContent = 'Spinning...';
+        spinResult.className = 'spin-result'; // Reset classes
         
         // Send request to spin
         fetch('spin_earn.php', {
@@ -456,6 +539,14 @@ document.addEventListener('DOMContentLoaded', function() {
                         spinWheelBtn.disabled = false;
                         spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
                         
+                        // Add celebratory effect for wins
+                        if (data.reward > 0) {
+                            spinResult.classList.add('win');
+                            
+                            // Add celebratory animation preference - fireworks effect
+                            createFireworks();
+                        }
+                        
                         // Check if no spins left
                         if (data.spins_left <= 0) {
                             spinWheelBtn.disabled = true;
@@ -483,5 +574,67 @@ document.addEventListener('DOMContentLoaded', function() {
             spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
         });
     });
+    
+    // Function to create celebratory fireworks effect
+    function createFireworks() {
+        // Create a container for fireworks
+        const container = document.createElement('div');
+        container.style.position = 'fixed';
+        container.style.top = '0';
+        container.style.left = '0';
+        container.style.width = '100%';
+        container.style.height = '100%';
+        container.style.pointerEvents = 'none';
+        container.style.zIndex = '9999';
+        document.body.appendChild(container);
+        
+        // Create multiple fireworks
+        for (let i = 0; i < 20; i++) {
+            setTimeout(() => {
+                const firework = document.createElement('div');
+                firework.style.position = 'absolute';
+                firework.style.width = '10px';
+                firework.style.height = '10px';
+                firework.style.borderRadius = '50%';
+                firework.style.backgroundColor = getRandomColor();
+                firework.style.boxShadow = '0 0 10px 2px ' + getRandomColor();
+                firework.style.left = Math.random() * 100 + '%';
+                firework.style.top = Math.random() * 100 + '%';
+                firework.style.opacity = '0';
+                firework.style.transition = 'all 1s ease-out';
+                
+                container.appendChild(firework);
+                
+                // Animate firework
+                setTimeout(() => {
+                    firework.style.opacity = '1';
+                    firework.style.transform = 'translate(' + (Math.random() * 100 - 50) + 'px, ' + (Math.random() * 100 - 50) + 'px)';
+                }, 10);
+                
+                // Remove firework after animation
+                setTimeout(() => {
+                    firework.style.opacity = '0';
+                    setTimeout(() => {
+                        if (firework.parentNode) {
+                            firework.parentNode.removeChild(firework);
+                        }
+                    }, 1000);
+                }, 800);
+            }, i * 100);
+        }
+        
+        // Remove container after all fireworks are done
+        setTimeout(() => {
+            if (container.parentNode) {
+                container.parentNode.removeChild(container);
+            }
+        }, 3000);
+    }
+    
+    // Helper function to get random color for fireworks
+    function getRandomColor() {
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffbe0b', '#fb5607', '#ff006e', '#8338ec'];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
 });
 </script>

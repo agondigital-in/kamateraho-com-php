@@ -82,11 +82,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$user_id, $reward_amount]);
         }
         
+        // Create celebratory messages for wins
+        $celebration_messages = [
+            5 => "🎉 Great! You won ₹5!",
+            10 => "🎊 Awesome! You won ₹10!",
+            15 => "🥳 Excellent! You won ₹15!",
+            20 => "🔥 Keep spinning!",
+            30 => "🔥 Keep spinning!"
+        ];
+        
+        // Create messages for non-wins
+        $consolation_messages = [
+            "Better Luck Next Time! 🍀",
+            "Almost! Try again! 💪",
+            "So close! Spin again! 🎯",
+            "Next spin is your lucky one! 🍀"
+        ];
+        
         echo json_encode([
             'success' => true,
             'reward' => $display_reward,
-            'message' => $reward_amount > 0 ? 'Congratulations! You won ₹' . $reward_amount : 
-                        ($display_reward == 20 || $display_reward == 30 ? 'Keep spinning!' : 'Better Luck Next Time'),
+            'message' => $reward_amount > 0 ? $celebration_messages[$reward_amount] : 
+                        ($display_reward == 20 || $display_reward == 30 ? '🔥 Keep spinning!' : 
+                        $consolation_messages[array_rand($consolation_messages)]),
             'spins_left' => 2 - $spin_count
         ]);
         

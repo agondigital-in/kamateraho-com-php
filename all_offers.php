@@ -178,6 +178,31 @@ if ($pdo) {
             transform: translateY(0);
         }
         
+        /* Enhanced Spin Button on Offers Page */
+        #spinBtn {
+            background: linear-gradient(135deg, #ff6b6b, #ffa502);
+            border: none;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 16px;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        #spinBtn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        }
+        
+        #spinBtn:active {
+            transform: translateY(1px);
+        }
+        
         /* Responsive improvements */
         @media (max-width: 768px) {
             .offer-card-col {
