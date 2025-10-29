@@ -553,6 +553,20 @@
                      <a href="post11.php" class="read-more">Read More</a>
                 </div>
             </div>
+              <!-- Blog Post 11 -->
+            <div class="blog-card">
+                <img src="https://education.sakshi.com/sites/default/files/images/2023/08/24/work-home-1692862181.jpg" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>top 10 site for referral earning
+ </h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">– Earn Money Online Without Investment</p>
+                     <a href="post10.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">
@@ -645,7 +659,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 KamateRaho. All rights reserved. </p>
+                <p>&copy; 2025 KamateRaho. All rights reserved. | Designed with ❤️ for smart shoppers</p>
             </div>
         </div>
     </footer>
