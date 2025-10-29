@@ -101,7 +101,7 @@
 
   <!-- 🔹 Full Width Top Image -->
   <div class="banner">
-    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1729920000/referral-earning-sites-banner.jpg" 
+    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ35b7iCbqaSmqeuy8jmOJAsVnFtKlLtCgs6g&s" 
          alt="Top Referral Earning Sites 2025 Banner">
   </div>
 
