@@ -183,20 +183,39 @@ if ($pdo) {
             background: linear-gradient(135deg, #ff6b6b, #ffa502);
             border: none;
             color: white;
-            padding: 12px 25px;
+            padding: 15px 30px;
             border-radius: 50px;
             font-weight: bold;
-            font-size: 16px;
-            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+            font-size: 18px;
+            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
             transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #spinBtn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: 0.5s;
+        }
+        
+        #spinBtn:hover::before {
+            left: 100%;
         }
         
         #spinBtn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.7);
         }
         
         #spinBtn:active {

@@ -233,17 +233,22 @@ if (isset($_SESSION['user_id']) && $pdo) {
         min-height: 40px;
         /* Add celebratory effect for wins */
         transition: all 0.3s ease;
+        padding: 15px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
     
     .spin-result.win {
         color: #28a745;
         text-shadow: 0 0 10px rgba(40, 167, 69, 0.5);
         animation: winPulse 0.5s ease-in-out;
+        background: linear-gradient(135deg, #d4edda, #c3e6cb);
     }
     
     @keyframes winPulse {
         0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
+        50% { transform: scale(1.05); }
         100% { transform: scale(1); }
     }
     
@@ -260,20 +265,39 @@ if (isset($_SESSION['user_id']) && $pdo) {
         background: linear-gradient(135deg, #ff6b6b, #ffa502);
         border: none;
         color: white;
-        padding: 12px 30px;
+        padding: 15px 35px;
         border-radius: 50px;
         font-weight: bold;
-        font-size: 18px;
-        box-shadow: 0 4px 15px rgba(255, 107, 107, 0.4);
+        font-size: 20px;
+        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.5);
         transition: all 0.3s ease;
         display: inline-flex;
         align-items: center;
-        gap: 10px;
+        gap: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        position: relative;
+        overflow: hidden;
+    }
+    
+    #spinWheelBtn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: 0.5s;
+    }
+    
+    #spinWheelBtn:hover:not(:disabled)::before {
+        left: 100%;
     }
     
     #spinWheelBtn:hover:not(:disabled) {
-        transform: translateY(-3px);
-        box-shadow: 0 6px 20px rgba(255, 107, 107, 0.6);
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(255, 107, 107, 0.7);
     }
     
     #spinWheelBtn:active:not(:disabled) {
@@ -429,7 +453,7 @@ if (isset($_SESSION['user_id']) && $pdo) {
                 </div>
                 
                 <div class="spin-result" id="spinResult">
-                    Click SPIN to try your luck!
+                    <i class="fas fa-star"></i> Click SPIN to try your luck! <i class="fas fa-star"></i>
                 </div>
                 
                 <button id="spinWheelBtn" class="spin-btn mt-3" style="padding: 12px 30px;">
@@ -491,7 +515,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Disable button during spin
         spinWheelBtn.disabled = true;
         spinWheelBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Spinning...';
-        spinResult.textContent = 'Spinning...';
+        spinResult.innerHTML = '<i class="fas fa-cog fa-spin"></i> Spinning the wheel... <i class="fas fa-cog fa-spin"></i>';
         spinResult.className = 'spin-result'; // Reset classes
         
         // Send request to spin
@@ -517,7 +541,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // After animation, show result
                     setTimeout(() => {
-                        spinResult.textContent = data.message;
+                        spinResult.innerHTML = data.message;
                         spinWheelBtn.disabled = false;
                         spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
                         
@@ -535,7 +559,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     
                     // After animation, show result
                     setTimeout(() => {
-                        spinResult.textContent = data.message;
+                        spinResult.innerHTML = data.message;
                         spinWheelBtn.disabled = false;
                         spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
                         
@@ -556,7 +580,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else {
                 // Error or no spins left
-                spinResult.textContent = data.message;
+                spinResult.innerHTML = data.message;
                 spinWheelBtn.disabled = false;
                 spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
                 
@@ -569,7 +593,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error:', error);
-            spinResult.textContent = 'Error occurred. Please try again.';
+            spinResult.innerHTML = 'Error occurred. Please try again.';
             spinWheelBtn.disabled = false;
             spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
         });
