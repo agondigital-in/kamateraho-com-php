@@ -1458,7 +1458,7 @@ nav.scrolled {
 }
 
 .step:not(:last-child)::after {
-    content: "";
+   
     position: absolute;
     top: 25px;
     right: 0;
