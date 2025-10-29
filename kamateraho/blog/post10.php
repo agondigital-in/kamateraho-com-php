@@ -16,42 +16,62 @@
       padding: 0;
       line-height: 1.7;
     }
-    .container {
-      max-width: 900px;
-      margin: 50px auto;
-      background: #fff;
-      padding: 30px;
-      border-radius: 15px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+
+    /* 🔹 Full Width Banner Image */
+    .banner {
+      width: 100%;
+      position: relative;
+      margin: 0;
+      padding: 0;
     }
-    .top-img {
+
+    .banner img {
       width: 100%;
       height: auto;
-      border-radius: 15px;
-      margin-bottom: 25px;
+      display: block;
+      border: none;
+      margin: 0;
+      padding: 0;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
     }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 0 0 15px 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
     h1, h2, h3 {
       color: #222;
     }
+
     h1 {
       font-size: 2em;
       margin-bottom: 15px;
       text-align: center;
     }
+
     h2 {
       color: #0a84ff;
       margin-top: 35px;
     }
+
     h3 {
       color: #ff6600;
       margin-top: 25px;
     }
+
     p {
       margin-bottom: 15px;
     }
+
     ul {
       margin: 10px 0 20px 20px;
     }
+
     .back-link {
       display: inline-block;
       margin-bottom: 25px;
@@ -60,29 +80,34 @@
       font-weight: 600;
       font-size: 16px;
     }
+
     .back-link:hover {
       color: #ff6600;
     }
+
     .faq {
       background: #f3faff;
       padding: 20px;
       border-radius: 10px;
       margin-top: 30px;
     }
+
     .faq h3 {
       color: #0a84ff;
     }
   </style>
 </head>
 <body>
+
+  <!-- 🔹 Full Width Top Image -->
+  <div class="banner">
+    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714979/Gemini_Generated_Image_ymyqxpymyqxpymyq_vrqhjy.png" 
+         alt="Top Referral Earning Sites 2025 Banner">
+  </div>
+
+  <!-- 🔹 Blog Container -->
   <div class="container">
 
-    <!-- 🔹 Top Image -->
-    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714979/Gemini_Generated_Image_ymyqxpymyqxpymyq_vrqhjy.png" 
-         alt="Top Referral Earning Sites 2025 Banner" 
-         class="top-img">
-
-    <!-- 🔹 Back to Blog Link -->
     <a href="./index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
 
     <h1>Top 10 Best Referral Earning Sites 2025 – Earn Money Online Without Investment</h1>
