@@ -674,7 +674,7 @@
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 KamateRaho. All rights reserved. | Designed with ❤️ for smart shoppers</p>
+                <p>&copy; 2025 KamateRaho. All rights reserved. </p>
             </div>
         </div>
     </footer>
