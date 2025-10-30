@@ -1298,9 +1298,9 @@ if ($pdo) {
                                                 <a target="_blank" href="https://api.whatsapp.com/send?text=<?php echo urlencode($wa_text); ?>" class="btn btn-share">
                                                     <i class="fab fa-whatsapp me-1"></i> SHARE
                                                 </a>
-                                                <button class="btn btn-copy-outline copy-link-btn" data-link="<?php echo htmlspecialchars($share_url); ?>">
-                                                    COPY LINK
-                                                </button>
+                                                <a href="<?php echo $share_url; ?>" class="btn btn-copy-outline">
+                                                    GRAB DEAL
+                                                </a>
                                             </div>
                                         </div>
                                     </div>
