@@ -570,7 +570,8 @@
             </div>
                 <!-- Blog Post 12 -->
             <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714969/Gemini_Generated_Image_ybpauaybpauaybpa_zlxtta.png" alt="Blog Post" class="blog-image">
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761627902/Gemini_Generated_Image_yotpalyotpalyotp_nwe7br.png
+                " alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>How to Start Earning Cash from 
  </h3>
