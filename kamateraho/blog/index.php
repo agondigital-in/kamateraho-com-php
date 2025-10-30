@@ -352,7 +352,7 @@
                     <li><a href="#testimonials">Testimonials</a></li>
                     <li><a href="/kamateraho/blog/index.php">Blog</a></li>
                     <!-- <li><a href="/kamateraho/faq.html">FAQ</a></li> -->
-                    <li><a href="/kamateraho/contact.html">Support 24/7</a></li>
+                    <li><a href="/kamateraho/contact.html">Contact Us</a></li>
                     <li><a href="/kamateraho/payment-proof.html">Payment Proof</a></li>
                     <!-- <li><a href="/kamateraho/terms.html">Terms</a></li>
                     <li><a href="/kamateraho/privacy.html">Privacy</a></li> -->
