@@ -112,7 +112,7 @@ try {
         }
         
         .offer-img {
-            height: 200px;
+            height: 304px !important;
             object-fit: cover;
         }
         
