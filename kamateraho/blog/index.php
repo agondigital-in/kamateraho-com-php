@@ -356,8 +356,8 @@
                     <li><a href="/kamateraho/payment-proof.html">Payment Proof</a></li>
                     <!-- <li><a href="/kamateraho/terms.html">Terms</a></li>
                     <li><a href="/kamateraho/privacy.html">Privacy</a></li> -->
-                    <li><a href="../register.php" class="btn animated-btn">Sign Up</a></li>
-                    <li><a href="../login.php" class="btn animated-btn"> Login </a></li>
+                    <li><a href="../../register.php" class="btn animated-btn">Sign Up</a></li>
+                    <li><a href="../../login.php" class="btn animated-btn"> Login </a></li>
 
                 </ul>
                 <div class="menu-toggle">
