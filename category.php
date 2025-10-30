@@ -1,6 +1,7 @@
 <?php
 session_start();
 include 'config/db.php';
+include 'includes/price_helper.php'; // Include price helper functions
 
 // Get category ID from URL
 $category_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
