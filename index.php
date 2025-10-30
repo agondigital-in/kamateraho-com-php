@@ -80,6 +80,14 @@ if ($pdo) {
         $credit_cards = [];
     }
     
+    // Fetch active banners for the carousel
+    try {
+        $stmt = $pdo->query("SELECT * FROM banners WHERE is_active = 1 ORDER BY sequence_id ASC, created_at DESC");
+        $banners = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    } catch(PDOException $e) {
+        $banners = [];
+    }
+    
     // Fetch specific categories by ID and their offers
     try {
         // Fetch category with ID=8 for kotak811 section and its offers
@@ -128,6 +136,7 @@ if ($pdo) {
 } else {
     $categories = [];
     $credit_cards = [];
+    $banners = [];
     $kotak_offers = [];
     $icici_offers = [];
     $bajaj_offers = [];
@@ -1167,54 +1176,50 @@ if ($pdo) {
                     <div class="peeking-carousel-container">
                         <div class="peeking-carousel-wrapper">
                             <div class="peeking-carousel-track" id="bannerTrack">
-                                <!-- Banner 1 -->
-                                <div class="carousel-card">
-                                    <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=1&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
-                                            <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608969/2_qpu9gr.png" class="card-img-top" alt="Banner 1">
-                                        </a>
+                                <?php if (!empty($banners)): ?>
+                                    <?php foreach ($banners as $index => $banner): ?>
+                                        <div class="carousel-card">
+                                            <div class="card border-0 shadow-sm h-100">
+                                                <a href="<?php echo htmlspecialchars($banner['redirect_url']); ?><?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                    <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($banner['title']); ?>">
+                                                </a>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <!-- Banner 1 -->
+                                    <div class="carousel-card">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=1&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608969/2_qpu9gr.png" class="card-img-top" alt="Banner 1">
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Banner 2 -->
-                                <div class="carousel-card">
-                                    <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=2&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
-                                            <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608964/4_yihxur.png" class="card-img-top" alt="Banner 2">
-                                        </a>
+                                    <!-- Banner 2 -->
+                                    <div class="carousel-card">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=2&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608964/4_yihxur.png" class="card-img-top" alt="Banner 2">
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Banner 3 -->
-                                <div class="carousel-card">
-                                    <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=3&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
-                                            <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608962/1_jmmalq.png" class="card-img-top" alt="Banner 3">
-                                        </a>
+                                    <!-- Banner 3 -->
+                                    <div class="carousel-card">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=3&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608962/1_jmmalq.png" class="card-img-top" alt="Banner 3">
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Banner 4 -->
-                                <div class="carousel-card">
-                                    <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=4&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
-                                            <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608963/3_j2su4t.png" class="card-img-top" alt="Banner 4">
-                                        </a>
+                                    <!-- Banner 4 -->
+                                    <div class="carousel-card">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=4&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608963/3_j2su4t.png" class="card-img-top" alt="Banner 4">
+                                            </a>
+                                        </div>
                                     </div>
-                                </div>
-                                <!-- Banner 5 -->
-                                <!-- <div class="carousel-card">
-                                    <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=5&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300742/4_g3f3wr.png" class="card-img-top" alt="Banner 5">
-                                        </a>
-                                    </div>
-                                </div> -->
-                                <!-- Banner 6 -->
-                                <!-- <div class="carousel-card">
-                                    <div class="card border-0 shadow-sm h-100">
-                                        <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=6&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
-                                            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1759300752/5_zoqfoa.png" class="card-img-top" alt="Banner 6">
-                                        </a>
-                                    </div>
-                                </div> -->
+                                <?php endif; ?>
                             </div>
                         </div>
                         
@@ -1467,12 +1472,12 @@ if ($pdo) {
                                     </div>
                                     <div class="meta">
                                         <div>
-                                            <small>Starting From</small>
+                                           <small>Starting From</small>
                                             <div class="val"><?php echo !empty($offer['price']) ? display_price($offer['price'], $offer['price_type'] ?? 'fixed') : '—'; ?></div>
                                         </div>
                                         <div>
                                             <!-- <small>Per Sale You Earn</small>
-                                            <div class="val"><?php echo !empty($offer['price']) ? display_price($offer['price'], $offer['price_type'] ?? 'fixed') : '—'; ?></div> -->
+                                              <div class="val"><?php echo !empty($offer['price']) ? display_price($offer['price'], $offer['price_type'] ?? 'fixed') : '—'; ?></div> -->
                                         </div>
                                     </div>
                                 </div>

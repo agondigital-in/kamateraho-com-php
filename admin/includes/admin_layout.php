@@ -537,6 +537,11 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-people-fill"></i> <span>All Users</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_sliders.php') ? 'active' : ''; ?>" href="manage_sliders.php">
+                        <i class="bi bi-images"></i> <span>Manage Sliders</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>

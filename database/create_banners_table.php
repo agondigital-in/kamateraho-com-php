@@ -1,0 +1,26 @@
+<?php
+// Create banners table for slider management
+include __DIR__ . '/../config/db.php';
+
+if (!$pdo) {
+    die("Database connection failed");
+}
+
+try {
+    $sql = "CREATE TABLE IF NOT EXISTS banners (
+        id INT(11) AUTO_INCREMENT PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        image_url VARCHAR(500) NOT NULL,
+        redirect_url VARCHAR(500) NOT NULL,
+        sequence_id INT(11) DEFAULT 0,
+        is_active BOOLEAN DEFAULT TRUE,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+    )";
+    
+    $pdo->exec($sql);
+    echo "Banners table created successfully!";
+} catch(PDOException $e) {
+    echo "Error creating table: " . $e->getMessage();
+}
+?>
