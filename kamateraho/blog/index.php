@@ -572,14 +572,17 @@
             <div class="blog-card">
                 <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714969/Gemini_Generated_Image_ybpauaybpauaybpa_zlxtta.png" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
-                    <h3>top 10 site for referral earning
+                    <h3>How to Start Earning Cash from 
  </h3>
                     <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
+                        <span><i class="far fa-calendar"></i> Oct 30, 2025
+                        </span>
                         <span><i class="far fa-user"></i> Admin</span>
                     </div>
-                    <p class="blog-excerpt">– Earn Money Online Without Investment</p>
-                     <a href="post12.php" class="read-more">Read More</a>
+                    <p class="blog-excerpt">
+                        Home in 2025
+                    </p>
+                     <a href="post10php" class="read-more">Read More</a>
                 </div>
             </div>
         </div>
