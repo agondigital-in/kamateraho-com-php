@@ -283,7 +283,7 @@
                     <li><a href="index.php">Home</a></li>
                     <li><a href="how-to-earn.php">How It Works</a></li>
                     <li><a href="all_offers.php">All Offers</a></li>
-                    <li><a href="contact.php">Contact</a></li>
+                    <!-- <li><a href="contact.php">Contact</a></li> -->
                 </ul>
             </div>
             <div class="col-lg-3 col-md-6 footer-section">
@@ -303,7 +303,7 @@
                 <li><a href="privacy.php">Privacy Policy</a></li>
                 <li><a href="terms.php">Terms of Service</a></li>
                 <li><a href="faq.php">FAQ</a></li>
-                <li><a href="support.php">Support</a></li>
+                <li><a href="contact.php">Support</a></li>
             </ul>
             <p class="copyright">&copy; 2025 KamateRaho. All rights reserved.</p>
         </div>
