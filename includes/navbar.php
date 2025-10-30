@@ -420,7 +420,7 @@ if (isset($_SESSION['user_id']) && $pdo) {
 
         <div class="d-flex align-items-center flex-wrap gap-3">
             <div class="d-flex align-items-center gap-3">
-                <a href="contact.php" class="text-decoration-none" style="color:#0f3d2e;font-weight:700;"><i class="fas fa-phone me-1"></i>Contact</a>
+                <a href="contact.php" class="text-decoration-none" style="color:#0f3d2e;font-weight:700;"><i class="fas fa-phone me-1"></i>Support 24/7</a>
                 <a href="user_messages.php" class="text-decoration-none" style="color:#0f3d2e;font-weight:700;"><i class="fas fa-envelope me-1"></i>Messages</a>
                 <?php if (isset($_SESSION['user_id'])): ?>
                     <a href="#" class="text-decoration-none" style="color:#0f3d2e;font-weight:700;" data-bs-toggle="modal" data-bs-target="#referralModal"><i class="fas fa-user-friends me-1"></i>Refer Friend & Earn</a>
