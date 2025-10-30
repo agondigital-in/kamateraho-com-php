@@ -716,7 +716,7 @@ try {
                 <p class="text-muted small mb-0">View all activity</p>
             </a>
             
-            <a href="#" class="action-btn text-decoration-none">
+            <a href="contact.php" class="action-btn text-decoration-none">
                 <i class="fas fa-headset"></i>
                 <h6>Support</h6>
                 <p class="text-muted small mb-0">Get help</p>
