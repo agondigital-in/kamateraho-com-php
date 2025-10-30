@@ -220,7 +220,7 @@ try {
                                 <h5 class="card-title"><?php echo htmlspecialchars($offer['title']); ?></h5>
                                 <div class="mt-auto">
                                     <div class="d-flex justify-content-between align-items-center mb-3">
-                                        <div class="price-tag">₹<?php echo number_format($offer['price'], 2); ?></div>
+                                        <div class="price-tag"><?php echo display_price($offer['price'], $offer['price_type'] ?? 'fixed'); ?></div>
                                         <?php if (!empty($offer['redirect_url'])): ?>
                                             <small class="text-muted">
                                                 <i class="fas fa-external-link-alt"></i> External Offer
