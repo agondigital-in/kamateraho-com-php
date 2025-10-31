@@ -586,6 +586,26 @@
                      <a href="post9.php" class="read-more">Read More</a>
                 </div>
             </div>
+                <!-- Blog Post 13 -->
+            <div class="blog-card">
+                <img src="https://jksdigital.in/wp-content/uploads/2025/07/Add-a-heading-31.webp
+                " alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>
+
+The Ultimate Guide to Earning
+ </h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Oct 31, 2025
+                        </span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">
+                       Income Online Through Simple Task Completion
+                    </p>
+                     <a href="post13.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">
