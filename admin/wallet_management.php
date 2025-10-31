@@ -147,9 +147,6 @@ if (isset($_GET['user_id'])) {
                                             <th>User ID</th>
                                             <th>Name</th>
                                             <th>Email</th>
-                                            <th>Phone</th>
-                                            <th>City</th>
-                                            <th>State</th>
                                             <th>Wallet Balance</th>
                                             <th>Actions</th>
                                         </tr>
@@ -160,9 +157,6 @@ if (isset($_GET['user_id'])) {
                                                 <td><?php echo htmlspecialchars($user['id']); ?></td>
                                                 <td><?php echo htmlspecialchars($user['name']); ?></td>
                                                 <td><?php echo htmlspecialchars($user['email']); ?></td>
-                                                <td><?php echo htmlspecialchars($user['phone']); ?></td>
-                                                <td><?php echo htmlspecialchars($user['city']); ?></td>
-                                                <td><?php echo htmlspecialchars($user['state']); ?></td>
                                                 <td>₹<?php echo number_format($user['wallet_balance'], 2); ?></td>
                                                 <td>
                                                     <a href="wallet_management.php?user_id=<?php echo $user['id']; ?>" 
