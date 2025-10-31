@@ -183,12 +183,10 @@ if ($isSubAdmin) {
                             <tr>
                                 <th scope="col" class="px-4 py-3">ID</th>
                                 <th scope="col" class="px-4 py-3">Image</th>
-                                <th scope="col" class="px-4 py-3">Title</th>
                                 <th scope="col" class="px-4 py-3">Category</th>
                                 <th scope="col" class="px-4 py-3">Price</th>
                                 <th scope="col" class="px-4 py-3">Sequence</th>
                                 <th scope="col" class="px-4 py-3">Status</th>
-                                <th scope="col" class="px-4 py-3">Created</th>
                                 <th scope="col" class="px-4 py-3 text-end">Actions</th>
                             </tr>
                         </thead>
@@ -215,11 +213,6 @@ if ($isSubAdmin) {
                                     <?php endif; ?>
                                 </td>
                                 <td class="px-4 py-3">
-                                    <div class="fw-medium text-truncate" style="max-width: 180px;">
-                                        <?php echo htmlspecialchars($offer['title']); ?>
-                                    </div>
-                                </td>
-                                <td class="px-4 py-3">
                                     <span class="badge bg-info-subtle text-info-emphasis">
                                         <?php echo htmlspecialchars($offer['category_name'] ?? 'N/A'); ?>
                                     </span>
@@ -244,12 +237,6 @@ if ($isSubAdmin) {
                                             <i class="bi bi-x-circle-fill me-1"></i>Inactive
                                         </span>
                                     <?php endif; ?>
-                                </td>
-                                <td class="px-4 py-3 text-muted">
-                                    <div class="d-flex align-items-center">
-                                        <i class="bi bi-calendar me-1"></i>
-                                        <?php echo date('M j, Y', strtotime($offer['created_at'])); ?>
-                                    </div>
                                 </td>
                                 <td class="px-4 py-3">
                                     <div class="d-flex justify-content-end gap-2">
@@ -419,9 +406,28 @@ if ($isSubAdmin) {
 }
 
 /* Responsive adjustments */
-@media (max-width: 768px) {
+@media (max-width: 992px) {
     .table-responsive {
         font-size: 0.875rem;
+    }
+    
+    .table th, .table td {
+        padding: 0.6rem;
+    }
+    
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.8rem;
+    }
+    
+    h2 {
+        font-size: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.8rem;
     }
     
     .table th, .table td {
@@ -438,7 +444,7 @@ if ($isSubAdmin) {
     }
     
     h2 {
-        font-size: 1.5rem;
+        font-size: 1.3rem;
     }
 }
 
@@ -466,10 +472,6 @@ if ($isSubAdmin) {
         align-items: flex-start !important;
     }
     
-    .text-truncate {
-        max-width: 120px !important;
-    }
-    
     .card-footer .d-flex {
         flex-direction: column;
         gap: 1rem;
@@ -478,6 +480,10 @@ if ($isSubAdmin) {
     
     .pagination {
         margin-top: 0.5rem;
+    }
+    
+    .input-group {
+        max-width: 150px !important;
     }
 }
 
@@ -499,57 +505,10 @@ if ($isSubAdmin) {
         font-size: 1.1rem;
     }
     
-    .text-truncate {
-        max-width: 80px !important;
-    }
-    
     .gap-2 {
         gap: 0.25rem !important;
     }
-}
-
-/* Action buttons stacking on small screens */
-@media (max-width: 576px) {
-    .d-flex.justify-content-end.gap-2 {
-        flex-direction: column;
-        align-items: flex-end;
-    }
     
-    .d-flex.justify-content-end.gap-2 > .btn {
-        margin-bottom: 0.25rem;
-        width: 100%;
-        max-width: 40px;
-    }
-}
-
-/* Extra small devices */
-@media (max-width: 400px) {
-    .d-flex.justify-content-end.gap-2 {
-        align-items: center;
-    }
-    
-    .d-flex.justify-content-end.gap-2 > .btn {
-        max-width: 35px;
-        margin-bottom: 0.2rem;
-        padding: 0.1rem 0.2rem;
-        font-size: 0.6rem;
-    }
-}
-
-/* Search bar responsive */
-@media (max-width: 768px) {
-    .input-group {
-        max-width: 180px !important;
-    }
-}
-
-@media (max-width: 576px) {
-    .input-group {
-        max-width: 150px !important;
-    }
-}
-
-@media (max-width: 400px) {
     .input-group {
         max-width: 120px !important;
         font-size: 0.8rem;
@@ -562,6 +521,35 @@ if ($isSubAdmin) {
     .form-control {
         padding: 0.25rem 0.5rem;
         font-size: 0.8rem;
+    }
+}
+
+/* Action buttons stacking on small screens */
+@media (max-width: 576px) {
+    .d-flex.justify-content-end.gap-2 {
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+    }
+    
+    .d-flex.justify-content-end.gap-2 > .btn {
+        margin-bottom: 0.25rem;
+        width: auto;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 400px) {
+    .d-flex.justify-content-end.gap-2 {
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    
+    .d-flex.justify-content-end.gap-2 > .btn {
+        max-width: 35px;
+        margin-bottom: 0.2rem;
+        padding: 0.1rem 0.2rem;
+        font-size: 0.6rem;
     }
 }
 </style>
