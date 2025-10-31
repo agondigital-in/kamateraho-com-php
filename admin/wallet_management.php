@@ -22,6 +22,7 @@ try {
 // If a specific user is selected, fetch their wallet history
 $user_wallet_history = [];
 $selected_user = null;
+$referral_info = [];
 if (isset($_GET['user_id'])) {
     $user_id = (int)$_GET['user_id'];
     
@@ -36,6 +37,26 @@ if (isset($_GET['user_id'])) {
             $stmt = $pdo->prepare("SELECT * FROM wallet_history WHERE user_id = ? ORDER BY created_at DESC");
             $stmt->execute([$user_id]);
             $user_wallet_history = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Check if this user was referred by someone (look for referral bonus entries)
+            $stmt = $pdo->prepare("SELECT description FROM wallet_history WHERE description LIKE 'Referral Bonus for user ID: " . $user_id . "'");
+            $stmt->execute();
+            $referral_entries = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            // Extract referrer information
+            foreach ($referral_entries as $entry) {
+                // Extract referrer ID from description
+                if (preg_match('/Referral Bonus for user ID: (\d+)/', $entry['description'], $matches)) {
+                    $referrer_id = $matches[1];
+                    // Get referrer details
+                    $stmt2 = $pdo->prepare("SELECT id, name, email FROM users WHERE id = ?");
+                    $stmt2->execute([$referrer_id]);
+                    $referrer = $stmt2->fetch(PDO::FETCH_ASSOC);
+                    if ($referrer) {
+                        $referral_info[] = $referrer;
+                    }
+                }
+            }
         }
     } catch(PDOException $e) {
         $error = "Error fetching user data: " . $e->getMessage();
@@ -79,6 +100,20 @@ if (isset($_GET['user_id'])) {
                                 <p><strong>Current Balance:</strong> <span class="fs-4 fw-bold text-success">₹<?php echo number_format($selected_user['wallet_balance'], 2); ?></span></p>
                                 <p><strong>City:</strong> <?php echo htmlspecialchars($selected_user['city']); ?></p>
                                 <p><strong>State:</strong> <?php echo htmlspecialchars($selected_user['state']); ?></p>
+                                
+                                <?php if (!empty($referral_info)): ?>
+                                    <div class="mt-3 p-3 bg-light rounded">
+                                        <h6>Referral Information</h6>
+                                        <?php foreach ($referral_info as $referrer): ?>
+                                            <p class="mb-1">
+                                                <strong>Referred by:</strong> 
+                                                <?php echo htmlspecialchars($referrer['name']); ?> 
+                                                (ID: <?php echo $referrer['id']; ?>, 
+                                                Email: <?php echo htmlspecialchars($referrer['email']); ?>)
+                                            </p>
+                                        <?php endforeach; ?>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         
@@ -101,7 +136,22 @@ if (isset($_GET['user_id'])) {
                                         <?php foreach ($user_wallet_history as $history): ?>
                                             <tr>
                                                 <td><?php echo date('d M Y', strtotime($history['created_at'])); ?></td>
-                                                <td><?php echo htmlspecialchars($history['description']); ?></td>
+                                                <td>
+                                                    <?php 
+                                                    echo htmlspecialchars($history['description']); 
+                                                    // If this is a referral bonus entry, show the referred user's email
+                                                    if (preg_match('/Referral Bonus for user ID: (\d+)/', $history['description'], $matches)) {
+                                                        $referred_user_id = $matches[1];
+                                                        // Get referred user's email
+                                                        $stmt = $pdo->prepare("SELECT name, email FROM users WHERE id = ?");
+                                                        $stmt->execute([$referred_user_id]);
+                                                        $referred_user = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                        if ($referred_user) {
+                                                            echo '<br><small class="text-muted">Referred User: ' . htmlspecialchars($referred_user['name']) . ' (' . htmlspecialchars($referred_user['email']) . ')</small>';
+                                                        }
+                                                    }
+                                                    ?>
+                                                </td>
                                                 <td>₹<?php echo number_format($history['amount'], 2); ?></td>
                                                 <td>
                                                     <span class="badge bg-<?php echo $history['type'] === 'credit' ? 'success' : 'danger'; ?>">
