@@ -1168,7 +1168,6 @@ if ($pdo) {
     </div>
    
     <!-- Banner Section -->
-    <?php if (!empty($banners)): ?>
     <div class="banner-section py-4 w-100">
         <div class="container-fluid px-0">
             <div class="row mx-0">
@@ -1177,50 +1176,86 @@ if ($pdo) {
                     <div class="peeking-carousel-container">
                         <div class="peeking-carousel-wrapper">
                             <div class="peeking-carousel-track" id="bannerTrack">
-                                <?php foreach ($banners as $index => $banner): ?>
-                                    <div class="carousel-card">
-                                        <div class="card border-0 shadow-sm h-100">
-                                            <a href="<?php echo htmlspecialchars($banner['redirect_url']); ?><?php echo $_SESSION['user_id']; ?>" target="_blank">
-                                                <?php if ($banner['media_type'] === 'video' && !empty($banner['video_url'])): ?>
-                                                    <?php if ($banner['video_type'] === 'youtube'): ?>
-                                                        <?php
-                                                        // Extract YouTube video ID
-                                                        $videoId = null;
-                                                        if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/', $banner['video_url'], $matches)) {
-                                                            $videoId = $matches[1];
-                                                        }
-                                                        ?>
-                                                        <?php if ($videoId): ?>
-                                                            <!-- YouTube video with autoplay, loop, and muted attributes -->
-                                                            <iframe 
-                                                                src="https://www.youtube.com/embed/<?php echo htmlspecialchars($videoId); ?>?autoplay=1&loop=1&mute=1&playlist=<?php echo htmlspecialchars($videoId); ?>&controls=0&showinfo=0&rel=0&modestbranding=1" 
-                                                                class="card-img-top" 
-                                                                frameborder="0" 
-                                                                allow="autoplay; encrypted-media" 
-                                                                allowfullscreen
-                                                                style="width:100%; height:200px;">
-                                                            </iframe>
+                                <?php if (!empty($banners)): ?>
+                                    <?php foreach ($banners as $index => $banner): ?>
+                                        <div class="carousel-card">
+                                            <div class="card border-0 shadow-sm h-100">
+                                                <a href="<?php echo htmlspecialchars($banner['redirect_url']); ?><?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                    <?php if ($banner['media_type'] === 'video' && !empty($banner['video_url'])): ?>
+                                                        <?php if ($banner['video_type'] === 'youtube'): ?>
+                                                            <?php
+                                                            // Extract YouTube video ID
+                                                            $videoId = null;
+                                                            if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/', $banner['video_url'], $matches)) {
+                                                                $videoId = $matches[1];
+                                                            }
+                                                            ?>
+                                                            <?php if ($videoId): ?>
+                                                                <!-- YouTube video with autoplay, loop, and muted attributes -->
+                                                                <iframe 
+                                                                    src="https://www.youtube.com/embed/<?php echo htmlspecialchars($videoId); ?>?autoplay=1&loop=1&mute=1&playlist=<?php echo htmlspecialchars($videoId); ?>&controls=0&showinfo=0&rel=0&modestbranding=1" 
+                                                                    class="card-img-top" 
+                                                                    frameborder="0" 
+                                                                    allow="autoplay; encrypted-media" 
+                                                                    allowfullscreen
+                                                                    style="width:100%; height:200px;">
+                                                                </iframe>
+                                                            <?php else: ?>
+                                                                <!-- Fallback for invalid YouTube URL -->
+                                                                <div class="card-img-top d-flex align-items-center justify-content-center bg-dark text-white" style="height:200px;">
+                                                                    <i class="fab fa-youtube" style="font-size:3rem;"></i>
+                                                                </div>
+                                                            <?php endif; ?>
                                                         <?php else: ?>
-                                                            <!-- Fallback for invalid YouTube URL -->
-                                                            <div class="card-img-top d-flex align-items-center justify-content-center bg-dark text-white" style="height:200px;">
-                                                                <i class="fab fa-youtube" style="font-size:3rem;"></i>
-                                                            </div>
+                                                            <!-- Direct video with autoplay, loop, and muted attributes -->
+                                                            <video autoplay loop muted playsinline class="card-img-top">
+                                                                <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
+                                                                Your browser does not support the video tag.
+                                                            </video>
                                                         <?php endif; ?>
                                                     <?php else: ?>
-                                                        <!-- Direct video with autoplay, loop, and muted attributes -->
-                                                        <video autoplay loop muted playsinline class="card-img-top">
-                                                            <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
-                                                            Your browser does not support the video tag.
-                                                        </video>
+                                                        <!-- Image -->
+                                                        <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($banner['title']); ?>">
                                                     <?php endif; ?>
-                                                <?php else: ?>
-                                                    <!-- Image -->
-                                                    <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($banner['title']); ?>">
-                                                <?php endif; ?>
+                                                </a>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <!-- Show fallback banners when no active banners exist -->
+                                    <!-- Banner 1 -->
+                                    <div class="carousel-card">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=1&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608969/2_qpu9gr.png" class="card-img-top" alt="Banner 1">
                                             </a>
                                         </div>
                                     </div>
-                                <?php endforeach; ?>
+                                    <!-- Banner 2 -->
+                                    <div class="carousel-card">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=2&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608964/4_yihxur.png" class="card-img-top" alt="Banner 2">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- Banner 3 -->
+                                    <div class="carousel-card">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=3&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608962/1_jmmalq.png" class="card-img-top" alt="Banner 3">
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- Banner 4 -->
+                                    <div class="carousel-card">
+                                        <div class="card border-0 shadow-sm h-100">
+                                            <a href="https://www.amazon.in/?&linkCode=sl2&tag=n220b-21&linkId=a288d593a323ccb9fb0371b1ddde6e48&language=en_IN&ref_=as_li_ss_tl_?id=4&user_id=<?php echo $_SESSION['user_id']; ?>" target="_blank">
+                                                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760608963/3_j2su4t.png" class="card-img-top" alt="Banner 4">
+                                            </a>
+                                        </div>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                         
@@ -1238,7 +1273,6 @@ if ($pdo) {
             </div>
         </div>
     </div>
-    <?php endif; ?>
     
     <div class="container">
         <?php if (!$pdo): ?>
