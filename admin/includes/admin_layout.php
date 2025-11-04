@@ -492,11 +492,11 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-upload"></i> <span>Upload Offer</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_offers.php') ? 'active' : ''; ?>" href="manage_credit_cards.php">
                         <i class="bi bi-credit-card"></i> <span>Manage Credit Cards</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'wallet_management.php') ? 'active' : ''; ?>" href="wallet_management.php">
                         <i class="bi bi-wallet2"></i> <span>Wallet Management</span>
