@@ -1181,7 +1181,16 @@ if ($pdo) {
                                         <div class="carousel-card">
                                             <div class="card border-0 shadow-sm h-100">
                                                 <a href="<?php echo htmlspecialchars($banner['redirect_url']); ?><?php echo $_SESSION['user_id']; ?>" target="_blank">
-                                                    <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($banner['title']); ?>">
+                                                    <?php if ($banner['media_type'] === 'video' && !empty($banner['video_url'])): ?>
+                                                        <!-- Video with autoplay, loop, and muted attributes -->
+                                                        <video autoplay loop muted playsinline class="card-img-top">
+                                                            <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                    <?php else: ?>
+                                                        <!-- Image -->
+                                                        <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($banner['title']); ?>">
+                                                    <?php endif; ?>
                                                 </a>
                                             </div>
                                         </div>

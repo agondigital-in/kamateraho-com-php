@@ -10,13 +10,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Add new banner
         $title = $_POST['title'];
         $image_url = $_POST['image_url'];
+        $video_url = $_POST['video_url'];
         $redirect_url = $_POST['redirect_url'];
         $sequence_id = $_POST['sequence_id'] ?? 0;
         $is_active = isset($_POST['is_active']) ? 1 : 0;
+        $media_type = !empty($video_url) ? 'video' : 'image';
         
         try {
-            $stmt = $pdo->prepare("INSERT INTO banners (title, image_url, redirect_url, sequence_id, is_active) VALUES (?, ?, ?, ?, ?)");
-            $stmt->execute([$title, $image_url, $redirect_url, $sequence_id, $is_active]);
+            $stmt = $pdo->prepare("INSERT INTO banners (title, image_url, video_url, media_type, redirect_url, sequence_id, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$title, $image_url, $video_url, $media_type, $redirect_url, $sequence_id, $is_active]);
             $success_message = "Banner added successfully!";
         } catch(PDOException $e) {
             $error_message = "Error adding banner: " . $e->getMessage();
@@ -26,13 +28,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $id = $_POST['banner_id'];
         $title = $_POST['title'];
         $image_url = $_POST['image_url'];
+        $video_url = $_POST['video_url'];
         $redirect_url = $_POST['redirect_url'];
         $sequence_id = $_POST['sequence_id'] ?? 0;
         $is_active = isset($_POST['is_active']) ? 1 : 0;
+        $media_type = !empty($video_url) ? 'video' : 'image';
         
         try {
-            $stmt = $pdo->prepare("UPDATE banners SET title = ?, image_url = ?, redirect_url = ?, sequence_id = ?, is_active = ? WHERE id = ?");
-            $stmt->execute([$title, $image_url, $redirect_url, $sequence_id, $is_active, $id]);
+            $stmt = $pdo->prepare("UPDATE banners SET title = ?, image_url = ?, video_url = ?, media_type = ?, redirect_url = ?, sequence_id = ?, is_active = ? WHERE id = ?");
+            $stmt->execute([$title, $image_url, $video_url, $media_type, $redirect_url, $sequence_id, $is_active, $id]);
             $success_message = "Banner updated successfully!";
         } catch(PDOException $e) {
             $error_message = "Error updating banner: " . $e->getMessage();
@@ -404,6 +408,13 @@ include 'includes/admin_layout.php';
                         </div>
                         
                         <div class="mb-3">
+                            <label for="video_url" class="form-label">Video URL (Optional)</label>
+                            <input type="url" class="form-control" id="video_url" name="video_url" 
+                                   value="<?php echo $edit_banner ? htmlspecialchars($edit_banner['video_url']) : ''; ?>">
+                            <div class="form-text">Enter the full URL to the banner video (MP4, WebM, etc.) - If provided, video will be used instead of image</div>
+                        </div>
+                        
+                        <div class="mb-3">
                             <label for="redirect_url" class="form-label">Redirect URL</label>
                             <input type="url" class="form-control" id="redirect_url" name="redirect_url" 
                                    value="<?php echo $edit_banner ? htmlspecialchars($edit_banner['redirect_url']) : ''; ?>" required>
@@ -492,7 +503,7 @@ include 'includes/admin_layout.php';
                                     <tr>
                                         <th>#</th>
                                         <th>Title</th>
-                                        <th>Image</th>
+                                        <th>Media</th>
                                         <th>Redirect URL</th>
                                         <th>Sequence</th>
                                         <th>Status</th>
@@ -505,9 +516,18 @@ include 'includes/admin_layout.php';
                                             <td><?php echo $banner['id']; ?></td>
                                             <td><?php echo htmlspecialchars($banner['title']); ?></td>
                                             <td>
-                                                <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" 
-                                                     alt="<?php echo htmlspecialchars($banner['title']); ?>" 
-                                                     class="banner-image">
+                                                <?php if ($banner['media_type'] === 'video' && !empty($banner['video_url'])): ?>
+                                                    <video width="100" height="50" class="banner-image">
+                                                        <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
+                                                        Your browser does not support the video tag.
+                                                    </video>
+                                                    <span class="badge bg-primary">Video</span>
+                                                <?php else: ?>
+                                                    <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" 
+                                                         alt="<?php echo htmlspecialchars($banner['title']); ?>" 
+                                                         class="banner-image">
+                                                    <span class="badge bg-secondary">Image</span>
+                                                <?php endif; ?>
                                             </td>
                                             <td>
                                                 <a href="<?php echo htmlspecialchars($banner['redirect_url']); ?>" target="_blank" class="text-truncate d-inline-block" style="max-width: 150px;">
@@ -553,16 +573,30 @@ include 'includes/admin_layout.php';
     document.addEventListener('DOMContentLoaded', function() {
         const titleInput = document.getElementById('title');
         const imageUrlInput = document.getElementById('image_url');
+        const videoUrlInput = document.getElementById('video_url');
         const bannerPreview = document.getElementById('bannerPreview');
         
         function updatePreview() {
             const title = titleInput.value || 'Banner Title';
             const imageUrl = imageUrlInput.value;
+            const videoUrl = videoUrlInput.value;
             
-            if (imageUrl) {
+            if (videoUrl) {
+                // Show video preview with autoplay, loop, and muted attributes
+                bannerPreview.innerHTML = `
+                    <video autoplay loop muted playsinline class="preview-image img-fluid">
+                        <source src="${videoUrl}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                    <p class="mt-2 fw-medium">${title}</p>
+                    <span class="badge bg-primary">Video</span>
+                `;
+            } else if (imageUrl) {
+                // Show image preview
                 bannerPreview.innerHTML = `
                     <img src="${imageUrl}" alt="${title}" class="preview-image img-fluid">
                     <p class="mt-2 fw-medium">${title}</p>
+                    <span class="badge bg-secondary">Image</span>
                 `;
             } else {
                 bannerPreview.innerHTML = `
@@ -574,9 +608,10 @@ include 'includes/admin_layout.php';
             }
         }
         
-        if (titleInput && imageUrlInput) {
+        if (titleInput && imageUrlInput && videoUrlInput) {
             titleInput.addEventListener('input', updatePreview);
             imageUrlInput.addEventListener('input', updatePreview);
+            videoUrlInput.addEventListener('input', updatePreview);
         }
     });
 </script>
