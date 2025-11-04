@@ -107,6 +107,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "Next spin is your lucky one! 🍀"
         ];
         
+        // Debug: Log the reward amount for testing
+        error_log("Spin reward selected: " . $reward_amount . " for user: " . $user_id);
+        
         echo json_encode([
             'success' => true,
             'reward' => $reward_amount,

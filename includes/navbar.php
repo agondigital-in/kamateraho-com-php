@@ -555,13 +555,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 4000);
                 } else {
                     // Normal spin with result
+                    // Debug: Log the received reward data
+                    console.log('Received reward data:', data);
+                    
                     // Calculate the reward index for wheel positioning
                     const rewardText = data.reward > 0 ? '₹' + data.reward : 'Better Luck Next Time';
                     const rewardIndex = rewards.indexOf(rewardText);
                     
+                    // Debug: Log the reward calculation
+                    console.log('Reward text:', rewardText);
+                    console.log('Reward index:', rewardIndex);
+                    console.log('Rewards array:', rewards);
+                    
                     // Calculate rotation: 5 full rotations + position correction
                     // Each section is 60 degrees (360/6)
                     const rotation = (360 - (rewardIndex * 60)) + (360 * 5);
+                    
+                    // Debug: Log the rotation calculation
+                    console.log('Calculated rotation:', rotation);
+                    
                     wheel.style.transform = `rotate(${rotation}deg)`;
                     
                     // After animation, show result
