@@ -477,6 +477,11 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-speedometer2"></i> <span>Dashboard</span>
                     </a>
                 </li>
+                                <li class="nav-item">
+                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'all_users.php') ? 'active' : ''; ?>" href="all_users.php">
+                        <i class="bi bi-people-fill"></i> <span>All Users</span>
+                    </a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'add_category.php') ? 'active' : ''; ?>" href="add_category.php">
                         <i class="bi bi-plus-circle"></i> <span>Add Category</span>
@@ -499,7 +504,7 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                 </li> -->
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'wallet_management.php') ? 'active' : ''; ?>" href="wallet_management.php">
-                        <i class="bi bi-wallet2"></i> <span>Wallet Management</span>
+                        <i class="bi bi-wallet2"></i> <span>Users Management</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -507,11 +512,11 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-cash-stack"></i> <span>Verify Wallet Deduction</span>
                     </a>
                 </li>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'check_wallet_status.php') ? 'active' : ''; ?>" href="check_wallet_status.php">
                         <i class="bi bi-graph-up"></i> <span>Wallet Status</span>
                     </a>
-                </li>
+                </li> -->
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'contact_messages.php') ? 'active' : ''; ?>" href="contact_messages.php">
                         <i class="bi bi-envelope"></i> <span>Contact Messages</span>
@@ -524,7 +529,7 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                 </li>
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'pending_withdraw_requests.php') ? 'active' : ''; ?>" href="pending_withdraw_requests.php">
-                        <i class="bi bi-cash-stack"></i> <span>Pending Withdraw Requests</span>
+                        <i class="bi bi-cash-stack"></i> <span>Users Requests</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -532,11 +537,7 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-people"></i> <span>Referral Statistics</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'all_users.php') ? 'active' : ''; ?>" href="all_users.php">
-                        <i class="bi bi-people-fill"></i> <span>All Users</span>
-                    </a>
-                </li>
+
                 <li class="nav-item">
                     <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_sliders.php') ? 'active' : ''; ?>" href="manage_sliders.php">
                         <i class="bi bi-images"></i> <span>Manage Sliders</span>
