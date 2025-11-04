@@ -33,9 +33,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Out of 3 spins: 2 times should show "Better Luck Next Time", 1 time gives one of ₹1, ₹3, ₹5, ₹10, or ₹15
         if ($spin_count == 0) {
             // First spin - 33% chance of reward (1, 3, 5, 10, or 15), 67% chance of "Better Luck Next Time"
-            // Use array_rand on the rewards array directly to ensure all rewards can be selected
-            $reward_key = array_rand([0, 1, 2, 3, 4]); // Select from indices 0-4 (1, 3, 5, 10, 15)
-            $reward_amount = (rand(1, 3) == 1) ? $rewards[$reward_key] : 0;
+            if (rand(1, 3) == 1) {
+                // Select a random reward from 1, 3, 5, 10, 15 (indices 0-4)
+                $reward_index = rand(0, 4);
+                $reward_amount = $rewards[$reward_index];
+            } else {
+                $reward_amount = 0; // "Better Luck Next Time"
+            }
         } elseif ($spin_count == 1) {
             // Second spin - if first was reward, this should be "Better Luck Next Time"
             // If first was "Better Luck Next Time", 50% chance of reward
@@ -46,9 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($last_spin && $last_spin['reward_amount'] > 0) {
                 $reward_amount = 0; // Second spin is "Better Luck Next Time"
             } else {
-                // Use array_rand on the rewards array directly to ensure all rewards can be selected
-                $reward_key = array_rand([0, 1, 2, 3, 4]); // Select from indices 0-4 (1, 3, 5, 10, 15)
-                $reward_amount = (rand(0, 1) == 1) ? $rewards[$reward_key] : 0;
+                // 50% chance of reward
+                if (rand(0, 1) == 1) {
+                    // Select a random reward from 1, 3, 5, 10, 15 (indices 0-4)
+                    $reward_index = rand(0, 4);
+                    $reward_amount = $rewards[$reward_index];
+                } else {
+                    $reward_amount = 0; // "Better Luck Next Time"
+                }
             }
         } else {
             // Third spin - if we haven't had a reward yet, this must be a reward
@@ -59,8 +68,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($reward_count == 0) {
                 // Must be a reward (1, 3, 5, 10, or 15)
-                $reward_key = array_rand([0, 1, 2, 3, 4]); // Select from indices 0-4 (1, 3, 5, 10, 15)
-                $reward_amount = $rewards[$reward_key];
+                $reward_index = rand(0, 4);
+                $reward_amount = $rewards[$reward_index];
             } else {
                 $reward_amount = 0; // "Better Luck Next Time"
             }
