@@ -4,6 +4,15 @@ $page_title = "Manage Sliders";
 include '../config/db.php';
 include 'auth.php'; // Admin authentication check
 
+// Function to determine if a URL is a YouTube link and extract video ID
+function getYouTubeVideoId($url) {
+    $pattern = '/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/';
+    if (preg_match($pattern, $url, $matches)) {
+        return $matches[1];
+    }
+    return false;
+}
+
 // Handle form submissions
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['add_banner'])) {
@@ -15,10 +24,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sequence_id = $_POST['sequence_id'] ?? 0;
         $is_active = isset($_POST['is_active']) ? 1 : 0;
         $media_type = !empty($video_url) ? 'video' : 'image';
+        $video_type = getYouTubeVideoId($video_url) ? 'youtube' : 'direct';
         
         try {
-            $stmt = $pdo->prepare("INSERT INTO banners (title, image_url, video_url, media_type, redirect_url, sequence_id, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$title, $image_url, $video_url, $media_type, $redirect_url, $sequence_id, $is_active]);
+            $stmt = $pdo->prepare("INSERT INTO banners (title, image_url, video_url, media_type, video_type, redirect_url, sequence_id, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$title, $image_url, $video_url, $media_type, $video_type, $redirect_url, $sequence_id, $is_active]);
             $success_message = "Banner added successfully!";
         } catch(PDOException $e) {
             $error_message = "Error adding banner: " . $e->getMessage();
@@ -33,10 +43,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $sequence_id = $_POST['sequence_id'] ?? 0;
         $is_active = isset($_POST['is_active']) ? 1 : 0;
         $media_type = !empty($video_url) ? 'video' : 'image';
+        $video_type = getYouTubeVideoId($video_url) ? 'youtube' : 'direct';
         
         try {
-            $stmt = $pdo->prepare("UPDATE banners SET title = ?, image_url = ?, video_url = ?, media_type = ?, redirect_url = ?, sequence_id = ?, is_active = ? WHERE id = ?");
-            $stmt->execute([$title, $image_url, $video_url, $media_type, $redirect_url, $sequence_id, $is_active, $id]);
+            $stmt = $pdo->prepare("UPDATE banners SET title = ?, image_url = ?, video_url = ?, media_type = ?, video_type = ?, redirect_url = ?, sequence_id = ?, is_active = ? WHERE id = ?");
+            $stmt->execute([$title, $image_url, $video_url, $media_type, $video_type, $redirect_url, $sequence_id, $is_active, $id]);
             $success_message = "Banner updated successfully!";
         } catch(PDOException $e) {
             $error_message = "Error updating banner: " . $e->getMessage();
@@ -411,7 +422,7 @@ include 'includes/admin_layout.php';
                             <label for="video_url" class="form-label">Video URL (Optional)</label>
                             <input type="url" class="form-control" id="video_url" name="video_url" 
                                    value="<?php echo $edit_banner ? htmlspecialchars($edit_banner['video_url']) : ''; ?>">
-                            <div class="form-text">Enter the full URL to the banner video (MP4, WebM, etc.) - If provided, video will be used instead of image</div>
+                            <div class="form-text">Enter the full URL to the banner video (MP4, WebM, etc.) or YouTube video link - If provided, video will be used instead of image</div>
                         </div>
                         
                         <div class="mb-3">
@@ -517,11 +528,30 @@ include 'includes/admin_layout.php';
                                             <td><?php echo htmlspecialchars($banner['title']); ?></td>
                                             <td>
                                                 <?php if ($banner['media_type'] === 'video' && !empty($banner['video_url'])): ?>
-                                                    <video width="100" height="50" class="banner-image">
-                                                        <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
-                                                        Your browser does not support the video tag.
-                                                    </video>
-                                                    <span class="badge bg-primary">Video</span>
+                                                    <?php if ($banner['video_type'] === 'youtube'): ?>
+                                                        <?php
+                                                        // Extract YouTube video ID
+                                                        $videoId = null;
+                                                        if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/', $banner['video_url'], $matches)) {
+                                                            $videoId = $matches[1];
+                                                        }
+                                                        ?>
+                                                        <div style="position:relative; width:100px; height:50px; background:#000; display:flex; align-items:center; justify-content:center;">
+                                                            <?php if ($videoId): ?>
+                                                                <img src="https://img.youtube.com/vi/<?php echo htmlspecialchars($videoId); ?>/default.jpg" alt="YouTube Thumbnail" style="width:100%; height:100%; object-fit:cover;">
+                                                            <?php else: ?>
+                                                                <i class="bi bi-youtube text-white" style="font-size:1.5rem;"></i>
+                                                            <?php endif; ?>
+                                                            <i class="bi bi-play-circle-fill text-white" style="position:absolute; font-size:1.5rem; opacity:0.8;"></i>
+                                                        </div>
+                                                        <span class="badge bg-danger">YouTube</span>
+                                                    <?php else: ?>
+                                                        <video width="100" height="50" class="banner-image">
+                                                            <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
+                                                            Your browser does not support the video tag.
+                                                        </video>
+                                                        <span class="badge bg-primary">Video</span>
+                                                    <?php endif; ?>
                                                 <?php else: ?>
                                                     <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" 
                                                          alt="<?php echo htmlspecialchars($banner['title']); ?>" 
@@ -576,21 +606,58 @@ include 'includes/admin_layout.php';
         const videoUrlInput = document.getElementById('video_url');
         const bannerPreview = document.getElementById('bannerPreview');
         
+        // Function to check if URL is YouTube
+        function isYouTubeUrl(url) {
+            return url.includes('youtube.com') || url.includes('youtu.be');
+        }
+        
+        // Function to extract YouTube video ID
+        function getYouTubeId(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+        
         function updatePreview() {
             const title = titleInput.value || 'Banner Title';
             const imageUrl = imageUrlInput.value;
             const videoUrl = videoUrlInput.value;
             
             if (videoUrl) {
-                // Show video preview with autoplay, loop, and muted attributes
-                bannerPreview.innerHTML = `
-                    <video autoplay loop muted playsinline class="preview-image img-fluid">
-                        <source src="${videoUrl}" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <p class="mt-2 fw-medium">${title}</p>
-                    <span class="badge bg-primary">Video</span>
-                `;
+                if (isYouTubeUrl(videoUrl)) {
+                    // Show YouTube video preview
+                    const videoId = getYouTubeId(videoUrl);
+                    if (videoId) {
+                        bannerPreview.innerHTML = `
+                            <div class="preview-image img-fluid d-flex align-items-center justify-content-center" style="background:#000;">
+                                <img src="https://img.youtube.com/vi/${videoId}/mqdefault.jpg" alt="YouTube Video Thumbnail" style="width:100%; height:auto;">
+                                <div style="position:absolute; pointer-events:none;">
+                                    <i class="bi bi-play-circle-fill text-white" style="font-size:3rem; opacity:0.8;"></i>
+                                </div>
+                            </div>
+                            <p class="mt-2 fw-medium">${title}</p>
+                            <span class="badge bg-danger">YouTube Video</span>
+                        `;
+                    } else {
+                        bannerPreview.innerHTML = `
+                            <div class="preview-image img-fluid d-flex align-items-center justify-content-center bg-dark text-white">
+                                <i class="bi bi-youtube" style="font-size:3rem;"></i>
+                            </div>
+                            <p class="mt-2 fw-medium">${title}</p>
+                            <span class="badge bg-danger">YouTube Video</span>
+                        `;
+                    }
+                } else {
+                    // Show direct video preview with autoplay, loop, and muted attributes
+                    bannerPreview.innerHTML = `
+                        <video autoplay loop muted playsinline class="preview-image img-fluid">
+                            <source src="${videoUrl}" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <p class="mt-2 fw-medium">${title}</p>
+                        <span class="badge bg-primary">Video</span>
+                    `;
+                }
             } else if (imageUrl) {
                 // Show image preview
                 bannerPreview.innerHTML = `

@@ -1182,16 +1182,41 @@ if ($pdo) {
                                             <div class="card border-0 shadow-sm h-100">
                                                 <a href="<?php echo htmlspecialchars($banner['redirect_url']); ?><?php echo $_SESSION['user_id']; ?>" target="_blank">
                                                     <?php if ($banner['media_type'] === 'video' && !empty($banner['video_url'])): ?>
-                                                        <!-- Video with autoplay, loop, and muted attributes -->
-                                                        <video autoplay loop muted playsinline class="card-img-top">
-                                                            <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
-                                                            Your browser does not support the video tag.
-                                                        </video>
-                                                    <?php else: ?>
-                                                        <!-- Image -->
-                                                        <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($banner['title']); ?>">
-                                                    <?php endif; ?>
-                                                </a>
+                                                        <?php if ($banner['video_type'] === 'youtube'): ?>
+                                                            <?php
+                                                            // Extract YouTube video ID
+                                                            $videoId = null;
+                                                            if (preg_match('/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([^&\n?#]+)/', $banner['video_url'], $matches)) {
+                                                                $videoId = $matches[1];
+                                                            }
+                                                            ?>
+                                                            <?php if ($videoId): ?>
+                                                                <!-- YouTube video with autoplay, loop, and muted attributes -->
+                                                                <iframe 
+                                                                    src="https://www.youtube.com/embed/<?php echo htmlspecialchars($videoId); ?>?autoplay=1&loop=1&mute=1&playlist=<?php echo htmlspecialchars($videoId); ?>&controls=0&showinfo=0&rel=0&modestbranding=1" 
+                                                                    class="card-img-top" 
+                                                                    frameborder="0" 
+                                                                    allow="autoplay; encrypted-media" 
+                                                                    allowfullscreen
+                                                                    style="width:100%; height:200px;">
+                                                                </iframe>
+                                                            <?php else: ?>
+                                                                <!-- Fallback for invalid YouTube URL -->
+                                                                <div class="card-img-top d-flex align-items-center justify-content-center bg-dark text-white" style="height:200px;">
+                                                                    <i class="fab fa-youtube" style="font-size:3rem;"></i>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        <?php else: ?>
+                                                            <!-- Direct video with autoplay, loop, and muted attributes -->
+                                                            <video autoplay loop muted playsinline class="card-img-top">
+                                                                <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
+                                                                Your browser does not support the video tag.
+                                                            </video>
+                                                        <?php endif; ?>
+                                                <?php else: ?>
+                                                    <!-- Image -->
+                                                    <img src="<?php echo htmlspecialchars($banner['image_url']); ?>" class="card-img-top" alt="<?php echo htmlspecialchars($banner['title']); ?>">
+                                                <?php endif; ?>
                                             </div>
                                         </div>
                                     <?php endforeach; ?>
