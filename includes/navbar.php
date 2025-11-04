@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const spinsCount = document.getElementById('spinsCount');
     
     // Create wheel sections
-    const rewards = ['₹20', '₹10', '₹30', '₹5', '₹15', 'Better Luck Next Time'];
+    const rewards = ['₹1', '₹3', '₹5', '₹10', '₹15', 'Better Luck Next Time'];
     const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
     
     rewards.forEach((reward, index) => {
@@ -532,7 +532,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 spinsCount.textContent = data.spins_left;
                 
                 // Check if reward is 20 or 30 (keep spinning)
+                // Note: Since we've removed 20 and 30, this condition will never be true now
                 if (data.reward == 20 || data.reward == 30) {
+                    // This code block will never execute now since we removed 20 and 30
                     // Animate wheel for continuous spin
                     const spins = 5 + Math.floor(Math.random() * 5); // 5-10 extra spins
                     const extraRotation = spins * 360;
