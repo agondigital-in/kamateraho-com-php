@@ -104,6 +104,7 @@ $offset = ($page - 1) * $users_per_page;
 
 // Search functionality
 $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$id_filter = isset($_GET['id_filter']) ? trim($_GET['id_filter']) : '';
 $search_condition = '';
 $search_params = [];
 
@@ -111,6 +112,9 @@ if (!empty($search)) {
     $search_condition = "WHERE name LIKE ? OR email LIKE ? OR phone LIKE ?";
     $search_param = "%$search%";
     $search_params = [$search_param, $search_param, $search_param];
+} elseif (!empty($id_filter)) {
+    $search_condition = "WHERE id = ?";
+    $search_params = [$id_filter];
 }
 
 // Fetch total users count
@@ -119,7 +123,7 @@ try {
     $count_sql = "SELECT COUNT(*) FROM users " . $search_condition;
     $count_stmt = $pdo->prepare($count_sql);
     
-    if (!empty($search)) {
+    if (!empty($search) || !empty($id_filter)) {
         $count_stmt->execute($search_params);
     } else {
         $count_stmt->execute();
@@ -146,7 +150,7 @@ try {
     
     // Bind search parameters if search is active
     $param_index = 1;
-    if (!empty($search)) {
+    if (!empty($search) || !empty($id_filter)) {
         foreach ($search_params as $param) {
             $stmt->bindValue($param_index++, $param, PDO::PARAM_STR);
         }
@@ -176,122 +180,520 @@ try {
     <link rel="stylesheet" href="assets/admin_email.css">
     
     <style>
-        .search-box {
-            max-width: 300px;
+        :root {
+            --primary-color: #6f42c1;
+            --secondary-color: #5a32a3;
+            --accent-color: #00c9a7;
+            --light-bg: #f8f9fa;
+            --dark-text: #212529;
+            --light-text: #6c757d;
+            --border-color: #dee2e6;
+            --success-color: #20c997;
+            --warning-color: #ffc107;
+            --danger-color: #dc3545;
         }
         
-        .table-responsive {
-            border-radius: 8px;
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: var(--dark-text);
+            padding-top: 20px;
+        }
+        
+        .main-container {
+            max-width: 100%;
+            padding: 0 15px;
+            margin-bottom: 0;
+        }
+        
+        .page-header {
+            background: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .page-title {
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-bottom: 0;
+            color: var(--primary-color);
+        }
+        
+        .search-container {
+            background: white;
+            border-radius: 50px;
+            padding: 5px 5px 5px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--border-color);
+        }
+        
+        .search-container input {
+            border: none;
+            outline: none;
+            width: 100%;
+            padding: 8px 0;
+        }
+        
+        .search-container button {
+            background: var(--primary-color);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 8px 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .search-container button:hover {
+            background: var(--secondary-color);
+        }
+        
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            margin-bottom: 15px;
             overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
         
-        .pagination {
-            margin-top: 20px;
+        .card-header {
+            background: white;
+            border-bottom: 1px solid var(--border-color);
+            padding: 12px 15px;
         }
         
-        .pagination .page-link {
-            color: #4361ee;
+        .card-title {
+            font-weight: 600;
+            color: var(--dark-text);
+            margin-bottom: 0;
+            font-size: 1.25rem;
         }
         
-        .pagination .page-item.active .page-link {
-            background-color: #4361ee;
-            border-color: #4361ee;
+        .stats-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .stats-box {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            flex: 1;
+            min-width: 200px;
+            border-left: 4px solid var(--primary-color);
+            transition: transform 0.3s ease;
+            margin-bottom: 0;
+        }
+        
+        .stats-box:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+        }
+        
+        .stats-label {
+            color: var(--light-text);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin-bottom: 0;
+        }
+        
+        .table {
+            margin-bottom: 0;
+        }
+        
+        .table thead {
+            background-color: var(--light-bg);
+        }
+        
+        .table th {
+            font-weight: 600;
+            color: var(--dark-text);
+            border-bottom: 2px solid var(--border-color);
+            padding: 12px 15px;
+        }
+        
+        .table td {
+            padding: 12px 15px;
+            vertical-align: middle;
+            border-color: var(--border-color);
         }
         
         .user-avatar {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            background-color: #4361ee;
+            background: linear-gradient(135deg, var(--primary-color), var(--accent-color));
             color: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
+            font-weight: 600;
+            font-size: 1rem;
         }
         
-        .referral-badge {
-            font-size: 0.8em;
+        .badge-custom {
+            padding: 0.5em 0.75em;
+            font-weight: 500;
+            border-radius: 20px;
+            font-size: 0.8rem;
+        }
+        
+        /* Wallet column - Green theme with black text */
+        .badge-success {
+            background-color: rgba(40, 167, 69, 0.15) !important;
+            color: #000000 !important;
+            border: 1px solid rgba(40, 167, 69, 0.3) !important;
+        }
+        
+        /* Referral column - Purple theme with black text */
+        .badge-primary {
+            background-color: rgba(102, 92, 220, 0.15) !important;
+            color: #000000 !important;
+            border: 1px solid rgba(102, 92, 220, 0.3) !important;
+        }
+        
+        /* Source column - Orange theme with black text */
+        .badge-warning {
+            background-color: rgba(255, 152, 0, 0.15) !important;
+            color: #000000 !important;
+            border: 1px solid rgba(255, 152, 0, 0.3) !important;
+        }
+        
+        /* Unknown/No code - Gray theme with black text */
+        .badge-secondary {
+            background-color: rgba(108, 117, 125, 0.15) !important;
+            color: #000000 !important;
+            border: 1px solid rgba(108, 117, 125, 0.3) !important;
         }
         
         .source-badge {
-            padding: 0.25em 0.5em;
-            border-radius: 12px;
-            font-size: 0.75em;
+            padding: 0.35em 0.75em;
+            border-radius: 20px;
+            font-size: 0.75rem;
             font-weight: 500;
         }
         
-        .source-youtube { background-color: #ff0000; color: white; }
-        .source-facebook { background-color: #1877f2; color: white; }
-        .source-instagram { background: linear-gradient(45deg, #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%); color: white; }
-        .source-twitter { background-color: #1da1f2; color: white; }
-        .source-other { background-color: #6c757d; color: white; }
+        /* Source-specific colors with black text */
+        .source-youtube { 
+            background: rgba(255, 0, 0, 0.15) !important; 
+            color: #000000 !important; 
+            border: 1px solid rgba(255, 0, 0, 0.3) !important;
+        }
         
-        /* Email button styling */
-        .email-actions {
-            margin-bottom: 20px;
+        .source-facebook { 
+            background: rgba(24, 119, 242, 0.15) !important; 
+            color: #000000 !important; 
+            border: 1px solid rgba(24, 119, 242, 0.3) !important;
+        }
+        
+        .source-instagram { 
+            background: linear-gradient(45deg, rgba(240, 148, 51, 0.2), rgba(220, 39, 67, 0.2)) !important; 
+            color: #000000 !important; 
+            border: 1px solid rgba(220, 39, 67, 0.3) !important;
+        }
+        
+        .source-twitter { 
+            background: rgba(29, 161, 242, 0.15) !important; 
+            color: #000000 !important; 
+            border: 1px solid rgba(29, 161, 242, 0.3) !important;
+        }
+        
+        .source-other { 
+            background: rgba(108, 117, 125, 0.15) !important; 
+            color: #000000 !important; 
+            border: 1px solid rgba(108, 117, 125, 0.3) !important;
         }
         
         .email-btn {
-            background: linear-gradient(135deg, #4361ee, #3f37c9);
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
             border: none;
             color: white;
-            padding: 8px 15px;
-            border-radius: 5px;
+            padding: 10px 20px;
+            border-radius: 8px;
             font-weight: 500;
+            box-shadow: 0 4px 6px rgba(111, 66, 193, 0.2);
+            transition: all 0.3s ease;
         }
         
         .email-btn:hover {
-            background: linear-gradient(135deg, #3f37c9, #4361ee);
-            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(111, 66, 193, 0.3);
         }
         
         .email-btn:disabled {
-            background: #ccc;
+            background: #e9ecef;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            color: #6c757d;
+        }
+        
+        .pagination .page-link {
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+        }
+        
+        .pagination .page-item.active .page-link {
+            background: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .alert {
+            border-radius: 8px;
+            border: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+        }
+        
+        .alert-success {
+            background-color: rgba(32, 201, 151, 0.1);
+            color: var(--success-color);
+        }
+        
+        .alert-danger {
+            background-color: rgba(220, 53, 69, 0.1);
+            color: var(--danger-color);
+        }
+        
+        /* Responsive styles */
+        @media (max-width: 992px) {
+            .page-title {
+                font-size: 1.5rem;
+            }
+            
+            .stats-box {
+                min-width: 150px;
+            }
+            
+            .stats-number {
+                font-size: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding-top: 15px;
+            }
+            
+            .page-header {
+                padding: 15px;
+            }
+            
+            .page-title {
+                font-size: 1.25rem;
+                margin-bottom: 10px;
+            }
+            
+            .stats-container {
+                gap: 10px;
+            }
+            
+            .stats-box {
+                padding: 15px;
+                min-width: 130px;
+            }
+            
+            .stats-number {
+                font-size: 1.25rem;
+                margin-bottom: 3px;
+            }
+            
+            .stats-label {
+                font-size: 0.8rem;
+            }
+            
+            .table th, .table td {
+                padding: 10px 8px;
+                font-size: 0.85rem;
+            }
+            
+            .user-avatar {
+                width: 32px;
+                height: 32px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            body {
+                padding-top: 10px;
+            }
+            
+            .main-container {
+                padding: 0 10px;
+            }
+            
+            .page-header {
+                padding: 12px;
+            }
+            
+            .page-title {
+                font-size: 1.1rem;
+            }
+            
+            .search-container {
+                padding: 3px 3px 3px 15px;
+            }
+            
+            .search-container button {
+                padding: 6px 15px;
+                font-size: 0.9rem;
+            }
+            
+            .card-header {
+                padding: 12px 15px;
+            }
+            
+            .card-title {
+                font-size: 1.1rem;
+            }
+            
+            .stats-container {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .stats-box {
+                width: 100%;
+                min-width: auto;
+            }
+            
+            .stats-number {
+                font-size: 1.5rem;
+            }
+            
+            .table th, .table td {
+                padding: 8px 5px;
+                font-size: 0.75rem;
+            }
+            
+            .user-avatar {
+                width: 28px;
+                height: 28px;
+                font-size: 0.7rem;
+            }
+            
+            .source-badge, .badge-custom {
+                font-size: 0.65rem;
+                padding: 0.25em 0.5em;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .table th, .table td {
+                padding: 6px 3px;
+                font-size: 0.7rem;
+            }
+            
+            .stats-number {
+                font-size: 1.25rem;
+            }
+            
+            .source-badge, .badge-custom {
+                font-size: 0.6rem;
+            }
         }
     </style>
 </head>
 <body>
     <?php include 'includes/admin_layout.php'; ?>
     
-    <div class="container-fluid">
+    <div class="main-container">
         <div class="row">
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2">All Users</h1>
-                    <div class="btn-toolbar mb-2 mb-md-0">
-                        <div class="input-group search-box">
-                            <form method="GET" class="d-flex w-100">
-                                <input type="text" name="search" class="form-control" placeholder="Search users..." value="<?php echo htmlspecialchars($search); ?>">
-                                <button class="btn btn-outline-secondary" type="submit">Search</button>
-                            </form>
+            <main>
+            <!-- Header Section-->
+                <div class="page-header">
+                    <div class="d-flex justify-content-between align-items-center flex-wrap">
+                        <h1 class="page-title">All Users</h1>
+                        <div class="d-flex flex-wrap gap-2 mt-3 mt-md-0">
+                           
+                            <div class="search-container" style="width:300px;">
+                                <form method="GET" class="d-flex align-items-center">
+                                    <input type="number" name="id_filter" class="form-control" placeholder="User ID..." value="<?php echo htmlspecialchars($id_filter); ?>">
+                                    <button class="btn" type="submit">
+                                        <i class="bi bi-search me-1"></i> Search
+                                    </button>
+                                </form>
+                            </div>
+                            <?php if (!empty($search) || !empty($id_filter)): ?>
+                                <a href="all_users.php" class="btn btn-outline-secondary">
+                                    <i class="bi bi-x-circle"></i> Clear
+                                </a>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
                 
+                <!-- Alerts -->
                 <?php if (isset($error)): ?>
-                    <div class="alert alert-danger"><?php echo $error; ?></div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <?php echo $error; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 <?php endif; ?>
                 
                 <?php if ($email_sent): ?>
-                    <div class="alert alert-success"><?php echo $email_message; ?></div>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="bi bi-check-circle-fill me-2"></i>
+                        <?php echo $email_message; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 <?php endif; ?>
                 
                 <?php if ($email_error): ?>
-                    <div class="alert alert-danger"><?php echo $email_error; ?></div>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                        <?php echo $email_error; ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
                 <?php endif; ?>
                 
+                <!-- Stats Section -->
+                <div class="stats-container">
+                    <div class="stats-box">
+                        <div class="stats-number"><?php echo number_format($total_users); ?></div>
+                        <div class="stats-label">Total Users</div>
+                    </div>
+                    <div class="stats-box">
+                        <div class="stats-number"><?php echo count($users); ?></div>
+                        <div class="stats-label">Current Page</div>
+                    </div>
+                    <div class="stats-box">
+                        <div class="stats-number"><?php echo $total_pages; ?></div>
+                        <div class="stats-label">Total Pages</div>
+                    </div>
+                    <div class="stats-box">
+                        <div class="stats-number"><?php echo $page; ?></div>
+                        <div class="stats-label">Current Page</div>
+                    </div>
+                </div>
+                
+                <!-- Users Table Card -->
                 <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title mb-0">User List</h5>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">User Management</h5>
+                        <div class="d-flex align-items-center">
+                            <span class="text-muted small me-3">Showing <?php echo count($users); ?> of <?php echo $total_users; ?> users</span>
+                        </div>
                     </div>
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                            <p class="mb-0">Showing <?php echo count($users); ?> of <?php echo $total_users; ?> users</p>
-                        </div>
-                        
                         <?php if (empty($users)): ?>
                             <div class="text-center py-5">
                                 <i class="bi bi-people text-muted" style="font-size: 3rem;"></i>
@@ -302,26 +704,29 @@ try {
                             </div>
                         <?php else: ?>
                             <!-- Email Actions -->
-                            <div class="email-actions">
+                            <div class="mb-3">
                                 <button type="button" class="btn email-btn" id="sendEmailBtn" disabled>
-                                    <i class="bi bi-envelope me-1"></i> Send Email 
-                                    <span class="selected-users-count" id="selectedUsersCount">0</span>
+                                    <i class="bi bi-envelope me-2"></i> Send Email 
+                                    <span class="badge bg-white text-primary ms-2" id="selectedUsersCount">0</span>
                                 </button>
                             </div>
                             
-                            <div class="table-responsive">
-                                <table class="table table-striped table-hover">
+                            <!-- Users Table -->
+                            <div class="table-container">
+                                <table class="table table-hover">
                                     <thead>
                                         <tr>
-                                            <th>
-                                                <input type="checkbox" id="selectAll">
+                                            <th style="width: 40px;">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" id="selectAll">
+                                                </div>
                                             </th>
-                                            <th>ID</th>
+                                            <th style="width: 60px;">ID</th>
                                             <th>User</th>
                                             <th>Contact</th>
                                             <th>Location</th>
-                                            <th>Wallet Balance</th>
-                                            <th>Referral Info</th>
+                                            <th>Wallet</th>
+                                            <th>Referral</th>
                                             <th>Source</th>
                                             <th>Joined</th>
                                         </tr>
@@ -330,17 +735,19 @@ try {
                                         <?php foreach ($users as $user): ?>
                                             <tr>
                                                 <td>
-                                                    <input type="checkbox" name="selected_users[]" value="<?php echo $user['id']; ?>">
+                                                    <div class="form-check">
+                                                        <input class="form-check-input" type="checkbox" name="selected_users[]" value="<?php echo $user['id']; ?>">
+                                                    </div>
                                                 </td>
                                                 <td><?php echo htmlspecialchars($user['id']); ?></td>
                                                 <td>
                                                     <div class="d-flex align-items-center">
-                                                        <div class="user-avatar me-2">
+                                                        <div class="user-avatar me-3">
                                                             <?php echo strtoupper(substr($user['name'], 0, 1)); ?>
                                                         </div>
                                                         <div>
-                                                            <div><?php echo htmlspecialchars($user['name']); ?></div>
-                                                            <small class="text-muted"><?php echo htmlspecialchars($user['email']); ?></small>
+                                                            <div class="fw-medium"><?php echo htmlspecialchars($user['name']); ?></div>
+                                                            <div class="text-muted small"><?php echo htmlspecialchars($user['email']); ?></div>
                                                         </div>
                                                     </div>
                                                 </td>
@@ -349,16 +756,16 @@ try {
                                                 </td>
                                                 <td>
                                                     <div><?php echo htmlspecialchars($user['city']); ?></div>
-                                                    <small class="text-muted"><?php echo htmlspecialchars($user['state']); ?></small>
+                                                    <div class="text-muted small"><?php echo htmlspecialchars($user['state']); ?></div>
                                                 </td>
                                                 <td>
-                                                    <span class="badge bg-success">₹<?php echo number_format($user['wallet_balance'], 2); ?></span>
+                                                    <span class="badge badge-custom badge-success">₹<?php echo number_format($user['wallet_balance'], 2); ?></span>
                                                 </td>
                                                 <td>
                                                     <?php if (!empty($user['referral_code'])): ?>
-                                                        <span class="badge bg-primary referral-badge"><?php echo htmlspecialchars($user['referral_code']); ?></span>
+                                                        <span class="badge badge-custom badge-primary"><?php echo htmlspecialchars($user['referral_code']); ?></span>
                                                     <?php else: ?>
-                                                        <span class="badge bg-secondary referral-badge">No code</span>
+                                                        <span class="badge badge-custom badge-secondary">No code</span>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>
@@ -386,12 +793,12 @@ try {
                                                         ?>
                                                         <span class="source-badge <?php echo $source_class; ?>"><?php echo $source_text; ?></span>
                                                     <?php else: ?>
-                                                        <span class="badge bg-secondary">Unknown</span>
+                                                        <span class="badge badge-custom badge-secondary">Unknown</span>
                                                     <?php endif; ?>
                                                 </td>
                                                 <td>
                                                     <div><?php echo date('M d, Y', strtotime($user['created_at'])); ?></div>
-                                                    <small class="text-muted"><?php echo date('h:i A', strtotime($user['created_at'])); ?></small>
+                                                    <div class="text-muted small"><?php echo date('h:i A', strtotime($user['created_at'])); ?></div>
                                                 </td>
                                             </tr>
                                         <?php endforeach; ?>
@@ -406,7 +813,7 @@ try {
                                         <?php if ($page > 1): ?>
                                             <li class="page-item">
                                                 <a class="page-link" href="?page=<?php echo $page - 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?>" aria-label="Previous">
-                                                    <span aria-hidden="true">&laquo;</span>
+                                                    <span aria-hidden="true"><i class="bi bi-chevron-left"></i></span>
                                                 </a>
                                             </li>
                                         <?php endif; ?>
@@ -433,7 +840,7 @@ try {
                                         <?php if ($page < $total_pages): ?>
                                             <li class="page-item">
                                                 <a class="page-link" href="?page=<?php echo $page + 1; ?><?php echo !empty($search) ? '&search=' . urlencode($search) : ''; ?>" aria-label="Next">
-                                                    <span aria-hidden="true">&raquo;</span>
+                                                    <span aria-hidden="true"><i class="bi bi-chevron-right"></i></span>
                                                 </a>
                                             </li>
                                         <?php endif; ?>
@@ -448,26 +855,23 @@ try {
     </div>
     
     <!-- Email Modal -->
-    <div class="modal fade email-modal" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+    <div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-header">
+            <div class="modal-content border-0">
+                <div class="modal-header bg-primary text-white">
                     <h5 class="modal-title" id="emailModalLabel">Send Email to Selected Users</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <form id="emailForm" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="send_email" value="1">
                         <div class="mb-3">
-                            <label for="emailSubject" class="form-label">Subject</label>
+                            <label for="emailSubject" class="form-label fw-medium">Subject</label>
                             <input type="text" class="form-control" id="emailSubject" name="subject" required>
                         </div>
                         <div class="mb-3">
-                            <label for="emailMessage" class="form-label">Message</label>
+                            <label for="emailMessage" class="form-label fw-medium">Message</label>
                             <textarea class="form-control" id="emailMessage" name="message" rows="6" required></textarea>
-                        </div>
-                        <div id="emailPreview" class="email-preview">
-                            <!-- Preview will be populated by JavaScript -->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -510,6 +914,28 @@ try {
                 alert('Please select at least one user to send the email.');
             }
         });
+        
+        // Handle select all checkbox
+        document.getElementById('selectAll').addEventListener('change', function() {
+            const checkboxes = document.querySelectorAll('input[name="selected_users[]"]');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+            
+            updateSelectedUsersCount();
+        });
+        
+        // Update selected users count when individual checkboxes are changed
+        document.querySelectorAll('input[name="selected_users[]"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateSelectedUsersCount);
+        });
+        
+        // Function to update selected users count
+        function updateSelectedUsersCount() {
+            const selectedCount = document.querySelectorAll('input[name="selected_users[]"]:checked').length;
+            document.getElementById('selectedUsersCount').textContent = selectedCount;
+            document.getElementById('sendEmailBtn').disabled = selectedCount === 0;
+        }
     </script>
 </body>
 </html>
