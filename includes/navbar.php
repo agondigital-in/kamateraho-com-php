@@ -477,8 +477,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const spinsCount = document.getElementById('spinsCount');
     
     // Create wheel sections
-    const rewards = ['₹20', '₹10', '₹30', '₹5', '₹15', 'Better Luck Next Time'];
-    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
+    const rewards = ['₹1', '₹3', '₹5', 'Better Luck', 'Try Again', 'No Win']; // Updated rewards
+    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']; // Kept same colors
     
     rewards.forEach((reward, index) => {
         const section = document.createElement('div');
@@ -518,6 +518,9 @@ document.addEventListener('DOMContentLoaded', function() {
         spinResult.innerHTML = '<i class="fas fa-cog fa-spin"></i> Spinning the wheel... <i class="fas fa-cog fa-spin"></i>';
         spinResult.className = 'spin-result'; // Reset classes
         
+        // Store the spin count to determine behavior
+        const currentSpinCount = 3 - parseInt(spinsCount.textContent);
+        
         // Send request to spin
         fetch('spin_earn.php', {
             method: 'POST',
@@ -531,53 +534,63 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Update spins left
                 spinsCount.textContent = data.spins_left;
                 
-                // Check if reward is 20 or 30 (keep spinning)
-                if (data.reward == 20 || data.reward == 30) {
-                    // Animate wheel for continuous spin
-                    const spins = 5 + Math.floor(Math.random() * 5); // 5-10 extra spins
-                    const extraRotation = spins * 360;
-                    const randomAngle = Math.floor(Math.random() * 60);
-                    wheel.style.transform = `rotate(${extraRotation + randomAngle}deg)`;
-                    
-                    // After animation, show result
-                    setTimeout(() => {
-                        spinResult.innerHTML = data.message;
-                        spinWheelBtn.disabled = false;
-                        spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
-                        
-                        // Check if no spins left
-                        if (data.spins_left <= 0) {
-                            spinWheelBtn.disabled = true;
-                            spinWheelBtn.textContent = 'No Spins Left';
-                        }
-                    }, 4000);
-                } else {
-                    // Normal spin with result
-                    const rewardIndex = rewards.indexOf(data.reward > 0 ? '₹' + data.reward : 'Better Luck Next Time');
-                    const rotation = (360 - (rewardIndex * 60)) + (360 * 5); // 5 full rotations + position
-                    wheel.style.transform = `rotate(${rotation}deg)`;
-                    
-                    // After animation, show result
-                    setTimeout(() => {
-                        spinResult.innerHTML = data.message;
-                        spinWheelBtn.disabled = false;
-                        spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
-                        
-                        // Add celebratory effect for wins
-                        if (data.reward > 0) {
-                            spinResult.classList.add('win');
-                            
-                            // Add celebratory animation preference - fireworks effect
-                            createFireworks();
-                        }
-                        
-                        // Check if no spins left
-                        if (data.spins_left <= 0) {
-                            spinWheelBtn.disabled = true;
-                            spinWheelBtn.textContent = 'No Spins Left';
-                        }
-                    }, 4000);
+                // Calculate rotation based on reward and spin behavior
+                // Updated to match new reward values (1, 3, 5)
+                let targetPosition = 0;
+                switch(data.reward) {
+                    case 1:
+                        targetPosition = 0; // First section
+                        break;
+                    case 3:
+                        targetPosition = 1; // Second section
+                        break;
+                    case 5:
+                        targetPosition = 2; // Third section
+                        break;
+                    default:
+                        targetPosition = 0; // Default to first section
                 }
+                
+                // Calculate rotation based on spin behavior
+                let baseRotation = 0;
+                if (data.spin_behavior === 'normal') {
+                    // First spin: 3-5 full rotations + position
+                    const rotations = 3 + Math.floor(Math.random() * 3);
+                    baseRotation = (360 * rotations) + (360 - (targetPosition * 60));
+                } else if (data.spin_behavior === 'more_rotations') {
+                    // Second spin: 6-8 full rotations + position
+                    const rotations = 6 + Math.floor(Math.random() * 3);
+                    baseRotation = (360 * rotations) + (360 - (targetPosition * 60));
+                } else {
+                    // Third spin: 10+ full rotations + position
+                    const rotations = 10 + Math.floor(Math.random() * 5);
+                    baseRotation = (360 * rotations) + (360 - (targetPosition * 60));
+                }
+                
+                // Apply rotation with appropriate easing
+                wheel.style.transform = `rotate(${baseRotation}deg)`;
+                wheel.style.transition = 'transform 4s cubic-bezier(0.2, 0.8, 0.3, 1)';
+                
+                // After animation, show result
+                setTimeout(() => {
+                    spinResult.innerHTML = data.message;
+                    spinWheelBtn.disabled = false;
+                    spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
+                    
+                    // Add celebratory effect for wins
+                    if (data.reward > 0) {
+                        spinResult.classList.add('win');
+                        
+                        // Add celebratory animation preference - fireworks effect
+                        createFireworks();
+                    }
+                    
+                    // Check if no spins left
+                    if (data.spins_left <= 0) {
+                        spinWheelBtn.disabled = true;
+                        spinWheelBtn.textContent = 'No Spins Left';
+                    }
+                }, 4000);
             } else {
                 // Error or no spins left
                 spinResult.innerHTML = data.message;
