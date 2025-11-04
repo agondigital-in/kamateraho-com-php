@@ -20,23 +20,31 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt->execute([$user_id]);
         $spin_count = $stmt->fetch(PDO::FETCH_ASSOC)['spin_count'];
         
-        // Limit to 1 spin per day
-        if ($spin_count >= 1) {
-            echo json_encode(['success' => false, 'message' => 'You have already spun today. Better Luck! Try Again Tomorrow.']);
+        // Limit to 3 spins per day
+        if ($spin_count >= 3) {
+            echo json_encode(['success' => false, 'message' => 'You have reached your maximum spins for today']);
             exit;
         }
         
         // Define possible rewards (1, 3, 5 only as per requirements)
         $rewards = [1, 3, 5]; // Only these values should appear
         
-        // Select a random reward
-        $reward_amount = $rewards[array_rand($rewards)];
+        // Determine the reward based on spin count
+        if ($spin_count == 0) {
+            // First spin - random reward from 1, 3, 5
+            $reward_amount = $rewards[array_rand($rewards)];
+        } else if ($spin_count == 1 || $spin_count == 2) {
+            // Second and third spins - "Better Luck Next Time"
+            $reward_amount = 0;
+        } else {
+            $reward_amount = 0;
+        }
         
         // Record the spin in database
         $stmt = $pdo->prepare("INSERT INTO spin_history (user_id, reward_amount, spin_date) VALUES (?, ?, CURDATE())");
         $stmt->execute([$user_id, $reward_amount]);
         
-        // Update wallet balance with the reward amount
+        // Update wallet balance with the reward amount (only if reward > 0)
         if ($reward_amount > 0) {
             // Update user's wallet balance
             $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?");
@@ -47,18 +55,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute([$user_id, $reward_amount]);
         }
         
-        // Create celebratory messages for wins
-        $celebration_messages = [
-            1 => "🎉 Great! You won ₹1!",
-            3 => "🎊 Awesome! You won ₹3!",
-            5 => "🥳 Excellent! You won ₹5!"
-        ];
+        // Create messages
+        if ($reward_amount > 0) {
+            $messages = [
+                1 => "🎉 Great! You won ₹1!",
+                3 => "🎊 Awesome! You won ₹3!",
+                5 => "🥳 Excellent! You won ₹5!"
+            ];
+            $message = $messages[$reward_amount];
+        } else {
+            $message = "Better Luck! Try Again.";
+        }
         
         echo json_encode([
             'success' => true,
             'reward' => $reward_amount,
-            'message' => $reward_amount > 0 ? $celebration_messages[$reward_amount] : "Better Luck! Try Again Tomorrow.",
-            'spins_left' => 0 // No spins left after first spin
+            'message' => $message,
+            'spins_left' => 2 - $spin_count
         ]);
         
     } catch(PDOException $e) {
@@ -74,7 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode([
             'success' => true,
             'spins_used' => $spin_count,
-            'spins_left' => 1 - $spin_count
+            'spins_left' => 3 - $spin_count
         ]);
     } catch(PDOException $e) {
         echo json_encode(['success' => false, 'message' => 'Database error: ' . $e->getMessage()]);

@@ -477,8 +477,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const spinsCount = document.getElementById('spinsCount');
     
     // Create wheel sections
-    const rewards = ['₹1', '₹3', '₹5', 'Try Again', 'Better Luck', 'Spin Again']; // Updated rewards
-    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40']; // Kept same colors
+    // Updated to have 1, 3, 5 rewards and "Better Luck" sections
+    const rewards = ['₹1', '₹3', '₹5', 'Better Luck', 'Try Again', 'Better Luck'];
+    const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
     
     rewards.forEach((reward, index) => {
         const section = document.createElement('div');
@@ -532,25 +533,36 @@ document.addEventListener('DOMContentLoaded', function() {
                 spinsCount.textContent = data.spins_left;
                 
                 // Calculate rotation based on reward
-                // Position mapping: 1 -> index 0, 3 -> index 1, 5 -> index 2
                 let targetPosition = 0;
-                switch(data.reward) {
-                    case 1:
-                        targetPosition = 0; // First section
-                        break;
-                    case 3:
-                        targetPosition = 1; // Second section
-                        break;
-                    case 5:
-                        targetPosition = 2; // Third section
-                        break;
-                    default:
-                        targetPosition = 0; // Default to first section
+                let rotations = 0;
+                
+                if (data.reward > 0) {
+                    // Winning spin - stop at the reward position
+                    switch(data.reward) {
+                        case 1:
+                            targetPosition = 0; // First section
+                            break;
+                        case 3:
+                            targetPosition = 1; // Second section
+                            break;
+                        case 5:
+                            targetPosition = 2; // Third section
+                            break;
+                        default:
+                            targetPosition = 0;
+                    }
+                    // 5-7 full rotations for winning spins
+                    rotations = 5 + Math.floor(Math.random() * 3);
+                } else {
+                    // "Better Luck" spin - stop at a random "Better Luck" section
+                    // Sections 3, 4, 5 are "Better Luck" sections (0-indexed)
+                    targetPosition = 3 + Math.floor(Math.random() * 3); // Random between 3, 4, 5
+                    // 3-5 full rotations for non-winning spins
+                    rotations = 3 + Math.floor(Math.random() * 3);
                 }
                 
-                // Calculate rotation with 5-7 full rotations + position for more excitement
-                const rotations = 5 + Math.floor(Math.random() * 3);
-                const baseRotation = (360 * rotations) + (360 - (targetPosition * 120));
+                // Calculate final rotation
+                const baseRotation = (360 * rotations) + (360 - (targetPosition * 60));
                 
                 // Apply rotation with appropriate easing
                 wheel.style.transform = `rotate(${baseRotation}deg)`;
@@ -570,9 +582,11 @@ document.addEventListener('DOMContentLoaded', function() {
                         createFireworks();
                     }
                     
-                    // No spins left after first spin
-                    spinWheelBtn.disabled = true;
-                    spinWheelBtn.textContent = 'Spun for Today';
+                    // Check if no spins left
+                    if (data.spins_left <= 0) {
+                        spinWheelBtn.disabled = true;
+                        spinWheelBtn.textContent = 'No Spins Left';
+                    }
                 }, 4000);
             } else {
                 // Error or no spins left
@@ -580,10 +594,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 spinWheelBtn.disabled = false;
                 spinWheelBtn.innerHTML = '<i class="fas fa-sync-alt"></i> SPIN';
                 
-                // If already spun today, disable button
-                if (data.message.includes('already spun today')) {
+                // If no spins left, disable button
+                if (data.message.includes('maximum spins')) {
                     spinWheelBtn.disabled = true;
-                    spinWheelBtn.textContent = 'Spun for Today';
+                    spinWheelBtn.textContent = 'No Spins Left';
                 }
             }
         })
