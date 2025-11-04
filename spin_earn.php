@@ -33,7 +33,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Out of 3 spins: 2 times should show "Better Luck Next Time", 1 time gives one of ₹1, ₹3, ₹5, ₹10, or ₹15
         if ($spin_count == 0) {
             // First spin - 33% chance of reward (1, 3, 5, 10, or 15), 67% chance of "Better Luck Next Time"
-            $reward_amount = (rand(1, 3) == 1) ? $rewards[array_rand([0, 1, 2, 3, 4])] : 0;
+            // Use array_rand on the rewards array directly to ensure all rewards can be selected
+            $reward_key = array_rand([0, 1, 2, 3, 4]); // Select from indices 0-4 (1, 3, 5, 10, 15)
+            $reward_amount = (rand(1, 3) == 1) ? $rewards[$reward_key] : 0;
         } elseif ($spin_count == 1) {
             // Second spin - if first was reward, this should be "Better Luck Next Time"
             // If first was "Better Luck Next Time", 50% chance of reward
@@ -44,7 +46,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($last_spin && $last_spin['reward_amount'] > 0) {
                 $reward_amount = 0; // Second spin is "Better Luck Next Time"
             } else {
-                $reward_amount = (rand(0, 1) == 1) ? $rewards[array_rand([0, 1, 2, 3, 4])] : 0;
+                // Use array_rand on the rewards array directly to ensure all rewards can be selected
+                $reward_key = array_rand([0, 1, 2, 3, 4]); // Select from indices 0-4 (1, 3, 5, 10, 15)
+                $reward_amount = (rand(0, 1) == 1) ? $rewards[$reward_key] : 0;
             }
         } else {
             // Third spin - if we haven't had a reward yet, this must be a reward
@@ -54,16 +58,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $reward_count = $stmt->fetch(PDO::FETCH_ASSOC)['reward_count'];
             
             if ($reward_count == 0) {
-                $reward_amount = $rewards[array_rand([0, 1, 2, 3, 4])]; // Must be a reward (1, 3, 5, 10, or 15)
+                // Must be a reward (1, 3, 5, 10, or 15)
+                $reward_key = array_rand([0, 1, 2, 3, 4]); // Select from indices 0-4 (1, 3, 5, 10, 15)
+                $reward_amount = $rewards[$reward_key];
             } else {
                 $reward_amount = 0; // "Better Luck Next Time"
             }
         }
-        
-        // Special case: if reward is 20 or 30, we'll simulate a continuous spin (no stop)
-        // But for the database, we'll record it as a spin with 0 reward
-        $display_reward = $reward_amount;
-        // Note: Since we've removed 20 and 30, this condition will never be true now
         
         // Record the spin in database
         $stmt = $pdo->prepare("INSERT INTO spin_history (user_id, reward_amount, spin_date) VALUES (?, ?, CURDATE())");
@@ -99,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         echo json_encode([
             'success' => true,
-            'reward' => $display_reward,
+            'reward' => $reward_amount,
             'message' => $reward_amount > 0 ? $celebration_messages[$reward_amount] : 
                         $consolation_messages[array_rand($consolation_messages)],
             'spins_left' => 2 - $spin_count
