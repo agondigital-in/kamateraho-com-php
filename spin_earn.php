@@ -27,19 +27,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         // Define possible rewards
-        $rewards = [1, 3, 5, 10, 15, 0]; // 0 means "Better Luck Next Time"
+        $rewards = [5, 10, 15, 20, 30, 0]; // 0 means "Better Luck Next Time"
         
         // Determine the reward based on the rules:
-        // Out of 3 spins: 2 times should show "Better Luck Next Time", 1 time gives one of ₹1, ₹3, ₹5, ₹10, or ₹15
+        // Out of 3 spins: 2 times should show "Better Luck Next Time", 1 time gives one of ₹5, ₹10, or ₹15
         if ($spin_count == 0) {
-            // First spin - 33% chance of reward (1, 3, 5, 10, or 15), 67% chance of "Better Luck Next Time"
-            if (rand(1, 3) == 1) {
-                // Select a random reward from 1, 3, 5, 10, 15 (indices 0-4)
-                $reward_index = rand(0, 4);
-                $reward_amount = $rewards[$reward_index];
-            } else {
-                $reward_amount = 0; // "Better Luck Next Time"
-            }
+            // First spin - 33% chance of reward (5, 10, or 15), 67% chance of "Better Luck Next Time"
+            $reward_amount = (rand(1, 3) == 1) ? $rewards[array_rand([0, 1, 2])] : 0;
         } elseif ($spin_count == 1) {
             // Second spin - if first was reward, this should be "Better Luck Next Time"
             // If first was "Better Luck Next Time", 50% chance of reward
@@ -50,14 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($last_spin && $last_spin['reward_amount'] > 0) {
                 $reward_amount = 0; // Second spin is "Better Luck Next Time"
             } else {
-                // 50% chance of reward
-                if (rand(0, 1) == 1) {
-                    // Select a random reward from 1, 3, 5, 10, 15 (indices 0-4)
-                    $reward_index = rand(0, 4);
-                    $reward_amount = $rewards[$reward_index];
-                } else {
-                    $reward_amount = 0; // "Better Luck Next Time"
-                }
+                $reward_amount = (rand(0, 1) == 1) ? $rewards[array_rand([0, 1, 2])] : 0;
             }
         } else {
             // Third spin - if we haven't had a reward yet, this must be a reward
@@ -67,19 +54,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $reward_count = $stmt->fetch(PDO::FETCH_ASSOC)['reward_count'];
             
             if ($reward_count == 0) {
-                // Must be a reward (1, 3, 5, 10, or 15)
-                $reward_index = rand(0, 4);
-                $reward_amount = $rewards[$reward_index];
+                $reward_amount = $rewards[array_rand([0, 1, 2])]; // Must be a reward (5, 10, or 15)
             } else {
                 $reward_amount = 0; // "Better Luck Next Time"
             }
+        }
+        
+        // Special case: if reward is 20 or 30, we'll simulate a continuous spin (no stop)
+        // But for the database, we'll record it as a spin with 0 reward
+        $display_reward = $reward_amount;
+        if ($reward_amount == 20 || $reward_amount == 30) {
+            $reward_amount = 0; // No actual reward added to wallet
         }
         
         // Record the spin in database
         $stmt = $pdo->prepare("INSERT INTO spin_history (user_id, reward_amount, spin_date) VALUES (?, ?, CURDATE())");
         $stmt->execute([$user_id, $reward_amount]);
         
-        // If user won a real reward (1, 3, 5, 10, or 15), update wallet balance
+        // If user won a real reward (5, 10, or 15), update wallet balance
         if ($reward_amount > 0) {
             // Update user's wallet balance
             $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?");
@@ -92,11 +84,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         // Create celebratory messages for wins
         $celebration_messages = [
-            1 => "🎉 Great! You won ₹1!",
-            3 => "🎉 Nice! You won ₹3!",
-            5 => "🎉 Good! You won ₹5!",
+            5 => "🎉 Great! You won ₹5!",
             10 => "🎊 Awesome! You won ₹10!",
-            15 => "🥳 Excellent! You won ₹15!"
+            15 => "🥳 Excellent! You won ₹15!",
+            20 => "🔥 Keep spinning!",
+            30 => "🔥 Keep spinning!"
         ];
         
         // Create messages for non-wins
@@ -107,14 +99,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             "Next spin is your lucky one! 🍀"
         ];
         
-        // Debug: Log the reward amount for testing
-        error_log("Spin reward selected: " . $reward_amount . " for user: " . $user_id);
-        
         echo json_encode([
             'success' => true,
-            'reward' => $reward_amount,
+            'reward' => $display_reward,
             'message' => $reward_amount > 0 ? $celebration_messages[$reward_amount] : 
-                        $consolation_messages[array_rand($consolation_messages)],
+                        ($display_reward == 20 || $display_reward == 30 ? '🔥 Keep spinning!' : 
+                        $consolation_messages[array_rand($consolation_messages)]),
             'spins_left' => 2 - $spin_count
         ]);
         

@@ -477,7 +477,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const spinsCount = document.getElementById('spinsCount');
     
     // Create wheel sections
-    const rewards = ['₹1', '₹3', '₹5', '₹10', '₹15', 'Better Luck Next Time'];
+    const rewards = ['₹20', '₹10', '₹30', '₹5', '₹15', 'Better Luck Next Time'];
     const colors = ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40'];
     
     rewards.forEach((reward, index) => {
@@ -532,9 +532,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 spinsCount.textContent = data.spins_left;
                 
                 // Check if reward is 20 or 30 (keep spinning)
-                // Note: Since we've removed 20 and 30, this condition will never be true now
                 if (data.reward == 20 || data.reward == 30) {
-                    // This code block will never execute now since we removed 20 and 30
                     // Animate wheel for continuous spin
                     const spins = 5 + Math.floor(Math.random() * 5); // 5-10 extra spins
                     const extraRotation = spins * 360;
@@ -555,25 +553,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }, 4000);
                 } else {
                     // Normal spin with result
-                    // Debug: Log the received reward data
-                    console.log('Received reward data:', data);
-                    
-                    // Calculate the reward index for wheel positioning
-                    const rewardText = data.reward > 0 ? '₹' + data.reward : 'Better Luck Next Time';
-                    const rewardIndex = rewards.indexOf(rewardText);
-                    
-                    // Debug: Log the reward calculation
-                    console.log('Reward text:', rewardText);
-                    console.log('Reward index:', rewardIndex);
-                    console.log('Rewards array:', rewards);
-                    
-                    // Calculate rotation: 5 full rotations + position correction
-                    // Each section is 60 degrees (360/6)
-                    const rotation = (360 - (rewardIndex * 60)) + (360 * 5);
-                    
-                    // Debug: Log the rotation calculation
-                    console.log('Calculated rotation:', rotation);
-                    
+                    const rewardIndex = rewards.indexOf(data.reward > 0 ? '₹' + data.reward : 'Better Luck Next Time');
+                    const rotation = (360 - (rewardIndex * 60)) + (360 * 5); // 5 full rotations + position
                     wheel.style.transform = `rotate(${rotation}deg)`;
                     
                     // After animation, show result
