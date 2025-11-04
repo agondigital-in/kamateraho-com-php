@@ -18,39 +18,79 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['add_banner'])) {
         // Add new banner
         $title = $_POST['title'];
-        $image_url = $_POST['image_url'];
-        $video_url = $_POST['video_url'];
+        $image_url = trim($_POST['image_url']);
+        $video_url = trim($_POST['video_url']);
         $redirect_url = $_POST['redirect_url'];
         $sequence_id = $_POST['sequence_id'] ?? 0;
         $is_active = isset($_POST['is_active']) ? 1 : 0;
-        $media_type = !empty($video_url) ? 'video' : 'image';
-        $video_type = getYouTubeVideoId($video_url) ? 'youtube' : 'direct';
         
-        try {
-            $stmt = $pdo->prepare("INSERT INTO banners (title, image_url, video_url, media_type, video_type, redirect_url, sequence_id, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$title, $image_url, $video_url, $media_type, $video_type, $redirect_url, $sequence_id, $is_active]);
-            $success_message = "Banner added successfully!";
-        } catch(PDOException $e) {
-            $error_message = "Error adding banner: " . $e->getMessage();
+        // Validate that only one type of media is provided
+        if (!empty($image_url) && !empty($video_url)) {
+            $error_message = "Please provide either an image URL or a video URL, not both.";
+        } else if (empty($image_url) && empty($video_url)) {
+            $error_message = "Please provide either an image URL or a video URL.";
+        } else if (!empty($video_url)) {
+            // Video banner
+            $media_type = 'video';
+            $video_type = getYouTubeVideoId($video_url) ? 'youtube' : 'direct';
+        } else {
+            // Image banner
+            $media_type = 'image';
+            $video_type = null;
+        }
+        
+        if (!isset($error_message)) {
+            try {
+                if ($media_type === 'video') {
+                    $stmt = $pdo->prepare("INSERT INTO banners (title, image_url, video_url, media_type, video_type, redirect_url, sequence_id, is_active) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([$title, '', $video_url, $media_type, $video_type, $redirect_url, $sequence_id, $is_active]);
+                } else {
+                    $stmt = $pdo->prepare("INSERT INTO banners (title, image_url, video_url, media_type, redirect_url, sequence_id, is_active) VALUES (?, ?, ?, ?, ?, ?, ?)");
+                    $stmt->execute([$title, $image_url, '', $media_type, $redirect_url, $sequence_id, $is_active]);
+                }
+                $success_message = "Banner added successfully!";
+            } catch(PDOException $e) {
+                $error_message = "Error adding banner: " . $e->getMessage();
+            }
         }
     } elseif (isset($_POST['update_banner'])) {
         // Update existing banner
         $id = $_POST['banner_id'];
         $title = $_POST['title'];
-        $image_url = $_POST['image_url'];
-        $video_url = $_POST['video_url'];
+        $image_url = trim($_POST['image_url']);
+        $video_url = trim($_POST['video_url']);
         $redirect_url = $_POST['redirect_url'];
         $sequence_id = $_POST['sequence_id'] ?? 0;
         $is_active = isset($_POST['is_active']) ? 1 : 0;
-        $media_type = !empty($video_url) ? 'video' : 'image';
-        $video_type = getYouTubeVideoId($video_url) ? 'youtube' : 'direct';
         
-        try {
-            $stmt = $pdo->prepare("UPDATE banners SET title = ?, image_url = ?, video_url = ?, media_type = ?, video_type = ?, redirect_url = ?, sequence_id = ?, is_active = ? WHERE id = ?");
-            $stmt->execute([$title, $image_url, $video_url, $media_type, $video_type, $redirect_url, $sequence_id, $is_active, $id]);
-            $success_message = "Banner updated successfully!";
-        } catch(PDOException $e) {
-            $error_message = "Error updating banner: " . $e->getMessage();
+        // Validate that only one type of media is provided
+        if (!empty($image_url) && !empty($video_url)) {
+            $error_message = "Please provide either an image URL or a video URL, not both.";
+        } else if (empty($image_url) && empty($video_url)) {
+            $error_message = "Please provide either an image URL or a video URL.";
+        } else if (!empty($video_url)) {
+            // Video banner
+            $media_type = 'video';
+            $video_type = getYouTubeVideoId($video_url) ? 'youtube' : 'direct';
+        } else {
+            // Image banner
+            $media_type = 'image';
+            $video_type = null;
+        }
+        
+        if (!isset($error_message)) {
+            try {
+                if ($media_type === 'video') {
+                    $stmt = $pdo->prepare("UPDATE banners SET title = ?, image_url = ?, video_url = ?, media_type = ?, video_type = ?, redirect_url = ?, sequence_id = ?, is_active = ? WHERE id = ?");
+                    $stmt->execute([$title, '', $video_url, $media_type, $video_type, $redirect_url, $sequence_id, $is_active, $id]);
+                } else {
+                    $stmt = $pdo->prepare("UPDATE banners SET title = ?, image_url = ?, video_url = ?, media_type = ?, redirect_url = ?, sequence_id = ?, is_active = ? WHERE id = ?");
+                    $stmt->execute([$title, $image_url, '', $media_type, $redirect_url, $sequence_id, $is_active, $id]);
+                }
+                $success_message = "Banner updated successfully!";
+            } catch(PDOException $e) {
+                $error_message = "Error updating banner: " . $e->getMessage();
+            }
         }
     } elseif (isset($_POST['delete_banner'])) {
         // Delete banner
@@ -414,15 +454,15 @@ include 'includes/admin_layout.php';
                         <div class="mb-3">
                             <label for="image_url" class="form-label">Image URL</label>
                             <input type="url" class="form-control" id="image_url" name="image_url" 
-                                   value="<?php echo $edit_banner ? htmlspecialchars($edit_banner['image_url']) : ''; ?>" required>
-                            <div class="form-text">Enter the full URL to the banner image</div>
+                                   value="<?php echo $edit_banner ? htmlspecialchars($edit_banner['image_url']) : ''; ?>">
+                            <div class="form-text">Enter the full URL to the banner image - Leave blank if using a video</div>
                         </div>
                         
                         <div class="mb-3">
-                            <label for="video_url" class="form-label">Video URL (Optional)</label>
+                            <label for="video_url" class="form-label">Video URL</label>
                             <input type="url" class="form-control" id="video_url" name="video_url" 
                                    value="<?php echo $edit_banner ? htmlspecialchars($edit_banner['video_url']) : ''; ?>">
-                            <div class="form-text">Enter the full URL to the banner video (MP4, WebM, etc.) or YouTube video link - If provided, video will be used instead of image</div>
+                            <div class="form-text">Enter the full URL to the banner video (MP4, WebM, etc.) or YouTube video link - Leave blank if using an image</div>
                         </div>
                         
                         <div class="mb-3">
@@ -546,7 +586,7 @@ include 'includes/admin_layout.php';
                                                         </div>
                                                         <span class="badge bg-danger">YouTube</span>
                                                     <?php else: ?>
-                                                        <video width="100" height="50" class="banner-image">
+                                                        <video width="100" height="50" class="banner-image" muted>
                                                             <source src="<?php echo htmlspecialchars($banner['video_url']); ?>" type="video/mp4">
                                                             Your browser does not support the video tag.
                                                         </video>
@@ -620,8 +660,35 @@ include 'includes/admin_layout.php';
         
         function updatePreview() {
             const title = titleInput.value || 'Banner Title';
-            const imageUrl = imageUrlInput.value;
-            const videoUrl = videoUrlInput.value;
+            const imageUrl = imageUrlInput.value.trim();
+            const videoUrl = videoUrlInput.value.trim();
+            
+            // Clear previous error messages
+            const errorElements = document.querySelectorAll('.field-error');
+            errorElements.forEach(el => el.remove());
+            
+            // Validation
+            if (imageUrl && videoUrl) {
+                // Show error - both fields filled
+                const errorMsg = document.createElement('div');
+                errorMsg.className = 'field-error text-danger small mt-1';
+                errorMsg.textContent = 'Please provide either an image or a video, not both.';
+                
+                // Insert error message after video field
+                videoUrlInput.parentNode.insertBefore(errorMsg, videoUrlInput.nextSibling);
+                return;
+            }
+            
+            if (!imageUrl && !videoUrl) {
+                bannerPreview.innerHTML = `
+                    <div class="py-5">
+                        <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
+                        <p class="text-muted mt-2 mb-0">Fill in the form to see a preview</p>
+                        <p class="text-muted small mt-1">Enter either an image URL or a video URL</p>
+                    </div>
+                `;
+                return;
+            }
             
             if (videoUrl) {
                 if (isYouTubeUrl(videoUrl)) {
@@ -665,20 +732,33 @@ include 'includes/admin_layout.php';
                     <p class="mt-2 fw-medium">${title}</p>
                     <span class="badge bg-secondary">Image</span>
                 `;
-            } else {
-                bannerPreview.innerHTML = `
-                    <div class="py-5">
-                        <i class="bi bi-image text-muted" style="font-size: 3rem;"></i>
-                        <p class="text-muted mt-2 mb-0">Fill in the form to see a preview</p>
-                    </div>
-                `;
             }
         }
         
-        if (titleInput && imageUrlInput && videoUrlInput) {
-            titleInput.addEventListener('input', updatePreview);
-            imageUrlInput.addEventListener('input', updatePreview);
-            videoUrlInput.addEventListener('input', updatePreview);
+        // Add event listeners to clear the other field when one is filled
+        if (imageUrlInput && videoUrlInput) {
+            imageUrlInput.addEventListener('input', function() {
+                const imageUrl = this.value.trim();
+                if (imageUrl && videoUrlInput.value.trim()) {
+                    videoUrlInput.value = '';
+                }
+                updatePreview();
+            });
+            
+            videoUrlInput.addEventListener('input', function() {
+                const videoUrl = this.value.trim();
+                if (videoUrl && imageUrlInput.value.trim()) {
+                    imageUrlInput.value = '';
+                }
+                updatePreview();
+            });
         }
+        
+        if (titleInput) {
+            titleInput.addEventListener('input', updatePreview);
+        }
+        
+        // Initial preview update
+        updatePreview();
     });
 </script>
