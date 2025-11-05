@@ -3,7 +3,8 @@ include 'config/db.php';
 
 // Start session for CAPTCHA
 session_start();
-if (!isset($_SESSION['captcha'])) {
+// Only generate a new CAPTCHA if it doesn't exist or we're not processing a form submission
+if (!isset($_SESSION['captcha']) || $_SERVER['REQUEST_METHOD'] !== 'POST') {
     $_SESSION['captcha'] = rand(1000, 9999);
 }
 
@@ -830,7 +831,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <div class="form-group" style="display: none;">
+                    <div class="form-group">
                         <label for="captcha">CAPTCHA</label>
                         <div class="input-icon">
                             <i class="fas fa-shield-alt"></i>
@@ -839,7 +840,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div class="captcha-container mt-2">
                             <div class="captcha-code">
                                 <span class="captcha-text"><?php echo $_SESSION['captcha']; ?></span>
-                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2" id="refreshCaptcha">Refresh</button>
                             </div>
                         </div>
                     </div>
@@ -924,15 +924,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }, false);
             });
             
-            // CAPTCHA refresh
-            const refreshCaptchaBtn = document.getElementById('refreshCaptcha');
-            if (refreshCaptchaBtn) {
-                refreshCaptchaBtn.addEventListener('click', function() {
-                    // In a real implementation, this would make an AJAX call to refresh the CAPTCHA
-                    // For this simple implementation, we'll just reload the page
-                    location.reload();
-                });
-            }
+            // CAPTCHA will only change on page refresh, no automatic updates
         });
     </script>
     
