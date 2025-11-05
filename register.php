@@ -1,6 +1,12 @@
 <?php
 include 'config/db.php';
 
+// Start session for CAPTCHA
+session_start();
+if (!isset($_SESSION['captcha'])) {
+    $_SESSION['captcha'] = rand(1000, 9999);
+}
+
 // Check for referral code in URL
 $referrer_id = null;
 $referral_source = null;
@@ -64,6 +70,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validation
     if (empty($name) || empty($email) || empty($phone) || empty($city) || empty($state) || empty($password) || empty($confirm_password)) {
         $error = "All fields are required!";
+    } elseif (isset($_POST['captcha']) && $_POST['captcha'] != $_SESSION['captcha']) {
+        $error = "Invalid CAPTCHA code!";
     } elseif ($password !== $confirm_password) {
         $error = "Passwords do not match!";
     } elseif (strlen($password) < 6) {
@@ -386,6 +394,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border: none;
             color: #777;
             cursor: pointer;
+        }
+        
+        .captcha-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #e1e5ee;
+        }
+        
+        .captcha-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: var(--primary-color);
+            text-align: center;
+            flex-grow: 1;
         }
         
         .welcome-bonus {
@@ -803,6 +830,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
+                    <div class="form-group">
+                        <label for="captcha">CAPTCHA</label>
+                        <div class="input-icon">
+                            <i class="fas fa-shield-alt"></i>
+                            <input type="text" class="form-control" id="captcha" name="captcha" placeholder="Enter the code shown below" required>
+                        </div>
+                        <div class="captcha-container mt-2">
+                            <div class="captcha-code">
+                                <span class="captcha-text"><?php echo $_SESSION['captcha']; ?></span>
+                                <button type="button" class="btn btn-sm btn-outline-secondary ms-2" id="refreshCaptcha">Refresh</button>
+                            </div>
+                        </div>
+                    </div>
+                    
                     <button type="submit" class="btn-register">Create Account</button>
                 </form>
                 
@@ -882,6 +923,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     form.classList.add('was-validated');
                 }, false);
             });
+            
+            // CAPTCHA refresh
+            const refreshCaptchaBtn = document.getElementById('refreshCaptcha');
+            if (refreshCaptchaBtn) {
+                refreshCaptchaBtn.addEventListener('click', function() {
+                    // In a real implementation, this would make an AJAX call to refresh the CAPTCHA
+                    // For this simple implementation, we'll just reload the page
+                    location.reload();
+                });
+            }
         });
     </script>
     
