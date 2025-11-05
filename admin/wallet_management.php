@@ -1,6 +1,168 @@
 <?php
+// Handle redirects first, before any output
+ob_start();
+
 $page_title = "Wallet Management";
 include '../config/db.php';
+
+// Handle user deletion
+if (isset($_POST['delete_user']) && isset($_POST['user_id'])) {
+    $user_id = (int)$_POST['user_id'];
+    
+    try {
+        // Begin transaction
+        $pdo->beginTransaction();
+        
+        // Delete the user (this will cascade delete related records)
+        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        $result = $stmt->execute([$user_id]);
+        
+        // Commit transaction
+        $pdo->commit();
+        
+        // Check if any rows were affected
+        if ($stmt->rowCount() > 0) {
+            // Set success message and redirect to user list
+            ob_clean();
+            header("Location: wallet_management.php?success=User deleted successfully.");
+            exit();
+        } else {
+            $error = "No user found with ID: " . $user_id;
+        }
+    } catch(PDOException $e) {
+        // Rollback transaction on error
+        if ($pdo->inTransaction()) {
+            $pdo->rollback();
+        }
+        $error = "Error deleting user: " . $e->getMessage();
+    }
+}
+
+// Handle referral deletion
+if (isset($_POST['delete_referral']) && isset($_POST['referred_user_id'])) {
+    $referred_user_id = (int)$_POST['referred_user_id'];
+    $referrer_id = isset($_POST['referrer_id']) ? (int)$_POST['referrer_id'] : 0;
+    
+    try {
+        // Begin transaction
+        $pdo->beginTransaction();
+        
+        // Get the referral bonus amount from wallet history
+        $stmt = $pdo->prepare("SELECT amount FROM wallet_history WHERE user_id = ? AND description LIKE ?");
+        $stmt->execute([$referrer_id, 'Referral Bonus for user ID: ' . $referred_user_id]);
+        $referral_entry = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($referral_entry) {
+            $referral_amount = $referral_entry['amount'];
+            
+            // Deduct the referral amount from the referrer's wallet balance
+            $stmt = $pdo->prepare("UPDATE users SET wallet_balance = wallet_balance - ? WHERE id = ?");
+            $stmt->execute([$referral_amount, $referrer_id]);
+            
+            // Add a deduction entry to the referrer's wallet history
+            $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, ?, 'debit', 'approved', ?)");
+            $stmt->execute([$referrer_id, $referral_amount, 'Referral deleted: User ID ' . $referred_user_id]);
+        }
+        
+        // Delete the referred user (this will cascade delete related records)
+        $stmt = $pdo->prepare("DELETE FROM users WHERE id = ?");
+        $result = $stmt->execute([$referred_user_id]);
+        
+        // Check if any rows were affected
+        if ($stmt->rowCount() > 0) {
+            // Commit transaction
+            $pdo->commit();
+            
+            // Set success message and redirect to refresh the page
+            ob_clean();
+            header("Location: wallet_management.php?user_id=" . $referrer_id . "&success=Referral deleted and amount deducted successfully.");
+            exit();
+        } else {
+            $pdo->rollback();
+            $error = "No user found with ID: " . $referred_user_id;
+        }
+    } catch(PDOException $e) {
+        // Rollback transaction on error
+        if ($pdo->inTransaction()) {
+            $pdo->rollback();
+        }
+        $error = "Error deleting referral: " . $e->getMessage();
+    }
+}
+
+// Handle wallet history entry deletion
+if (isset($_GET['delete_entry']) && isset($_GET['entry_id']) && isset($_GET['user_id'])) {
+    $entry_id = (int)$_GET['entry_id'];
+    $user_id = (int)$_GET['user_id'];
+    
+    try {
+        // Begin transaction
+        $pdo->beginTransaction();
+        
+        // Get wallet history record
+        $stmt = $pdo->prepare("SELECT * FROM wallet_history WHERE id = ? AND user_id = ?");
+        $stmt->execute([$entry_id, $user_id]);
+        $entry = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+        if ($entry) {
+            // Check if this is a referral bonus entry
+            if (strpos($entry['description'], 'Referral Bonus for user ID:') !== false) {
+                // Extract referred user ID from description
+                if (preg_match('/Referral Bonus for user ID: (\d+)/', $entry['description'], $matches)) {
+                    $referred_user_id = $matches[1];
+                    
+                    // Get the referrer's current wallet balance
+                    $stmt = $pdo->prepare("SELECT wallet_balance FROM users WHERE id = ?");
+                    $stmt->execute([$user_id]);
+                    $referrer = $stmt->fetch(PDO::FETCH_ASSOC);
+                    
+                    if ($referrer) {
+                        // Deduct the referral amount from the referrer's wallet balance
+                        $new_balance = $referrer['wallet_balance'] - $entry['amount'];
+                        $stmt = $pdo->prepare("UPDATE users SET wallet_balance = ? WHERE id = ?");
+                        $stmt->execute([$new_balance, $user_id]);
+                        
+                        // Add a deduction entry to the referrer's wallet history
+                        $stmt = $pdo->prepare("INSERT INTO wallet_history (user_id, amount, type, status, description) VALUES (?, ?, 'debit', 'approved', 'Referral bonus deleted: User ID " . $referred_user_id . "')");
+                        $stmt->execute([$user_id, $entry['amount']]);
+                    }
+                }
+            }
+            
+            // Delete the wallet history entry
+            $stmt = $pdo->prepare("DELETE FROM wallet_history WHERE id = ? AND user_id = ?");
+            $stmt->execute([$entry_id, $user_id]);
+            
+            // Commit transaction
+            $pdo->commit();
+            
+            // Set success message and redirect to user details
+            ob_clean();
+            header("Location: wallet_management.php?user_id=" . $user_id . "&success=Wallet entry deleted successfully.");
+            exit();
+        } else {
+            $pdo->rollback();
+            $error = "Wallet entry not found.";
+        }
+    } catch(PDOException $e) {
+        // Rollback transaction on error
+        if ($pdo->inTransaction()) {
+            $pdo->rollback();
+        }
+        $error = "Error deleting entry: " . $e->getMessage();
+    } catch(Exception $e) {
+        // Rollback transaction on general error
+        if ($pdo->inTransaction()) {
+            $pdo->rollback();
+        }
+        $error = "Error deleting entry: " . $e->getMessage();
+    }
+}
+
+// Check for success message in URL
+$success_message = isset($_GET['success']) ? $_GET['success'] : '';
+
+// Now include the admin layout (this will output HTML)
 include 'includes/admin_layout.php'; // This includes auth check
 
 // Get filter parameters
@@ -524,6 +686,14 @@ if (isset($_GET['user_id'])) {
         </div>
     <?php endif; ?>
     
+    <?php if (!empty($success_message)): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill me-2"></i>
+            <?php echo $success_message; ?>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php endif; ?>
+    
     <?php if ($selected_user): ?>
         <div class="row">
             <div class="col-12">
@@ -533,9 +703,15 @@ if (isset($_GET['user_id'])) {
                             <i class="bi bi-person-badge me-2"></i>
                             <?php echo htmlspecialchars($selected_user['name']); ?>'s Wallet
                         </h5>
-                        <a href="wallet_management.php" class="btn btn-outline-secondary btn-sm">
-                            <i class="bi bi-arrow-left-circle me-1"></i>Back to Users
-                        </a>
+                        <div>
+                            <!-- Delete User Button -->
+                            <button type="button" class="btn btn-danger btn-sm me-2" data-bs-toggle="modal" data-bs-target="#deleteUserModal">
+                                <i class="bi bi-trash me-1"></i>Delete User
+                            </button>
+                            <a href="wallet_management.php" class="btn btn-outline-secondary btn-sm">
+                                <i class="bi bi-arrow-left-circle me-1"></i>Back to Users
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row mb-4">
@@ -597,19 +773,25 @@ if (isset($_GET['user_id'])) {
                                             <div class="user-avatar me-3">
                                                 <?php echo strtoupper(substr(htmlspecialchars($referrer['name']), 0, 1)); ?>
                                             </div>
-                                            <div>
+                                            <div class="flex-grow-1">
                                                 <div class="fw-medium"><?php echo htmlspecialchars($referrer['name']); ?></div>
                                                 <div class="small text-muted">
                                                     ID: <?php echo $referrer['id']; ?> | 
                                                     Email: <?php echo htmlspecialchars($referrer['email']); ?>
                                                 </div>
                                             </div>
+                                            <!-- Delete Referral Button -->
+                                            <div>
+                                                <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#deleteReferralModal" data-referred-id="<?php echo $selected_user['id']; ?>" data-referrer-id="<?php echo $referrer['id']; ?>">
+                                                    <i class="bi bi-trash me-1"></i>Delete Referral
+                                                </button>
+                                            </div>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
                         <?php endif; ?>
-                        
+
                         <div class="card">
                             <div class="card-header d-flex justify-content-between align-items-center flex-wrap">
                                 <h5 class="card-title mb-0">
@@ -656,6 +838,7 @@ if (isset($_GET['user_id'])) {
                                                     <th>Amount</th>
                                                     <th>Type</th>
                                                     <th>Status</th>
+                                                    <th>Actions</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -665,23 +848,23 @@ if (isset($_GET['user_id'])) {
                                                         <td>
                                                             <div class="fw-medium">
                                                                 <?php echo htmlspecialchars($history['description']); ?>
-                                                            </div>
-                                                            <?php 
-                                                            // If this is a referral bonus entry, show the referred user's email
-                                                            if (preg_match('/Referral Bonus for user ID: (\d+)/', $history['description'], $matches)) {
-                                                                $referred_user_id = $matches[1];
-                                                                // Get referred user's email
-                                                                $stmt = $pdo->prepare("SELECT name, email FROM users WHERE id = ?");
-                                                                $stmt->execute([$referred_user_id]);
-                                                                $referred_user = $stmt->fetch(PDO::FETCH_ASSOC);
-                                                                if ($referred_user) {
-                                                                    echo '<div class="small text-muted mt-1">';
-                                                                    echo '<i class="bi bi-person me-1"></i>';
-                                                                    echo htmlspecialchars($referred_user['name']) . ' (' . htmlspecialchars($referred_user['email']) . ')';
-                                                                    echo '</div>';
+                                                                <?php 
+                                                                // If this is a referral bonus entry, show the referred user's email
+                                                                if (preg_match('/Referral Bonus for user ID: (\d+)/', $history['description'], $matches)) {
+                                                                    $referred_user_id = $matches[1];
+                                                                    // Get referred user's email
+                                                                    $stmt = $pdo->prepare("SELECT name, email FROM users WHERE id = ?");
+                                                                    $stmt->execute([$referred_user_id]);
+                                                                    $referred_user = $stmt->fetch(PDO::FETCH_ASSOC);
+                                                                    if ($referred_user) {
+                                                                        echo '<div class="small text-muted mt-1">';
+                                                                        echo '<i class="bi bi-person me-1"></i>';
+                                                                        echo htmlspecialchars($referred_user['name']) . ' (' . htmlspecialchars($referred_user['email']) . ')';
+                                                                        echo '</div>';
+                                                                    }
                                                                 }
-                                                            }
-                                                            ?>
+                                                                ?>
+                                                            </div>
                                                         </td>
                                                         <td>
                                                             <span class="fw-bold <?php echo $history['type'] === 'credit' ? 'text-success' : 'text-danger'; ?>">
@@ -712,6 +895,17 @@ if (isset($_GET['user_id'])) {
                                                                 <span class="badge badge-custom badge-warning">
                                                                     <i class="bi bi-clock me-1"></i>Pending
                                                                 </span>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php 
+                                                            // Show delete button only for referral bonus entries
+                                                            if (preg_match('/Referral Bonus for user ID: (\d+)/', $history['description'], $matches)): ?>
+                                                                <a href="wallet_management.php?user_id=<?php echo $user_id; ?>&delete_entry=1&entry_id=<?php echo $history['id']; ?>" 
+                                                                   class="btn btn-danger btn-sm" 
+                                                                   onclick="return confirm('Are you sure you want to delete this referral bonus entry? This will deduct the amount from the user\'s wallet.')">
+                                                                    <i class="bi bi-trash"></i>
+                                                                </a>
                                                             <?php endif; ?>
                                                         </td>
                                                     </tr>
@@ -805,3 +999,97 @@ if (isset($_GET['user_id'])) {
 </div>
 
 <?php include 'includes/admin_footer.php'; ?>
+
+<!-- Delete User Confirmation Modal -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteUserModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this user?</p>
+                <p>This action will:</p>
+                <ul>
+                    <li>Delete the user and all their data from the system</li>
+                    <li>Delete all wallet history records for this user</li>
+                    <li>Delete all withdrawal requests for this user</li>
+                </ul>
+                <p><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form method="POST" style="display: inline;" id="deleteUserForm">
+                    <input type="hidden" name="delete_user" value="1">
+                    <input type="hidden" name="user_id" value="<?php echo $selected_user['id']; ?>">
+                    <button type="submit" class="btn btn-danger">Delete User</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Referral Confirmation Modal -->
+<div class="modal fade" id="deleteReferralModal" tabindex="-1" aria-labelledby="deleteReferralModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteReferralModalLabel">Confirm Deletion</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this referral?</p>
+                <p>This action will:</p>
+                <ul>
+                    <li>Delete the referred user and all their data from the system</li>
+                    <li>Deduct the referral bonus amount from the referrer's wallet</li>
+                    <li>Add a deduction entry to the referrer's wallet history</li>
+                </ul>
+                <p><strong>This action cannot be undone.</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteBtn">Delete Referral</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden form for deletion -->
+<form id="deleteReferralForm" method="POST" style="display: none;">
+    <input type="hidden" name="delete_referral" value="1">
+    <input type="hidden" name="referred_user_id" id="referredUserId" value="">
+    <input type="hidden" name="referrer_id" id="referrerId" value="">
+</form>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle delete referral modal
+    var deleteReferralModal = document.getElementById('deleteReferralModal');
+    deleteReferralModal.addEventListener('show.bs.modal', function(event) {
+        var button = event.relatedTarget; // Button that triggered the modal
+        var referredId = button.getAttribute('data-referred-id');
+        var referrerId = button.getAttribute('data-referrer-id');
+        
+        // Set the values in the hidden form
+        document.getElementById('referredUserId').value = referredId;
+        document.getElementById('referrerId').value = referrerId;
+    });
+    
+    // Handle confirm delete button
+    document.getElementById('confirmDeleteBtn').addEventListener('click', function() {
+        document.getElementById('deleteReferralForm').submit();
+    });
+    
+    // Handle delete user form submission
+    var deleteUserForm = document.getElementById('deleteUserForm');
+    if (deleteUserForm) {
+        deleteUserForm.addEventListener('submit', function(e) {
+            // Form will submit normally
+        });
+    }
+});
+</script>
+</body>
+</html>
