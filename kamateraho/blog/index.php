@@ -606,6 +606,26 @@ The Ultimate Guide to Earning
                      <a href="post13.php" class="read-more">Read More</a>
                 </div>
             </div>
+                 <!-- Blog Post 14 -->
+            <div class="blog-card">
+                <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/647a4364098d78001d94f0e7.png
+                " alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>
+ Simple Tasks You Can Do from 
+
+ </h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Nov 4, 2025
+                        </span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">
+                       Home to Earn Money Online
+                    </p>
+                     <a href="post14.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">

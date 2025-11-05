@@ -375,8 +375,9 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             border: 2px solid #0d6efd !important;
             background: linear-gradient(135deg, #4361ee, #3a0ca3) !important;
             color: white !important;
-            font-size: 0.85rem;
-            padding: 0.375rem 0.5rem;
+            font-size: 1rem;
+            padding: 0.75rem 1.5rem;
+            min-height: 50px;
         }
         
         .btn-earn-money:hover {
@@ -385,8 +386,9 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
         }
         
         .btn-outline-primary {
-            font-size: 0.85rem;
-            padding: 0.375rem 0.5rem;
+            font-size: 1rem;
+            padding: 0.75rem 1.5rem;
+            min-height: 50px;
         }
         
         .info-box {
