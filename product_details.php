@@ -764,7 +764,7 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                                             </div>
                                         <?php endif; ?>
                                         <button type="submit" name="apply_now" class="btn btn-earn-money w-100">
-                                            <i class="fas fa-paper-plane me-2"></i>Apply for This Offer
+                                            <i class="fas fa-paper-plane me-2"></i>Apply And Earn
                                         </button>
                                     </form>
                                     <button class="btn btn-outline-primary copy-link-btn"
