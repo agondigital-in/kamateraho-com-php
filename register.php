@@ -830,7 +830,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                     
-                    <div class="form-group">
+                    <div class="form-group" style="display: none;">
                         <label for="captcha">CAPTCHA</label>
                         <div class="input-icon">
                             <i class="fas fa-shield-alt"></i>
