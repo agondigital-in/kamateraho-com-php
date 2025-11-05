@@ -538,8 +538,9 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
             }
             
             .btn-earn-money, .btn-outline-primary {
-                font-size: 0.75rem !important;
-                padding: 0.25rem 0.4rem !important;
+                font-size: 0.9rem !important;
+                padding: 0.75rem 0.6rem !important;
+                min-height: 44px !important;
             }
         }
         
