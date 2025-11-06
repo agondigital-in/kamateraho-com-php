@@ -168,6 +168,15 @@ if ($isSubAdmin) {
                     <p><strong>Message:</strong></p>
                     <p><?php echo nl2br(htmlspecialchars($msg['message'])); ?></p>
                     
+                    <?php if (!empty($msg['screenshot'])): ?>
+                        <div class="mt-3">
+                            <p><strong>Screenshot:</strong></p>
+                            <a href="../<?php echo htmlspecialchars($msg['screenshot']); ?>" target="_blank">
+                                <img src="../<?php echo htmlspecialchars($msg['screenshot']); ?>" alt="Screenshot" class="img-fluid" style="max-height: 200px;">
+                            </a>
+                        </div>
+                    <?php endif; ?>
+                    
                     <?php if ($msg['status'] === 'replied'): ?>
                         <div class="border-top mt-3 pt-3">
                             <p><strong>Admin Reply:</strong></p>

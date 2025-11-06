@@ -30,6 +30,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $subject = $_POST['subject'];
     $message = $_POST['message'];
     
+    // Handle screenshot upload
+    $screenshot = '';
+    if (isset($_FILES['screenshot']) && $_FILES['screenshot']['error'] === UPLOAD_ERR_OK) {
+        $uploadDir = 'uploads/';
+        // Create uploads directory if it doesn't exist
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0755, true);
+        }
+        
+        // Generate unique filename
+        $fileExtension = pathinfo($_FILES['screenshot']['name'], PATHINFO_EXTENSION);
+        $fileName = 'screenshot_' . time() . '_' . uniqid() . '.' . $fileExtension;
+        $uploadPath = $uploadDir . $fileName;
+        
+        // Validate file type (only allow images)
+        $allowedTypes = ['jpg', 'jpeg', 'png', 'gif'];
+        $fileType = strtolower(pathinfo($_FILES['screenshot']['name'], PATHINFO_EXTENSION));
+        
+        if (in_array($fileType, $allowedTypes) && move_uploaded_file($_FILES['screenshot']['tmp_name'], $uploadPath)) {
+            $screenshot = $uploadPath;
+        }
+    }
+    
     // Get user_id if user is logged in
     if (isset($_SESSION['user_id'])) {
         $user_id = $_SESSION['user_id'];
@@ -39,11 +62,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($pdo) {
         try {
             if ($user_id) {
-                $stmt = $pdo->prepare("INSERT INTO contact_messages (user_id, name, email, subject, message) VALUES (?, ?, ?, ?, ?)");
-                $stmt->execute([$user_id, $name, $email, $subject, $message]);
+                $stmt = $pdo->prepare("INSERT INTO contact_messages (user_id, name, email, subject, message, screenshot) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$user_id, $name, $email, $subject, $message, $screenshot]);
             } else {
-                $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, subject, message) VALUES (?, ?, ?, ?)");
-                $stmt->execute([$name, $email, $subject, $message]);
+                $stmt = $pdo->prepare("INSERT INTO contact_messages (name, email, subject, message, screenshot) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([$name, $email, $subject, $message, $screenshot]);
             }
             $success = "Thank you for your message! We'll get back to you soon.";
         } catch (PDOException $e) {
@@ -272,7 +295,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="alert alert-danger"><?php echo $error; ?></div>
                 <?php endif; ?>
                 
-                <form method="POST">
+                <form method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="name" class="form-label">Name</label>
                         <input type="text" class="form-control" id="name" name="name" value="<?php echo isset($prefill_name) ? htmlspecialchars($prefill_name) : ''; ?>" required>
@@ -291,6 +314,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div class="mb-3">
                         <label for="message" class="form-label">Message</label>
                         <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="screenshot" class="form-label">Screenshot (Optional)</label>
+                        <input type="file" class="form-control" id="screenshot" name="screenshot" accept="image/*">
+                        <div class="form-text">Upload a screenshot to help us understand your issue better (JPG, PNG, GIF)</div>
                     </div>
                     
                     <button type="submit" class="btn btn-primary">Send Message</button>
