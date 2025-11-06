@@ -626,6 +626,27 @@ The Ultimate Guide to Earning
                      <a href="post14.php" class="read-more">Read More</a>
                 </div>
             </div>
+                  <!-- Blog Post 15 -->
+            <div class="blog-card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx96LcthdMFbYF9pbDgz-j9ltfgcTGiB_PMQ&s
+                " alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>
+ How to Earn Money 
+
+ </h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Nov 6, 2025
+                        </span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">
+                      Online by Completing Simple Tasks from Home
+
+                    </p>
+                     <a href="post15.php" class="read-more">Read More</a>
+                </div>
+            </div>
         </div>
 
         <div class="pagination">
