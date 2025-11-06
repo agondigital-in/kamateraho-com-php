@@ -351,13 +351,7 @@
         });
     </script>
 
-    <section class="blog-header">
-        <div class="container">
-            <h1>How to Earn Money Online by Completing Simple Tasks from Home</h1>
-            <p>Simple ways to make money from the comfort of your home</p>
-            <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="How to Earn Money Online from Home" style="max-width: 100%; height: auto; border-radius: 10px; margin-top: 20px;">
-        </div>
-    </section>
+  
 
     <section class="blog-container">
         <a href="./index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
