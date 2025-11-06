@@ -19,6 +19,13 @@ if (!isset($_SESSION['user_id'])) {
 }
 
 $user_id = $_SESSION['user_id'];
+error_log("DEBUG: Session user_id = " . $user_id);
+
+// Additional session validation
+if (session_status() !== PHP_SESSION_ACTIVE) {
+    error_log("DEBUG: Session is not active");
+    session_start();
+}
 
 // Fetch details based on type
 if ($type === 'card') {
@@ -118,53 +125,59 @@ if (isset($_POST['apply_now'])) {
             }
             
             // Check if user exists in database
-            $userCheckStmt = $pdo->prepare("SELECT id FROM users WHERE id = ?");
-            $userCheckStmt->execute([$user_id]);
-            $userExists = $userCheckStmt->fetch();
-            
-            if (!$userExists) {
-                error_log("ERROR: User ID " . $user_id . " does not exist in users table");
-                $error_message = "User account not found. Please contact support.";
+            // First, verify that user_id is valid
+            if (!isset($user_id) || empty($user_id)) {
+                error_log("ERROR: User ID is not set or is empty");
+                $error_message = "User session not found. Please log in again.";
             } else {
-                error_log("User ID " . $user_id . " exists in users table");
+                $userCheckStmt = $pdo->prepare("SELECT id FROM users WHERE id = ?");
+                $userCheckStmt->execute([$user_id]);
+                $userExists = $userCheckStmt->fetch();
                 
-                // Create a special "purchase" withdraw request that will add money to wallet when approved
-                $timestamp = time();
-                $upi_id = "purchase@" . $timestamp; // Special UPI ID to identify purchases
-                error_log("Generated UPI ID: " . $upi_id . " (timestamp: " . $timestamp . ")");
-                $screenshot = ""; // No screenshot needed for this type of request
-                
-                // Debug: Log the data being inserted
-                error_log("Creating withdraw request - User ID: " . $user_id . ", Amount: " . $amount . ", UPI ID: " . $upi_id . ", Offer Title: " . $item['title']);
-                
-                // Add additional information for percentage-based offers
-                $offer_description = $item['description'];
-                if ($type === 'offer' && !empty($price_type) && $price_type !== 'fixed') {
-                    $offer_description .= " | Offer type: " . ucfirst(str_replace('_', ' ', $price_type)) . " | Offer percentage: " . number_format($item['price'], 2) . "% | Admin to determine final amount";
-                }
-                
-                // Insert withdraw request with special UPI ID to identify it as a purchase
-                $stmt = $pdo->prepare("INSERT INTO withdraw_requests (user_id, amount, upi_id, screenshot, offer_title, offer_description) VALUES (?, ?, ?, ?, ?, ?)");
-                $result = $stmt->execute([
-                    $user_id, 
-                    $amount, 
-                    $upi_id, 
-                    $screenshot,
-                    $item['title'],
-                    $offer_description
-                ]);
-                
-                // Debug: Check if insertion was successful
-                if ($result) {
-                    error_log("Withdraw request inserted successfully");
-                    // Get the ID of the inserted request
-                    $request_id = $pdo->lastInsertId();
-                    error_log("Request ID: " . $request_id);
-                    $success_message = "Your application request has been submitted successfully! The admin will review your request and determine the final reward amount.";
+                if (!$userExists) {
+                    error_log("ERROR: User ID " . $user_id . " does not exist in users table");
+                    $error_message = "User account not found. Please contact support.";
                 } else {
-                    error_log("Failed to insert withdraw request");
-                    error_log("Error info: " . print_r($stmt->errorInfo(), true));
-                    $error_message = "Failed to submit your application request. Please try again.";
+                    error_log("User ID " . $user_id . " exists in users table");
+                
+                    // Create a special "purchase" withdraw request that will add money to wallet when approved
+                    $timestamp = time();
+                    $upi_id = "purchase@" . $timestamp; // Special UPI ID to identify purchases
+                    error_log("Generated UPI ID: " . $upi_id . " (timestamp: " . $timestamp . ")");
+                    $screenshot = ""; // No screenshot needed for this type of request
+                    
+                    // Debug: Log the data being inserted
+                    error_log("Creating withdraw request - User ID: " . $user_id . ", Amount: " . $amount . ", UPI ID: " . $upi_id . ", Offer Title: " . $item['title']);
+                    
+                    // Add additional information for percentage-based offers
+                    $offer_description = $item['description'];
+                    if ($type === 'offer' && !empty($price_type) && $price_type !== 'fixed') {
+                        $offer_description .= " | Offer type: " . ucfirst(str_replace('_', ' ', $price_type)) . " | Offer percentage: " . number_format($item['price'], 2) . "% | Admin to determine final amount";
+                    }
+                    
+                    // Insert withdraw request with special UPI ID to identify it as a purchase
+                    $stmt = $pdo->prepare("INSERT INTO withdraw_requests (user_id, amount, upi_id, screenshot, offer_title, offer_description) VALUES (?, ?, ?, ?, ?, ?)");
+                    $result = $stmt->execute([
+                        $user_id, 
+                        $amount, 
+                        $upi_id, 
+                        $screenshot,
+                        $item['title'],
+                        $offer_description
+                    ]);
+                    
+                    // Debug: Check if insertion was successful
+                    if ($result) {
+                        error_log("Withdraw request inserted successfully");
+                        // Get the ID of the inserted request
+                        $request_id = $pdo->lastInsertId();
+                        error_log("Request ID: " . $request_id);
+                        $success_message = "Your application request has been submitted successfully! The admin will review your request and determine the final reward amount.";
+                    } else {
+                        error_log("Failed to insert withdraw request");
+                        error_log("Error info: " . print_r($stmt->errorInfo(), true));
+                        $error_message = "Failed to submit your application request. Please try again.";
+                    }
                 }
             }
         } catch(PDOException $e) {
@@ -766,7 +779,7 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                                                 </div>
                                             </div>
                                         <?php endif; ?>
-                                        <button type="submit" name="apply_now" class="btn btn-earn-money w-100">
+                                        <button type="button" class="btn btn-earn-money w-100" data-bs-toggle="modal" data-bs-target="#applyModal">
                                             <i class="fas fa-paper-plane me-2"></i>Apply And Earn
                                         </button>
                                     </form>
@@ -900,7 +913,52 @@ $apply_link = "apply_offer.php?user_id={$user_id}&p_id={$p_id}";
                     }
                 });
             });
+            
+            // Handle Next button click in modal
+            const nextButton = document.getElementById('nextButton');
+            if (nextButton) {
+                nextButton.addEventListener('click', function() {
+                    // Close the modal
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('applyModal'));
+                    modal.hide();
+                    
+                    // Submit the form
+                    const form = document.querySelector('form[method="POST"]');
+                    if (form) {
+                        // Create hidden input for apply_now
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'apply_now';
+                        input.value = '1';
+                        form.appendChild(input);
+                        
+                        // Submit the form
+                        form.requestSubmit();
+                    }
+                });
+            }
         });
     </script>
+    
+    <!-- Apply and Earn Modal -->
+    <div class="modal fade" id="applyModal" tabindex="-1" aria-labelledby="applyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="applyModalLabel">Support Information</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>If you face any issue while using an offer, please contact our 24/7 Support Team.</p>
+                    <p>Just send us a message with a screenshot, and you'll get a reply within 10 minutes.</p>
+                    <p>We're always here to help you! 💬⚡</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="nextButton">Next</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
