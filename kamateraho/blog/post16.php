@@ -386,7 +386,7 @@
         
        
         
-        <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Top Ways to Earn Money Online from Home with Simple Tasks" class="blog-image">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSHX6ZZ6V_s7wH3D80UEeAGsRwpjg34v3xrGQ&s" class="blog-image">
         
         <div class="blog-content">
             <p>In today's digital era, earning money from home has never been easier. Whether you're a student, a stay-at-home parent, or someone looking to supplement their income, there are numerous legitimate ways to earn money online with simple tasks. This comprehensive guide will show you the most effective methods to make money from home without requiring special skills or experience.</p>
