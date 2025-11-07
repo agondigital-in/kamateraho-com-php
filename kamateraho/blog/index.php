@@ -420,7 +420,8 @@
                 " alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>
-Top Ways to Earn Money 
+Top Ways to Earn Money Online from Home with Simple Tasks
+
 
 
  </h3>
