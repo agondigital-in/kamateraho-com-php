@@ -414,6 +414,27 @@
 
     <section class="blog-container">
         <div class="blog-grid">
+               <!-- Blog Post 16 -->
+            <div class="blog-card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx96LcthdMFbYF9pbDgz-j9ltfgcTGiB_PMQ&s
+                " alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>
+Top Ways to Earn Money 
+
+
+ </h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Nov 7, 2025
+                        </span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">
+                    Online from Home with Simple Tasks
+                    </p>
+                     <a href="post16.php" class="read-more">Read More</a>
+                </div>
+            </div>
             <!-- Blog Post 1 -->
             <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
