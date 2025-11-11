@@ -5,6 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>How I Made My First ₹50,000 Online — Step-by-Step Strategy</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* CSS Styles */
+        .toc {
+            border-left: 4px solid #0d6efd;
+        }
+        .toc h4 {
+            color: #0d6efd;
+        }
+        .toc ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        .toc ul li {
+            margin-bottom: 8px;
+        }
+        .toc ul li a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+        }
+        .toc ul li a:hover {
+            color: #0d6efd;
+            text-decoration: underline;
+        }
+        .faq-item {
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            color: #0d6efd;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
 
@@ -168,6 +207,8 @@
                     <p>Remember that everyone's journey is unique, and what worked for me might need adjustments for your specific situation. The important thing is to take action, learn from your experiences, and keep moving forward. The online earning landscape is constantly evolving, so staying adaptable and open to new opportunities will help you achieve even greater success.</p>
                     <p>If you're just starting your online earning journey, don't get discouraged by initial challenges. Focus on building your skills, providing value, and maintaining consistency. With time and effort, you'll likely surpass the ₹50,000 milestone and achieve financial freedom through online work.</p>
                 </div>
+                
+                <a href="./index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
             </article>
         </div>
     </div>
@@ -175,5 +216,23 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+<script>
+    // JavaScript Code
+    // Smooth scrolling for table of contents links
+    document.querySelectorAll('.toc a').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        });
+    });
+</script>
 </body>
 </html>
