@@ -416,7 +416,7 @@
         <div class="blog-grid">
              <!-- Blog Post 17 -->
             <div class="blog-card">
-                <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/vaa4p8zelcxgsvgrvtbd.jpg
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1762862714/ChatGPT_Image_Nov_11_2025_05_34_54_PM_soa5gb.png
                 " alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>
