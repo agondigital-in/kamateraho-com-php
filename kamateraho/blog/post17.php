@@ -1,6 +1,6 @@
 <?php
 // Include header
-include '../includes/header.php';
+include '../../includes/header.php';
 ?>
 
 <div class="container mt-5">
@@ -170,5 +170,5 @@ include '../includes/header.php';
 
 <?php
 // Include footer
-include '../includes/footer.php';
+include '../../includes/footer.php';
 ?>
