@@ -51,6 +51,7 @@
     <div class="row">
         <div class="col-md-12">
             <article>
+                <a href="./index.php" class="back-link fs-5 fw-bold d-block mb-4"><i class="fas fa-arrow-left"></i> Back to Blog</a>
                 <h1 class="text-center mb-4">How I Made My First ₹50,000 Online — Step-by-Step Strategy</h1>
                 
                 <div class="text-center mb-4">
@@ -207,8 +208,6 @@
                     <p>Remember that everyone's journey is unique, and what worked for me might need adjustments for your specific situation. The important thing is to take action, learn from your experiences, and keep moving forward. The online earning landscape is constantly evolving, so staying adaptable and open to new opportunities will help you achieve even greater success.</p>
                     <p>If you're just starting your online earning journey, don't get discouraged by initial challenges. Focus on building your skills, providing value, and maintaining consistency. With time and effort, you'll likely surpass the ₹50,000 milestone and achieve financial freedom through online work.</p>
                 </div>
-                
-                <a href="./index.php" class="back-link"><i class="fas fa-arrow-left"></i> Back to Blog</a>
             </article>
         </div>
     </div>
