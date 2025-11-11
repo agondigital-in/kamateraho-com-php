@@ -17,6 +17,15 @@ include 'includes/navbar.php';
     <link rel="icon" href="favicon.ico" type="image/x-icon">
     <!-- Add animate.css for animations -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+    
+      gtag('config', 'G-RMM38DLZLM');
+    </script>
     <style>
         body {
             background-color: #f8f9fa;
