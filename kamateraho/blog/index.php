@@ -414,6 +414,27 @@
 
     <section class="blog-container">
         <div class="blog-grid">
+             <!-- Blog Post 17 -->
+            <div class="blog-card">
+                <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/vaa4p8zelcxgsvgrvtbd.jpg
+                " alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>
+Earn ₹1,000+ Daily: Best Online Earning site in India (2025)
+
+
+ </h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Nov 11, 2025
+                        </span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">
+               How I Made My First ₹50,000 Online — Step-by-Step Strategy
+                    </p>
+                     <a href="post17.php" class="read-more">Read More</a>
+                </div>
+            </div>
                <!-- Blog Post 16 -->
             <div class="blog-card">
                 <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/vaa4p8zelcxgsvgrvtbd.jpg
