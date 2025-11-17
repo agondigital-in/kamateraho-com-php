@@ -416,7 +416,7 @@
         <div class="blog-grid">
             <!-- Blog Post 19 -->
             <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Blog Post" class="blog-image">
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763381392/Gemini_Generated_Image_6v97hw6v97hw6v97_fe9kom.png" alt="Blog Post" class="blog-image">
                 <div class="blog-content">
                     <h3>From Zero to Cash</h3>
                     <div class="blog-meta">
