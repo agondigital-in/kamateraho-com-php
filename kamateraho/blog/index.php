@@ -414,6 +414,19 @@
 
     <section class="blog-container">
         <div class="blog-grid">
+            <!-- Blog Post 19 -->
+            <div class="blog-card">
+                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>From Zero to Cash</h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Nov 17, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">30-Minute Online Earning Secrets</p>
+                     <a href="post19.php" class="read-more">Read More</a>
+                </div>
+            </div>
              <!-- Blog Post 18 -->
             <div class="blog-card">
                 <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Blog Post" class="blog-image">
