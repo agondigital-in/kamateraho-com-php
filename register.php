@@ -367,6 +367,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             opacity: 0.9;
         }
         
+        .banner-image {
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .banner-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        
         .unique-features {
             position: relative;
             z-index: 2;
@@ -768,36 +780,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
             
             <div class="register-banner">
-                <div class="banner-header">
-                    <h2>Join KamateRaho Today!</h2>
-                    <p>Create your account and start earning from the comfort of your home</p>
+                <div class="banner-image">
+                    <img src="Gemini_Generated_Image_47z2uy47z2uy47z2 (1).png" alt="Registration Banner">
                 </div>
                 
-                <div class="unique-features">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h3>Lightning Fast</h3>
-                        <p>Get started in minutes with our streamlined registration process</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-lock"></i>
-                        </div>
-                        <h3>Bank Level Security</h3>
-                        <p>Your data is protected with military-grade encryption</p>
-                    </div>
-                    
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-medal"></i>
-                        </div>
-                        <h3>Premium Support</h3>
-                        <p>Dedicated team ready to assist you 24/7</p>
-                    </div>
-                </div>
+             
             </div>
         </div>
     </div>
