@@ -781,7 +781,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="register-banner">
                 <div class="banner-image">
-                    <img src="Gemini_Generated_Image_47z2uy47z2uy47z2 (1).png" alt="Registration Banner">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763379714/Gemini_Generated_Image_47z2uy47z2uy47z2_xsljdy.png" alt="Registration Banner">
                 </div>
                 
              
