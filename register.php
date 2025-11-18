@@ -481,6 +481,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         .form-footer {
             text-align: center;
             margin-top: 25px;
+            
         }
         
         .form-footer a {
@@ -781,7 +782,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             <div class="register-banner">
                 <div class="banner-image">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763379714/Gemini_Generated_Image_47z2uy47z2uy47z2_xsljdy.png" alt="Registration Banner">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763466833/WhatsApp_Image_2025-11-17_at_17.03.54_d2782913_zsszfi.jpg" alt="Registration Banner">
                 </div>
                 
              
