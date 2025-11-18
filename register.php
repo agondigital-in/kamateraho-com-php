@@ -479,10 +479,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         
         .form-footer {
-            text-align: center;
-            margin-top: 25px;
-            
-        }
+    text-align: center;
+    margin-top: 25px;
+}
+
+.form-footer p {
+    color: #000; /* text black */
+}
+
         
         .form-footer a {
             color: var(--accent-teal);
