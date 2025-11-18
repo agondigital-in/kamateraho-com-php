@@ -414,6 +414,20 @@
 
     <section class="blog-container">
         <div class="blog-grid">
+             <!-- Blog Post 20 -->
+            <div class="blog-card">
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763462356/Gemini_Generated_Image_xd8jfuxd8jfuxd8j_adeoes.png" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>Easy Online Income </h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Nov 18, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">Tricks You Can Do in Your Break Time
+</p>
+                     <a href="post20.php" class="read-more">Read More</a>
+                </div>
+            </div>
             <!-- Blog Post 19 -->
             <div class="blog-card">
                 <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763381392/Gemini_Generated_Image_6v97hw6v97hw6v97_fe9kom.png" alt="Blog Post" class="blog-image">
