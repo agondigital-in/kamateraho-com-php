@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_email'])) {
                 ];
                 
                 // API endpoint for sending emails
-                $url = 'https://mail.kamateraho.com/send-email';
+                $url = 'https://mail2.kamateraho.com/send-email';
                 
                 // Authorization token (same as used in forgot_password.php)
                 $token = 'km_ritik_ritikyW8joeSZUHp6zgPm8Y8';
