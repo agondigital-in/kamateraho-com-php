@@ -422,6 +422,21 @@
 
     <section class="blog-container">
         <div class="blog-grid">
+             <!-- Blog Post 21 -->
+            <div class="blog-card">
+                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1764062458/ChatGPT_Image_Nov_25_2025_02_50_48_PM_bnjcel.png" alt="Blog Post" class="blog-image">
+                <div class="blog-content">
+                    <h3>Fast Earning Guide</h3>
+                    <div class="blog-meta">
+                        <span><i class="far fa-calendar"></i> Nov 25, 2025</span>
+                        <span><i class="far fa-user"></i> Admin</span>
+                    </div>
+                    <p class="blog-excerpt">Work from Home with 30-Min Daily Tasks
+
+</p>
+                     <a href="post21.php" class="read-more">Read More</a>
+                </div>
+            </div>
              <!-- Blog Post 20 -->
             <div class="blog-card">
                 <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763462356/Gemini_Generated_Image_xd8jfuxd8jfuxd8j_adeoes.png" alt="Blog Post" class="blog-image">
