@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 ];
                 
                 // API endpoint
-                $url = 'https://mail.kamateraho.com/send-password';
+                $url = 'https://mail2.kamateraho.com/send-password';
                 
                 // Authorization token
                 $token = 'km_ritik_ritikyW8joeSZUHp6zgPm8Y8';

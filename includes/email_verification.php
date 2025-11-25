@@ -95,7 +95,7 @@ function sendVerificationEmail($email, $code, $name = '') {
     ];
     
     // API endpoint
-    $url = 'https://mail.kamateraho.com/send-email';
+    $url = 'https://mail2.kamateraho.com/send-email';
     
     // Authorization token
     $token = 'km_ritik_ritikyW8joeSZUHp6zgPm8Y8';
