@@ -37,6 +37,17 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 20px;
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .blog-main {
+            flex: 3;
+        }
+        
+        .blog-sidebar {
+            flex: 1;
+            min-width: 300px;
         }
         
         .blog-grid {
@@ -44,6 +55,17 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
+        }
+        
+        .ad-container {
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 2rem;
         }
         
         .blog-card {
@@ -133,6 +155,14 @@
             
             .blog-grid {
                 grid-template-columns: 1fr;
+            }
+            
+            .blog-container {
+                flex-direction: column;
+            }
+            
+            .blog-sidebar {
+                min-width: 100%;
             }
         }
               /* Header Styles */
@@ -421,345 +451,372 @@
     </section>
 
     <section class="blog-container">
-        <div class="blog-grid">
-             <!-- Blog Post 21 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1764062458/ChatGPT_Image_Nov_25_2025_02_50_48_PM_bnjcel.png" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Fast Earning Guide</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Nov 25, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+        <div class="blog-main">
+            <div class="blog-grid">
+            <!-- Blog Post 21 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1764062458/ChatGPT_Image_Nov_25_2025_02_50_48_PM_bnjcel.png" alt="Fast Earning Guide" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Fast Earning Guide</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 25, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Work from Home with 30-Min Daily Tasks</p>
+                        <a href="post21.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Work from Home with 30-Min Daily Tasks
-
+                </div>
+                 <!-- Blog Post 20 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763462356/Gemini_Generated_Image_xd8jfuxd8jfuxd8j_adeoes.png" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Easy Online Income </h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 18, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Tricks You Can Do in Your Break Time
 </p>
-                     <a href="post21.php" class="read-more">Read More</a>
-                </div>
-            </div>
-             <!-- Blog Post 20 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763462356/Gemini_Generated_Image_xd8jfuxd8jfuxd8j_adeoes.png" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Easy Online Income </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Nov 18, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                         <a href="post20.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Tricks You Can Do in Your Break Time
-</p>
-                     <a href="post20.php" class="read-more">Read More</a>
                 </div>
-            </div>
-            <!-- Blog Post 19 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763381392/Gemini_Generated_Image_6v97hw6v97hw6v97_fe9kom.png" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>From Zero to Cash</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Nov 17, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                <!-- Blog Post 19 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763381392/Gemini_Generated_Image_6v97hw6v97hw6v97_fe9kom.png" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>From Zero to Cash</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 17, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">30-Minute Online Earning Secrets</p>
+                         <a href="post19.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">30-Minute Online Earning Secrets</p>
-                     <a href="post19.php" class="read-more">Read More</a>
                 </div>
-            </div>
-             <!-- Blog Post 18 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Make Money Online Before Your Coffee Gets Cold</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Nov 12, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                 <!-- Blog Post 18 -->
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Make Money Online Before Your Coffee Gets Cold</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 12, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Quick and Easy Ways to Earn Cash from Home</p>
+                         <a href="post18.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Quick and Easy Ways to Earn Cash from Home</p>
-                     <a href="post18.php" class="read-more">Read More</a>
                 </div>
-            </div>
-             <!-- Blog Post 17 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1762862714/ChatGPT_Image_Nov_11_2025_05_34_54_PM_soa5gb.png
-                " alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>
+                 <!-- Blog Post 17 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1762862714/ChatGPT_Image_Nov_11_2025_05_34_54_PM_soa5gb.png
+                    " alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>
 Earn ₹1,000+ Daily: Best Online Earning site in India (2025)
 
-
  </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Nov 11, 2025
-                        </span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 11, 2025
+                            </span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">
+                   How I Made My First ₹50,000 Online — Step-by-Step Strategy
+                        </p>
+                         <a href="post17.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">
-               How I Made My First ₹50,000 Online — Step-by-Step Strategy
-                    </p>
-                     <a href="post17.php" class="read-more">Read More</a>
                 </div>
-            </div>
-               <!-- Blog Post 16 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/vaa4p8zelcxgsvgrvtbd.jpg
-                " alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>
+                   <!-- Blog Post 16 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/vaa4p8zelcxgsvgrvtbd.jpg
+                    " alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>
 Top Ways to Earn Money Online from Home with Simple Tasks
 
 
 
  </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Nov 7, 2025
-                        </span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 7, 2025
+                            </span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">
+                    Create Your Account & Get Rs. 50.00 Free as bonus - Earnincome.in Earnincome Is The #1 Website In India To Earn Money Online
+                        </p>
+                         <a href="post16.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">
-                Create Your Account & Get Rs. 50.00 Free as bonus - Earnincome.in Earnincome Is The #1 Website In India To Earn Money Online
-                    </p>
-                     <a href="post16.php" class="read-more">Read More</a>
                 </div>
-            </div>
-            <!-- Blog Post 1 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Top 5 Ways to Earn Money Online</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 8, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                <!-- Blog Post 1 -->
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Top 5 Ways to Earn Money Online</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 8, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Discover the most effective methods to earn money from the comfort of your home. These proven strategies can help you boost your income significantly.</p>
+                        <a href="post1.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Discover the most effective methods to earn money from the comfort of your home. These proven strategies can help you boost your income significantly.</p>
-                    <a href="post1.php" class="read-more">Read More</a>
                 </div>
-            </div>
 
-            <!-- Blog Post 2 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Maximizing Your Earnings with KamateRaho</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 9, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                <!-- Blog Post 2 -->
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Maximizing Your Earnings with KamateRaho</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 9, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Learn how to make the most of our platform with these expert tips. Increase your daily earnings and unlock new opportunities.</p>
+                        <a href="post2.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Learn how to make the most of our platform with these expert tips. Increase your daily earnings and unlock new opportunities.</p>
-                    <a href="post2.php" class="read-more">Read More</a>
                 </div>
-            </div>
 
-            <!-- Blog Post 3 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Understanding Payment Methods</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 10, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                <!-- Blog Post 3 -->
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Understanding Payment Methods</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 10, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Get detailed information about our payment methods and how to withdraw your earnings quickly and securely.</p>
+                        <a href="post3.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Get detailed information about our payment methods and how to withdraw your earnings quickly and securely.</p>
-                    <a href="post3.php" class="read-more">Read More</a>
                 </div>
-            </div>
 
-            <!-- Blog Post 4 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Success Stories from Our Users</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 14, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                <!-- Blog Post 4 -->
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Success Stories from Our Users</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 14, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Read inspiring stories from our community members who have successfully earned money through our platform.</p>
+                        <a href="post4.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Read inspiring stories from our community members who have successfully earned money through our platform.</p>
-                    <a href="post4.php" class="read-more">Read More</a>
                 </div>
-            </div>
 
-            <!-- Blog Post 5 -->
-            <div class="blog-card">
-                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>New Features Coming Soon</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 15, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                <!-- Blog Post 5 -->
+                <div class="blog-card">
+                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>New Features Coming Soon</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 15, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Exciting updates are on the horizon! Discover what new features we're adding to enhance your experience.</p>
+                        <a href="post5.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Exciting updates are on the horizon! Discover what new features we're adding to enhance your experience.</p>
-                    <a href="post5.php" class="read-more">Read More</a>
                 </div>
-            </div>
-              <!-- Blog Post 6 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761627902/Gemini_Generated_Image_yotpalyotpalyotp_nwe7br.png" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>How to Make Money Online Without Investment
+                  <!-- Blog Post 6 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761627902/Gemini_Generated_Image_yotpalyotpalyotp_nwe7br.png" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>How to Make Money Online Without Investment
 </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 16, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 16, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">How I Earned ₹50,000 per Month Online ..</p>
+                         <a href="post6.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">How I Earned ₹50,000 per Month Online ..</p>
-                     <a href="post6.php" class="read-more">Read More</a>
                 </div>
-            </div>
-              <!-- Blog Post 7 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760682009/Gemini_Generated_Image_t5redbt5redbt5re_o3g6ym.png" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Best Referral Programs to Earn ₹500 Daily Online
+                  <!-- Blog Post 7 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760682009/Gemini_Generated_Image_t5redbt5redbt5re_o3g6ym.png" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Best Referral Programs to Earn ₹500 Daily Online
 
 </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 17, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
-                    </div>
-                    <p class="blog-excerpt">How To Get Best Referral Programs to Earn ₹500 Daily Online
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 17, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">How To Get Best Referral Programs to Earn ₹500 Daily Online
 </p>
-                     <a href="post7.php" class="read-more">Read More</a>
+                         <a href="post7.php" class="read-more">Read More</a>
+                    </div>
                 </div>
-            </div>
-              <!-- Blog Post 8 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761300628/Gemini_Generated_Image_esukctesukctesuk_2_pjueny.png" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>KamateRaho Offer Zone: Daily Tasks Complete Karo, Cash Jeeto
+                  <!-- Blog Post 8 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761300628/Gemini_Generated_Image_esukctesukctesuk_2_pjueny.png" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>KamateRaho Offer Zone: Daily Tasks Complete Karo, Cash Jeeto
 
 </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 24, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 24, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">2025 Ka Best Earning Platform – KamateRaho App Review & Guide</p>
+                         <a href="post8.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">2025 Ka Best Earning Platform – KamateRaho App Review & Guide</p>
-                     <a href="post8.php" class="read-more">Read More</a>
                 </div>
-            </div>
-            <!-- Blog Post 9 -->
-            <div class="blog-card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmf8JLigVdLzidnVt0HuXOLjfbOb1PmkyjpwT5tZX65SNz3r2L3tsxjwJ5caWHoYwYPwE&usqp=CAU" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3> How to Earn ₹1,000+</h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 26, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                <!-- Blog Post 9 -->
+                <div class="blog-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmf8JLigVdLzidnVt0HuXOLjfbOb1PmkyjpwT5tZX65SNz3r2L3tsxjwJ5caWHoYwYPwE&usqp=CAU" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3> How to Earn ₹1,000+</h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 26, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">Daily Using Just Your Smartphone (2025 Guide)</p>
+                         <a href="post9.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">Daily Using Just Your Smartphone (2025 Guide)</p>
-                     <a href="post9.php" class="read-more">Read More</a>
                 </div>
-            </div>
-              <!-- Blog Post 10 -->
-            <div class="blog-card">
-                <img src="https://education.sakshi.com/sites/default/files/images/2023/08/24/work-home-1692862181.jpg" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>Work From Home Se Real Income Kaise Banaye </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                  <!-- Blog Post 10 -->
+                <div class="blog-card">
+                    <img src="https://education.sakshi.com/sites/default/files/images/2023/08/24/work-home-1692862181.jpg" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>Work From Home Se Real Income Kaise Banaye </h3>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">– Complete Guide (2025)</p>
+                         <a href="post11.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">– Complete Guide (2025)</p>
-                     <a href="post11.php" class="read-more">Read More</a>
                 </div>
-            </div>
-              <!-- Blog Post 11 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714969/Gemini_Generated_Image_ybpauaybpauaybpa_zlxtta.png" alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>top 10 site for referral earning
+                  <!-- Blog Post 11 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714969/Gemini_Generated_Image_ybpauaybpauaybpa_zlxtta.png" alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>top 10 site for referral earning
  </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">– Earn Money Online Without Investment</p>
+                         <a href="post10.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">– Earn Money Online Without Investment</p>
-                     <a href="post10.php" class="read-more">Read More</a>
                 </div>
-            </div>
-                <!-- Blog Post 12 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761627902/Gemini_Generated_Image_yotpalyotpalyotp_nwe7br.png
-                " alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>How to Start Earning Cash from 
+                    <!-- Blog Post 12 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761627902/Gemini_Generated_Image_yotpalyotpalyotp_nwe7br.png
+                    " alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>How to Start Earning Cash from 
  </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 30, 2025
-                        </span>
-                        <span><i class="far fa-user"></i> Admin</span>
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 30, 2025
+                            </span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">
+                            Home in 2025
+                        </p>
+                         <a href="post9.php" class="read-more">Read More</a>
                     </div>
-                    <p class="blog-excerpt">
-                        Home in 2025
-                    </p>
-                     <a href="post9.php" class="read-more">Read More</a>
                 </div>
-            </div>
-                <!-- Blog Post 13 -->
-            <div class="blog-card">
-                <img src="https://jksdigital.in/wp-content/uploads/2025/07/Add-a-heading-31.webp
-                " alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>
+                    <!-- Blog Post 13 -->
+                <div class="blog-card">
+                    <img src="https://jksdigital.in/wp-content/uploads/2025/07/Add-a-heading-31.webp
+                    " alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>
 
 The Ultimate Guide to Earning
  </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Oct 31, 2025
-                        </span>
-                        <span><i class="far fa-user"></i> Admin</span>
-                    </div>
-                    <p class="blog-excerpt">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Oct 31, 2025
+                            </span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">
                        Income Online Through Simple Task Completion
-                    </p>
-                     <a href="post13.php" class="read-more">Read More</a>
+                        </p>
+                         <a href="post13.php" class="read-more">Read More</a>
+                    </div>
                 </div>
-            </div>
-                 <!-- Blog Post 14 -->
-            <div class="blog-card">
-                <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/647a4364098d78001d94f0e7.png
-                " alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>
+                     <!-- Blog Post 14 -->
+                <div class="blog-card">
+                    <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/647a4364098d78001d94f0e7.png
+                    " alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>
  Simple Tasks You Can Do from 
 
  </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Nov 5, 2025
-                        </span>
-                        <span><i class="far fa-user"></i> Admin</span>
-                    </div>
-                    <p class="blog-excerpt">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 5, 2025
+                            </span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">
                        Home to Earn Money Online
                     </p>
                      <a href="post14.php" class="read-more">Read More</a>
                 </div>
-            </div>
                   <!-- Blog Post 15 -->
-            <div class="blog-card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx96LcthdMFbYF9pbDgz-j9ltfgcTGiB_PMQ&s
-                " alt="Blog Post" class="blog-image">
-                <div class="blog-content">
-                    <h3>
+                <div class="blog-card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx96LcthdMFbYF9pbDgz-j9ltfgcTGiB_PMQ&s
+                    " alt="Blog Post" class="blog-image">
+                    <div class="blog-content">
+                        <h3>
  How to Earn Money 
 
  </h3>
-                    <div class="blog-meta">
-                        <span><i class="far fa-calendar"></i> Nov 6, 2025
-                        </span>
-                        <span><i class="far fa-user"></i> Admin</span>
-                    </div>
-                    <p class="blog-excerpt">
+                        <div class="blog-meta">
+                            <span><i class="far fa-calendar"></i> Nov 6, 2025
+                            </span>
+                            <span><i class="far fa-user"></i> Admin</span>
+                        </div>
+                        <p class="blog-excerpt">
                       Online by Completing Simple Tasks from Home
 
                     </p>
                      <a href="post15.php" class="read-more">Read More</a>
                 </div>
             </div>
+            <div class="pagination">
+                <a href="#" class="active">1</a>
+                <a href="#">2</a>
+                <a href="#">3</a>
+                <a href="#"><i class="fas fa-chevron-right"></i></a>
+            </div>
         </div>
-
-        <div class="pagination">
-            <a href="#" class="active">1</a>
-            <a href="#">2</a>
-            <a href="#">3</a>
-            <a href="#"><i class="fas fa-chevron-right"></i></a>
+        <div class="blog-sidebar">
+            <!-- Ad Unit -->
+            <div class="blog-card">
+                <div class="ad-container">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-format="fluid"
+                         data-ad-layout-key="-gw-c+2j-55-2t"
+                         data-ad-client="ca-pub-9867776615304259"
+                         data-ad-slot="9876543210"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
+           
+            <!-- Ad Unit -->
+            <div class="blog-card">
+                <div class="ad-container">
+                    <ins class="adsbygoogle"
+                         style="display:block"
+                         data-ad-format="fluid"
+                         data-ad-layout-key="-gw-c+2j-55-2t"
+                         data-ad-client="ca-pub-9867776615304259"
+                         data-ad-slot="9876543211"></ins>
+                    <script>
+                         (adsbygoogle = window.adsbygoogle || []).push({});
+                    </script>
+                </div>
+            </div>
         </div>
     </section>
 

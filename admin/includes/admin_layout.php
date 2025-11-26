@@ -543,6 +543,11 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                         <i class="bi bi-images"></i> <span>Manage Sliders</span>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link <?php echo (basename($_SERVER['PHP_SELF']) == 'manage_blog.php') ? 'active' : ''; ?>" href="manage_blog.php">
+                        <i class="bi bi-pencil-square"></i> <span>Manage Blog</span>
+                    </a>
+                </li>
             </ul>
         </div>
     </div>
