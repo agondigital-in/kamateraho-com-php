@@ -1,5 +1,3 @@
-<link rel="stylesheet" href="../styles.css">
-
 <footer>
     <div class="container">
         <div class="footer-content">
@@ -48,4 +46,4 @@
     </div>
 </footer>
 
-<script src="../script.js"></script>
+<!-- Blog pages use their own header script for mobile menu -->

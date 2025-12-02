@@ -1,59 +1,90 @@
-<header style="background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%); padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 12px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 1000;">
-    <div class="logo">
-        <a href="/">
-            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1760442084/logo_cpe9n0_1_uhvkri.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
-        </a>
+<link rel="stylesheet" href="../styles.css">
+
+<header>
+    <div class="container">
+        <nav>
+            <div class="logo">
+                <a href="/">
+                    <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1760442084/logo_cpe9n0_1_uhvkri.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
+                </a>
+            </div>
+            <ul class="nav-links" id="navMenu">
+                <li><a href="/">Features</a></li>
+                <li><a href="/kamateraho/how-it-works.html">How It Works</a></li>
+                <li><a href="/kamateraho/blog/index.php">Blog</a></li>
+                <li><a href="/kamateraho/contact.html">Contact Us</a></li>
+                <li><a href="/kamateraho/payment-proof.html">Payment Proof</a></li>
+                <li><a href="/register.php" class="btn">Sign Up</a></li>
+                <li><a href="/login.php" class="btn">Login</a></li>
+            </ul>
+            <div class="menu-toggle" id="menuToggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
     </div>
-    <nav style="display: flex; align-items: center;">
-        <ul class="nav-links" style="display: flex; list-style: none; gap: 25px; margin: 0; padding: 0;">
-            <li><a href="/" style="color: #1a2a6c; text-decoration: none; font-weight: 500;">Features</a></li>
-            <li><a href="/kamateraho/how-it-works.html" style="color: #1a2a6c; text-decoration: none; font-weight: 500;">How It Works</a></li>
-            <li><a href="/kamateraho/blog/index.php" style="color: #1a2a6c; text-decoration: none; font-weight: 500;">Blog</a></li>
-            <li><a href="/kamateraho/contact.html" style="color: #1a2a6c; text-decoration: none; font-weight: 500;">Contact Us</a></li>
-            <li><a href="/kamateraho/payment-proof.html" style="color: #1a2a6c; text-decoration: none; font-weight: 500;">Payment Proof</a></li>
-            <li><a href="/register.php" class="btn" style="background: #1a2a6c; color: white; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 500;">Sign Up</a></li>
-            <li><a href="/login.php" class="btn" style="background: transparent; color: #1a2a6c; border: 2px solid #1a2a6c; padding: 10px 20px; border-radius: 30px; text-decoration: none; font-weight: 500;">Login</a></li>
-        </ul>
-        <div class="menu-toggle" style="display: none; flex-direction: column; gap: 5px; cursor: pointer;">
-            <span style="width: 25px; height: 3px; background: #1a2a6c; display: block;"></span>
-            <span style="width: 25px; height: 3px; background: #1a2a6c; display: block;"></span>
-            <span style="width: 25px; height: 3px; background: #1a2a6c; display: block;"></span>
-        </div>
-    </nav>
 </header>
 
 <style>
-@media (max-width: 768px) {
-    header nav .nav-links {
-        display: none;
-        position: fixed;
-        top: 80px;
-        right: 0;
-        background: white;
-        flex-direction: column;
-        width: 70%;
-        height: 100vh;
-        padding: 20px;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-    }
-    header nav .nav-links.active {
-        display: flex !important;
-    }
-    header nav .menu-toggle {
-        display: flex !important;
-    }
+/* Blog-specific header adjustments */
+header {
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
+}
+
+header .container {
+    max-width: 1400px;
+}
+
+header nav {
+    padding: 15px 0;
 }
 </style>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const menuToggle = document.querySelector('.menu-toggle');
-    const navLinks = document.querySelector('.nav-links');
+(function() {
+    // Prevent multiple initializations
+    if (window.blogMenuInitialized) return;
+    window.blogMenuInitialized = true;
     
-    if (menuToggle) {
-        menuToggle.addEventListener('click', function() {
-            navLinks.classList.toggle('active');
+    function initMobileMenu() {
+        const menuToggle = document.getElementById('menuToggle');
+        const navMenu = document.getElementById('navMenu');
+        
+        if (!menuToggle || !navMenu) return;
+        
+        // Toggle menu
+        menuToggle.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            navMenu.classList.toggle('active');
+            menuToggle.classList.toggle('active');
+        });
+        
+        // Close menu when clicking on a link
+        const navLinks = document.querySelectorAll('.nav-links li a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function() {
+                navMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!navMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                navMenu.classList.remove('active');
+                menuToggle.classList.remove('active');
+            }
         });
     }
-});
+    
+    // Run immediately if DOM is already loaded, otherwise wait
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initMobileMenu);
+    } else {
+        initMobileMenu();
+    }
+})();
 </script>
