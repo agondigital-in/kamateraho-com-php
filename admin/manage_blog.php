@@ -178,8 +178,23 @@ include 'includes/admin_layout.php';
                 </div>
                 
                 <div class="mb-3">
-                    <label for="image_url" class="form-label">Featured Image URL</label>
-                    <input type="url" class="form-control" id="image_url" name="image_url" value="<?php echo $editing_post ? htmlspecialchars($editing_post['image_url']) : ''; ?>" placeholder="https://example.com/image.jpg">
+                    <label for="image_url" class="form-label">Featured Image</label>
+                    <div class="input-group">
+                        <input type="url" class="form-control" id="image_url" name="image_url" value="<?php echo $editing_post ? htmlspecialchars($editing_post['image_url']) : ''; ?>" placeholder="https://example.com/image.jpg">
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('imageUpload').click()">
+                            Upload Image
+                        </button>
+                    </div>
+                    <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                    <div class="form-text">Upload an image or paste URL. Supports JPG, PNG, GIF, WebP (max 5MB)</div>
+                    <div id="uploadProgress" style="display: none; margin-top: 10px;">
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 100%">Uploading...</div>
+                        </div>
+                    </div>
+                    <div id="imagePreview" style="margin-top: 15px; <?php echo ($editing_post && $editing_post['image_url']) ? '' : 'display: none;'; ?>">
+                        <img id="previewImg" src="<?php echo $editing_post ? htmlspecialchars($editing_post['image_url']) : ''; ?>" alt="Preview" style="max-width: 300px; max-height: 200px; border-radius: 8px; border: 2px solid #ddd; object-fit: cover;">
+                    </div>
                 </div>
                 
                 <div class="mb-3">
@@ -340,6 +355,56 @@ document.getElementById('blogForm').addEventListener('submit', function(e) {
         alert('Please add some content to your blog post');
         return false;
     }
+});
+
+// Image preview functionality
+function updateImagePreview(url) {
+    const previewDiv = document.getElementById('imagePreview');
+    const previewImg = document.getElementById('previewImg');
+    
+    if (url && url.trim() !== '') {
+        previewImg.src = url;
+        previewDiv.style.display = 'block';
+    } else {
+        previewDiv.style.display = 'none';
+    }
+}
+
+// Update preview when URL changes
+document.getElementById('image_url').addEventListener('input', function(e) {
+    updateImagePreview(e.target.value);
+});
+
+// Image upload functionality
+document.getElementById('imageUpload').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (!file) return;
+    
+    const formData = new FormData();
+    formData.append('image', file);
+    
+    const progressDiv = document.getElementById('uploadProgress');
+    progressDiv.style.display = 'block';
+    
+    fetch('upload_blog_image.php', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        progressDiv.style.display = 'none';
+        if (data.success) {
+            document.getElementById('image_url').value = data.url;
+            updateImagePreview(data.url);
+            alert('Image uploaded successfully!');
+        } else {
+            alert('Upload failed: ' + data.message);
+        }
+    })
+    .catch(error => {
+        progressDiv.style.display = 'none';
+        alert('Upload error: ' + error.message);
+    });
 });
 
 // Toggle form visibility

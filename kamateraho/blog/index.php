@@ -33,7 +33,6 @@ try {
     <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9867776615304259" crossorigin="anonymous"></script>
     <style>
         body {
             margin: 0;
@@ -177,6 +176,11 @@ try {
             }
         }
     </style>
+    <meta name="google-site-verification" content="L5OFuMQut1wlaXZQjXlLUO6eqfZprVYYsN1ZMj0MOpM" />
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9867776615304259" crossorigin="anonymous"></script>
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
     <script>
@@ -187,6 +191,8 @@ try {
     </script>
 </head>
 <body>
+    <?php include 'header.php'; ?>
+    
     <section class="blog-hero">
         <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
             <h1>Our Blog</h1>
@@ -247,5 +253,7 @@ try {
             <?php endif; ?>
         </div>
     </section>
+    
+    <?php include 'footer.php'; ?>
 </body>
 </html>

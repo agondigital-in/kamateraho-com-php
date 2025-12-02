@@ -171,6 +171,11 @@ try {
             }
         }
     </style>
+    <meta name="google-site-verification" content="L5OFuMQut1wlaXZQjXlLUO6eqfZprVYYsN1ZMj0MOpM" />
+    
+    <!-- Google AdSense -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9867776615304259" crossorigin="anonymous"></script>
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
     <script>
@@ -181,6 +186,8 @@ try {
     </script>
 </head>
 <body>
+    <?php include 'header.php'; ?>
+    
     <section class="blog-header">
         <div class="container">
             <h1><?php echo htmlspecialchars($post['title']); ?></h1>
@@ -206,5 +213,7 @@ try {
             <?php echo $post['content']; ?>
         </div>
     </section>
+    
+    <?php include 'footer.php'; ?>
 </body>
 </html>
