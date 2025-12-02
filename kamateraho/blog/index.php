@@ -1,5 +1,27 @@
 <?php
-// Blog index page
+require_once '../../config/db.php';
+
+// Pagination
+$page = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+$per_page = 9;
+$offset = ($page - 1) * $per_page;
+
+// Fetch blog posts from database
+try {
+    // Get total count
+    $count_stmt = $pdo->query("SELECT COUNT(*) FROM blog_posts WHERE status = 'published'");
+    $total_posts = $count_stmt->fetchColumn();
+    $total_pages = ceil($total_posts / $per_page);
+    
+    // Get posts for current page
+    $stmt = $pdo->prepare("SELECT * FROM blog_posts WHERE status = 'published' ORDER BY created_at DESC LIMIT :limit OFFSET :offset");
+    $stmt->bindValue(':limit', $per_page, PDO::PARAM_INT);
+    $stmt->bindValue(':offset', $offset, PDO::PARAM_INT);
+    $stmt->execute();
+    $posts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+} catch (PDOException $e) {
+    die("Error loading blog posts: " . $e->getMessage());
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -7,47 +29,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Blog - KamateRaho.com</title>
-    <meta name="google-site-verification" content="L5OFuMQut1wlaXZQjXlLUO6eqfZprVYYsN1ZMj0MOpM" />
-    <link rel="stylesheet" href="styles.css">
+    <meta name="google-site-verification" content="L5OFuMQut1wlaXZQjXlLUO6eqfZprVYYsN1ZMj0MOpM" />
+    <link rel="stylesheet" href="../../css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9867776615304259"
-     crossorigin="anonymous"></script>
-     <script async custom-element="amp-auto-ads"
-        src="https://cdn.ampproject.org/v0/amp-auto-ads-0.1.js">
-</script>
-<amp-auto-ads type="adsense"
-        data-ad-client="ca-pub-9867776615304259">
-</amp-auto-ads>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9867776615304259" crossorigin="anonymous"></script>
     <style>
-        .blog-header {
-            text-align: center;
-            padding: 3rem 0;
-            background: linear-gradient(135deg, #1a2a6c, #f7b733);
-            color: white;
-            margin-bottom: 2rem;
+        body {
+            margin: 0;
+            font-family: 'Poppins', sans-serif;
         }
         
-        .blog-header h1 {
-            font-size: 2.5rem;
+        .blog-hero {
+            text-align: center;
+            padding: 4rem 0;
+            background: linear-gradient(135deg, #1a2a6c, #f7b733);
+            color: white;
+        }
+        
+        .blog-hero h1 {
+            font-size: 3rem;
             margin-bottom: 1rem;
         }
         
-        .blog-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .blog-main {
-            flex: 3;
-        }
-        
-        .blog-sidebar {
-            flex: 1;
-            min-width: 300px;
+        .blog-section {
+            padding: 4rem 0;
+            background: #f5f7fa;
         }
         
         .blog-grid {
@@ -55,857 +62,190 @@
             grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
             margin-bottom: 3rem;
-        }
-        
-        .ad-container {
-            min-height: 200px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: #f8f9fa;
-            border-radius: 15px;
-            padding: 1rem;
-            margin-bottom: 2rem;
+            align-items: start;
         }
         
         .blog-card {
             background: white;
             border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
         }
         
         .blog-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
         }
         
-        .blog-image {
+        .blog-card img {
             width: 100%;
             height: 200px;
             object-fit: cover;
         }
         
-        .blog-content {
+        .blog-card-content {
             padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
         }
         
-        .blog-content h3 {
+        .blog-card h3 {
             color: #1a2a6c;
             margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+            line-height: 1.6rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 3.2rem;
+            max-height: 3.2rem;
         }
         
         .blog-meta {
             display: flex;
             gap: 1rem;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             margin-bottom: 1rem;
         }
         
         .blog-excerpt {
-            color: #333;
-            margin-bottom: 1.5rem;
+            color: #555;
+            margin-bottom: 1rem;
             line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            min-height: 3.2rem;
+            max-height: 3.2rem;
         }
         
         .read-more {
             display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, #1a2a6c, #f7b733);
-            color: white;
+            color: #1a2a6c;
             text-decoration: none;
-            border-radius: 30px;
             font-weight: 500;
-            transition: all 0.3s ease;
         }
         
         .read-more:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(26, 42, 108, 0.3);
+            text-decoration: underline;
         }
         
         .pagination {
             display: flex;
             justify-content: center;
-            gap: 1rem;
-            margin: 2rem 0;
+            gap: 0.5rem;
+            margin-top: 2rem;
         }
         
-        .pagination a {
-            padding: 10px 15px;
+        .pagination a, .pagination span {
+            padding: 0.5rem 1rem;
             background: white;
-            color: #1a2a6c;
-            text-decoration: none;
             border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #1a2a6c;
         }
         
-        .pagination a:hover, .pagination a.active {
+        .pagination .active {
             background: #1a2a6c;
             color: white;
         }
         
+        .no-posts {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+        }
+        
         @media (max-width: 768px) {
-            .blog-header h1 {
+            .blog-hero h1 {
                 font-size: 2rem;
             }
             
             .blog-grid {
                 grid-template-columns: 1fr;
             }
-            
-            .blog-container {
-                flex-direction: column;
-            }
-            
-            .blog-sidebar {
-                min-width: 100%;
-            }
         }
-              /* Header Styles */
-        
-
-        @keyframes slideInDown {
-            from {
-                transform: translateY(-100%);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .logo {
-            display: flex;
-            align-items: center;
-        }
-
-        .logo img {
-            height: 50px;
-            width: auto;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-            100% { transform: scale(1); }
-        }
-
-        .logo span {
-            color: #ff6e7f;
-        }
-
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 30px;
-            height: 21px;
-            cursor: pointer;
-            z-index: 1001;
-        }
-
-        .menu-toggle span {
-            display: block;
-            height: 3px;
-            width: 100%;
-            background-color: #1a2a6c;
-            border-radius: 3px;
-            transition: all 0.3s ease;
-        }
-
-        nav {
-            display: flex;
-            align-items: center;
-        }
-
-        nav ul {
-            display: flex;
-            list-style: none;
-        }
-
-        /* Ensure menu is visible on desktop */
-        @media (min-width: 769px) {
-            nav ul {
-                display: flex !important;
-            }
-        }
-
-        /* Hide mobile menu by default */
-        @media (max-width: 768px) {
-            nav ul {
-                display: none;
-            }
-            
-            nav ul.active {
-                display: flex;
-            }
-        }
-
-        nav ul li {
-            margin-left: 25px;
-        }
-
-        nav ul li a {
-            color: #1a2a6c;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-            padding: 8px 12px;
-            border-radius: 20px;
-            white-space: nowrap;
-        }
-
-        nav ul li a:hover {
-            background: rgba(26, 42, 108, 0.1);
-            color: #1a2a6c;
-            transform: translateY(-2px);
-        }
-
-        .auth-buttons {
-            display: flex;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            margin-left: 15px;
-            font-size: 1rem;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
-        }
-
-        .btn-login {
-            background: transparent;
-            color: #1a2a6c;
-            border: 2px solid #1a2a6c;
-        }
-
-        .btn-login:hover {
-            background: #1a2a6c;
-            color: white;
-        }
-
-        .btn-register {
-            background: #1a2a6c;
-            color: white;
-            border: 2px solid #1a2a6c;
-        }
-
-        .btn-register:hover {
-            background: transparent;
-            color: #1a2a6c;
-        }
-
-        /* Responsive Styles */
-        @media (max-width: 768px) {
-            .menu-toggle {
-                display: flex;
-            }
-
-            nav ul {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                flex-direction: column;
-                background: linear-gradient(135deg, #f5f7fa 0%, #e4edf9 100%);
-                width: 70%;
-                height: 100vh;
-                padding: 80px 20px 20px;
-                transition: right 0.3s ease;
-                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-                margin: 0;
-                border-left: 1px solid #d1d1d1;
-                display: none; /* Hide by default on mobile */
-            }
-
-            nav ul.active {
-                right: 0;
-                display: flex !important; /* Show when active */
-            }
-
-            nav ul li {
-                margin: 15px 0;
-                text-align: center;
-            }
-
-            nav ul li a {
-                display: block;
-                padding: 15px;
-                font-size: 1.2rem;
-                color: #1a2a6c;
-            }
-
-            .auth-buttons {
-                position: absolute;
-                top: 20px;
-                right: 20px;
-            }
-        }
-
     </style>
-     <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-RMM38DLZLM');
-</script>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-RMM38DLZLM');
+    </script>
 </head>
 <body>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-RMM38DLZLM');
-</script>
-       <header>
-        <div class="container">
-            <nav>
-            <div class="logo">
-            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1760442084/logo_cpe9n0_1_uhvkri.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
-        </div>
-                 <ul class="nav-links">
-                    <li><a href="/">Features</a></li>
-                    <li><a href="/kamateraho/how-it-works.html">How It Works</a></li>
-                    <!-- <li><a href="#testimonials">Testimonials</a></li> -->
-                    <li><a href="/kamateraho/blog/index.php">Blog</a></li>
-                    <!-- <li><a href="/kamateraho/faq.html">FAQ</a></li> -->
-                    <li><a href="/kamateraho/contact.html">Contact Us</a></li>
-                    <li><a href="/kamateraho/payment-proof.html">Payment Proof</a></li>
-                    <!-- <li><a href="/kamateraho/terms.html">Terms</a></li>
-                    <li><a href="/kamateraho/privacy.html">Privacy</a></li> -->
-                    <li><a href="../../register.php" class="btn animated-btn">Sign Up</a></li>
-                    <li><a href="../../login.php" class="btn animated-btn"> Login </a></li>
-
-                </ul>
-                <div class="menu-toggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </nav>
-        </div>
-    </header>
-    
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.getElementById('menuToggle');
-            const navMenu = document.getElementById('navMenu');
-            
-            if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                    
-                    // Animate hamburger icon
-                    const spans = menuToggle.querySelectorAll('span');
-                    if (navMenu.classList.contains('active')) {
-                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                        spans[1].style.opacity = '0';
-                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                    } else {
-                        spans[0].style.transform = 'none';
-                        spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'none';
-                    }
-                });
-                
-                // Close menu when clicking on a link
-                const navLinks = document.querySelectorAll('nav ul li a');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        navMenu.classList.remove('active');
-                        const spans = menuToggle.querySelectorAll('span');
-                        spans[0].style.transform = 'none';
-                        spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'none';
-                    });
-                });
-            }
-        });
-    </script>
-    <section class="blog-header">
-        <div class="container">
-            <h1>Latest Blog Posts</h1>
-            <p>Stay updated with the latest news, tips, and insights</p>
+    <section class="blog-hero">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <h1>Our Blog</h1>
+            <p>Stay updated with the latest tips, tricks, and news</p>
         </div>
     </section>
 
-    <section class="blog-container">
-        <div class="blog-main">
-            <div class="blog-grid">
-            <!-- Blog Post 21 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1764062458/ChatGPT_Image_Nov_25_2025_02_50_48_PM_bnjcel.png" alt="Fast Earning Guide" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Fast Earning Guide</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 25, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Work from Home with 30-Min Daily Tasks</p>
-                        <a href="post21.php" class="read-more">Read More</a>
+    <section class="blog-section">
+        <div class="container" style="max-width: 1200px; margin: 0 auto; padding: 0 20px;">
+            <?php if (count($posts) > 0): ?>
+                <div class="blog-grid">
+                    <?php foreach ($posts as $post): ?>
+                        <a href="<?php echo htmlspecialchars($post['slug']); ?>" style="text-decoration: none; color: inherit;">
+                            <div class="blog-card">
+                                <?php if ($post['image_url']): ?>
+                                    <img src="<?php echo htmlspecialchars($post['image_url']); ?>" alt="<?php echo htmlspecialchars($post['title']); ?>">
+                                <?php endif; ?>
+                                <div class="blog-card-content">
+                                    <h3><?php echo htmlspecialchars($post['title']); ?></h3>
+                                    <div class="blog-meta">
+                                        <span><i class="far fa-calendar"></i> <?php echo date('M d, Y', strtotime($post['created_at'])); ?></span>
+                                        <span><i class="far fa-user"></i> <?php echo htmlspecialchars($post['author']); ?></span>
+                                    </div>
+                                    <?php if ($post['excerpt']): ?>
+                                        <p class="blog-excerpt"><?php echo htmlspecialchars($post['excerpt']); ?></p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </a>
+                    <?php endforeach; ?>
+                </div>
+                
+                <?php if ($total_pages > 1): ?>
+                    <div class="pagination">
+                        <?php if ($page > 1): ?>
+                            <a href="?page=<?php echo $page - 1; ?>"><i class="fas fa-chevron-left"></i> Previous</a>
+                        <?php endif; ?>
+                        
+                        <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                            <?php if ($i == $page): ?>
+                                <span class="active"><?php echo $i; ?></span>
+                            <?php else: ?>
+                                <a href="?page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                            <?php endif; ?>
+                        <?php endfor; ?>
+                        
+                        <?php if ($page < $total_pages): ?>
+                            <a href="?page=<?php echo $page + 1; ?>">Next <i class="fas fa-chevron-right"></i></a>
+                        <?php endif; ?>
                     </div>
+                <?php endif; ?>
+            <?php else: ?>
+                <div class="no-posts">
+                    <i class="fas fa-newspaper" style="font-size: 4rem; color: #ccc; margin-bottom: 1rem;"></i>
+                    <h3>No blog posts yet</h3>
+                    <p>Check back soon for new content!</p>
                 </div>
-                 <!-- Blog Post 20 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763462356/Gemini_Generated_Image_xd8jfuxd8jfuxd8j_adeoes.png" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Easy Online Income </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 18, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Tricks You Can Do in Your Break Time
-</p>
-                         <a href="post20.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                <!-- Blog Post 19 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1763381392/Gemini_Generated_Image_6v97hw6v97hw6v97_fe9kom.png" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>From Zero to Cash</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 17, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">30-Minute Online Earning Secrets</p>
-                         <a href="post19.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                 <!-- Blog Post 18 -->
-                <div class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Make Money Online Before Your Coffee Gets Cold</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 12, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Quick and Easy Ways to Earn Cash from Home</p>
-                         <a href="post18.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                 <!-- Blog Post 17 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1762862714/ChatGPT_Image_Nov_11_2025_05_34_54_PM_soa5gb.png
-                    " alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>
-Earn ₹1,000+ Daily: Best Online Earning site in India (2025)
-
- </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 11, 2025
-                            </span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">
-                   How I Made My First ₹50,000 Online — Step-by-Step Strategy
-                        </p>
-                         <a href="post17.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                   <!-- Blog Post 16 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/vaa4p8zelcxgsvgrvtbd.jpg
-                    " alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>
-Top Ways to Earn Money Online from Home with Simple Tasks
-
-
-
- </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 7, 2025
-                            </span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">
-                    Create Your Account & Get Rs. 50.00 Free as bonus - Earnincome.in Earnincome Is The #1 Website In India To Earn Money Online
-                        </p>
-                         <a href="post16.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                <!-- Blog Post 1 -->
-                <div class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Top 5 Ways to Earn Money Online</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 8, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Discover the most effective methods to earn money from the comfort of your home. These proven strategies can help you boost your income significantly.</p>
-                        <a href="post1.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <!-- Blog Post 2 -->
-                <div class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1553877522-43269d4ea984?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Maximizing Your Earnings with KamateRaho</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 9, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Learn how to make the most of our platform with these expert tips. Increase your daily earnings and unlock new opportunities.</p>
-                        <a href="post2.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <!-- Blog Post 3 -->
-                <div class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Understanding Payment Methods</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 10, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Get detailed information about our payment methods and how to withdraw your earnings quickly and securely.</p>
-                        <a href="post3.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <!-- Blog Post 4 -->
-                <div class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Success Stories from Our Users</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 14, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Read inspiring stories from our community members who have successfully earned money through our platform.</p>
-                        <a href="post4.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-
-                <!-- Blog Post 5 -->
-                <div class="blog-card">
-                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>New Features Coming Soon</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 15, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Exciting updates are on the horizon! Discover what new features we're adding to enhance your experience.</p>
-                        <a href="post5.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                  <!-- Blog Post 6 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761627902/Gemini_Generated_Image_yotpalyotpalyotp_nwe7br.png" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>How to Make Money Online Without Investment
-</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 16, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">How I Earned ₹50,000 per Month Online ..</p>
-                         <a href="post6.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                  <!-- Blog Post 7 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1760682009/Gemini_Generated_Image_t5redbt5redbt5re_o3g6ym.png" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Best Referral Programs to Earn ₹500 Daily Online
-
-</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 17, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">How To Get Best Referral Programs to Earn ₹500 Daily Online
-</p>
-                         <a href="post7.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                  <!-- Blog Post 8 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761300628/Gemini_Generated_Image_esukctesukctesuk_2_pjueny.png" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>KamateRaho Offer Zone: Daily Tasks Complete Karo, Cash Jeeto
-
-</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 24, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">2025 Ka Best Earning Platform – KamateRaho App Review & Guide</p>
-                         <a href="post8.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                <!-- Blog Post 9 -->
-                <div class="blog-card">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRmf8JLigVdLzidnVt0HuXOLjfbOb1PmkyjpwT5tZX65SNz3r2L3tsxjwJ5caWHoYwYPwE&usqp=CAU" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3> How to Earn ₹1,000+</h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 26, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">Daily Using Just Your Smartphone (2025 Guide)</p>
-                         <a href="post9.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                  <!-- Blog Post 10 -->
-                <div class="blog-card">
-                    <img src="https://education.sakshi.com/sites/default/files/images/2023/08/24/work-home-1692862181.jpg" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>Work From Home Se Real Income Kaise Banaye </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">– Complete Guide (2025)</p>
-                         <a href="post11.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                  <!-- Blog Post 11 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761714969/Gemini_Generated_Image_ybpauaybpauaybpa_zlxtta.png" alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>top 10 site for referral earning
- </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 27, 2025</span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">– Earn Money Online Without Investment</p>
-                         <a href="post10.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                    <!-- Blog Post 12 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/dep67o63b/image/upload/v1761627902/Gemini_Generated_Image_yotpalyotpalyotp_nwe7br.png
-                    " alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>How to Start Earning Cash from 
- </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 30, 2025
-                            </span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">
-                            Home in 2025
-                        </p>
-                         <a href="post9.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                    <!-- Blog Post 13 -->
-                <div class="blog-card">
-                    <img src="https://jksdigital.in/wp-content/uploads/2025/07/Add-a-heading-31.webp
-                    " alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>
-
-The Ultimate Guide to Earning
- </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Oct 31, 2025
-                            </span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">
-                       Income Online Through Simple Task Completion
-                        </p>
-                         <a href="post13.php" class="read-more">Read More</a>
-                    </div>
-                </div>
-                     <!-- Blog Post 14 -->
-                <div class="blog-card">
-                    <img src="https://res.cloudinary.com/jerrick/image/upload/d_642250b563292b35f27461a7.png,f_jpg,fl_progressive,q_auto,w_1024/647a4364098d78001d94f0e7.png
-                    " alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>
- Simple Tasks You Can Do from 
-
- </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 5, 2025
-                            </span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">
-                       Home to Earn Money Online
-                    </p>
-                     <a href="post14.php" class="read-more">Read More</a>
-                </div>
-                  <!-- Blog Post 15 -->
-                <div class="blog-card">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQx96LcthdMFbYF9pbDgz-j9ltfgcTGiB_PMQ&s
-                    " alt="Blog Post" class="blog-image">
-                    <div class="blog-content">
-                        <h3>
- How to Earn Money 
-
- </h3>
-                        <div class="blog-meta">
-                            <span><i class="far fa-calendar"></i> Nov 6, 2025
-                            </span>
-                            <span><i class="far fa-user"></i> Admin</span>
-                        </div>
-                        <p class="blog-excerpt">
-                      Online by Completing Simple Tasks from Home
-
-                    </p>
-                     <a href="post15.php" class="read-more">Read More</a>
-                </div>
-            </div>
-            <div class="pagination">
-                <a href="#" class="active">1</a>
-                <a href="#">2</a>
-                <a href="#">3</a>
-                <a href="#"><i class="fas fa-chevron-right"></i></a>
-            </div>
-        </div>
-        <div class="blog-sidebar">
-            <!-- Ad Unit -->
-            <div class="blog-card">
-                <div class="ad-container">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-format="fluid"
-                         data-ad-layout-key="-gw-c+2j-55-2t"
-                         data-ad-client="ca-pub-9867776615304259"
-                         data-ad-slot="9876543210"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-            </div>
-           
-            <!-- Ad Unit -->
-            <div class="blog-card">
-                <div class="ad-container">
-                    <ins class="adsbygoogle"
-                         style="display:block"
-                         data-ad-format="fluid"
-                         data-ad-layout-key="-gw-c+2j-55-2t"
-                         data-ad-client="ca-pub-9867776615304259"
-                         data-ad-slot="9876543211"></ins>
-                    <script>
-                         (adsbygoogle = window.adsbygoogle || []).push({});
-                    </script>
-                </div>
-            </div>
+            <?php endif; ?>
         </div>
     </section>
-
-   
-
-    <script>
-        // Mobile menu toggle
-        document.addEventListener('DOMContentLoaded', function() {
-            const menuToggle = document.getElementById('menuToggle');
-            const navMenu = document.getElementById('navMenu');
-            
-            if (menuToggle && navMenu) {
-                menuToggle.addEventListener('click', function() {
-                    navMenu.classList.toggle('active');
-                    
-                    // Animate hamburger icon
-                    const spans = menuToggle.querySelectorAll('span');
-                    if (navMenu.classList.contains('active')) {
-                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                        spans[1].style.opacity = '0';
-                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-                    } else {
-                        spans[0].style.transform = 'none';
-                        spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'none';
-                    }
-                });
-                
-                // Close menu when clicking on a link
-                const navLinks = document.querySelectorAll('nav ul li a');
-                navLinks.forEach(link => {
-                    link.addEventListener('click', function() {
-                        navMenu.classList.remove('active');
-                        const spans = menuToggle.querySelectorAll('span');
-                        spans[0].style.transform = 'none';
-                        spans[1].style.opacity = '1';
-                        spans[2].style.transform = 'none';
-                    });
-                });
-            }
-        });
-    </script>
-     <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <h3>KamateRaho</h3>
-                    <p>Helping you save more on every purchase with our innovative cashback rewards program. Join thousands of smart shoppers who are already earning rewards.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link">f</a>
-                        <a href="#" class="social-link">t</a>
-                        <a href="#" class="social-link">in</a>
-                        <a href="#" class="social-link">ig</a>
-                    </div>
-                </div>
-                <div class="footer-column">
-                    <h3>Quick Links</h3>
-                    <ul class="footer-links">
-                        <li><a href="/">Home</a></li>
-                        <li><a href="/">Features</a></li>
-                        <li><a href="/">How It Works</a></li>
-                        <li><a href="/">Testimonials</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Support</h3>
-                    <ul class="footer-links">
-                        <li><a href="../faq.html">FAQ</a></li>
-                        <li><a href="/">Contact Us</a></li>
-                        <li><a href="../terms.html">Terms of Service</a></li>
-                        <li><a href="../privacy.html">Privacy Policy</a></li>
-                    </ul>
-                </div>
-                <div class="footer-column">
-                    <h3>Newsletter</h3>
-                    <div class="newsletter">
-                        <p>Subscribe to get special offers and updates</p>
-                        <form class="newsletter-form">
-                            <input type="email" class="newsletter-input" placeholder="Your email address" required>
-                            <button type="submit" class="newsletter-btn">Subscribe</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-            <div class="copyright">
-                <p>&copy; 2025 KamateRaho. All rights reserved. </p>
-            </div>
-        </div>
-    </footer>
-    <script src="script.js"></script>
 </body>
 </html>
