@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Don't rewrite if actual file or directory exists
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Rewrite clean URLs to post.php with slug parameter
+# This will convert: /blog/my-post-slug to /blog/post.php?slug=my-post-slug
+RewriteRule ^([a-z0-9-]+)/?$ post.php?slug=$1 [L,QSA]
