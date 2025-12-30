@@ -11,7 +11,11 @@ if (session_status() == PHP_SESSION_NONE) {
 // Include app configuration
 include_once __DIR__ . '/../../config/app.php';
 
-// Removed admin authentication check to allow direct access
+// Admin authentication check - redirect to login if not logged in
+if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
+    header("Location: login.php");
+    exit;
+}
 
 // Admin information (in a real application, this would come from a database)
 $admin_name = "Admin User";
@@ -568,7 +572,7 @@ $admin_avatar = "https://ui-avatars.com/api/?name=Admin+User&background=0D8ABC&c
                     <div><?php echo $admin_name; ?></div>
                     <small class="text-muted"><?php echo $admin_email; ?></small>
                 </div>
-                <a href="../logout.php" class="btn btn-outline-danger ms-3">
+                <a href="logout.php" class="btn btn-outline-danger ms-3">
                     <i class="bi bi-box-arrow-right"></i>
                 </a>
             </div>

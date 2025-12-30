@@ -1,10 +1,22 @@
 <?php
 session_start();
 
-// For demo purposes, using a simple admin login
-// In a real application, you would have a proper admin user system
-$admin_username = 'admin';
-$admin_password = 'admin123'; // In real application, this should be hashed
+// Load environment variables from .env file
+$env_file = __DIR__ . '/../.env';
+if (file_exists($env_file)) {
+    $lines = file($env_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+    foreach ($lines as $line) {
+        if (strpos($line, '#') === 0) continue; // Skip comments
+        if (strpos($line, '=') !== false) {
+            list($key, $value) = explode('=', $line, 2);
+            $_ENV[trim($key)] = trim($value);
+        }
+    }
+}
+
+// Get admin credentials from .env file (change in .env file to update)
+$admin_username = $_ENV['ADMIN_USERNAME'] ?? 'admin';
+$admin_password = $_ENV['ADMIN_PASSWORD'] ?? 'admin123';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $_POST['username'];
