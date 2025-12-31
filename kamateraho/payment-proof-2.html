@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>More Payment Proofs - Kamateraho</title>
+    <!-- Animate.css -->
+     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+       .container {
+    max-width: 1200px;
+    margin: -21px auto;
+    padding: -26px;
+}
+
+        /* Section Title */
+        .section-title {
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .section-title p {
+            color: #7f8c8d;
+            font-size: 1.1rem;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px 0;
+        }
+
+        /* Proof Card */
+        .proof-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .proof-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Proof Header */
+        .proof-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            background-color: #3498db;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .user-details h4 {
+            margin: 0;
+            color: #2c3e50;
+            font-size: 1rem;
+        }
+
+        .user-details p {
+            margin: 2px 0 0;
+            color: #27ae60;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .proof-date {
+            color: #7f8c8d;
+            font-size: 0.85rem;
+        }
+
+        /* Proof Image */
+        .proof-image {
+            height: 200px;
+            background: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .image-placeholder {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .bank-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .image-placeholder p {
+            margin: 5px 0;
+            color: #7f8c8d;
+        }
+
+        .amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2c3e50 !important;
+            margin: 10px 0 !important;
+        }
+
+        .upi-ref {
+            font-size: 0.8rem;
+            color: #95a5a6 !important;
+            word-break: break-all;
+        }
+
+        /* Proof Details */
+        .proof-details {
+            padding: 15px 20px;
+        }
+
+        .proof-details p {
+            margin: 0 0 12px;
+            color: #2c3e50;
+            line-height: 1.5;
+        }
+
+        /* Tags */
+        .tags {
+            display: flex;
+            gap: 8px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 15px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .tag {
+            background-color: #e8f4fc;
+            color: #2980b9;
+        }
+
+        .tag.success {
+            background-color: #e8f8f0;
+            color: #27ae60;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            }
+            
+            .section-title h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .section-title h2 {
+                font-size: 1.75rem;
+            }
+        }
+        
+        /* Pagination Styles */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0;
+            padding: 15px;
+        }
+        
+        .pagination button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .pagination button:disabled {
+            background: #bdc3c7;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+        
+        .pagination button.active {
+            background: #27ae60;
+        }
+        
+        #pageNumbers {
+            display: flex;
+            gap: 5px;
+        }
+        
+        #pageNumbers button {
+            padding: 10px;
+            min-width: 40px;
+            cursor: pointer;
+        }
+        
+        #pageNumbers button:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .page-info {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+    </style>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-RMM38DLZLM"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-RMM38DLZLM');
+    </script>
+</head>
+<body>
+    
+    <header>
+        <div class="container">
+            <nav>
+               <div class="logo">
+            <img src="https://res.cloudinary.com/dqsxrixfq/image/upload/v1760442084/logo_cpe9n0_1_uhvkri.png" alt="KamateRaho Logo" style="height: 65px; width: 250px;">
+                </div>
+                  <ul class="nav-links">
+                    <li><a href="/">Features</a></li>
+                    <li><a href="kamateraho/how-it-works.html">How It Works</a></li>
+                    <!-- <li><a href="/">Testimonials</a></li> -->
+                    <li><a href="/kamateraho/blog/index.php">Blog</a></li>
+                    <!-- <li><a href="/kamateraho/faq.html">FAQ</a></li> -->
+                    <li><a href="/kamateraho/contact.html">Contact Us</a></li>
+                    <li><a href="/kamateraho/payment-proof.html">Payment Proof</a></li>
+                    <!-- <li><a href="/kamateraho/terms.html">Terms</a></li>
+                    <li><a href="/kamateraho/privacy.html">Privacy</a></li> -->
+                    <li><a href="../register.php" class="btn animated-btn">Sign Up</a></li>
+                    <li><a href="../login.php" class="btn animated-btn"> Login </a></li>
+
+                </ul>
+                <div class="menu-toggle" aria-label="Toggle navigation menu" role="button" tabindex="0">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </nav>
+        </div>
+    </header>
+        
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const navMenu = document.getElementById('navMenu');
+            
+            if (menuToggle && navMenu) {
+                menuToggle.addEventListener('click', function() {
+                    navMenu.classList.toggle('active');
+                    
+                    // Animate hamburger icon
+                    const spans = menuToggle.querySelectorAll('span');
+                    if (navMenu.classList.contains('active')) {
+                        spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                        spans[1].style.opacity = '0';
+                        spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+                    } else {
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    }
+                });
+                
+                // Close menu when clicking on a link
+                const navLinks = document.querySelectorAll('nav ul li a');
+                navLinks.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navMenu.classList.remove('active');
+                        const spans = menuToggle.querySelectorAll('span');
+                        spans[0].style.transform = 'none';
+                        spans[1].style.opacity = '1';
+                        spans[2].style.transform = 'none';
+                    });
+                });
+            }
+        });
+    </script>
+<section class="payment-gallery">
+        <div class="container">
+            <div class="section-title text-center animate__animated animate__fadeIn">
+                <h2>Additional Payment Proofs</h2>
+                <p>More real screenshots of payments made to our users</p>
+                            <p><a href="payment-proof.html" style="color: #3498db; text-decoration: none; font-weight: 600;">← Back to Payment Proofs</a></p>
+            </div>
+            <div class="gallery-grid" id="galleryGrid">
+                <!-- Additional Payment Proofs -->
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">A</div>
+                                <div class="user-details">
+                                    <h4>Arun Kumar</h4>
+                                    <p>₹3,400 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">23 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📶</div>
+                                    <p>BSNL Broadband Bill</p>
+                                    <p class="amount">₹3,400</p>
+                                    <p class="upi-ref">Bill No: BSNL98765432</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on BSNL Broadband Bill Payment</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">M</div>
+                                <div class="user-details">
+                                    <h4>Megha Sharma</h4>
+                                    <p>₹4,100 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">22 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">🏦</div>
+                                    <p>Axis Bank Account</p>
+                                    <p class="amount">₹4,100</p>
+                                    <p class="upi-ref">Acc: XXXX-XXXX-4321</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Axis Bank Account Opening</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">R</div>
+                                <div class="user-details">
+                                    <h4>Rohit Agarwal</h4>
+                                    <p>₹2,700 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">21 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📱</div>
+                                    <p>PhonePe Verification</p>
+                                    <p class="amount">₹2,700</p>
+                                    <p class="upi-ref">Ref: PP20251221001</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on PhonePe Verification</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">P</div>
+                                <div class="user-details">
+                                    <h4>Preeti Singh</h4>
+                                    <p>₹5,200 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">20 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📶</div>
+                                    <p>Vi Postpaid Bill</p>
+                                    <p class="amount">₹5,200</p>
+                                    <p class="upi-ref">Bill No: VIPOST20251220</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Vi Postpaid Bill Payment</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">S</div>
+                                <div class="user-details">
+                                    <h4>Sandeep Nair</h4>
+                                    <p>₹3,100 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">19 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">💳</div>
+                                    <p>SBI Credit Card</p>
+                                    <p class="amount">₹3,100</p>
+                                    <p class="upi-ref">Card: XXXX-XXXX-1122</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on SBI Credit Card Activation</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">N</div>
+                                <div class="user-details">
+                                    <h4>Nikhil Verma</h4>
+                                    <p>₹4,300 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">18 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📊</div>
+                                    <p>CreditSmart CIBIL Score</p>
+                                    <p class="amount">₹4,300</p>
+                                    <p class="upi-ref">Report: CS20251218</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on CreditSmart CIBIL Score Check</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">L</div>
+                                <div class="user-details">
+                                    <h4>Lata Joshi</h4>
+                                    <p>₹2,800 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">17 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📱</div>
+                                    <p>Paytm First Membership</p>
+                                    <p class="amount">₹2,800</p>
+                                    <p class="upi-ref">Ref: PTMF20251217</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Paytm First Membership</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">D</div>
+                                <div class="user-details">
+                                    <h4>Dinesh Patel</h4>
+                                    <p>₹3,900 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">16 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📶</div>
+                                    <p>Airtel DTH Recharge</p>
+                                    <p class="amount">₹3,900</p>
+                                    <p class="upi-ref">Ref: AIRTELDTH20251216</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Airtel DTH Recharge</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">G</div>
+                                <div class="user-details">
+                                    <h4>Gaurav Mishra</h4>
+                                    <p>₹4,500 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">15 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">🏦</div>
+                                    <p>IndusInd Bank Account</p>
+                                    <p class="amount">₹4,500</p>
+                                    <p class="upi-ref">Acc: XXXX-XXXX-5566</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on IndusInd Bank Account Opening</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">R</div>
+                                <div class="user-details">
+                                    <h4>Rashmi Tiwari</h4>
+                                    <p>₹2,600 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">14 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📱</div>
+                                    <p>Mobikwik KYC</p>
+                                    <p class="amount">₹2,600</p>
+                                    <p class="upi-ref">Ref: MBK20251214</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Mobikwik KYC Completion</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">K</div>
+                                <div class="user-details">
+                                    <h4>Komal Shah</h4>
+                                    <p>₹3,700 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">13 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📶</div>
+                                    <p>JioFi Data Plan</p>
+                                    <p class="amount">₹3,700</p>
+                                    <p class="upi-ref">Plan: JF20251213</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on JioFi Data Plan Purchase</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">V</div>
+                                <div class="user-details">
+                                    <h4>Vivek Bhatia</h4>
+                                    <p>₹4,800 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">12 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📊</div>
+                                    <p>Equifax Credit Report</p>
+                                    <p class="amount">₹4,800</p>
+                                    <p class="upi-ref">Report: EQ20251212</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Equifax Credit Report</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">S</div>
+                                <div class="user-details">
+                                    <h4>Sonal Gupta</h4>
+                                    <p>₹3,200 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">11 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📱</div>
+                                    <p>Amazon Pay Verification</p>
+                                    <p class="amount">₹3,200</p>
+                                    <p class="upi-ref">Ref: AP20251211</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Amazon Pay Verification</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">P</div>
+                                <div class="user-details">
+                                    <h4>Prakash Reddy</h4>
+                                    <p>₹5,000 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">10 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📶</div>
+                                    <p>Tata Sky DTH</p>
+                                    <p class="amount">₹5,000</p>
+                                    <p class="upi-ref">Ref: TATASKY20251210</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Tata Sky DTH Recharge</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">A</div>
+                                <div class="user-details">
+                                    <h4>Ankita Deshmukh</h4>
+                                    <p>₹2,900 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">9 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">💳</div>
+                                    <p>Yes Bank Credit Card</p>
+                                    <p class="amount">₹2,900</p>
+                                    <p class="upi-ref">Card: XXXX-XXXX-7788</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Yes Bank Credit Card Activation</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">R</div>
+                                <div class="user-details">
+                                    <h4>Rajat Malhotra</h4>
+                                    <p>₹4,100 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">8 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📊</div>
+                                    <p>HighMark CIBIL Report</p>
+                                    <p class="amount">₹4,100</p>
+                                    <p class="upi-ref">Report: HM20251208</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on HighMark CIBIL Report</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">M</div>
+                                <div class="user-details">
+                                    <h4>Madhavi Iyer</h4>
+                                    <p>₹3,500 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">7 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📱</div>
+                                    <p>Freecharge Wallet</p>
+                                    <p class="amount">₹3,500</p>
+                                    <p class="upi-ref">Ref: FC20251207</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Freecharge Wallet Verification</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">H</div>
+                                <div class="user-details">
+                                    <h4>Hemant Saini</h4>
+                                    <p>₹4,400 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">6 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📶</div>
+                                    <p>MTNL Postpaid</p>
+                                    <p class="amount">₹4,400</p>
+                                    <p class="upi-ref">Bill No: MTNL20251206</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on MTNL Postpaid Bill Payment</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">T</div>
+                                <div class="user-details">
+                                    <h4>Tanuja Krishnan</h4>
+                                    <p>₹2,800 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">5 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">🏦</div>
+                                    <p>Bandhan Bank Account</p>
+                                    <p class="amount">₹2,800</p>
+                                    <p class="upi-ref">Acc: XXXX-XXXX-9900</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Bandhan Bank Account Opening</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">S</div>
+                                <div class="user-details">
+                                    <h4>Siddharth Bhat</h4>
+                                    <p>₹3,600 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">4 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📱</div>
+                                    <p>PayZapp Verification</p>
+                                    <p class="amount">₹3,600</p>
+                                    <p class="upi-ref">Ref: PZ20251204</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on PayZapp Verification</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">N</div>
+                                <div class="user-details">
+                                    <h4>Naveen Choudhary</h4>
+                                    <p>₹4,900 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">3 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📶</div>
+                                    <p>Reliance Jio Recharge</p>
+                                    <p class="amount">₹4,900</p>
+                                    <p class="upi-ref">Ref: RJ20251203</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on Reliance Jio Mobile Recharge</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">P</div>
+                                <div class="user-details">
+                                    <h4>Priyanka Joshi</h4>
+                                    <p>₹3,300 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">2 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">💳</div>
+                                    <p>RBL Bank Credit Card</p>
+                                    <p class="amount">₹3,300</p>
+                                    <p class="upi-ref">Card: XXXX-XXXX-1122</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on RBL Bank Credit Card Activation</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item animate__animated animate__fadeInUp">
+                    <div class="proof-card">
+                        <div class="proof-header">
+                            <div class="user-info">
+                                <div class="user-avatar">A</div>
+                                <div class="user-details">
+                                    <h4>Abhishek Nair</h4>
+                                    <p>₹4,600 Cashback</p>
+                                </div>
+                            </div>
+                            <div class="proof-date">1 Dec 2025</div>
+                        </div>
+                        <div class="proof-image">
+                            <div class="image-placeholder">
+                                <div class="placeholder-content">
+                                    <div class="bank-icon">📊</div>
+                                    <p>CibilOne Credit Report</p>
+                                    <p class="amount">₹4,600</p>
+                                    <p class="upi-ref">Report: CO20251201</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="proof-details">
+                            <p>Cashback on CibilOne Credit Report</p>
+                            <div class="tags">
+                                <span class="tag">Verified</span>
+                                <span class="tag success">Completed</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <!-- Pagination Controls -->
+            <div class="pagination" id="pagination">
+                <button id="prevPage" disabled>Previous</button>
+                <div id="pageNumbers"></div>
+                <button id="nextPage">Next</button>
+            </div>
+            <div class="page-info" id="pageInfo"></div>
+        </div>
+    </section>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const itemsPerPage = 12;
+            const items = document.querySelectorAll('#galleryGrid .gallery-item');
+            const totalPages = Math.ceil(items.length / itemsPerPage);
+            let currentPage = 1;
+            
+            // Initialize pagination
+            function updatePagination() {
+                // Hide all items
+                items.forEach(item => {
+                    item.style.display = 'none';
+                });
+                
+                // Show items for current page
+                const startIndex = (currentPage - 1) * itemsPerPage;
+                const endIndex = startIndex + itemsPerPage;
+                
+                for (let i = startIndex; i < endIndex && i < items.length; i++) {
+                    items[i].style.display = 'block';
+                }
+                
+                // Update pagination buttons
+                document.getElementById('prevPage').disabled = currentPage === 1;
+                document.getElementById('nextPage').disabled = currentPage === totalPages;
+                
+                // Update page numbers
+                const pageNumbers = document.getElementById('pageNumbers');
+                pageNumbers.innerHTML = '';
+                
+                // Show max 5 page numbers at a time
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, startPage + 4);
+                
+                if (endPage - startPage < 4 && startPage > 1) {
+                    startPage = Math.max(1, endPage - 4);
+                }
+                
+                // Add page numbers
+                for (let i = startPage; i <= endPage; i++) {
+                    const pageBtn = document.createElement('button');
+                    pageBtn.textContent = i;
+                    pageBtn.className = i === currentPage ? 'active' : '';
+                    pageBtn.onclick = () => goToPage(i);
+                    pageNumbers.appendChild(pageBtn);
+                }
+                
+                // Update page info
+                document.getElementById('pageInfo').textContent = 
+                    `Showing ${startIndex + 1}-${Math.min(endIndex, items.length)} of ${items.length} payment proofs`;
+            }
+            
+            // Navigation functions
+            function goToPage(page) {
+                if (page < 1 || page > totalPages) return;
+                currentPage = page;
+                updatePagination();
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            }
+            
+            // Event listeners
+            document.getElementById('prevPage').addEventListener('click', () => {
+                goToPage(currentPage - 1);
+            });
+            
+            document.getElementById('nextPage').addEventListener('click', () => {
+                goToPage(currentPage + 1);
+            });
+            
+            // Initialize on page load
+            updatePagination();
+        });
+    </script>
+    
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>KamateRaho</h3>
+                    <p>Helping you save more on every purchase with our innovative cashback rewards program. Join thousands of smart shoppers who are already earning rewards.</p>
+                    <div class="social-links">
+                        <a href="#" class="social-link">f</a>
+                        <a href="#" class="social-link">t</a>
+                        <a href="#" class="social-link">in</a>
+                        <a href="#" class="social-link">ig</a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Support</h3>
+                    <ul class="footer-links">
+                    <li><a href="/kamateraho/faq.html">FAQ</a></li>
+                    <li><a href="/kamateraho/contact.html">Contact</a></li>
+                    <li><a href="/kamateraho/terms.html">Terms</a></li>
+                    <li><a href="/kamateraho/privacy.html">Privacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Newsletter</h3>
+                    <div class="newsletter">
+                        <p>Subscribe to get special offers and updates</p>
+                        <form class="newsletter-form">
+                            <input type="email" class="newsletter-input" placeholder="Your email address" required>
+                            <button type="submit" class="newsletter-btn">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 KamateRaho. All rights reserved. </p>
+            </div>
+        </div>
+    </footer>
+    <script src="/kamateraho/script.js"></script>
+</body>
+</html>
