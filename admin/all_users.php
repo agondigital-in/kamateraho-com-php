@@ -444,6 +444,39 @@ try {
             color: #6c757d;
         }
         
+        /* Download Buttons Styles */
+        .btn-success, .btn-danger {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(40, 167, 69, 0.3);
+            background: linear-gradient(135deg, #218838, #1ea87a);
+        }
+        
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #c82333);
+            border: none;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(220, 53, 69, 0.3);
+            background: linear-gradient(135deg, #c82333, #bd2130);
+        }
+        
         .pagination .page-link {
             color: var(--primary-color);
             border: 1px solid var(--border-color);
@@ -593,6 +626,14 @@ try {
                 font-size: 0.65rem;
                 padding: 0.25em 0.5em;
             }
+            
+            /* Mobile responsive for download buttons */
+            .btn-success, .btn-danger, .email-btn {
+                width: 100%;
+                margin-bottom: 8px;
+                padding: 10px 15px;
+                font-size: 0.9rem;
+            }
         }
         
         @media (max-width: 400px) {
@@ -703,12 +744,21 @@ try {
                                 <?php endif; ?>
                             </div>
                         <?php else: ?>
-                            <!-- Email Actions -->
-                            <div class="mb-3">
+                            <!-- Email Actions and Download Buttons -->
+                            <div class="mb-3 d-flex flex-wrap gap-2 align-items-center">
                                 <button type="button" class="btn email-btn" id="sendEmailBtn" disabled>
                                     <i class="bi bi-envelope me-2"></i> Send Email 
                                     <span class="badge bg-white text-primary ms-2" id="selectedUsersCount">0</span>
                                 </button>
+                                
+                                <!-- Download Buttons -->
+                                <a href="export_users_excel.php" class="btn btn-success" title="Download All Users as Excel">
+                                    <i class="bi bi-file-earmark-excel me-2"></i> Download Excel
+                                </a>
+                                
+                                <a href="export_users_pdf.php" target="_blank" class="btn btn-danger" title="Download All Users as PDF">
+                                    <i class="bi bi-file-earmark-pdf me-2"></i> Download PDF
+                                </a>
                             </div>
                             
                             <!-- Users Table -->
