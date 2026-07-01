@@ -108,6 +108,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_message'])) {
     }
 }
 
+// Handle delete all messages
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['delete_all_messages'])) {
+    if ($pdo) {
+        try {
+            // Count messages before deletion
+            $stmt = $pdo->query("SELECT COUNT(*) FROM contact_messages");
+            $message_count = $stmt->fetchColumn();
+            
+            if ($message_count > 0) {
+                // Delete all messages
+                $stmt = $pdo->prepare("DELETE FROM contact_messages");
+                $stmt->execute();
+                
+                // Log activity for sub-admin
+                if ($isSubAdmin) {
+                    try {
+                        $activityStmt = $pdo->prepare("INSERT INTO sub_admin_activities (sub_admin_id, activity_type, description) VALUES (?, ?, ?)");
+                        $activityStmt->execute([$subAdminId, 'contact_delete_all', 'Deleted all ' . $message_count . ' contact messages']);
+                    } catch (PDOException $e) {
+                        // Silently fail on activity logging
+                    }
+                }
+                
+                $success = "All " . $message_count . " messages deleted successfully!";
+            } else {
+                $error = "No messages to delete!";
+            }
+        } catch (PDOException $e) {
+            $error = "Error deleting all messages: " . $e->getMessage();
+        }
+    } else {
+        $error = "Database connection failed!";
+    }
+}
+
 // Fetch all contact messages with user information
 $messages = [];
 if ($pdo) {
@@ -125,12 +160,102 @@ if ($isSubAdmin) {
 }
 ?>
 
+<style>
+    .btn-danger {
+        background: linear-gradient(135deg, #dc3545, #c82333);
+        border: none;
+        color: white;
+        padding: 10px 20px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(220, 53, 69, 0.3);
+    }
+    
+    .btn-danger:hover {
+        background: linear-gradient(135deg, #c82333, #bd2130);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 10px rgba(220, 53, 69, 0.4);
+        color: white;
+    }
+    
+    .btn-danger i {
+        margin-right: 5px;
+    }
+    
+    .alert {
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 20px;
+    }
+    
+    .alert-success {
+        background-color: rgba(40, 167, 69, 0.1);
+        border-left: 4px solid #28a745;
+        color: #155724;
+    }
+    
+    .alert-danger {
+        background-color: rgba(220, 53, 69, 0.1);
+        border-left: 4px solid #dc3545;
+        color: #721c24;
+    }
+    
+    .card {
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+    
+    .card-header {
+        background: linear-gradient(135deg, #6f42c1, #5a32a3);
+        color: white;
+        border-radius: 10px 10px 0 0 !important;
+    }
+    
+    .badge {
+        padding: 6px 12px;
+        font-size: 0.85rem;
+        font-weight: 500;
+    }
+    
+    /* Responsive */
+    @media (max-width: 768px) {
+        .d-flex.justify-content-between {
+            flex-direction: column;
+            align-items: flex-start !important;
+        }
+        
+        .btn-danger {
+            width: 100%;
+            margin-top: 10px;
+        }
+        
+        h2 {
+            margin-bottom: 10px;
+        }
+    }
+</style>
+
 <?php if ($isAdmin): ?>
 <div class="container-fluid">
 <?php else: ?>
 <!-- Content is already started in subadmin_header.php -->
 <?php endif; ?>
-    <h2>Contact Messages</h2>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Contact Messages</h2>
+        <?php if (!empty($messages)): ?>
+            <form method="POST" class="d-inline" onsubmit="return confirm('⚠️ WARNING: This will permanently delete ALL contact messages!\n\nTotal Messages: <?php echo count($messages); ?>\n\nThis action CANNOT be undone!\n\nAre you absolutely sure you want to continue?')">
+                <button type="submit" name="delete_all_messages" class="btn btn-danger">
+                    <i class="bi bi-trash3-fill"></i> Delete All Messages (<?php echo count($messages); ?>)
+                </button>
+            </form>
+        <?php endif; ?>
+    </div>
     
     <?php if (isset($success)): ?>
         <div class="alert alert-success"><?php echo $success; ?></div>
